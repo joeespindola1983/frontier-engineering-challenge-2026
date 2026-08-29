@@ -122,9 +122,20 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Configure both the direct baseline and the initial WAKE workflow with `gpt-5.6-terra`, reasoning effort `medium`, default service tier, no server-side response storage, and no explicit temperature. Pin the price assumption independently from actual returned usage.
 - **Rationale:** Official OpenAI documentation positions Terra as the balance between intelligence and cost. Holding model and reasoning effort constant makes workflow improvement the independent variable.
 
+## 2026-08-29 - Implement one bounded agent with direct deterministic tools
+
+- **Status:** accepted for evaluation workflow v1; quality result pending.
+- **Decision:** Use one custom Responses API loop with four direct function tools: metric-level source trust, session alignment, plan-versus-execution reconstruction, and environmental association. Limit the loop to four model rounds and one verifier retry, keep `store: false`, and record observable events without private chain-of-thought.
+- **Rationale:** The workflow makes evidence selection, tool use, correction, and stopping behavior inspectable while keeping the same model, reasoning effort, inputs, and output schema as the frozen direct-call baseline. A framework or multiple agents would add complexity before fixed-case evidence shows that it improves quality.
+
+## 2026-08-29 - Make TDD a permanent project constraint
+
+- **Status:** accepted and recorded in repository instructions.
+- **Decision:** Every new deterministic tool, verifier rule, runner behavior, grader, and memory policy begins with a failing behavioral test, followed by the smallest passing implementation and a green-suite refactor.
+- **Rationale:** The project owner explicitly requires TDD throughout the project, and evidence-sensitive rowing conclusions need regression protection rather than retrospective tests.
+
 ## Pending decisions
 
 - Deployment target and product application stack beyond the evaluation runner.
 - First paid baseline execution and concrete grader.
-- Agent/tool framework and model.
 - Schema revisions justified by parser and grader implementation evidence.

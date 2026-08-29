@@ -1,0 +1,21 @@
+{
+  "config_version": "wake.agent_config.v1",
+  "workflow": "wake-agent-v1-tool-loop",
+  "provider": "openai",
+  "api": "responses",
+  "model": "gpt-5.6-terra",
+  "output_schema_version": "wake.analysis_output.v1.1",
+  "reasoning_effort": "medium",
+  "max_output_tokens": 12000,
+  "service_tier": "default",
+  "store": false,
+  "max_rounds": 4,
+  "max_verifier_retries": 1,
+  "pricing": {
+    "currency": "USD",
+    "input_usd_per_million_tokens": 2.0,
+    "output_usd_per_million_tokens": 12.0,
+    "checked_on": "2026-08-29",
+    "source": "https://developers.openai.com/api/docs/models"
+  }
+}

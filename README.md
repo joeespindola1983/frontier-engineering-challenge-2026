@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, and a tested baseline v1 runner are complete. No paid baseline run, measured model score, or agent workflow exists yet.
+**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, a tested baseline v1 runner, and the first tested agent tool loop are complete. No paid model run or measured quality score exists yet.
 
 ## The problem
 
@@ -57,6 +57,7 @@ The repository will preserve:
 - [Private dataset audit](docs/DATASET_AUDIT.md)
 - [Evaluation specification](docs/EVALUATION_SPEC.md)
 - [Baseline runner](docs/BASELINE_RUNNER.md)
+- [Agent runner](docs/AGENT_RUNNER.md)
 - [Testing strategy](docs/TESTING_STRATEGY.md)
 - [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)
@@ -64,7 +65,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, and a tested OpenAI Responses API runner. The first paid model run, grader, and agent workflow still need to be completed.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, and comparable baseline and agentic OpenAI Responses API runners. The first paid model run and grader still need to be completed.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -77,4 +78,10 @@ Preview the exact baseline requests without calling the API:
 
 ```bash
 uv run python scripts/run_baseline.py
+```
+
+Preview the agent requests and its four deterministic tools without calling the API:
+
+```bash
+uv run python scripts/wake_agent.py
 ```

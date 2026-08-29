@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** provisional. Two fixtures, normalized contracts, public verifiers, and the direct-call baseline runner are implemented; the agent product architecture remains a hypothesis until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, and the bounded single-agent evaluation loop are implemented. Persistent memory and the product application remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -32,7 +32,7 @@ Training plan      SpeedCoach CSV      Mobile telemetry      Human context
 
 The agent is responsible for choosing what evidence to inspect, identifying contradictions, deciding which targeted tools to call, asking for missing context, revising after tool feedback, and stopping when the available evidence is insufficient. Deterministic components remain responsible for numerical parsing, alignment, segmentation, aggregation, and validation.
 
-The project should begin with one orchestrating agent. A second specialized agent is justified only if the fixed evaluation demonstrates a meaningful quality or reliability gain.
+The first implementation uses one orchestrating agent and four direct deterministic function tools. A second specialized agent is justified only if the fixed evaluation demonstrates a meaningful quality or reliability gain.
 
 ## Proposed components
 
@@ -58,28 +58,27 @@ Represent at least:
 - unresolved hypotheses and conflicts;
 - recommendations requiring human review.
 
-### Investigation orchestrator
+### Investigation orchestrator — implemented for evaluation v1
 
 Select tools, ask focused questions, and assemble a result that clearly separates facts, inferences, missing data, and suggested next actions.
 
-### Verifier
+### Verifier — evidence rules implemented for evaluation v1
 
-Reject or mark unsupported claims, check that evidence references exist, and require a human checkpoint before consequential recommendations or memory updates.
+The current verifier rejects unsupported or uncited claims, nonexistent evidence and source IDs, and known broken SPM-source selection. A human checkpoint before consequential recommendations or memory updates remains product work.
 
-### Trajectory recorder
+### Trajectory recorder — core events implemented for evaluation v1
 
-Capture structured runtime events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, human checkpoints, output, runtime, and approximate cost.
+The current runner captures structured events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, output, usage, and approximate run cost. Human checkpoints and elapsed runtime remain pending.
 
 ## Baseline hypothesis
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
-The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, and baseline runner are now frozen at version 1. The next architecture checkpoint is the first real baseline run and structured grader, without changing frozen inputs after seeing results.
+The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, baseline runner, agent prompt, tool loop, and verifier are now versioned at v1. The next architecture checkpoint is the first real baseline/agent run and structured grader, without changing frozen inputs after seeing results.
 
 ## Open decisions
 
 - Product application/runtime stack beyond the Python evaluation runner.
-- Agent SDK or minimal custom orchestration for the WAKE workflow.
 - Local versus hosted execution.
 - Data store and memory representation.
 - Weather provider and historical-data availability.

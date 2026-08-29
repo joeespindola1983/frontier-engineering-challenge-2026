@@ -53,4 +53,4 @@ Run both layers before committing an implementation change:
 uv run python scripts/test_all.py
 ```
 
-The model evaluation command will be added only after the baseline model and runner are accepted. Until then, fixture verification must not be described as an agent-quality score.
+Safe baseline and agent dry-runs are available as `scripts/run_baseline.py` and `scripts/wake_agent.py`. Paid execution remains opt-in through `--execute`. Until real outputs pass the future grader, request generation, fake-client loop tests, and fixture verification must not be described as an agent-quality score.
