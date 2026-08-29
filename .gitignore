@@ -1,0 +1,41 @@
+# macOS and editor metadata
+.DS_Store
+.idea/
+.vscode/
+
+# Local Codex state
+.codex/
+.codex-log/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Private rowing data must never be committed
+private-data/
+data/raw/
+data/private/
+**/raw-private/
+**/private-trajectories/
+*.sqlite
+*.sqlite3
+*.db
+
+# JavaScript / TypeScript
+node_modules/
+.next/
+dist/
+coverage/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Local temporary output
+tmp/
+.cache/
