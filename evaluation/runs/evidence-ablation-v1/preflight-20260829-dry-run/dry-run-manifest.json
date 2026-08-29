@@ -1,0 +1,37 @@
+{
+  "api_called": false,
+  "config_sha256": "f54f9fcc88fe1732545005cd034ccd74858d375ba474cc0acff02783af06e824",
+  "created_at": "2026-08-29T23:14:10.074+00:00",
+  "experiment": {
+    "base_case_id": "case-002-wind-shift-plan-deviation",
+    "condition_order": [
+      "core",
+      "context-environment",
+      "full"
+    ],
+    "input_manifest_sha256": "51f21b22fc568e65287a5f75f6bb7c164e0d6632d030b18d683e25db8f9120d7",
+    "input_version": "1.0",
+    "schema_version": "wake.evidence_ablation_run.v1",
+    "scoring_status": "NOT_SCORED"
+  },
+  "requests": {
+    "ablation-case-002-wind-shift-plan-deviation-context-environment": {
+      "bytes": 49797,
+      "path": "requests/ablation-case-002-wind-shift-plan-deviation-context-environment.json",
+      "sha256": "46c01d6bde5e89c1cbf07eb594c19b5d37945f155a571b921b968f6bfd1abad8"
+    },
+    "ablation-case-002-wind-shift-plan-deviation-core": {
+      "bytes": 35173,
+      "path": "requests/ablation-case-002-wind-shift-plan-deviation-core.json",
+      "sha256": "76822c9e522c2421d7b778c00ba3adaed7ca3918b6050135db3a1c3343043457"
+    },
+    "ablation-case-002-wind-shift-plan-deviation-full": {
+      "bytes": 51279,
+      "path": "requests/ablation-case-002-wind-shift-plan-deviation-full.json",
+      "sha256": "8608eea620172870ab98d8719fd011c55a3a223ff361cb698b972f292c5ad04d"
+    }
+  },
+  "run_id": "preflight-20260829-dry-run",
+  "schema_version": "wake.agent_dry_run.v1",
+  "workflow": "wake-agent-v1-tool-loop"
+}

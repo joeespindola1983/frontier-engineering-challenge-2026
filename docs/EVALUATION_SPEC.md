@@ -112,6 +112,16 @@ is input preparation only; it must not be presented as an ablation result until
 the same versioned runner executes every condition and the condition-aware
 scoring contract is frozen.
 
+The version 1 runner and capability reporter are now implemented. Dry-run is the
+default and constructs all three structured requests. Paid execution cannot
+select only a favorable condition. Each condition receives only the files listed
+in its frozen manifest entry. The reporter checks schema/provenance verification,
+plan and execution reconstruction, deviation identity, SpeedCoach SPM selection,
+human-review boundaries, condition-aware environmental behavior, mobile session
+corroboration, and rejection of broken mobile SPM. It also requires the execution
+and deviation signature to remain stable across conditions. It does not calculate
+one overall score that would punish deliberately unavailable capabilities.
+
 ## Baseline protocol
 
 The simple baseline will use one direct model call with:

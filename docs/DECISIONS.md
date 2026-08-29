@@ -212,6 +212,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Require a training plan and SpeedCoach recording for the MVP plan-versus-performed workflow. Treat mobile telemetry, environment, and session context as independent evidence enhancers. Mark every source as core/enhancer and present/absent, compute cross-source claims only when their prerequisites exist, and preserve missing capabilities as evidence gaps. Keep the exact five-source requirement only for byte-identical public replay eligibility.
 - **Rationale:** SpeedCoach already supports the central execution analysis. Making the pre-existing experimental mobile application mandatory would reduce adoption and overstate hackathon scope. Optional mobile evidence still adds measurable value through route/distance corroboration, clock alignment, and conflict detection. An evidence-ablation experiment must quantify that marginal value before the final submission claims it.
 
+## 2026-08-29 - Evaluate progressive evidence by capability, not one ablation score
+
+- **Status:** accepted for evidence-ablation version 1.
+- **Decision:** Execute all three frozen conditions with the same prompt, model configuration, output schema, and bounded runner. Isolate the evidence directory per condition. Report common execution consistency and capability-specific checks rather than a single score across unequal inputs. Treat false mobile corroboration in reduced conditions, causal wind language, and selection of broken mobile SPM as explicit failures. Keep paid execution behind literal `--execute` and `OPENAI_API_KEY`.
+- **Rationale:** Removing a source intentionally makes some rubric dimensions inapplicable. A single aggregate would confuse unavailable capability with poor reasoning and could falsely make the full bundle look better merely because it contains more information. Capability reporting answers the actual product question: what remains reliable with core evidence, and what becomes supportable when an enhancer is added.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

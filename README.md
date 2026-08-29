@@ -106,6 +106,24 @@ The three conditions are committed under `evaluation/ablation-inputs/v1/`: core
 plan + SpeedCoach, context/environment enrichment, and the full bundle with
 mobile corroboration. They are experimental inputs, not scored results.
 
+Preview the exact three agent requests without spending API budget:
+
+```bash
+uv run python scripts/run_evidence_ablation.py
+```
+
+An explicit paid run uses `--execute`. After it completes, build the
+condition-aware capability report with:
+
+```bash
+uv run python scripts/score_evidence_ablation.py \
+  --run-manifest /path/to/run/run-manifest.json
+```
+
+The report deliberately has no misleading cross-condition overall score. It
+checks common execution consistency and only the capabilities supported by each
+condition.
+
 ## Product interface
 
 The `web/` application demonstrates the smallest truthful coach workflow over the committed synthetic case 002:

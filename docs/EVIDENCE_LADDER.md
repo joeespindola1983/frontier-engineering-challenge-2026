@@ -59,4 +59,13 @@ baseline and from any future coach usability pilot.
 The deterministic version 1 inputs are frozen at
 `evaluation/ablation-inputs/v1/manifest.json`. They contain no evaluator answers
 and can be rebuilt with `scripts/build_evidence_ablation.py`. No model result has
-been recorded for these inputs yet.
+been recorded for these inputs yet. `scripts/run_evidence_ablation.py` generates
+all three requests by default and requires explicit `--execute` plus an API key
+for a paid run. `scripts/score_evidence_ablation.py` verifies each output against
+its available capabilities and checks that the core execution result remains
+stable as evidence is added.
+
+The report intentionally omits an overall score across conditions. Missing
+mobile or environment is not a failure when that source was deliberately removed;
+false corroboration, unsupported environmental claims, or selection of broken
+mobile SPM are failures.

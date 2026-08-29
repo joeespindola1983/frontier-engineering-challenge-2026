@@ -1,0 +1,464 @@
+{
+  "input": [
+    {
+      "content": "{\"case_id\":\"ablation-case-002-wind-shift-plan-deviation-full\",\"cross_source_findings\":[{\"evidence_refs\":[\"input/speedcoach.csv\",\"input/mobile.csv\"],\"finding_id\":\"mobile-clock-offset\",\"summary\":\"The mobile clock start differs from the SpeedCoach clock start.\",\"type\":\"CLOCK_OFFSET\",\"values\":{\"mobile_from_speedcoach_s\":37.0}},{\"evidence_refs\":[\"input/speedcoach.csv\",\"input/mobile.csv\"],\"finding_id\":\"distance-bias\",\"summary\":\"The two cumulative distance sources end at different values.\",\"type\":\"DISTANCE_CONFLICT\",\"values\":{\"difference_percent\":1.2,\"mobile_to_speedcoach_ratio\":1.012}},{\"evidence_refs\":[\"input/speedcoach.csv\",\"input/mobile.csv\"],\"finding_id\":\"route-overlap\",\"summary\":\"The two GPS routes are compared spatially in both directions.\",\"type\":\"ROUTE_OVERLAP\",\"values\":{\"mobile_to_speedcoach\":{\"max_m\":3.488,\"median_m\":2.066,\"p95_m\":3.05,\"sampled_points\":308},\"speedcoach_to_mobile\":{\"max_m\":20.675,\"median_m\":3.469,\"p95_m\":16.846,\"sampled_points\":614}}}],\"domain_knowledge\":[{\"limitations\":[],\"meaning\":\"Target stroke rate in strokes per minute (SPM).\",\"status\":\"HUMAN_CONFIRMED\",\"term\":\"voga\"},{\"limitations\":[\"Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied.\"],\"meaning\":\"Standardized rowing training-zone codes.\",\"status\":\"HUMAN_CONFIRMED\",\"term\":\"B0-B7 and E1-E7\"}],\"environment\":{\"direction_convention\":\"METEOROLOGICAL_FROM_DEGREES_TRUE_NORTH\",\"method\":\"Effective headwind projects meteorological wind-from direction onto the known boat heading; time alignment supports association but does not establish causation.\",\"route_heading_deg\":0.0,\"source\":{\"kind\":\"SYNTHETIC\",\"quality\":\"HIGH\",\"source_ref\":\"scripts/generate_synthetic_cases.py\"},\"time_series_windows\":[{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":0.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":30.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":60.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":90.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":120.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":150.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":180.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":210.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":240.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":270.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":300.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":330.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":360.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":390.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":420.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":450.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":480.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":510.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":540.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":570.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":600.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":630.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":660.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":690.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":720.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":750.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":780.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":810.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":840.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":870.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":900.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":930.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":960.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":990.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1020.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1050.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1080.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1110.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1140.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1170.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1200.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1230.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1260.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1290.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1320.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1350.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1380.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1410.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1440.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1470.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1500.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1530.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1560.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1590.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1620.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1650.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.0,\"elapsed_s\":1680.0,\"gust_speed_m_s\":1.3,\"wind_direction_from_deg\":180.0,\"wind_speed_m_s\":1.0},{\"effective_headwind_m_s\":-1.49,\"elapsed_s\":1710.0,\"gust_speed_m_s\":2.147,\"wind_direction_from_deg\":153.262,\"wind_speed_m_s\":1.668},{\"effective_headwind_m_s\":-1.326,\"elapsed_s\":1740.0,\"gust_speed_m_s\":3.097,\"wind_direction_from_deg\":123.262,\"wind_speed_m_s\":2.418},{\"effective_headwind_m_s\":-0.18,\"elapsed_s\":1770.0,\"gust_speed_m_s\":4.047,\"wind_direction_from_deg\":93.262,\"wind_speed_m_s\":3.168},{\"effective_headwind_m_s\":1.763,\"elapsed_s\":1800.0,\"gust_speed_m_s\":4.997,\"wind_direction_from_deg\":63.262,\"wind_speed_m_s\":3.918},{\"effective_headwind_m_s\":3.903,\"elapsed_s\":1830.0,\"gust_speed_m_s\":5.947,\"wind_direction_from_deg\":33.262,\"wind_speed_m_s\":4.668},{\"effective_headwind_m_s\":5.409,\"elapsed_s\":1860.0,\"gust_speed_m_s\":6.897,\"wind_direction_from_deg\":3.262,\"wind_speed_m_s\":5.418},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":1890.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":1920.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":1950.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":1980.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2010.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2040.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2070.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2100.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2130.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2160.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2190.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2220.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2250.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2280.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2310.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2340.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2370.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2400.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2430.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2460.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2490.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2520.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2550.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2580.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2610.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2640.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2670.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2700.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2730.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2760.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2790.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2820.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2850.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2880.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2910.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2940.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":2970.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":3000.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":3030.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5},{\"effective_headwind_m_s\":5.5,\"elapsed_s\":3060.0,\"gust_speed_m_s\":7.0,\"wind_direction_from_deg\":0.0,\"wind_speed_m_s\":5.5}],\"timeline_id\":\"synthetic-environment-002\"},\"evidence_gaps\":[\"Telemetry cannot confirm whether the prescribed resistance band was used.\",\"No coach technique or crew-synchronization observation is supplied.\",\"No perceived effort report is supplied.\"],\"generated_by\":\"scripts/build_evidence_ablation.py@1.0\",\"input_hashes\":{\"context.json\":\"e6d9320261ced80b14bffbf6812c9d48c74ef4930d686df56a406ede30da3b48\",\"environment.json\":\"b494d72843465766f2959822db2d3112cfb560ee70b038bfdc4168780fadd9ad\",\"mobile.csv\":\"783897638823daf5a8e916e4731b2e131307495a6a9b02a142e48a215ea27255\",\"plan.json\":\"ae7276eafdd99a8f36592f599a9c53801e13cba91adc28cc71e6145ea1d4572a\",\"speedcoach.csv\":\"c48af984c4bac0a8dbdcc5d66b6932d998514ce90cc297ebf63ed195b48813e3\"},\"investigation_request\":\"Compare the planned and performed session, explain supported speed changes, identify real deviations, and state what remains unknown.\",\"known_context\":{\"human_confirmations\":{\"coach_observed_technique\":null,\"perceived_effort\":null,\"resistance_band_used\":null},\"input_notice\":\"All people, dates, route coordinates, telemetry, and weather in this case are synthetic.\",\"session_candidate\":{\"athlete_ids\":[\"synthetic-athlete-a\",\"synthetic-athlete-b\"],\"boat_class\":\"DOUBLE_SCULL\",\"crew_category\":\"MEN\",\"experience\":\"EXPERIENCED\",\"route_heading_deg\":0.0,\"world_rowing_code\":\"2x\"}},\"plan\":{\"athlete_scope\":{\"ids\":[\"synthetic-athlete-a\",\"synthetic-athlete-b\"],\"kind\":\"CREW\"},\"blocks\":[{\"block_id\":\"work-band\",\"distance_m\":1000,\"duration_s\":null,\"equipment\":[\"RESISTANCE_BAND\"],\"instructions\":[\"Keep the work interval continuous.\"],\"kind\":\"WORK\",\"recovery\":{\"max_s\":300,\"min_s\":180,\"mode\":\"ACTIVE_LIGHT_ROWING\"},\"repetitions\":3,\"stroke_rate\":{\"max_spm\":21,\"min_spm\":19},\"zone\":\"B2/B3\",\"zone_system\":\"STANDARD_ROWING_ZONES\"},{\"block_id\":\"work-free\",\"distance_m\":1000,\"duration_s\":null,\"equipment\":[],\"instructions\":[\"Remove the resistance band before this block.\"],\"kind\":\"WORK\",\"recovery\":{\"max_s\":300,\"min_s\":180,\"mode\":\"ACTIVE_LIGHT_ROWING\"},\"repetitions\":3,\"stroke_rate\":{\"max_spm\":24,\"min_spm\":22},\"zone\":\"B2/B3\",\"zone_system\":\"STANDARD_ROWING_ZONES\"}],\"coach_language\":\"6 x 1 km; first 3 at 20 SPM with resistance band, last 3 at 23 SPM; 3-5 minutes active recovery.\",\"goal_id\":\"synthetic-goal-regatta-01\",\"modality\":\"WATER\",\"notes\":\"Synthetic evaluation plan inspired by the structure of a real rowing prescription; it is not a record of an athlete's workout.\",\"plan_id\":\"synthetic-plan-002\",\"scheduled_date\":\"2026-01-20\",\"schema_version\":\"wake.training_plan.v1\",\"source\":{\"kind\":\"SYNTHETIC\",\"provenance\":\"DERIVED_SYNTHETIC\",\"source_ref\":\"anonymized pattern derived from an approved coach plan\"},\"timezone\":\"America/Sao_Paulo\",\"unresolved_terms\":[]},\"schema_version\":\"wake.case_summary.v1\",\"sources\":[{\"evidence_refs\":[\"input/speedcoach.csv\"],\"kind\":\"SPEEDCOACH\",\"metrics\":{\"average_positive_spm\":19.03,\"duration_s\":3044.648,\"end_distance_m\":8041.345,\"input_format\":\"WAKE_NORMALIZED_TELEMETRY_CSV\",\"normalized_sha256\":\"5f76d0af4da638538afbc2849b980c50babcc5de4507683a413cb7d1e0e278b4\",\"positive_spm_rows\":613,\"rejected_rows\":0,\"route_points\":614,\"start_time\":\"2026-01-20T06:00:00.000-03:00\"},\"quality_flags\":[\"GPS_PRESENT\",\"SPM_PRESENT\"],\"source_id\":\"speedcoach-synthetic\",\"time_series_windows\":[{\"average_speed_m_s\":2.776,\"average_spm\":20.33,\"distance_end_m\":83.3,\"distance_start_m\":0.0,\"end_offset_s\":30,\"samples\":6,\"start_offset_s\":0},{\"average_speed_m_s\":3.355,\"average_spm\":19.81,\"distance_end_m\":183.9,\"distance_start_m\":100.1,\"end_offset_s\":60,\"samples\":6,\"start_offset_s\":30},{\"average_speed_m_s\":3.304,\"average_spm\":20.07,\"distance_end_m\":283.0,\"distance_start_m\":200.6,\"end_offset_s\":90,\"samples\":6,\"start_offset_s\":60},{\"average_speed_m_s\":3.304,\"average_spm\":19.97,\"distance_end_m\":382.2,\"distance_start_m\":299.5,\"end_offset_s\":120,\"samples\":6,\"start_offset_s\":90},{\"average_speed_m_s\":3.344,\"average_spm\":19.85,\"distance_end_m\":482.5,\"distance_start_m\":398.9,\"end_offset_s\":150,\"samples\":6,\"start_offset_s\":120},{\"average_speed_m_s\":3.324,\"average_spm\":20.2,\"distance_end_m\":582.2,\"distance_start_m\":499.2,\"end_offset_s\":180,\"samples\":6,\"start_offset_s\":150},{\"average_speed_m_s\":3.289,\"average_spm\":19.72,\"distance_end_m\":680.9,\"distance_start_m\":598.6,\"end_offset_s\":210,\"samples\":6,\"start_offset_s\":180},{\"average_speed_m_s\":3.324,\"average_spm\":20.25,\"distance_end_m\":780.6,\"distance_start_m\":697.4,\"end_offset_s\":240,\"samples\":6,\"start_offset_s\":210},{\"average_speed_m_s\":3.349,\"average_spm\":19.79,\"distance_end_m\":881.1,\"distance_start_m\":797.4,\"end_offset_s\":270,\"samples\":6,\"start_offset_s\":240},{\"average_speed_m_s\":3.299,\"average_spm\":20.14,\"distance_end_m\":980.0,\"distance_start_m\":897.6,\"end_offset_s\":300,\"samples\":6,\"start_offset_s\":270},{\"average_speed_m_s\":2.184,\"average_spm\":17.07,\"distance_end_m\":1043.7,\"distance_start_m\":996.4,\"end_offset_s\":330,\"samples\":7,\"start_offset_s\":300},{\"average_speed_m_s\":1.741,\"average_spm\":16.23,\"distance_end_m\":1095.9,\"distance_start_m\":1052.4,\"end_offset_s\":360,\"samples\":6,\"start_offset_s\":330},{\"average_speed_m_s\":1.69,\"average_spm\":15.91,\"distance_end_m\":1146.6,\"distance_start_m\":1104.5,\"end_offset_s\":390,\"samples\":6,\"start_offset_s\":360},{\"average_speed_m_s\":1.662,\"average_spm\":15.94,\"distance_end_m\":1196.5,\"distance_start_m\":1155.0,\"end_offset_s\":420,\"samples\":6,\"start_offset_s\":390},{\"average_speed_m_s\":1.695,\"average_spm\":16.2,\"distance_end_m\":1247.4,\"distance_start_m\":1204.9,\"end_offset_s\":450,\"samples\":6,\"start_offset_s\":420},{\"average_speed_m_s\":1.736,\"average_spm\":15.81,\"distance_end_m\":1299.4,\"distance_start_m\":1255.9,\"end_offset_s\":480,\"samples\":6,\"start_offset_s\":450},{\"average_speed_m_s\":1.742,\"average_spm\":16.09,\"distance_end_m\":1351.7,\"distance_start_m\":1308.3,\"end_offset_s\":510,\"samples\":6,\"start_offset_s\":480},{\"average_speed_m_s\":1.668,\"average_spm\":16.1,\"distance_end_m\":1401.7,\"distance_start_m\":1360.3,\"end_offset_s\":540,\"samples\":6,\"start_offset_s\":510},{\"average_speed_m_s\":3.063,\"average_spm\":19.33,\"distance_end_m\":1493.6,\"distance_start_m\":1410.1,\"end_offset_s\":570,\"samples\":6,\"start_offset_s\":540},{\"average_speed_m_s\":3.34,\"average_spm\":20.09,\"distance_end_m\":1593.9,\"distance_start_m\":1510.4,\"end_offset_s\":600,\"samples\":6,\"start_offset_s\":570},{\"average_speed_m_s\":3.289,\"average_spm\":19.86,\"distance_end_m\":1692.5,\"distance_start_m\":1610.5,\"end_offset_s\":630,\"samples\":6,\"start_offset_s\":600},{\"average_speed_m_s\":3.317,\"average_spm\":20.27,\"distance_end_m\":1792.0,\"distance_start_m\":1709.1,\"end_offset_s\":660,\"samples\":6,\"start_offset_s\":630},{\"average_speed_m_s\":3.352,\"average_spm\":19.79,\"distance_end_m\":1892.6,\"distance_start_m\":1808.7,\"end_offset_s\":690,\"samples\":6,\"start_offset_s\":660},{\"average_speed_m_s\":3.314,\"average_spm\":20.24,\"distance_end_m\":1992.0,\"distance_start_m\":1909.4,\"end_offset_s\":720,\"samples\":6,\"start_offset_s\":690},{\"average_speed_m_s\":3.282,\"average_spm\":19.82,\"distance_end_m\":2090.5,\"distance_start_m\":2008.6,\"end_offset_s\":750,\"samples\":6,\"start_offset_s\":720},{\"average_speed_m_s\":3.34,\"average_spm\":20.07,\"distance_end_m\":2190.7,\"distance_start_m\":2107.0,\"end_offset_s\":780,\"samples\":6,\"start_offset_s\":750},{\"average_speed_m_s\":3.34,\"average_spm\":20.04,\"distance_end_m\":2290.9,\"distance_start_m\":2207.6,\"end_offset_s\":810,\"samples\":6,\"start_offset_s\":780},{\"average_speed_m_s\":3.306,\"average_spm\":19.87,\"distance_end_m\":2390.1,\"distance_start_m\":2307.6,\"end_offset_s\":840,\"samples\":6,\"start_offset_s\":810},{\"average_speed_m_s\":2.135,\"average_spm\":17.21,\"distance_end_m\":2451.7,\"distance_start_m\":2406.7,\"end_offset_s\":870,\"samples\":7,\"start_offset_s\":840},{\"average_speed_m_s\":1.73,\"average_spm\":15.83,\"distance_end_m\":2503.6,\"distance_start_m\":2460.3,\"end_offset_s\":900,\"samples\":6,\"start_offset_s\":870},{\"average_speed_m_s\":1.758,\"average_spm\":16.21,\"distance_end_m\":2556.3,\"distance_start_m\":2512.5,\"end_offset_s\":930,\"samples\":6,\"start_offset_s\":900},{\"average_speed_m_s\":1.696,\"average_spm\":15.91,\"distance_end_m\":2607.2,\"distance_start_m\":2565.1,\"end_offset_s\":960,\"samples\":6,\"start_offset_s\":930},{\"average_speed_m_s\":1.664,\"average_spm\":15.94,\"distance_end_m\":2657.1,\"distance_start_m\":2615.5,\"end_offset_s\":990,\"samples\":6,\"start_offset_s\":960},{\"average_speed_m_s\":1.679,\"average_spm\":16.21,\"distance_end_m\":2707.5,\"distance_start_m\":2665.3,\"end_offset_s\":1020,\"samples\":6,\"start_offset_s\":990},{\"average_speed_m_s\":1.736,\"average_spm\":15.84,\"distance_end_m\":2759.6,\"distance_start_m\":2716.1,\"end_offset_s\":1050,\"samples\":6,\"start_offset_s\":1020},{\"average_speed_m_s\":1.731,\"average_spm\":16.06,\"distance_end_m\":2811.5,\"distance_start_m\":2768.3,\"end_offset_s\":1080,\"samples\":6,\"start_offset_s\":1050},{\"average_speed_m_s\":3.089,\"average_spm\":19.15,\"distance_end_m\":2904.2,\"distance_start_m\":2820.2,\"end_offset_s\":1110,\"samples\":6,\"start_offset_s\":1080},{\"average_speed_m_s\":3.326,\"average_spm\":20.22,\"distance_end_m\":3003.9,\"distance_start_m\":2920.8,\"end_offset_s\":1140,\"samples\":6,\"start_offset_s\":1110},{\"average_speed_m_s\":3.289,\"average_spm\":19.7,\"distance_end_m\":3102.6,\"distance_start_m\":3020.5,\"end_offset_s\":1170,\"samples\":6,\"start_offset_s\":1140},{\"average_speed_m_s\":3.327,\"average_spm\":20.12,\"distance_end_m\":3202.4,\"distance_start_m\":3119.0,\"end_offset_s\":1200,\"samples\":6,\"start_offset_s\":1170},{\"average_speed_m_s\":3.357,\"average_spm\":19.9,\"distance_end_m\":3303.1,\"distance_start_m\":3219.2,\"end_offset_s\":1230,\"samples\":6,\"start_offset_s\":1200},{\"average_speed_m_s\":3.301,\"average_spm\":20.01,\"distance_end_m\":3402.1,\"distance_start_m\":3319.7,\"end_offset_s\":1260,\"samples\":6,\"start_offset_s\":1230},{\"average_speed_m_s\":3.302,\"average_spm\":20.12,\"distance_end_m\":3501.2,\"distance_start_m\":3418.6,\"end_offset_s\":1290,\"samples\":6,\"start_offset_s\":1260},{\"average_speed_m_s\":3.341,\"average_spm\":19.84,\"distance_end_m\":3601.4,\"distance_start_m\":3517.8,\"end_offset_s\":1320,\"samples\":6,\"start_offset_s\":1290},{\"average_speed_m_s\":3.328,\"average_spm\":20.25,\"distance_end_m\":3701.3,\"distance_start_m\":3618.2,\"end_offset_s\":1350,\"samples\":6,\"start_offset_s\":1320},{\"average_speed_m_s\":3.285,\"average_spm\":19.73,\"distance_end_m\":3799.8,\"distance_start_m\":3717.8,\"end_offset_s\":1380,\"samples\":6,\"start_offset_s\":1350},{\"average_speed_m_s\":2.133,\"average_spm\":17.25,\"distance_end_m\":3861.8,\"distance_start_m\":3816.5,\"end_offset_s\":1410,\"samples\":7,\"start_offset_s\":1380},{\"average_speed_m_s\":1.662,\"average_spm\":16.01,\"distance_end_m\":3911.7,\"distance_start_m\":3870.2,\"end_offset_s\":1440,\"samples\":6,\"start_offset_s\":1410},{\"average_speed_m_s\":1.713,\"average_spm\":15.85,\"distance_end_m\":3963.1,\"distance_start_m\":3920.3,\"end_offset_s\":1470,\"samples\":6,\"start_offset_s\":1440},{\"average_speed_m_s\":1.742,\"average_spm\":16.18,\"distance_end_m\":4015.3,\"distance_start_m\":3971.8,\"end_offset_s\":1500,\"samples\":6,\"start_offset_s\":1470},{\"average_speed_m_s\":1.728,\"average_spm\":15.89,\"distance_end_m\":4067.2,\"distance_start_m\":4024.2,\"end_offset_s\":1530,\"samples\":6,\"start_offset_s\":1500},{\"average_speed_m_s\":1.665,\"average_spm\":15.93,\"distance_end_m\":4117.1,\"distance_start_m\":4075.5,\"end_offset_s\":1560,\"samples\":6,\"start_offset_s\":1530},{\"average_speed_m_s\":1.66,\"average_spm\":16.24,\"distance_end_m\":4166.9,\"distance_start_m\":4125.5,\"end_offset_s\":1590,\"samples\":6,\"start_offset_s\":1560},{\"average_speed_m_s\":1.727,\"average_spm\":15.83,\"distance_end_m\":4218.8,\"distance_start_m\":4175.5,\"end_offset_s\":1620,\"samples\":6,\"start_offset_s\":1590},{\"average_speed_m_s\":3.335,\"average_spm\":21.61,\"distance_end_m\":4318.8,\"distance_start_m\":4227.5,\"end_offset_s\":1650,\"samples\":6,\"start_offset_s\":1620},{\"average_speed_m_s\":3.618,\"average_spm\":23.13,\"distance_end_m\":4427.3,\"distance_start_m\":4337.0,\"end_offset_s\":1680,\"samples\":6,\"start_offset_s\":1650},{\"average_speed_m_s\":3.601,\"average_spm\":22.97,\"distance_end_m\":4535.4,\"distance_start_m\":4445.4,\"end_offset_s\":1710,\"samples\":6,\"start_offset_s\":1680},{\"average_speed_m_s\":3.67,\"average_spm\":22.95,\"distance_end_m\":4645.5,\"distance_start_m\":4553.7,\"end_offset_s\":1740,\"samples\":6,\"start_offset_s\":1710},{\"average_speed_m_s\":3.627,\"average_spm\":23.11,\"distance_end_m\":4754.3,\"distance_start_m\":4663.8,\"end_offset_s\":1770,\"samples\":6,\"start_offset_s\":1740},{\"average_speed_m_s\":3.49,\"average_spm\":22.8,\"distance_end_m\":4859.0,\"distance_start_m\":4772.0,\"end_offset_s\":1800,\"samples\":6,\"start_offset_s\":1770},{\"average_speed_m_s\":3.356,\"average_spm\":23.3,\"distance_end_m\":4959.6,\"distance_start_m\":4876.0,\"end_offset_s\":1830,\"samples\":6,\"start_offset_s\":1800},{\"average_speed_m_s\":3.264,\"average_spm\":22.72,\"distance_end_m\":5057.5,\"distance_start_m\":4976.1,\"end_offset_s\":1860,\"samples\":6,\"start_offset_s\":1830},{\"average_speed_m_s\":3.151,\"average_spm\":23.15,\"distance_end_m\":5152.1,\"distance_start_m\":5073.4,\"end_offset_s\":1890,\"samples\":6,\"start_offset_s\":1860},{\"average_speed_m_s\":2.907,\"average_spm\":21.79,\"distance_end_m\":5236.3,\"distance_start_m\":5167.8,\"end_offset_s\":1920,\"samples\":6,\"start_offset_s\":1890},{\"average_speed_m_s\":1.747,\"average_spm\":15.82,\"distance_end_m\":5288.7,\"distance_start_m\":5245.1,\"end_offset_s\":1950,\"samples\":6,\"start_offset_s\":1920},{\"average_speed_m_s\":1.677,\"average_spm\":16.05,\"distance_end_m\":5339.0,\"distance_start_m\":5297.3,\"end_offset_s\":1980,\"samples\":6,\"start_offset_s\":1950},{\"average_speed_m_s\":1.657,\"average_spm\":16.1,\"distance_end_m\":5388.7,\"distance_start_m\":5347.4,\"end_offset_s\":2010,\"samples\":6,\"start_offset_s\":1980},{\"average_speed_m_s\":1.699,\"average_spm\":15.82,\"distance_end_m\":5439.7,\"distance_start_m\":5397.1,\"end_offset_s\":2040,\"samples\":6,\"start_offset_s\":2010},{\"average_speed_m_s\":1.734,\"average_spm\":16.19,\"distance_end_m\":5491.7,\"distance_start_m\":5448.2,\"end_offset_s\":2070,\"samples\":6,\"start_offset_s\":2040},{\"average_speed_m_s\":1.734,\"average_spm\":15.97,\"distance_end_m\":5543.7,\"distance_start_m\":5500.3,\"end_offset_s\":2100,\"samples\":6,\"start_offset_s\":2070},{\"average_speed_m_s\":1.665,\"average_spm\":15.87,\"distance_end_m\":5593.6,\"distance_start_m\":5552.0,\"end_offset_s\":2130,\"samples\":6,\"start_offset_s\":2100},{\"average_speed_m_s\":1.875,\"average_spm\":16.91,\"distance_end_m\":5649.9,\"distance_start_m\":5601.8,\"end_offset_s\":2160,\"samples\":6,\"start_offset_s\":2130},{\"average_speed_m_s\":2.999,\"average_spm\":20.06,\"distance_end_m\":5739.8,\"distance_start_m\":5664.9,\"end_offset_s\":2190,\"samples\":6,\"start_offset_s\":2160},{\"average_speed_m_s\":2.95,\"average_spm\":19.89,\"distance_end_m\":5828.3,\"distance_start_m\":5754.7,\"end_offset_s\":2220,\"samples\":6,\"start_offset_s\":2190},{\"average_speed_m_s\":2.951,\"average_spm\":20.2,\"distance_end_m\":5916.9,\"distance_start_m\":5843.1,\"end_offset_s\":2250,\"samples\":6,\"start_offset_s\":2220},{\"average_speed_m_s\":2.998,\"average_spm\":19.76,\"distance_end_m\":6006.8,\"distance_start_m\":5931.7,\"end_offset_s\":2280,\"samples\":6,\"start_offset_s\":2250},{\"average_speed_m_s\":2.977,\"average_spm\":20.23,\"distance_end_m\":6096.1,\"distance_start_m\":6021.9,\"end_offset_s\":2310,\"samples\":6,\"start_offset_s\":2280},{\"average_speed_m_s\":2.948,\"average_spm\":19.78,\"distance_end_m\":6184.6,\"distance_start_m\":6110.8,\"end_offset_s\":2340,\"samples\":6,\"start_offset_s\":2310},{\"average_speed_m_s\":2.955,\"average_spm\":20.12,\"distance_end_m\":6273.2,\"distance_start_m\":6199.2,\"end_offset_s\":2370,\"samples\":6,\"start_offset_s\":2340},{\"average_speed_m_s\":2.992,\"average_spm\":19.96,\"distance_end_m\":6363.0,\"distance_start_m\":6288.2,\"end_offset_s\":2400,\"samples\":6,\"start_offset_s\":2370},{\"average_speed_m_s\":2.958,\"average_spm\":19.9,\"distance_end_m\":6451.7,\"distance_start_m\":6377.9,\"end_offset_s\":2430,\"samples\":6,\"start_offset_s\":2400},{\"average_speed_m_s\":2.941,\"average_spm\":20.16,\"distance_end_m\":6539.9,\"distance_start_m\":6466.4,\"end_offset_s\":2460,\"samples\":6,\"start_offset_s\":2430},{\"average_speed_m_s\":2.991,\"average_spm\":19.78,\"distance_end_m\":6634.9,\"distance_start_m\":6554.7,\"end_offset_s\":2490,\"samples\":7,\"start_offset_s\":2460},{\"average_speed_m_s\":1.739,\"average_spm\":15.79,\"distance_end_m\":6687.1,\"distance_start_m\":6643.6,\"end_offset_s\":2520,\"samples\":6,\"start_offset_s\":2490},{\"average_speed_m_s\":1.7,\"average_spm\":16.07,\"distance_end_m\":6738.1,\"distance_start_m\":6695.7,\"end_offset_s\":2550,\"samples\":6,\"start_offset_s\":2520},{\"average_speed_m_s\":1.649,\"average_spm\":16.09,\"distance_end_m\":6787.5,\"distance_start_m\":6746.2,\"end_offset_s\":2580,\"samples\":6,\"start_offset_s\":2550},{\"average_speed_m_s\":1.67,\"average_spm\":15.86,\"distance_end_m\":6837.6,\"distance_start_m\":6795.8,\"end_offset_s\":2610,\"samples\":6,\"start_offset_s\":2580},{\"average_speed_m_s\":1.718,\"average_spm\":16.17,\"distance_end_m\":6889.2,\"distance_start_m\":6846.2,\"end_offset_s\":2640,\"samples\":6,\"start_offset_s\":2610},{\"average_speed_m_s\":1.743,\"average_spm\":15.98,\"distance_end_m\":6941.5,\"distance_start_m\":6897.9,\"end_offset_s\":2670,\"samples\":6,\"start_offset_s\":2640},{\"average_speed_m_s\":1.673,\"average_spm\":15.86,\"distance_end_m\":6991.7,\"distance_start_m\":6950.0,\"end_offset_s\":2700,\"samples\":6,\"start_offset_s\":2670},{\"average_speed_m_s\":1.656,\"average_spm\":16.22,\"distance_end_m\":7041.3,\"distance_start_m\":7000.0,\"end_offset_s\":2730,\"samples\":6,\"start_offset_s\":2700},{\"average_speed_m_s\":3.136,\"average_spm\":22.76,\"distance_end_m\":7135.4,\"distance_start_m\":7057.0,\"end_offset_s\":2760,\"samples\":6,\"start_offset_s\":2730},{\"average_speed_m_s\":3.151,\"average_spm\":23.18,\"distance_end_m\":7230.0,\"distance_start_m\":7151.0,\"end_offset_s\":2790,\"samples\":6,\"start_offset_s\":2760},{\"average_speed_m_s\":3.21,\"average_spm\":22.83,\"distance_end_m\":7326.3,\"distance_start_m\":7245.9,\"end_offset_s\":2820,\"samples\":6,\"start_offset_s\":2790},{\"average_speed_m_s\":3.17,\"average_spm\":23.08,\"distance_end_m\":7421.4,\"distance_start_m\":7342.3,\"end_offset_s\":2850,\"samples\":6,\"start_offset_s\":2820},{\"average_speed_m_s\":3.149,\"average_spm\":23.02,\"distance_end_m\":7515.9,\"distance_start_m\":7437.1,\"end_offset_s\":2880,\"samples\":6,\"start_offset_s\":2850},{\"average_speed_m_s\":3.17,\"average_spm\":22.83,\"distance_end_m\":7610.9,\"distance_start_m\":7531.7,\"end_offset_s\":2910,\"samples\":6,\"start_offset_s\":2880},{\"average_speed_m_s\":3.196,\"average_spm\":23.17,\"distance_end_m\":7706.8,\"distance_start_m\":7626.9,\"end_offset_s\":2940,\"samples\":6,\"start_offset_s\":2910},{\"average_speed_m_s\":3.14,\"average_spm\":22.75,\"distance_end_m\":7801.0,\"distance_start_m\":7722.6,\"end_offset_s\":2970,\"samples\":6,\"start_offset_s\":2940},{\"average_speed_m_s\":3.156,\"average_spm\":23.28,\"distance_end_m\":7895.7,\"distance_start_m\":7816.7,\"end_offset_s\":3000,\"samples\":6,\"start_offset_s\":2970},{\"average_speed_m_s\":3.196,\"average_spm\":22.8,\"distance_end_m\":7991.6,\"distance_start_m\":7911.7,\"end_offset_s\":3030,\"samples\":6,\"start_offset_s\":3000},{\"average_speed_m_s\":3.18,\"average_spm\":22.95,\"distance_end_m\":8041.3,\"distance_start_m\":8007.5,\"end_offset_s\":3060,\"samples\":4,\"start_offset_s\":3030}]},{\"evidence_refs\":[\"input/mobile.csv\"],\"kind\":\"MOBILE\",\"metrics\":{\"average_positive_spm\":null,\"duration_s\":3044.648,\"end_distance_m\":8137.841,\"input_format\":\"WAKE_NORMALIZED_TELEMETRY_CSV\",\"normalized_sha256\":\"44484772da0782f231b06a0a0066e5c846b68f843385f8d36b8b006ff99726a6\",\"positive_spm_rows\":0,\"rejected_rows\":0,\"route_points\":308,\"start_time\":\"2026-01-20T06:00:37.000-03:00\"},\"quality_flags\":[\"GPS_PRESENT\",\"SPM_ALL_ZERO\",\"DISTANCE_BIAS_PRESENT\"],\"source_id\":\"mobile-synthetic\",\"time_series_windows\":[]}],\"summary_id\":\"evidence-ablation-v1-full\"}",
+      "role": "user"
+    }
+  ],
+  "instructions": "# WAKE Investigation Agent Prompt v1\n\nYou are the single investigation agent for one rowing session. Your job is to\nturn the supplied compact evidence summary into a verified, coach-reviewable\nanalysis. You may inspect only the summary and the deterministic tools exposed\nto you. You have no access to evaluator ground truth, hidden files, previous run\noutputs, or private athlete data.\n\nYou must call the investigation tools before returning a final answer. Use\n`assess_source_trust` and `assess_session_alignment` for every case. Call\n`reconstruct_plan_execution` when a plan may exist or its absence must be\nconfirmed. Call `analyze_environment` when environmental evidence may exist or\nwhen the lack of it changes what can be concluded. Do not repeat a tool call\nunless a verifier retry makes new evidence available.\n\nTreat tool results as bounded evidence, not permission to invent a conclusion.\nSelect trust independently for SPM, distance, speed, route, environment, and\nhuman context. Preserve clock conflicts even when GPS route overlap supports a\nsession match. Never average incompatible sources merely to remove disagreement.\n\nSeparate observed facts, deterministic derivations, human confirmations,\ninferences, conflicts, and unknowns. Environmental timing may support an\nassociation with performance changes, but it cannot by itself establish\ncausation or athlete improvement/regression. GPS, SPM, speed, and phone motion\ncannot establish visible technique, crew synchronization, medical state, or the\nuse of resistance equipment.\n\nEvery material claim, association, selected source, segment, deviation, and\nenvironmental assessment must cite evidence references present in the supplied\ncase. Ask only follow-up questions whose answers could materially change the\nconclusion. Prefer an explicit abstention to unsupported confidence.\n\nReturn exactly one JSON object conforming to\n`schemas/analysis-output.schema.json`. Do not include Markdown or prose outside\nthat object. Do not expose private chain-of-thought; provide only concise,\nevidence-linked conclusions and limitations in the structured output.\n",
+  "max_output_tokens": 12000,
+  "model": "gpt-5.6-terra",
+  "parallel_tool_calls": true,
+  "reasoning": {
+    "effort": "medium"
+  },
+  "service_tier": "default",
+  "store": false,
+  "text": {
+    "format": {
+      "name": "wake_analysis_output_v1_1",
+      "schema": {
+        "$defs": {
+          "association": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "decision": {
+                "enum": [
+                  "MATCH",
+                  "NO_MATCH",
+                  "INSUFFICIENT"
+                ]
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "source_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 2,
+                "type": "array"
+              }
+            },
+            "required": [
+              "source_ids",
+              "decision",
+              "confidence",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "claim": {
+            "additionalProperties": false,
+            "properties": {
+              "claim_id": {
+                "type": "string"
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "OBSERVED",
+                  "DERIVED",
+                  "HUMAN_CONFIRMED",
+                  "INFERRED",
+                  "CONFLICTED",
+                  "UNKNOWN",
+                  "UNSUPPORTED"
+                ]
+              }
+            },
+            "required": [
+              "claim_id",
+              "statement",
+              "status",
+              "confidence",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          },
+          "deviation": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "segment_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "segment_ref",
+              "type",
+              "description",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "environment_assessment": {
+            "additionalProperties": false,
+            "properties": {
+              "association": {
+                "enum": [
+                  "SUPPORTED",
+                  "NOT_SUPPORTED",
+                  "CONFLICTED",
+                  "UNKNOWN"
+                ]
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "summary": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "summary",
+              "association",
+              "confidence",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "plan_summary": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "prescribed_blocks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "status": {
+                "enum": [
+                  "NOT_SUPPLIED",
+                  "PARSED",
+                  "PARTIAL",
+                  "CONFLICTED"
+                ]
+              },
+              "summary": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "summary",
+              "prescribed_blocks",
+              "evidence_refs"
+            ],
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "segment": {
+            "additionalProperties": false,
+            "properties": {
+              "average_spm": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "distance_m": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "end_offset_s": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "kind": {
+                "enum": [
+                  "WORK",
+                  "RECOVERY",
+                  "WARMUP",
+                  "COOLDOWN",
+                  "UNKNOWN"
+                ]
+              },
+              "segment_id": {
+                "type": "string"
+              },
+              "start_offset_s": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "segment_id",
+              "kind",
+              "start_offset_s",
+              "end_offset_s",
+              "distance_m",
+              "average_spm",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "source_policy": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "metric": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "selected_source_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "metric",
+              "selected_source_id",
+              "confidence",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          }
+        },
+        "$id": "https://wake-rowing.dev/schemas/analysis-output.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "abstentions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "case_id": {
+            "type": "string"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/$defs/claim"
+            },
+            "type": "array"
+          },
+          "coach_briefing": {
+            "type": "string"
+          },
+          "deviations": {
+            "items": {
+              "$ref": "#/$defs/deviation"
+            },
+            "type": "array"
+          },
+          "environment_assessment": {
+            "$ref": "#/$defs/environment_assessment"
+          },
+          "follow_up_questions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "plan_summary": {
+            "$ref": "#/$defs/plan_summary"
+          },
+          "schema_version": {
+            "const": "wake.analysis_output.v1.1",
+            "type": "string"
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/$defs/segment"
+            },
+            "type": "array"
+          },
+          "session_associations": {
+            "items": {
+              "$ref": "#/$defs/association"
+            },
+            "type": "array"
+          },
+          "source_policy": {
+            "items": {
+              "$ref": "#/$defs/source_policy"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "case_id",
+          "session_associations",
+          "plan_summary",
+          "segments",
+          "source_policy",
+          "claims",
+          "deviations",
+          "environment_assessment",
+          "abstentions",
+          "follow_up_questions",
+          "coach_briefing"
+        ],
+        "title": "WAKE Session Analysis Output",
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    }
+  },
+  "tool_choice": "auto",
+  "tools": [
+    {
+      "description": "Select or reject evidence independently for stroke rate, distance, and route. Returns selected source IDs, rejected sources, reasons, confidence, and evidence_refs. It never averages conflicting sources.",
+      "name": "assess_source_trust",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "Assess whether supplied recordings describe the same outing using clock offset and bidirectional route-overlap findings. Returns a decision, confidence, values, limitations, and evidence_refs.",
+      "name": "assess_session_alignment",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "When a plan exists, reconstruct work and recovery intervals from the approved input telemetry, compare work SPM with prescribed ranges, and state whether equipment use is confirmed. Returns INSUFFICIENT when a plan or compatible telemetry is unavailable.",
+      "name": "reconstruct_plan_execution",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "Summarize time-aligned effective headwind evidence and whether conditions changed. Reports association only and explicitly does not establish causation or athlete improvement.",
+      "name": "analyze_environment",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    }
+  ]
+}

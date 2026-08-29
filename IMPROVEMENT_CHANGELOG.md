@@ -204,6 +204,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A fair source-value experiment begins with immutable evidence conditions, not with comparing whichever outputs happen to be available.
 - **Next step:** Implement one versioned runner and condition-aware scorer, dry-run all three requests, then explicitly authorize a paid run before reporting mobile value.
 
+### 20. All-condition ablation runner and capability reporter
+
+- **Hypothesis:** Running every frozen condition through the same bounded workflow and scoring only applicable capabilities will measure progressive-evidence behavior without rewarding extra files automatically or penalizing deliberate source removal.
+- **Change:** Added a default-no-cost ablation runner, exact manifest/summary/evidence hash validation, per-condition temporary evidence isolation, an all-or-nothing explicit execution path, normal trajectories and cost manifests, and a condition-aware deterministic reporter. The reporter verifies common execution, provenance, human boundaries, appropriate environmental abstention/association, noncausal language, mobile session/route corroboration, and broken mobile SPM rejection. It also compares execution/deviation signatures across conditions and intentionally emits no overall score.
+- **Evaluation:** RED first failed on the absent runner, then on the absent reporter. GREEN tests cover three-request dry-run with no client, exact two/four/five-file isolation, frozen-hash rejection, aggregate runtime/token manifests, a passing capability report, rejection of a mobile citation in the core condition, rejection of causal wind language, and rejection of mobile as the SPM source. Final verification passes 89 Python tests, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** The complete experiment path exists from immutable inputs to inspectable requests, explicit execution, and a capability-level report. A committed dry-run preflight makes the exact requests auditable. No live result exists yet.
+- **Cost/runtime:** No model call and no API cost during implementation or preflight. Final deterministic verification is recorded with the completing commit.
+- **Decision:** Keep the all-condition runner and capability report. Do not publish an ablation conclusion until the paid run completes and the report passes or documents failures.
+- **Learning:** Evidence value is best expressed as reliable capabilities unlocked while core conclusions remain stable, not as a score that rises simply because the model received more data.
+- **Next step:** Commit this frozen runner/reporter milestone, explicitly execute all three requests once, score the outputs, and preserve failures without changing the v1 contract.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

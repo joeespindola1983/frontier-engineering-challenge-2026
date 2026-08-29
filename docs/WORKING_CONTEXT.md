@@ -299,6 +299,8 @@ The current 63.34 versus 38.86 comparison is an agent-versus-direct-model result
 
 The three ground-truth-free ablation inputs are now deterministically generated and frozen under `evaluation/ablation-inputs/v1/`. They preserve one synthetic base session while changing only available evidence and record content hashes and capability labels. No model execution or scored ablation result exists yet; the next TDD boundary is a condition-aware runner and scorer.
 
+The condition-aware runner and reporter are now implemented. The default runner creates three inspectable requests without an API call; explicit execution runs every condition and creates isolated temporary evidence directories containing only the files allowed for that condition. The reporter has no cross-condition overall score. It checks common plan/execution consistency and condition-specific behavior such as environmental abstention, noncausal association, mobile route corroboration, and broken-mobile-SPM rejection. A committed dry-run preflight exists, but no live ablation result exists yet.
+
 A likely evaluation will use ten or more fixed cases, including scenarios such as:
 
 - clean paired recordings;
