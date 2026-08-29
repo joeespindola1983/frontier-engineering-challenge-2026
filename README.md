@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, and versioned evidence contracts are complete. The runnable baseline and agent workflow are not implemented yet.
+**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, and the baseline v1 prompt/input bundle are complete. The baseline model runner and agent workflow are not implemented yet.
 
 ## The problem
 
@@ -56,15 +56,17 @@ The repository will preserve:
 - [Submission requirements](docs/SUBMISSION_REQUIREMENTS.md)
 - [Private dataset audit](docs/DATASET_AUDIT.md)
 - [Evaluation specification](docs/EVALUATION_SPEC.md)
+- [Testing strategy](docs/TESTING_STRATEGY.md)
+- [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)
 - [Public evaluation fixtures](data/fixtures/README.md)
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, and public verifiers. The application stack, concrete baseline model/prompt, and agent workflow still need to be implemented.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, and public verifiers. The concrete baseline model/runner, application stack, and agent workflow still need to be implemented.
 
-Verify the current evidence case with:
+Run the deterministic tests and verify all current public artifacts with:
 
 ```bash
-python3 scripts/verify_all.py
+python3 scripts/test_all.py
 ```

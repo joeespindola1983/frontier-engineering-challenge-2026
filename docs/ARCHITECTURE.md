@@ -74,7 +74,7 @@ Capture structured runtime events without private chain-of-thought: run identifi
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
-The evaluation protocol is now frozen in `docs/EVALUATION_SPEC.md`. The next architecture checkpoint is a deterministic input summarizer plus one versioned direct-call baseline prompt.
+The evaluation protocol, deterministic input summarizer, compact summary schema, and direct-call baseline prompt are now frozen at version 1. The next architecture checkpoint is selecting and implementing the baseline model runner and structured grader without changing those inputs after seeing results.
 
 ## Open decisions
 

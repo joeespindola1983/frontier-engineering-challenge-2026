@@ -81,6 +81,7 @@ def verify_case() -> dict:
     assert [block["distance_m"] for block in plan["blocks"]] == [1000, 1000]
     assert plan["blocks"][0]["stroke_rate"] == {"min_spm": 19, "max_spm": 21}
     assert plan["blocks"][1]["stroke_rate"] == {"min_spm": 22, "max_spm": 24}
+    assert all(block["zone_system"] == "STANDARD_ROWING_ZONES" for block in plan["blocks"])
     assert plan["blocks"][0]["equipment"] == ["RESISTANCE_BAND"]
     assert context["session_candidate"]["boat_class"] == "DOUBLE_SCULL"
     assert context["human_confirmations"]["resistance_band_used"] is None

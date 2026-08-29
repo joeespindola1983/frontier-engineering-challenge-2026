@@ -95,6 +95,7 @@ def generate_plan() -> dict:
                 "duration_s": None,
                 "stroke_rate": {"min_spm": 19, "max_spm": 21},
                 "zone": "B2/B3",
+                "zone_system": "STANDARD_ROWING_ZONES",
                 "recovery": recovery,
                 "equipment": ["RESISTANCE_BAND"],
                 "instructions": ["Keep the work interval continuous."]
@@ -107,12 +108,13 @@ def generate_plan() -> dict:
                 "duration_s": None,
                 "stroke_rate": {"min_spm": 22, "max_spm": 24},
                 "zone": "B2/B3",
+                "zone_system": "STANDARD_ROWING_ZONES",
                 "recovery": recovery,
                 "equipment": [],
                 "instructions": ["Remove the resistance band before this block."]
             }
         ],
-        "unresolved_terms": ["B2/B3"],
+        "unresolved_terms": [],
         "notes": "Synthetic evaluation plan inspired by the structure of a real rowing prescription; it is not a record of an athlete's workout."
     }
 

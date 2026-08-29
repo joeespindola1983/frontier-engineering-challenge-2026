@@ -178,6 +178,8 @@ The plan dates do not match the private April telemetry and must never be repres
 
 Evaluation specification v1.0 now defines a 100-point rubric and a 16-case registry. Case 002 implements a six-by-one-kilometer prescription with a wind shift during work interval four, an actual SPM deviation in work interval five, a 37-second mobile clock offset, 1.2% mobile distance bias, and mobile SPM stuck at zero. The case requires abstention about resistance-band use, visible technique, and crew synchronization.
 
+The project owner confirmed that `voga` in these plans means target stroke rate in SPM and that B0-B7/E1-E7 are standardized rowing training zones rather than coach-specific labels. Exact physiological or effort boundaries remain intentionally undefined until an authoritative mapping is recorded.
+
 ## Time alignment insight
 
 Starting and stopping multiple devices at exactly the same time is unrealistic. Differences may be seconds or minutes, and a user may forget to stop one recording for much longer.
@@ -300,7 +302,9 @@ A likely evaluation will use ten or more fixed cases, including scenarios such a
 - a plan that was not followed;
 - a request to infer technique that the evidence cannot support.
 
-The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The concrete model, prompt, deterministic summarizer, and grader implementation remain to be built and pinned before the first score.
+The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are now generated, hashed, and checked for ground-truth leakage. The concrete model, runner, and grader implementation remain to be selected and pinned before the first score.
+
+Deterministic development now follows red-green-refactor. Parsers, normalization, alignment, segmentation, metric trust, generators, schemas, and graders require behavioral or regression tests. Model output is evaluated with fixed cases, structured contracts, and the frozen rubric rather than exact prose snapshots.
 
 ## Demonstration story
 

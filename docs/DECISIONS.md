@@ -92,9 +92,27 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Version JSON Schemas for training plans, recorded sessions, environment timelines, evidence claims, and evaluation ground truth.
 - **Rationale:** The contracts separate observed evidence, derived values, human confirmation, conflicts, and unsupported claims before agent prompting begins.
 
+## 2026-08-29 - Normalize voga and standardized rowing zones
+
+- **Status:** accepted from human domain confirmation.
+- **Decision:** Normalize `voga` in the supplied plans to target stroke rate in SPM. Treat B0-B7 and E1-E7 as standardized rowing-zone codes, preserving the code and marking the zone system without inventing physiological thresholds.
+- **Rationale:** This resolves parsing ambiguity while keeping scientific boundaries separate until an authoritative definition is recorded.
+
+## 2026-08-29 - Adopt TDD for deterministic behavior
+
+- **Status:** accepted.
+- **Decision:** Use red-green-refactor for parsers, normalization, alignment, segmentation, trust policies, generators, schemas, and graders. Add a regression test before fixing a reproducible bug. Evaluate LLM behavior with fixed cases and rubrics rather than exact prose snapshots.
+- **Rationale:** WAKE's value depends on reproducible evidence handling and defensible uncertainty. TDD protects deterministic contracts, while case-based evaluation accommodates nondeterministic language without weakening behavioral requirements.
+
+## 2026-08-29 - Freeze baseline prompt and compact input contract v1
+
+- **Status:** accepted; no model result yet.
+- **Decision:** Give both the direct-call baseline and WAKE the same ground-truth-free compact case summary. Freeze `wake.case_summary.v1`, `wake.analysis_output.v1`, `prompts/baseline-v1.md`, and the generated `evaluation/baseline-inputs/v1/` bundle before selecting or running the baseline model.
+- **Rationale:** Raw telemetry is unnecessarily large for an LLM, and showing different evidence to the baseline would make the comparison invalid. Hashes and leakage checks make the boundary auditable.
+
 ## Pending decisions
 
 - Technology stack and deployment target.
-- Concrete baseline model, prompt, and input-summary implementation.
+- Concrete baseline model and runner.
 - Agent/tool framework and model.
 - Schema revisions justified by parser and grader implementation evidence.

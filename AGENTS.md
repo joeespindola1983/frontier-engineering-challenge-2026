@@ -56,6 +56,9 @@ Do not position WAKE as:
 - Separate observed facts, derived metrics, user-provided context, hypotheses, and recommendations in schemas and output.
 - Capture representative trajectories as structured events: instructions/version, inputs, tool calls and responses, evidence references, retries, checkpoints, output, runtime, and approximate cost. Do not store private chain-of-thought.
 - Define expected behavior and the primary metric before optimizing against it.
+- Develop deterministic behavior with test-driven development: add a failing test, implement the smallest change that passes, then refactor while the suite stays green.
+- Add a regression test before fixing a reproducible deterministic bug.
+- Evaluate model and agent behavior with fixed cases, schemas, and rubrics; do not use exact prose snapshots as a substitute for behavioral evaluation.
 - Run the same fixed cases against the baseline and final solution.
 - Add or update tests whenever deterministic behavior changes.
 - Link every meaningful experiment to evidence in `IMPROVEMENT_CHANGELOG.md`, including experiments that are later removed.
@@ -67,4 +70,4 @@ A separate mobile rowing application existed before the hackathon. It captured m
 
 ## Current phase
 
-The project is in evaluation-contract and deterministic-tool development. The primary metric, first schema versions, 16-case registry, and two public fixtures are accepted. No runtime stack, model, database, UI framework, runnable baseline, or agent workflow has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.
+The project is in baseline-runner and deterministic-tool development. The primary metric, first schema versions, 16-case registry, two public fixtures, TDD policy, compact baseline input bundle, and baseline prompt v1 are accepted. No runtime stack, concrete model, database, UI framework, runnable model baseline, or agent workflow has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.

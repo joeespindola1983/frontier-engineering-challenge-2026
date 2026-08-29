@@ -70,6 +70,7 @@
         "duration_s": {"type": ["number", "null"], "exclusiveMinimum": 0},
         "stroke_rate": {"$ref": "#/$defs/stroke_rate"},
         "zone": {"type": ["string", "null"]},
+        "zone_system": {"type": ["string", "null"], "enum": ["STANDARD_ROWING_ZONES", "COACH_DEFINED", "UNKNOWN", null]},
         "recovery": {"$ref": "#/$defs/recovery"},
         "equipment": {"type": "array", "items": {"type": "string"}},
         "instructions": {"type": "array", "items": {"type": "string"}}

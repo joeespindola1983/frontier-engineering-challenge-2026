@@ -11,7 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VERIFIERS = [
     ROOT / "scripts/verify_hero_fixture.py",
-    ROOT / "scripts/verify_synthetic_case.py"
+    ROOT / "scripts/verify_synthetic_case.py",
+    ROOT / "scripts/verify_baseline_inputs.py"
 ]
 
 
@@ -19,7 +20,7 @@ def main() -> None:
     for verifier in VERIFIERS:
         print(f"==> {verifier.name}", flush=True)
         subprocess.run([sys.executable, str(verifier)], cwd=ROOT, check=True)
-    print(f"Verified {len(VERIFIERS)} implemented fixtures.")
+    print(f"Verified {len(VERIFIERS)} public fixture and artifact checks.")
 
 
 if __name__ == "__main__":

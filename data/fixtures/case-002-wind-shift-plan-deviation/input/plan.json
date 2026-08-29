@@ -30,6 +30,7 @@
         "max_spm": 21
       },
       "zone": "B2/B3",
+      "zone_system": "STANDARD_ROWING_ZONES",
       "recovery": {
         "min_s": 180,
         "max_s": 300,
@@ -53,6 +54,7 @@
         "max_spm": 24
       },
       "zone": "B2/B3",
+      "zone_system": "STANDARD_ROWING_ZONES",
       "recovery": {
         "min_s": 180,
         "max_s": 300,
@@ -64,8 +66,6 @@
       ]
     }
   ],
-  "unresolved_terms": [
-    "B2/B3"
-  ],
+  "unresolved_terms": [],
   "notes": "Synthetic evaluation plan inspired by the structure of a real rowing prescription; it is not a record of an athlete's workout."
 }

@@ -1,0 +1,23 @@
+{
+  "generator": "scripts/build_baseline_inputs.py",
+  "generator_version": "1.0",
+  "prompt": {
+    "path": "prompts/baseline-v1.md",
+    "sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50"
+  },
+  "schema": "wake.baseline_input_manifest.v1",
+  "summaries": {
+    "case-001-misaligned-double-scull": {
+      "bytes": 12996,
+      "path": "case-001-misaligned-double-scull.json",
+      "sha256": "9286dc502db48898a748da54016b845cf7ffb3fc0c4ed69974d264b10a449a15"
+    },
+    "case-002-wind-shift-plan-deviation": {
+      "bytes": 51988,
+      "path": "case-002-wind-shift-plan-deviation.json",
+      "sha256": "76dbfe7be77c8d747ac837e1b78b173a2c4bfeeeb2847a05df2fc498382430c1"
+    }
+  },
+  "summary_schema": "wake.case_summary.v1",
+  "version": "1.0"
+}
