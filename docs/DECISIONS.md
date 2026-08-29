@@ -158,7 +158,19 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Record UTC start/finish timestamps and monotonic `runtime_ms` in every successful case trajectory. Record end-to-end `runtime_ms` and `case_runtime_ms_total` separately in the run manifest, along with per-case and total approximate cost.
 - **Rationale:** A single duration is ambiguous in a tool loop. Separating wall-clock execution from summed investigation time makes runner overhead visible, while monotonic elapsed time remains reliable if the system clock changes. Existing comparison-v1 artifacts are evidence and must not be retroactively rewritten.
 
+## 2026-08-29 - Separate the coach product from evaluation surfaces
+
+- **Status:** accepted for the hackathon product slice.
+- **Decision:** Use a React, TypeScript, Vinext, and native-CSS web application for the coach-facing flow. Keep fixtures, baseline scores, trajectories, and grader controls in repository and terminal artifacts rather than primary product navigation.
+- **Rationale:** A coach needs a calm session review, one material question, and an approvable briefing. Exposing benchmark machinery in that path would optimize the interface for judges instead of the user.
+
+## 2026-08-29 - Demonstrate the interface through a faithful synthetic replay
+
+- **Status:** accepted; live ingestion remains pending.
+- **Decision:** Derive the first UI view model from committed public case-002 agent output and test it against that artifact. Label the replay as synthetic, preserve metric-level source policy and unsupported unknowns, describe wind only as time-aligned association, and create in-memory goal history only after explicit coach approval.
+- **Rationale:** The replay makes the complete product value legible without inventing athletes, sessions, causal claims, or a weekend-scale persistence system. Its adapter boundary can later be replaced by a task-level API without moving reasoning into the browser.
+
 ## Pending decisions
 
-- Deployment target and product application stack beyond the evaluation runner.
+- Live agent API deployment target and application-service boundary.
 - Schema revisions justified by parser and grader implementation evidence.

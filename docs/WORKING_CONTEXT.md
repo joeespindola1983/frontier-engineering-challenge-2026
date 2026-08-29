@@ -285,6 +285,12 @@ The full vision is intentionally larger than the hackathon implementation. A str
 
 The UI only needs enough polish to make that end-to-end execution understandable in a five-minute video.
 
+### Implemented product-facing slice
+
+The first web slice now follows the coach workflow rather than the hackathon evaluation workflow: session inbox, evidence intake, review, one equipment checkpoint, verified briefing, and approval-gated goal memory. It is implemented as a clearly labeled synthetic replay of committed case 002, not as a live upload backend.
+
+The supplied visual prototype was retained as a direction, but repository evidence changed three important details: wind is a time-aligned association rather than a causal explanation; only one reviewed session appears in memory; and coach confirmation is stored as human context without rewriting telemetry. Evaluation scores, fixture controls, and trajectories remain outside the product navigation.
+
 ## Evaluation direction
 
 The accepted primary metric is macro-average weighted rubric score from 0 to 100 across implemented fixed cases. Its dimensions are plan interpretation, session association/alignment, segment reconstruction, metric-level source trust, deviation detection, environmental interpretation, evidence/abstention, and follow-up questions. Unsupported-claim rate, required-abstention recall, boundary error, runtime, cost, and later coach-rated usefulness remain secondary metrics.

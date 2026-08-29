@@ -58,6 +58,22 @@ A multi-week coach plan PDF and daily WhatsApp image crops existed before the co
 
 The raw PDF and images remain outside Git. The second public case reuses only an anonymized prescription pattern: six one-kilometer intervals, two SPM targets, active recovery, and a resistance instruction. Every athlete, date, coordinate, environmental sample, and telemetry row in case 002 is newly generated synthetic data. The generator, schemas, ground truth, rubric, and verification are hackathon work.
 
+## Reuse record: supplied interface prototype v2
+
+A product-interface prototype and architecture note were developed during the hackathon in a separate workspace after the first WAKE context handoff, then supplied as the visual and interaction base for this repository. They are not pre-competition work and are not evidence that the product backend was already implemented.
+
+Created or adapted in this repository:
+
+- the React/Vinext scaffold and responsive implementation;
+- fixture-derived replay adapters and behavioral tests;
+- the correction from causal wind wording to evidence-supported temporal association;
+- explicit separation of prescription, telemetry, and coach confirmation;
+- one-session goal memory that avoids fabricating longitudinal history;
+- approval-gated in-memory workflow state and synthetic-data disclosure;
+- dependency audit and zero-vulnerability update at integration time.
+
+The supplied ZIP and source architecture file remain outside Git. The accepted, repository-specific contract is preserved in `docs/PRODUCT_INTERFACE.md`.
+
 ## Reuse requirements
 
 Before reusing any earlier code or component:

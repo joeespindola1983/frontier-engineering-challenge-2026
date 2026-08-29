@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, and the bounded single-agent evaluation loop are implemented. Persistent memory and the product application remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, the bounded single-agent evaluation loop, and a coach-facing product replay are implemented. The replay demonstrates checkpoint and approval policy in memory; durable storage and live source ingestion remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -64,11 +64,17 @@ Select tools, ask focused questions, and assemble a result that clearly separate
 
 ### Verifier — evidence rules implemented for evaluation v1
 
-The current verifier rejects unsupported or uncited claims, nonexistent evidence and source IDs, and known broken SPM-source selection. A human checkpoint before consequential recommendations or memory updates remains product work.
+The current verifier rejects unsupported or uncited claims, nonexistent evidence and source IDs, and known broken SPM-source selection. The product replay implements one focused human checkpoint and requires explicit coach approval before an in-memory goal update. Persistence and backend confirmation remain future work.
 
 ### Trajectory recorder — core events implemented for evaluation v1
 
-The current runner captures structured events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, output, usage, and approximate run cost. Human checkpoints and elapsed runtime remain pending.
+The current runner captures structured events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, output, usage, approximate run cost, and monotonic case/run runtime for future runs. Product checkpoint interaction is implemented in the web replay but is not yet persisted in agent trajectories.
+
+### Product interface — replay slice implemented
+
+The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
+
+The current adapter boundary is intentionally compatible with a later task-level HTTP service. The browser does not choose trusted sources, compute compliance, infer causal environmental effects, or create memory without approval.
 
 ## Baseline hypothesis
 
@@ -78,8 +84,7 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 
 ## Open decisions
 
-- Product application/runtime stack beyond the Python evaluation runner.
-- Local versus hosted execution.
+- Live API and hosted execution for the Python agent runtime.
 - Data store and memory representation.
 - Weather provider and historical-data availability.
-- User interface scope for the five-minute demonstration.
+- Authentication, club tenancy, uploads, and durable checkpoint state.

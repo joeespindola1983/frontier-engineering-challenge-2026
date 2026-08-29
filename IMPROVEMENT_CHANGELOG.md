@@ -105,6 +105,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Runtime is an observable workflow property and should be designed like any other evidence contract, not inferred later from terminal duration.
 - **Next step:** Validate the complete suite, then use the prepared interface direction as the basis for the first product-facing slice.
 
+### 11. Coach-facing product replay
+
+- **Hypothesis:** A minimal coach-first flow can make the agentic value understandable without turning benchmark controls into the product or inventing longitudinal data.
+- **Change:** Integrated the supplied interface direction as a React/Vinext product slice: inbox, intake, session review, metric-trust disclosure, one human equipment checkpoint, verified briefing, and approval-gated goal memory. Added a compact replay adapter derived from committed case-002 output. Corrected the prototype's causal wind language, removed fabricated session history, and kept evaluation ground truth outside the browser.
+- **Evaluation:** RED tests first failed on the absent replay adapter, compact-data mismatch, and missing workflow state. GREEN tests verify exact fidelity to the committed six work intervals, work-05 deviation, metric-level trust, noncausal environmental wording, preservation of unknown equipment, human-confirmation provenance, and explicit approval before memory. Six web tests, ESLint, and the production build pass. A dependency audit initially reported 13 vulnerabilities; compatible upgrades reduced the final audit to zero.
+- **Result:** The complete product path is demonstrable with truthful synthetic evidence and without exposing fixture, baseline, grader, or trajectory concepts in normal navigation. It remains a replay: uploads, backend checkpoint persistence, authentication, and durable goal memory are not implemented.
+- **Cost/runtime:** No model or API call was required. The final deterministic web test suite completes locally in under one second; build time is environment-dependent and not used as a product-latency claim.
+- **Decision:** Keep the coach-first interface and replay boundary for the five-minute demonstration. Replace the adapter with a task-level service only after its API and persistence policy are tested.
+- **Learning:** The interface itself is an evidence boundary. Claims become more trustworthy when source choice, unknowns, human confirmation, and approval are visible without forcing the coach to inspect the full agent trace.
+- **Next step:** Publish the replay, capture the deployment URL, and connect social metadata before recording the demonstration.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

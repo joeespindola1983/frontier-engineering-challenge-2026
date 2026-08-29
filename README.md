@@ -66,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, and the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md). Only two cases are implemented, so the result supports the current workflow without claiming broad generalization.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md), and a coach-facing product replay. Only two evaluation cases are implemented, so the result supports the current workflow without claiming broad generalization.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -94,3 +94,23 @@ uv run python scripts/grade_outputs.py \
   --outputs /path/to/run/outputs \
   --output /path/to/run/grade-report.json
 ```
+
+## Product interface
+
+The `web/` application demonstrates the smallest truthful coach workflow over the committed synthetic case 002:
+
+```text
+session inbox -> evidence intake -> review -> human checkpoint
+              -> verified briefing -> approved goal memory
+```
+
+It is a product replay, not a live upload backend. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
+
+```bash
+cd web
+npm install
+npm test
+npm run dev
+```
+
+Node.js 22.13 or newer is required. See [Product interface contract](docs/PRODUCT_INTERFACE.md) and [web implementation notes](web/README.md).
