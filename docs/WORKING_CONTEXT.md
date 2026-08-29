@@ -302,7 +302,7 @@ A likely evaluation will use ten or more fixed cases, including scenarios such a
 - a plan that was not followed;
 - a request to infer technique that the evidence cannot support.
 
-The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are now generated, hashed, and checked for ground-truth leakage. The concrete model, runner, and grader implementation remain to be selected and pinned before the first score.
+The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are generated, hashed, and checked for ground-truth leakage. The evaluation runner now uses Python, `uv`, the OpenAI Responses API, strict Structured Outputs, and `gpt-5.6-terra` at medium reasoning. Its safe default is a no-cost dry-run; a real call requires both `--execute` and `OPENAI_API_KEY`. The first paid output and concrete grader still need to be produced before any model-quality score exists.
 
 Deterministic development now follows red-green-refactor. Parsers, normalization, alignment, segmentation, metric trust, generators, schemas, and graders require behavioral or regression tests. Model output is evaluated with fixed cases, structured contracts, and the frozen rubric rather than exact prose snapshots.
 
@@ -332,7 +332,7 @@ A candidate five-minute narrative is:
 
 - Which domain expert independently reviews each ground-truth answer before final scoring?
 - Which schema revisions are justified by parser and grader implementation evidence?
-- Which runtime, model, SDK, database, and UI stack best fit the weekend?
+- Which database, product runtime, UI stack, and minimal agent orchestration best fit the weekend beyond the accepted Python evaluation runner?
 - Is one orchestrating agent plus verifier enough, or does an evaluated failure justify another specialized agent?
 - How should evidence, trajectories, cost, and runtime be packaged for judges?
 - Which weather and mapping services have acceptable terms and reproducible historical data?

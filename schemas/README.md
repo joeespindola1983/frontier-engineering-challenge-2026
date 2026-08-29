@@ -8,7 +8,7 @@ These JSON Schemas define the first normalized boundary between deterministic to
 - `evidence-claim.schema.json`: observed, derived, confirmed, inferred, conflicted, unknown, or unsupported claims;
 - `ground-truth.schema.json`: evaluator-only expected matches, segments, claims, abstentions, questions, and tolerances;
 - `case-summary.schema.json`: compact deterministic input shared by the baseline and WAKE;
-- `analysis-output.schema.json`: common structured output required from the baseline and WAKE.
+- `analysis-output.schema.json`: common structured output required from the baseline and WAKE; current contract is `wake.analysis_output.v1.1` after a pre-run strict-schema refinement.
 
 Raw vendor exports do not need to conform to these schemas. Deterministic adapters will preserve raw provenance and produce normalized objects. In case 002, `input/plan.json` and `input/environment.json` are normalized inputs; `recorded-session` and `evidence-claim` describe future workflow outputs.
 

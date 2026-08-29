@@ -107,12 +107,24 @@ This log records product and engineering decisions as they are made. Accepted de
 ## 2026-08-29 - Freeze baseline prompt and compact input contract v1
 
 - **Status:** accepted; no model result yet.
-- **Decision:** Give both the direct-call baseline and WAKE the same ground-truth-free compact case summary. Freeze `wake.case_summary.v1`, `wake.analysis_output.v1`, `prompts/baseline-v1.md`, and the generated `evaluation/baseline-inputs/v1/` bundle before selecting or running the baseline model.
+- **Decision:** Give both the direct-call baseline and WAKE the same ground-truth-free compact case summary. Freeze `wake.case_summary.v1`, `wake.analysis_output.v1.1`, `prompts/baseline-v1.md`, and the generated `evaluation/baseline-inputs/v1/` bundle before running the baseline model. Output v1.1 is the pre-run strict-schema refinement of the earlier unexecuted v1 draft.
 - **Rationale:** Raw telemetry is unnecessarily large for an LLM, and showing different evidence to the baseline would make the comparison invalid. Hashes and leakage checks make the boundary auditable.
+
+## 2026-08-29 - Use Python, uv, and the OpenAI Responses API for evaluation runs
+
+- **Status:** accepted for the evaluation runner.
+- **Decision:** Use Python 3.11 or newer, dependencies locked by `uv`, the official OpenAI Python SDK, Responses API, and strict Structured Outputs. Keep API execution opt-in and reject paid execution when `OPENAI_API_KEY` is absent.
+- **Rationale:** The existing deterministic evidence tools are Python, and the Responses API exposes structured JSON output plus observable usage metadata without requiring an orchestration framework for the simple baseline.
+
+## 2026-08-29 - Select GPT-5.6 Terra medium for the first comparison
+
+- **Status:** accepted; availability and first real run pending.
+- **Decision:** Configure both the direct baseline and the initial WAKE workflow with `gpt-5.6-terra`, reasoning effort `medium`, default service tier, no server-side response storage, and no explicit temperature. Pin the price assumption independently from actual returned usage.
+- **Rationale:** Official OpenAI documentation positions Terra as the balance between intelligence and cost. Holding model and reasoning effort constant makes workflow improvement the independent variable.
 
 ## Pending decisions
 
-- Technology stack and deployment target.
-- Concrete baseline model and runner.
+- Deployment target and product application stack beyond the evaluation runner.
+- First paid baseline execution and concrete grader.
 - Agent/tool framework and model.
 - Schema revisions justified by parser and grader implementation evidence.

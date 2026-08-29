@@ -70,4 +70,4 @@ A separate mobile rowing application existed before the hackathon. It captured m
 
 ## Current phase
 
-The project is in baseline-runner and deterministic-tool development. The primary metric, first schema versions, 16-case registry, two public fixtures, TDD policy, compact baseline input bundle, and baseline prompt v1 are accepted. No runtime stack, concrete model, database, UI framework, runnable model baseline, or agent workflow has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.
+The project is in baseline-execution and grader development. The primary metric, first schema versions, 16-case registry, two public fixtures, TDD policy, compact baseline bundle, prompt v1, Python/uv evaluation runtime, and GPT-5.6 Terra medium runner are accepted. No paid baseline result, grader, database, UI framework, product deployment target, or agent workflow has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.

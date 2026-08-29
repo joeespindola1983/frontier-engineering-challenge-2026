@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** provisional. Two fixtures, the first normalized contracts, and their verifiers are implemented; the product architecture remains a hypothesis until evaluated.
+**Status:** provisional. Two fixtures, normalized contracts, public verifiers, and the direct-call baseline runner are implemented; the agent product architecture remains a hypothesis until evaluated.
 
 ## Proposed flow
 
@@ -74,12 +74,12 @@ Capture structured runtime events without private chain-of-thought: run identifi
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
-The evaluation protocol, deterministic input summarizer, compact summary schema, and direct-call baseline prompt are now frozen at version 1. The next architecture checkpoint is selecting and implementing the baseline model runner and structured grader without changing those inputs after seeing results.
+The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, and baseline runner are now frozen at version 1. The next architecture checkpoint is the first real baseline run and structured grader, without changing frozen inputs after seeing results.
 
 ## Open decisions
 
-- Application/runtime stack.
-- Model and agent SDK.
+- Product application/runtime stack beyond the Python evaluation runner.
+- Agent SDK or minimal custom orchestration for the WAKE workflow.
 - Local versus hosted execution.
 - Data store and memory representation.
 - Weather provider and historical-data availability.

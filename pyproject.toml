@@ -1,0 +1,12 @@
+[project]
+name = "wake-agentic-rowing"
+version = "0.1.0"
+description = "Evaluation and agent workflow for WAKE - Agentic Rowing Intelligence"
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema>=4.0",
+  "openai>=1.0",
+]
+
+[tool.uv]
+package = false

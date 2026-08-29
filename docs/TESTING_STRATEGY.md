@@ -38,19 +38,19 @@ Prompts, model settings, input-summary versions, outputs, runtime, and cost must
 Run the fast behavioral suite:
 
 ```bash
-python3 -m unittest discover -s tests -v
+uv run python -m unittest discover -s tests -v
 ```
 
 Run every public fixture and generated-artifact verifier:
 
 ```bash
-python3 scripts/verify_all.py
+uv run python scripts/verify_all.py
 ```
 
 Run both layers before committing an implementation change:
 
 ```bash
-python3 scripts/test_all.py
+uv run python scripts/test_all.py
 ```
 
 The model evaluation command will be added only after the baseline model and runner are accepted. Until then, fixture verification must not be described as an agent-quality score.
