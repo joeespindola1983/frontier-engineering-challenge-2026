@@ -16,7 +16,8 @@ type EvidenceFiles = Partial<Record<EvidenceKind, File>>;
 const configuredRuntimeUrl = process.env.NEXT_PUBLIC_WAKE_API_URL ?? '';
 const configuredRuntimeMode = process.env.NEXT_PUBLIC_WAKE_RUNTIME_MODE === 'live' ? 'live' : 'replay';
 
-function formatDate(value: string) {
+function formatDate(value: string | null) {
+  if (!value) return 'Date not supplied';
   return new Intl.DateTimeFormat('en-GB', {
     day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC',
   }).format(new Date(`${value}T00:00:00Z`));
@@ -40,7 +41,7 @@ function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen
           <button className={screen === 'memory' ? 'active' : ''} onClick={() => onNavigate('memory')} type="button">Goal memory</button>
         </nav>
         <div className="topbar-actions">
-          <span className="demo-label">Synthetic demo data</span>
+          <span className="demo-label">{configuredRuntimeMode === 'live' ? 'Local live runtime' : 'Synthetic demo data'}</span>
           <button className="button button-primary button-small" onClick={() => onNavigate('intake')} type="button">Review a session</button>
         </div>
       </div>
@@ -49,7 +50,7 @@ function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen
 }
 
 function PrototypeNotice() {
-  return <div className="prototype-notice" role="note"><span>{configuredRuntimeMode === 'live' ? 'Live synthetic run' : 'Prototype replay'}</span>{configuredRuntimeMode === 'live' ? 'This interface is connected to the bounded WAKE agent. The selected case remains fully synthetic.' : demoReview.notice}</div>;
+  return <div className="prototype-notice" role="note"><span>{configuredRuntimeMode === 'live' ? 'Local live runtime' : 'Prototype replay'}</span>{configuredRuntimeMode === 'live' ? 'The bounded WAKE agent is enabled. Uploaded evidence stays in the local process and every execution requires an explicit review action.' : demoReview.notice}</div>;
 }
 
 function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; processing: boolean; error: string }) {
@@ -104,7 +105,7 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
             })}
           </div>
           {hasSelectedFiles ? <p className="upload-boundary">Custom evidence is validated only when all five files are selected. A different bundle cannot reuse the committed replay.</p> : null}
-          <div className="known-context"><div className="kicker">Known context</div><div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div></div>
+          <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>The boat, crew, goal, and session request will be read from the selected context file.</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
           <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
         </section>
@@ -124,7 +125,7 @@ function IntervalChart({ review }: { review: Review }) {
           const height = Math.max(38, Math.min(88, interval.averageSpm * 3.25));
           return (
             <div className="interval-column" key={interval.segmentId} aria-label={`Work ${interval.index}: ${interval.averageSpm} SPM; target ${interval.targetMinSpm} to ${interval.targetMaxSpm} SPM; ${isDeviation ? 'deviation' : 'within range'}`}>
-              <div className="interval-plot"><div className="target-band" />{interval.index === 4 ? <span className="wind-marker">Wind shift</span> : null}<div className={`interval-bar${isDeviation ? ' deviation' : ''}`} style={{ height: `${height}%` }} /></div>
+              <div className="interval-plot"><div className="target-band" /><div className={`interval-bar${isDeviation ? ' deviation' : ''}`} style={{ height: `${height}%` }} /></div>
               <div className="interval-label"><span>W{interval.index}</span><span>{Math.round(interval.averageSpm)} SPM</span></div><small>{interval.targetMinSpm}–{interval.targetMaxSpm} target</small>
             </div>
           );
@@ -151,15 +152,16 @@ function SourcePolicy({ review }: { review: Review }) {
 
 function ReviewScreen({ review, onComplete, processing, error }: { review: Review; onComplete: (answer: string) => void; processing: boolean; error: string }) {
   const [answer, setAnswer] = useState('UNKNOWN');
+  const questionRequired = review.status === 'QUESTION_REQUIRED';
   return (
     <main className="page">
       <PrototypeNotice />
-      <header className="review-header"><div className="review-title"><div className="kicker">Session review</div><h1>{review.title}</h1><div className="review-meta"><span>{formatDate(review.scheduledDate)}</span><span>Plan + SpeedCoach + mobile + wind timeline</span><span>{review.mobileClockOffsetS} s mobile clock offset</span></div></div><div className="review-state"><span className="status attention">Human context required</span><strong>One answer can change the briefing</strong></div></header>
+      <header className="review-header"><div className="review-title"><div className="kicker">Session review</div><h1>{review.title}</h1><div className="review-meta"><span>{formatDate(review.scheduledDate)}</span><span>Plan + SpeedCoach + mobile + environment</span>{review.mobileClockOffsetS == null ? null : <span>{review.mobileClockOffsetS} s mobile clock offset</span>}</div></div><div className="review-state"><span className={`status ${questionRequired ? 'attention' : 'approved'}`}>{questionRequired ? 'Human context required' : 'Ready for review'}</span><strong>{questionRequired ? 'One answer can change the briefing' : 'No additional question was requested'}</strong></div></header>
       <div className="progress-line" aria-label="Session review progress"><span /></div>
       <div className="review-layout">
-        <div><section><div className="kicker">Current reconstruction</div><p className="finding-intro">Six work intervals are supported by the evidence. Work interval five fell below its prescribed stroke-rate range. A tailwind-to-headwind shift is time-aligned with later speed changes; it is not treated as causal evidence or athlete regression.</p></section><IntervalChart review={review} /><SourcePolicy review={review} /><section className="environment-note"><div><div className="kicker">Environmental boundary</div><h2>Condition change, not a causal verdict</h2></div><p>{review.environment.summary}</p></section></div>
-        <aside className="checkpoint"><div className="kicker">One material question</div><h2>{review.checkpoint.question}</h2><p>The plan prescribes the equipment change, but neither recording can observe whether it happened. WAKE keeps prescription and observation separate.</p>
-          <fieldset className="answer-list"><legend className="sr-only">Resistance band confirmation</legend>{[['YES', 'Yes, it was used and removed as planned'], ['NO', 'No, it was not used as planned'], ['UNKNOWN', 'Unknown / cannot confirm']].map(([value, label]) => <label className="answer-option" key={value}><input checked={answer === value} name="band" onChange={() => setAnswer(value)} type="radio" value={value} />{label}</label>)}</fieldset>
+        <div><section><div className="kicker">Current reconstruction</div><p className="finding-intro">{review.currentReconstruction}</p></section><IntervalChart review={review} /><SourcePolicy review={review} /><section className="environment-note"><div><div className="kicker">Environmental boundary</div><h2>Condition context, not a causal verdict</h2></div><p>{review.environment.summary}</p></section></div>
+        <aside className="checkpoint"><div className="kicker">{questionRequired ? 'One material question' : 'Human review'}</div><h2>{review.checkpoint.question}</h2><p>A coach answer is stored as human context. It does not alter the device measurements or turn an unsupported claim into observed telemetry.</p>
+          <fieldset className="answer-list"><legend className="sr-only">Coach confirmation</legend>{[['YES', 'Yes / confirmed'], ['NO', 'No / not confirmed'], ['UNKNOWN', 'Unknown / cannot confirm']].map(([value, label]) => <label className="answer-option" key={value}><input checked={answer === value} name="confirmation" onChange={() => setAnswer(value)} type="radio" value={value} />{label}</label>)}</fieldset>
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}<div className="checkpoint-actions"><button className="button button-primary" disabled={processing} onClick={() => onComplete(answer)} type="button">{processing ? 'Verifying…' : 'Save answer and finish'}</button><button className="button button-quiet" disabled={processing} onClick={() => onComplete('UNKNOWN')} type="button">Keep unknown</button></div>
           <div className="evidence-note"><strong>Why this matters:</strong> {review.checkpoint.whyItMatters}</div><p className="checkpoint-status" aria-live="polite">{processing ? 'WAKE is rebuilding the verified briefing.' : 'No memory is updated until the coach approves the briefing.'}</p>
         </aside>

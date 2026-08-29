@@ -416,6 +416,14 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(result["status"], "AGENT_COMPLETED")
         self.assertTrue(result["agent_called"])
         self.assertEqual(result["analysis"]["case_id"], CASE_ID)
+        self.assertEqual(
+            set(result["review"]),
+            {"analysis", "summary", "context"},
+        )
+        self.assertEqual(result["review"]["summary"]["case_id"], CASE_ID)
+        serialized_review = json.dumps(result["review"])
+        self.assertNotIn("time_series_windows", serialized_review)
+        self.assertNotIn("input_hashes", serialized_review)
         self.assertEqual(len(self.bundle_runner.calls), 1)
         summary, evidence = self.bundle_runner.calls[0]
         self.assertEqual(summary["case_id"], CASE_ID)

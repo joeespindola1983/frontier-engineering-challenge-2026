@@ -63,6 +63,82 @@ test('keeps environmental language associative rather than causal', async () => 
   assert.doesNotMatch(environmentalCopy, /wind.*explains/);
 });
 
+test('adapts a different uploaded plan, boat, sources, and missing environment', () => {
+  const summary = {
+    case_id: 'uploaded-womens-single-500s',
+    plan: {
+      scheduled_date: '2026-08-30',
+      source: { kind: 'COACH_UPLOAD' },
+      blocks: [
+        {
+          kind: 'WORK',
+          repetitions: 4,
+          distance_m: 500,
+          stroke_rate: { min_spm: 26, max_spm: 28 },
+          equipment: [],
+        },
+      ],
+    },
+    sources: [
+      { source_id: 'source-speedcoach-a1', kind: 'SPEEDCOACH' },
+      { source_id: 'source-mobile-b2', kind: 'MOBILE' },
+    ],
+    cross_source_findings: [],
+    environment: null,
+  };
+  const context = {
+    input_notice: 'Coach-uploaded local evidence.',
+    session_candidate: {
+      boat_class: 'SINGLE_SCULL',
+      world_rowing_code: '1x',
+      crew_category: 'WOMEN',
+    },
+  };
+  const analysis = {
+    plan_summary: {
+      status: 'PARSED',
+      summary: 'Four 500 m work intervals at 26–28 SPM.',
+    },
+    segments: Array.from({ length: 4 }, (_, index) => ({
+      segment_id: `work-${String(index + 1).padStart(2, '0')}`,
+      kind: 'WORK',
+      start_offset_s: index * 180,
+      end_offset_s: index * 180 + 120,
+      distance_m: 500,
+      average_spm: index === 2 ? 24 : 27,
+      evidence_refs: ['input/speedcoach.csv', 'input/plan.json'],
+    })),
+    source_policy: [
+      { metric: 'stroke_rate_spm', selected_source_id: 'source-speedcoach-a1', reason: 'SPM is available.', evidence_refs: ['input/speedcoach.csv'] },
+      { metric: 'distance_m', selected_source_id: 'source-speedcoach-a1', reason: 'Distance is selected.', evidence_refs: ['input/speedcoach.csv'] },
+      { metric: 'route', selected_source_id: 'source-speedcoach-a1', reason: 'Mobile corroborates the route.', evidence_refs: ['input/speedcoach.csv', 'input/mobile.csv'] },
+    ],
+    claims: [],
+    deviations: [
+      { segment_ref: 'work-03', type: 'STROKE_RATE_BELOW_PRESCRIPTION' },
+    ],
+    environment_assessment: null,
+    follow_up_questions: ['What was the athlete perceived effort?'],
+    abstentions: ['No technique conclusion is made.'],
+    coach_briefing: 'Three intervals met the target; work three was below it.',
+  };
+
+  const review = buildSessionReview({ analysis, summary, context });
+
+  assert.equal(review.title, "4 × 500 m · Women's 1x");
+  assert.equal(review.provenance, 'UPLOADED');
+  assert.equal(review.workIntervals.length, 4);
+  assert.equal(review.workIntervals[2].status, 'DEVIATION');
+  assert.equal(review.sourcePolicy.strokeRate.selectedSource, 'SpeedCoach');
+  assert.equal(review.sourcePolicy.route.corroboratedBy, 'Mobile');
+  assert.equal(review.sourcePolicy.environment.selectedSource, 'No source selected');
+  assert.equal(review.environment.association, 'UNKNOWN');
+  assert.match(review.environment.summary, /not supplied|not available/i);
+  assert.equal(review.mobileClockOffsetS, null);
+  assert.equal(review.checkpoint.question, analysis.follow_up_questions[0]);
+  assert.equal(review.currentReconstruction, analysis.coach_briefing);
+});
+
 test('ships a compact replay that stays faithful to the committed run', async () => {
   const [analysis, summary, context] = await Promise.all([
     readJson(

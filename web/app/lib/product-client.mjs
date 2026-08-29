@@ -80,6 +80,26 @@ export class HttpWakeClient {
     });
   }
 
+  async analyzeSourceBundle({ sourceIds, mode }) {
+    if (mode !== 'live') {
+      throw new TypeError('New source bundle analysis requires explicit live mode.');
+    }
+    const prepared = await this.request('/api/source-bundles/prepare', {
+      source_ids: sourceIds,
+    });
+    const executed = await this.request(
+      `/api/source-bundles/${prepared.bundle_id}/execute`,
+      { mode: 'live' },
+    );
+    return {
+      executionId: executed.execution_id,
+      bundleId: executed.bundle_id,
+      status: executed.status,
+      agentCalled: executed.agent_called,
+      review: this.reviewAdapter(executed.review),
+    };
+  }
+
   answerCheckpoint(checkpointId, answer) {
     return this.request(`/api/checkpoints/${checkpointId}/answers`, { answer });
   }

@@ -171,6 +171,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The paid-action boundary is part of agent reliability. A correct agent loop is insufficient if upload identity, normalized evidence lifetime, output validation, and duplicate-request behavior are ambiguous.
 - **Next step:** Build a generic coach review adapter from prepared summary plus verified analysis, then connect prepare/execute/review in the local interface while keeping replay as the hosted default.
 
+### 17. Generic verified-analysis review adapter
+
+- **Hypothesis:** A live new-bundle result becomes product functionality only when the coach review is derived from that bundle rather than restyled as the six-by-one-kilometer demonstration.
+- **Change:** Prepared execution now returns a compact review bundle with verified analysis, plan, authenticated source identities and quality, cross-source findings, minimal environment identity, and session context while excluding hashes and time-series windows. The HTTP client adds an explicit `analyzeSourceBundle` prepare/execute/adapt operation and refuses non-live mode before network access. The review adapter now derives work count and distance, boat and crew label, provenance, source display names, clock visibility, environment fallback, status, checkpoint question, and reconstruction copy. The page consumes reconstruction and state from the review, hides absent clock data, removes the fixed fourth-interval wind marker, and no longer labels every live run synthetic.
+- **Evaluation:** RED failed on the missing backend review, absent client operation, environment-policy assumption, and case-002-only page narration. GREEN tests add a women's `1x` plan with four 500 m repetitions, uploaded source IDs, one different deviation, no clock finding, and no environment; verify compact backend output; verify the exact two-request live client sequence and zero requests for replay mode; and scan the page boundary for adapter-driven reconstruction with no fixed work-count or wind-marker text. The Python suite remains at 76 tests; the web suite passes 18 tests, ESLint, and the production build.
+- **Result:** WAKE can transform a prepared verified result into a truthful generic review model without leaking telemetry rows or replay assumptions. The callable client path is complete through review adaptation, but the page deliberately does not invoke it until generic checkpoint and briefing transitions exist.
+- **Cost/runtime:** No model call and no API cost. Client execution used deterministic fake responses.
+- **Decision:** Keep the generic review adapter and compact response. Do not connect custom live uploads to the page while its completion and memory stages still assume resistance-band case 002.
+- **Learning:** UI hard-coding is an evidence failure, not merely a design limitation: it can convert a correct agent result into a false coach-facing claim after verification has already passed.
+- **Next step:** Generalize checkpoint answers, verified briefing findings, and goal-memory proposals from the adapted review; then enable the page's custom live path under its existing local-runtime and live-mode opt-ins.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

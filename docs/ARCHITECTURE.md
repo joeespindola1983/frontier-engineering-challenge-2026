@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic five-source compact-summary assembly, explicit prepared-bundle execution, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle coach adaptation and durable storage remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic five-source compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle checkpoint/briefing transitions and durable storage remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -74,7 +74,7 @@ The current runner captures structured events without private chain-of-thought: 
 
 ### Product interface — replay slice implemented
 
-The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
+The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. Its review adapter now also handles different work counts, planned distances, boat and crew categories, authenticated upload source IDs, missing clocks, and absent environment without inserting case-002 narration. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
 
 The adapter boundary now has a local task-level HTTP implementation. The browser creates an investigation, submits one checkpoint answer, and approves a briefing. The service returns a compact public evidence bundle and delegates live analysis to the existing bounded runner only after explicit opt-in. The browser does not choose trusted sources, compute compliance, infer causal environmental effects, or create memory without approval.
 
@@ -108,4 +108,4 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Data store and memory representation.
 - Weather provider and historical-data availability.
 - Authentication, club tenancy, durable uploads, and durable checkpoint state.
-- Generic adaptation of a prepared-bundle analysis into the coach review, checkpoint, briefing, and memory flow.
+- Generic checkpoint, briefing, and memory transitions for an adapted prepared-bundle review.

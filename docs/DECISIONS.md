@@ -200,6 +200,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Expose prepared-bundle execution only through `POST /api/source-bundles/:id/execute` with `mode: live`, a service started with `--allow-live`, and `OPENAI_API_KEY`. Pass the compact summary and canonical evidence through an isolated temporary directory to the existing bounded runner, validate the final schema and case identity, preserve normal output/trajectory artifacts, and return the same recorded result on a repeated same-process request.
 - **Rationale:** Preparation should remain free and safe, while execution must be a deliberate budget boundary. Reusing the evaluated runner preserves its tool limits, verifier, provenance, and observability. Same-process idempotence reduces accidental duplicate charges without pretending to provide durable exactly-once semantics.
 
+## 2026-08-29 - Adapt verified analysis without case-specific UI claims
+
+- **Status:** accepted for the coach-review boundary.
+- **Decision:** Return a compact review bundle after prepared execution and adapt it from plan, context, verified segments, deviations, source policy, environmental assessment, and follow-up questions. Derive work count, distance label, boat/crew label, provenance, source names, clock visibility, and environmental absence from those values. Remove case-002-only reconstruction prose and the fixed fourth-interval wind marker from the page. Keep new-bundle execution unavailable from the page until checkpoint and briefing state are equally generic.
+- **Rationale:** A technically live agent is not a functional product if its UI silently rewrites every result into the demonstration story. Testing with a women's `1x`, four 500 m repetitions, authenticated upload IDs, and no environment proves that the adapter responds to evidence rather than fixture identity. Delaying page invocation avoids a half-working flow after the review screen.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

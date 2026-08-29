@@ -300,6 +300,39 @@ class WakeProductService:
         )
         if analysis.get("case_id") != bundle["summary"]["case_id"]:
             raise ValueError("Agent output does not match the prepared bundle.")
+        summary = bundle["summary"]
+        known_context = summary.get("known_context", {})
+        review = {
+            "analysis": analysis,
+            "summary": {
+                "case_id": summary["case_id"],
+                "plan": summary.get("plan"),
+                "sources": [
+                    {
+                        "source_id": source["source_id"],
+                        "kind": source["kind"],
+                        "evidence_refs": source["evidence_refs"],
+                        "quality_flags": source["quality_flags"],
+                    }
+                    for source in summary["sources"]
+                ],
+                "cross_source_findings": summary["cross_source_findings"],
+                "environment": (
+                    {
+                        "timeline_id": summary["environment"].get("timeline_id"),
+                        "source": summary["environment"].get("source"),
+                    }
+                    if summary.get("environment")
+                    else None
+                ),
+            },
+            "context": {
+                "input_notice": known_context.get(
+                    "input_notice", "Coach-uploaded local evidence."
+                ),
+                "session_candidate": known_context.get("session_candidate", {}),
+            },
+        }
         result = {
             "execution_id": execution_id,
             "bundle_id": bundle_id,
@@ -308,6 +341,7 @@ class WakeProductService:
             "status": "AGENT_COMPLETED",
             "agent_called": True,
             "analysis": analysis,
+            "review": review,
         }
         self.bundle_results[execution_id] = result
         return result, True

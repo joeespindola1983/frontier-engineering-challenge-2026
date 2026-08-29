@@ -131,6 +131,68 @@ test('HTTP client uploads typed evidence before source-based investigation', asy
   assert.equal(investigation.review, demoReview);
 });
 
+test('HTTP client prepares and explicitly executes a new source bundle', async () => {
+  const requests = [];
+  const responses = [
+    {
+      bundle_id: 'source-bundle-abc123',
+      status: 'READY_FOR_LIVE',
+      agent_called: false,
+    },
+    {
+      execution_id: 'execution-source-bundle-abc123',
+      bundle_id: 'source-bundle-abc123',
+      status: 'AGENT_COMPLETED',
+      agent_called: true,
+      review: { analysis: {}, summary: {}, context: {} },
+    },
+  ];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return { ok: true, status: 201, json: async () => responses.shift() };
+    },
+    reviewAdapter: () => demoReview,
+  });
+
+  const result = await client.analyzeSourceBundle({
+    sourceIds: ['plan', 'speedcoach', 'mobile', 'environment', 'context'],
+    mode: 'live',
+  });
+
+  assert.deepEqual(
+    requests.map(({ url }) => url),
+    [
+      'http://127.0.0.1:8788/api/source-bundles/prepare',
+      'http://127.0.0.1:8788/api/source-bundles/source-bundle-abc123/execute',
+    ],
+  );
+  assert.deepEqual(JSON.parse(requests[0].init.body), {
+    source_ids: ['plan', 'speedcoach', 'mobile', 'environment', 'context'],
+  });
+  assert.deepEqual(JSON.parse(requests[1].init.body), { mode: 'live' });
+  assert.equal(result.review, demoReview);
+  assert.equal(result.agentCalled, true);
+});
+
+test('HTTP client refuses implicit new-bundle execution before any request', async () => {
+  let requests = 0;
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async () => {
+      requests += 1;
+      throw new Error('must not be called');
+    },
+  });
+
+  await assert.rejects(
+    client.analyzeSourceBundle({ sourceIds: ['one'], mode: 'replay' }),
+    /explicit live mode/,
+  );
+  assert.equal(requests, 0);
+});
+
 test('HTTP errors stay visible to the product flow', async () => {
   const client = new HttpWakeClient({
     baseUrl: 'http://127.0.0.1:8788',

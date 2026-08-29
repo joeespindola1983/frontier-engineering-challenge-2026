@@ -1,6 +1,6 @@
 # WAKE Product Interface Contract
 
-**Status:** accepted replay with tested local source intake and bundle preparation
+**Status:** accepted replay with tested local source intake, bundle preparation, and generic review adaptation
 
 ## Purpose
 
@@ -27,7 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 
-The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, receive validation/normalization metadata, and prepare a compact agent input. The service may replay the committed case, invoke the existing case-level agent path, or explicitly execute a prepared new bundle when live mode is enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. The web client does not yet invoke or adapt a new-bundle result, and durable persistence is not implemented.
+The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, receive validation/normalization metadata, and prepare a compact agent input. The service may replay the committed case, invoke the existing case-level agent path, or explicitly execute a prepared new bundle when live mode is enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. The HTTP client can call prepare then execute and adapt the compact result into the same review shape. The page renders titles, intervals, source labels, clocks, reconstruction copy, and missing environment without case-002-only assumptions, but it does not yet start the new-bundle path because checkpoint, briefing, and memory transitions remain case-specific.
 
 ## Evidence boundaries
 
@@ -67,10 +67,10 @@ GET  /api/goals/:id
 
 `POST /api/source-bundles/prepare` accepts exactly one source of each type. It builds a deterministic, schema-validated compact summary; records source hashes and quality; computes compatible clock offset, distance conflict, and bidirectional route overlap; projects wind only when route heading is known; preserves human-only evidence gaps; retains the full summary in process memory; and returns only safe preparation metadata. It never calls the agent and explicitly returns `agent_called: false`.
 
-`POST /api/source-bundles/:id/execute` accepts only `mode: live`, exists only when the local service starts with `--allow-live`, and requires `OPENAI_API_KEY`. It supplies the bounded runner with the prepared summary and normalized files in an isolated temporary directory, validates the returned analysis schema and case identity, and records the result in process memory. Repeating the same execution in that process returns the recorded result rather than issuing another paid call. The current web client does not call this endpoint.
+`POST /api/source-bundles/:id/execute` accepts only `mode: live`, exists only when the local service starts with `--allow-live`, and requires `OPENAI_API_KEY`. It supplies the bounded runner with the prepared summary and normalized files in an isolated temporary directory, validates the returned analysis schema and case identity, and records the result in process memory. Repeating the same execution in that process returns the recorded result rather than issuing another paid call. Its response includes a compact review bundle containing the verified analysis, plan, source identities and quality, cross-source findings, minimal environment identity, and session context; it excludes input hashes and time-series windows. `HttpWakeClient.analyzeSourceBundle` implements the two-step prepare/execute call and refuses non-live mode before making a request.
 
 `POST /api/investigations` accepts either the fixed public case id or five source ids. Source-based replay succeeds only when the five uploaded byte sequences exactly match public case 002. Preparation of a changed bundle does not authorize it to inherit replay output or spend API budget. The service—not the browser—owns replay/live selection, checkpoints, and approval. All source bytes, normalized rows, prepared summaries, and workflow state remain process-local. A future hosted service must add authentication, durable persistence, club tenancy, and a generic result-to-coach-view adapter before accepting private club data.
 
 ## Acceptance boundary
 
-The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. New-bundle result adaptation in the web interface and durable storage require separate TDD experiments.
+The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed replay data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. Generic new-bundle checkpoint/briefing transitions, page invocation, and durable storage require separate TDD experiments.
