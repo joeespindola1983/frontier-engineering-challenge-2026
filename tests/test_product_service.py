@@ -303,6 +303,84 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(response["status"], "READY")
         self.assertNotIn("content", response)
 
+    def _upload_public_bundle(self, *, context_suffix: str = "") -> list[str]:
+        source_ids = []
+        for kind, filename in (
+            ("PLAN", "plan.json"),
+            ("SPEEDCOACH", "speedcoach.csv"),
+            ("MOBILE", "mobile.csv"),
+            ("ENVIRONMENT", "environment.json"),
+            ("CONTEXT", "context.json"),
+        ):
+            content = (CASE_INPUT / filename).read_bytes()
+            if kind == "CONTEXT" and context_suffix:
+                context = json.loads(content)
+                context["investigation_request"] += context_suffix
+                content = json.dumps(context).encode("utf-8")
+            source_ids.append(
+                self.service.upload_source(
+                    kind=kind,
+                    name=filename,
+                    content=content,
+                )["source_id"]
+            )
+        return source_ids
+
+    def test_uploaded_sources_prepare_a_new_agent_bundle_without_api_call(self) -> None:
+        source_ids = self._upload_public_bundle()
+        prepared = self.service.prepare_source_bundle(source_ids)
+
+        self.assertEqual(prepared["status"], "READY_FOR_LIVE")
+        self.assertEqual(prepared["case_id"], CASE_ID)
+        self.assertFalse(prepared["agent_called"])
+        self.assertEqual(len(prepared["summary_sha256"]), 64)
+        self.assertEqual(prepared["source_count"], 5)
+        self.assertEqual(
+            set(prepared["finding_types"]),
+            {"CLOCK_OFFSET", "DISTANCE_CONFLICT", "ROUTE_OVERLAP"},
+        )
+        self.assertEqual(self.live_runner.calls, [])
+
+        stored_summary = self.service.source_bundles[prepared["bundle_id"]]["summary"]
+        telemetry_upload_ids = {
+            source_id
+            for source_id in source_ids
+            if self.service.sources[source_id]["kind"] in {"SPEEDCOACH", "MOBILE"}
+        }
+        self.assertEqual(
+            {source["source_id"] for source in stored_summary["sources"]},
+            telemetry_upload_ids,
+        )
+
+    def test_modified_evidence_prepares_a_distinct_summary_not_a_canned_answer(self) -> None:
+        original = self.service.prepare_source_bundle(
+            self._upload_public_bundle()
+        )
+        modified = self.service.prepare_source_bundle(
+            self._upload_public_bundle(context_suffix=" New coach question.")
+        )
+
+        self.assertNotEqual(original["bundle_id"], modified["bundle_id"])
+        self.assertNotEqual(original["summary_sha256"], modified["summary_sha256"])
+        self.assertEqual(self.live_runner.calls, [])
+
+    def test_prepare_endpoint_returns_compact_metadata_not_telemetry_rows(self) -> None:
+        api = wake_product_service.WakeProductApi(self.service)
+
+        status, response = api.handle(
+            "POST",
+            "/api/source-bundles/prepare",
+            {"source_ids": self._upload_public_bundle()},
+        )
+
+        serialized = json.dumps(response).lower()
+        self.assertEqual(status, 201)
+        self.assertNotIn("time_series_windows", serialized)
+        self.assertNotIn("normalized_content", serialized)
+        self.assertNotIn("ground-truth", serialized)
+        self.assertNotIn("stroke_rate_spm", serialized)
+        self.assertFalse(response["agent_called"])
+
 
 if __name__ == "__main__":
     unittest.main()

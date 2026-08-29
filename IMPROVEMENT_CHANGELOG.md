@@ -149,6 +149,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The most important parser output is sometimes not a metric but a boundary: which values exist, which were rejected, and which clock assumptions remain unresolved.
 - **Next step:** Assemble plan, normalized telemetry, environment, and context into a ground-truth-free compact case summary, including candidate alignment evidence, before enabling explicitly paid live investigation for new uploads.
 
+### 15. Deterministic five-source compact-summary preparation
+
+- **Hypothesis:** A new upload can become safe agent input without a canned result or a model call if deterministic assembly preserves conflicts, uncertainty, and provenance instead of collapsing the sources into one assumed truth.
+- **Change:** Added `bundle_assembler.py` and `POST /api/source-bundles/prepare`. The assembler joins one plan, SpeedCoach stream, mobile stream, environment timeline, and context document into `wake.case_summary.v1`; records original and normalized hashes, keeps service-authenticated upload identities ahead of context labels, preserves missing or zero-only SPM; computes compatible clock offset, cumulative-distance conflict, and bidirectional GPS overlap; projects environmental wind against a known route heading; aggregates only the SpeedCoach stream into compact 30-second windows; and emits human-only evidence gaps. The service validates the result, stores it in process memory, and returns metadata rather than rows or the full summary. Unknown route heading now makes the environment tool abstain instead of failing or inventing boat-relative wind.
+- **Evaluation:** RED began with missing assembler and preparation-service methods. Six initial assembler tests and three product-service tests required schema validity, no evaluation-answer leakage, deterministic output, a 37-second clock offset, 1.2% distance conflict, route p95 below 25 m in both directions, preserved broken mobile SPM, changing summary hashes for changed evidence, metadata-only HTTP output, and zero live-runner calls. A later RED exposed the missing-route-heading crash and added explicit abstention. The final Python suite passes 75 tests and all three public verifiers.
+- **Result:** Any valid five-source local bundle can now receive its own agent-ready summary and content identity without inheriting the public replay or spending API budget. This is preparation, not new-bundle agent execution, durable storage, or proof of broad source matching.
+- **Cost/runtime:** No model call and no API cost. Deterministic execution was verified locally but is not reported as a performance benchmark.
+- **Decision:** Keep assembly version 1 as an explicit no-cost checkpoint. Require a separate explicit execution path before a prepared bundle may reach the paid bounded agent.
+- **Learning:** The safe bridge from sensors to an agent is itself an intelligence layer: it must know when clocks are comparable, when GPS can corroborate identity, which measurement is broken, and which rowing facts still require a human.
+- **Next step:** Add an explicitly authorized prepared-bundle live runner with isolated temporary evidence files and the same trajectory/verifier guarantees, then expose it to the local interface only behind deliberate paid opt-in.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

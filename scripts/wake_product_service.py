@@ -22,6 +22,7 @@ from urllib.parse import urlsplit
 
 import jsonschema
 
+from bundle_assembler import assemble_case_summary
 from run_baseline import current_git_commit, read_json, utc_now
 from source_adapters import normalize_source
 from wake_agent import (
@@ -96,6 +97,7 @@ class WakeProductService:
         self.briefings: dict[str, dict] = {}
         self.goals: dict[str, dict] = {}
         self.sources: dict[str, dict] = {}
+        self.source_bundles: dict[str, dict] = {}
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -183,12 +185,7 @@ class WakeProductService:
             if not key.startswith("_")
         }
 
-    def create_investigation_from_sources(
-        self,
-        source_ids: list[str],
-        *,
-        mode: str = "replay",
-    ) -> dict:
+    def _source_group(self, source_ids: list[str]) -> dict[str, dict]:
         try:
             sources = [self.sources[source_id] for source_id in source_ids]
         except KeyError as error:
@@ -196,9 +193,84 @@ class WakeProductService:
         grouped = {source["kind"]: source for source in sources}
         if len(sources) != len(SOURCE_KINDS) or set(grouped) != SOURCE_KINDS:
             raise ValueError(
-                "An investigation requires one PLAN, SPEEDCOACH, MOBILE, "
+                "A source bundle requires one PLAN, SPEEDCOACH, MOBILE, "
                 "ENVIRONMENT, and CONTEXT source."
             )
+        return grouped
+
+    def prepare_source_bundle(self, source_ids: list[str]) -> dict:
+        """Build and retain an agent-ready summary without executing an agent."""
+        grouped = self._source_group(source_ids)
+        plan = json.loads(grouped["PLAN"]["_content"].decode("utf-8"))
+        environment = json.loads(
+            grouped["ENVIRONMENT"]["_content"].decode("utf-8")
+        )
+        context = json.loads(grouped["CONTEXT"]["_content"].decode("utf-8"))
+        telemetry_sources = [
+            {
+                "source_id": grouped[kind]["source_id"],
+                "kind": kind,
+                "evidence_ref": f"input/{SOURCE_FILENAMES[kind]}",
+                "normalized_csv": grouped[kind]["_normalized_content"],
+                "normalization": grouped[kind]["normalization"],
+            }
+            for kind in ("SPEEDCOACH", "MOBILE")
+        ]
+        summary = assemble_case_summary(
+            plan=plan,
+            context=context,
+            environment=environment,
+            telemetry_sources=telemetry_sources,
+            input_hashes={
+                SOURCE_FILENAMES[kind]: source["sha256"]
+                for kind, source in grouped.items()
+            },
+        )
+        jsonschema.validate(
+            instance=summary,
+            schema=read_json(self.root / "schemas/case-summary.schema.json"),
+        )
+        serialized_summary = json.dumps(
+            summary,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        summary_digest = hashlib.sha256(serialized_summary).hexdigest()
+        bundle_id = f"source-bundle-{summary_digest[:16]}"
+        response = {
+            "bundle_id": bundle_id,
+            "case_id": summary["case_id"],
+            "status": "READY_FOR_LIVE",
+            "summary_sha256": summary_digest,
+            "source_count": len(grouped),
+            "finding_types": [
+                finding["type"] for finding in summary["cross_source_findings"]
+            ],
+            "source_quality": [
+                {
+                    "kind": source["kind"],
+                    "quality_flags": source["quality_flags"],
+                    "row_count": grouped[source["kind"]]["normalization"]["row_count"],
+                }
+                for source in summary["sources"]
+            ],
+            "evidence_gaps": summary["evidence_gaps"],
+            "agent_called": False,
+        }
+        self.source_bundles[bundle_id] = {
+            "summary": summary,
+            "source_ids": list(source_ids),
+            "response": response,
+        }
+        return response
+
+    def create_investigation_from_sources(
+        self,
+        source_ids: list[str],
+        *,
+        mode: str = "replay",
+    ) -> dict:
+        grouped = self._source_group(source_ids)
 
         if mode != "replay":
             raise ValueError(
@@ -472,6 +544,13 @@ class WakeProductApi:
             )
         if method == "GET" and parts[:2] == ["api", "sources"] and len(parts) == 3:
             return 200, self.service.get_source(parts[2])
+        if method == "POST" and parts == ["api", "source-bundles", "prepare"]:
+            source_ids = body.get("source_ids")
+            if not isinstance(source_ids, list) or not all(
+                isinstance(source_id, str) for source_id in source_ids
+            ):
+                raise ValueError("source_ids must be a list of strings.")
+            return 201, self.service.prepare_source_bundle(source_ids)
         if method == "POST" and parts == ["api", "investigations"]:
             if "source_ids" in body:
                 source_ids = body["source_ids"]

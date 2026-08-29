@@ -1,6 +1,6 @@
 # WAKE Product Interface Contract
 
-**Status:** accepted replay with tested local source intake
+**Status:** accepted replay with tested local source intake and bundle preparation
 
 ## Purpose
 
@@ -27,7 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 
-The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, and receive validation/normalization metadata. The service may replay the committed case or invoke the bounded agent for its existing case-level live path when explicitly enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. New-bundle summary assembly/execution and durable persistence are not implemented.
+The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, receive validation/normalization metadata, and prepare a compact agent input. The service may replay the committed case or invoke the bounded agent for its existing case-level live path when explicitly enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. New-bundle execution and durable persistence are not implemented.
 
 ## Evidence boundaries
 
@@ -53,6 +53,8 @@ The local application service exposes:
 
 ```text
 POST /api/sources
+GET  /api/sources/:id
+POST /api/source-bundles/prepare
 POST /api/investigations
 GET  /api/investigations/:id
 POST /api/checkpoints/:id/answers
@@ -62,8 +64,10 @@ GET  /api/goals/:id
 
 `POST /api/sources` accepts one Base64-encoded typed file and returns metadata only: source id, kind, original name, detected format, SHA-256 hash, byte size, and a versioned telemetry-normalization report when applicable. It accepts at most 10 MiB per source, rejects path-bearing names, validates plan and environment schemas, validates minimum context fields, and normalizes canonical telemetry, SpeedCoach vendor, and WAKE mobile sensor CSV formats. `GET /api/sources/:id` returns the same safe metadata without raw or normalized rows.
 
-`POST /api/investigations` accepts either the fixed public case id or five source ids. Source-based replay succeeds only when the five uploaded byte sequences exactly match public case 002. Raw telemetry parsing is implemented, but cross-source matching and compact-summary assembly for a new bundle are not. The service—not the browser—owns replay/live selection, checkpoints, and approval. All source bytes, normalized rows, and workflow state remain process-local. A future hosted service must add authentication, R2/D1-backed persistence, club tenancy, and a tested normalized-bundle-to-summary adapter before accepting private club data.
+`POST /api/source-bundles/prepare` accepts exactly one source of each type. It builds a deterministic, schema-validated compact summary; records source hashes and quality; computes compatible clock offset, distance conflict, and bidirectional route overlap; projects wind only when route heading is known; preserves human-only evidence gaps; retains the full summary in process memory; and returns only safe preparation metadata. It never calls the agent and explicitly returns `agent_called: false`.
+
+`POST /api/investigations` accepts either the fixed public case id or five source ids. Source-based replay succeeds only when the five uploaded byte sequences exactly match public case 002. Preparation of a changed bundle does not authorize it to inherit replay output or spend API budget. The service—not the browser—owns replay/live selection, checkpoints, and approval. All source bytes, normalized rows, prepared summaries, and workflow state remain process-local. A future hosted service must add authentication, durable persistence, club tenancy, and a tested prepared-bundle live runner before accepting private club data.
 
 ## Acceptance boundary
 
-The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. New-bundle summary assembly/live execution and durable storage require separate TDD experiments.
+The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. New-bundle live execution and durable storage require separate TDD experiments.

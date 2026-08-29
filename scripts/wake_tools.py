@@ -379,6 +379,15 @@ def analyze_environment(summary: dict) -> dict:
             "evidence_refs": [],
         }
     windows = environment["time_series_windows"]
+    if any("effective_headwind_m_s" not in window for window in windows):
+        return {
+            "status": "INSUFFICIENT",
+            "reason": (
+                "Boat-relative wind cannot be computed because route heading is unknown."
+            ),
+            "causal_conclusion": "NOT_ESTABLISHED",
+            "evidence_refs": ["input/environment.json"],
+        }
     start = float(windows[0]["effective_headwind_m_s"])
     end = float(windows[-1]["effective_headwind_m_s"])
     sign_change = next(

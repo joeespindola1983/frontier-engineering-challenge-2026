@@ -188,6 +188,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Deterministically convert SpeedCoach vendor per-stroke CSV, pre-existing WAKE mobile sensor CSV, and canonical telemetry CSV into the same seven-column stream. Emit a versioned quality report with original and normalized hashes. Preserve blank mobile SPM as blank, classify zero-only and absent SPM separately, derive SpeedCoach timestamps from its local clock while marking the timezone unknown, and normalize mobile epoch timestamps to UTC.
 - **Rationale:** Normalization should make sources comparable without making them falsely equivalent. Synthesizing SPM or silently assigning a timezone would convert missing context into fabricated evidence precisely where WAKE is supposed to abstain.
 
+## 2026-08-29 - Prepare new source bundles without executing them
+
+- **Status:** accepted as compact-summary assembly version 1.
+- **Decision:** Assemble exactly one validated plan, SpeedCoach stream, mobile stream, environment timeline, and context document into `wake.case_summary.v1` deterministically. Record input hashes, preserve source quality and missing SPM, compare clocks only when timezone representations are compatible, compute distance conflict and bidirectional GPS overlap, project wind only with a known route heading, and keep human-only facts as evidence gaps. Store the full summary in process memory and return compact preparation metadata with `agent_called: false`.
+- **Rationale:** Parsing and analysis are different authority boundaries. A novel upload must receive its own traceable input before it can ever reach a model, but preparation must neither spend budget nor let changed evidence inherit the public replay. Explicit abstention on missing route heading also prevents an environmental projection from becoming fabricated evidence.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
