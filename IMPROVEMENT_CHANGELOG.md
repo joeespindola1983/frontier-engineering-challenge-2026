@@ -114,7 +114,7 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Cost/runtime:** No model or API call was required. The final deterministic web test suite completes locally in under one second; build time is environment-dependent and not used as a product-latency claim.
 - **Decision:** Keep the coach-first interface and replay boundary for the five-minute demonstration. Replace the adapter with a task-level service only after its API and persistence policy are tested.
 - **Learning:** The interface itself is an evidence boundary. Claims become more trustworthy when source choice, unknowns, human confirmation, and approval are visible without forcing the coach to inspect the full agent trace.
-- **Next step:** Publish the replay, capture the deployment URL, and connect social metadata before recording the demonstration.
+- **Next step:** Record the five-minute demonstration, then replace the replay adapter with a tested task-level service only if the remaining hackathon time permits.
 
 ## Entry template
 
