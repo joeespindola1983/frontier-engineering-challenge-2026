@@ -16,8 +16,8 @@ A dashboard can store and display this information, but it still asks a human to
 
 The first end-to-end workflow will:
 
-1. ingest a planned workout and paired SpeedCoach/mobile telemetry;
-2. align recordings even when devices were started or stopped at different times;
+1. ingest a planned workout and SpeedCoach telemetry, with mobile, environment, and context when available;
+2. align and corroborate recordings when multiple devices exist, or expose the single-source limitation;
 3. choose which source to trust for each metric instead of averaging every sensor;
 4. ask focused questions for missing rowing context;
 5. produce a verified planned-versus-performed session briefing;
@@ -56,6 +56,7 @@ The repository will preserve:
 - [Submission requirements](docs/SUBMISSION_REQUIREMENTS.md)
 - [Private dataset audit](docs/DATASET_AUDIT.md)
 - [Evaluation specification](docs/EVALUATION_SPEC.md)
+- [Progressive evidence contract](docs/EVIDENCE_LADDER.md)
 - [Baseline runner](docs/BASELINE_RUNNER.md)
 - [Agent runner](docs/AGENT_RUNNER.md)
 - [Deterministic grader](docs/GRADER.md)
@@ -66,7 +67,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, deterministic raw telemetry adapters, deterministic five-source compact-summary preparation, an explicit prepared-bundle runner, a generic coach-review adapter, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md), and a coach-facing product replay. Only two evaluation cases are implemented, so the result supports the current workflow without claiming broad generalization.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, deterministic raw telemetry adapters, progressive two-to-five-source compact-summary preparation, an explicit prepared-bundle runner, a generic coach-review adapter, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md), and a coach-facing product replay. Only two evaluation cases are implemented, so the result supports the current workflow without claiming broad generalization.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -95,6 +96,16 @@ uv run python scripts/grade_outputs.py \
   --output /path/to/run/grade-report.json
 ```
 
+Rebuild the frozen progressive-evidence ablation inputs without calling a model:
+
+```bash
+uv run python scripts/build_evidence_ablation.py
+```
+
+The three conditions are committed under `evaluation/ablation-inputs/v1/`: core
+plan + SpeedCoach, context/environment enrichment, and the full bundle with
+mobile corroboration. They are experimental inputs, not scored results.
+
 ## Product interface
 
 The `web/` application demonstrates the smallest truthful coach workflow over the committed synthetic case 002:
@@ -104,7 +115,7 @@ session inbox -> evidence intake -> review -> human checkpoint
               -> verified briefing -> approved goal memory
 ```
 
-The hosted product remains a safe replay. When connected to the local product service, its intake can upload and validate one complete five-source bundle (plan, SpeedCoach, mobile, environment, and context). The service can prepare a new ground-truth-free compact summary containing source quality, clock compatibility, distance conflict, bidirectional GPS overlap, boat-relative environment when route heading is known, and explicit evidence gaps. Only the byte-identical public demonstration bundle can use committed replay output; different evidence cannot inherit that answer, and prepared new bundles are not executed automatically. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
+The hosted product remains a safe replay. When connected to the local product service, its intake requires a plan and SpeedCoach recording and accepts mobile, environment, and context as optional evidence enhancers. The service prepares a new ground-truth-free compact summary containing source coverage, quality, supported cross-source findings, and explicit evidence gaps. Only the byte-identical five-source public demonstration bundle can use committed replay output; different evidence cannot inherit that answer, and prepared new bundles are not executed automatically. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
 
 ```bash
 cd web
@@ -130,4 +141,4 @@ NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 npm run dev
 
 Live agent execution is deliberately opt-in: start the service with `--allow-live`, provide `mode: live` on the requested execution, and configure `OPENAI_API_KEY`. Existing case-level browser live mode also requires `NEXT_PUBLIC_WAKE_RUNTIME_MODE=live`. Live execution incurs API cost and writes normal agent output and trajectory artifacts under `evaluation/runs/product-live/` or `evaluation/runs/product-live-bundles/`.
 
-Uploaded source bytes, prepared summaries, and workflow state are process-local and non-durable. The current source boundary validates normalized plan/environment/context JSON and deterministically normalizes normalized telemetry CSV, raw SpeedCoach vendor CSV, and pre-existing WAKE mobile sensor CSV. Every telemetry result includes input/normalized hashes, row counts, timing, distance, GPS/SPM availability, rejected-row counts, and quality flags. Missing mobile SPM remains missing. `POST /api/source-bundles/prepare` assembles the five sources into a schema-validated compact summary and returns metadata only, with `agent_called: false`. `POST /api/source-bundles/:id/execute` requires explicit live mode, sends only the prepared summary and temporary normalized evidence to the bounded agent, validates the final output, avoids a duplicate call when the same execution is repeated within one process, and returns a compact review payload. The web client can adapt that payload across different plan lengths, distances, boats, source IDs, clock availability, and missing environment. The page renders review findings generically but does not start this new-bundle path until generic checkpoint and briefing state exist. No paid call was made while implementing it.
+Uploaded source bytes, prepared summaries, and workflow state are process-local and non-durable. The current source boundary validates normalized plan/environment/context JSON and deterministically normalizes normalized telemetry CSV, raw SpeedCoach vendor CSV, and pre-existing WAKE mobile sensor CSV. Every telemetry result includes input/normalized hashes, row counts, timing, distance, GPS/SPM availability, rejected-row counts, and quality flags. Missing mobile SPM remains missing. `POST /api/source-bundles/prepare` assembles the required plan and SpeedCoach plus zero to three optional enhancers into a schema-validated compact summary and returns metadata only, with `agent_called: false`. `POST /api/source-bundles/:id/execute` requires explicit live mode, sends only the evidence actually supplied to the bounded agent, validates the final output, avoids a duplicate call when the same execution is repeated within one process, and returns a compact review payload. The web client can adapt that payload across different plan lengths, distances, boats, source IDs, clock availability, and missing environment. The page renders review findings generically but does not start this new-bundle path until generic checkpoint and briefing state exist. No paid call was made while implementing it.

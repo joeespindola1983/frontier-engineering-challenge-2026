@@ -13,6 +13,7 @@ SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 import build_baseline_inputs  # noqa: E402
+import build_evidence_ablation  # noqa: E402
 import generate_synthetic_cases  # noqa: E402
 
 
@@ -113,6 +114,77 @@ class BaselineInputTests(unittest.TestCase):
         self.assertEqual(mobile["metrics"]["positive_spm_rows"], 0)
         self.assertLess(wind[0]["effective_headwind_m_s"], 0)
         self.assertGreater(wind[-1]["effective_headwind_m_s"], 0)
+
+
+class EvidenceAblationInputTests(unittest.TestCase):
+    def test_generation_is_byte_reproducible_and_ground_truth_free(self) -> None:
+        with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
+            first_path = Path(first)
+            second_path = Path(second)
+
+            build_evidence_ablation.build(first_path)
+            build_evidence_ablation.build(second_path)
+
+            first_files = {
+                path.relative_to(first_path): path.read_bytes()
+                for path in first_path.rglob("*")
+                if path.is_file()
+            }
+            second_files = {
+                path.relative_to(second_path): path.read_bytes()
+                for path in second_path.rglob("*")
+                if path.is_file()
+            }
+            self.assertEqual(first_files, second_files)
+            self.assertNotIn(
+                "ground-truth",
+                " ".join(
+                    path.read_text(encoding="utf-8").lower()
+                    for path in first_path.rglob("*.json")
+                ),
+            )
+
+    def test_conditions_add_capabilities_without_changing_the_base_session(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            build_evidence_ablation.build(output)
+            manifest = read_json(output / "manifest.json")
+            core = read_json(output / "core.json")
+            contextual = read_json(output / "context-environment.json")
+            full = read_json(output / "full.json")
+
+            self.assertEqual(
+                list(manifest["conditions"]),
+                ["core", "context-environment", "full"],
+            )
+            self.assertEqual(manifest["base_case_id"], "case-002-wind-shift-plan-deviation")
+            self.assertEqual(
+                [source["kind"] for source in core["sources"]],
+                ["SPEEDCOACH"],
+            )
+            self.assertIsNone(core["environment"])
+            self.assertEqual(core["cross_source_findings"], [])
+            self.assertEqual(
+                [source["kind"] for source in contextual["sources"]],
+                ["SPEEDCOACH"],
+            )
+            self.assertIsNotNone(contextual["environment"])
+            self.assertEqual(
+                [source["kind"] for source in full["sources"]],
+                ["SPEEDCOACH", "MOBILE"],
+            )
+            self.assertEqual(
+                {finding["type"] for finding in full["cross_source_findings"]},
+                {"CLOCK_OFFSET", "DISTANCE_CONFLICT", "ROUTE_OVERLAP"},
+            )
+            for condition, summary in (
+                ("core", core),
+                ("context-environment", contextual),
+                ("full", full),
+            ):
+                entry = manifest["conditions"][condition]
+                self.assertEqual(entry["sha256"], sha256(output / entry["path"]))
+                self.assertEqual(entry["summary_case_id"], summary["case_id"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,1804 @@
+{
+  "schema_version": "wake.case_summary.v1",
+  "summary_id": "evidence-ablation-v1-context-environment",
+  "case_id": "ablation-case-002-wind-shift-plan-deviation-context-environment",
+  "generated_by": "scripts/build_evidence_ablation.py@1.0",
+  "input_hashes": {
+    "context.json": "e6d9320261ced80b14bffbf6812c9d48c74ef4930d686df56a406ede30da3b48",
+    "environment.json": "b494d72843465766f2959822db2d3112cfb560ee70b038bfdc4168780fadd9ad",
+    "plan.json": "ae7276eafdd99a8f36592f599a9c53801e13cba91adc28cc71e6145ea1d4572a",
+    "speedcoach.csv": "c48af984c4bac0a8dbdcc5d66b6932d998514ce90cc297ebf63ed195b48813e3"
+  },
+  "investigation_request": "Compare the planned and performed session, explain supported speed changes, identify real deviations, and state what remains unknown.",
+  "domain_knowledge": [
+    {
+      "term": "voga",
+      "meaning": "Target stroke rate in strokes per minute (SPM).",
+      "status": "HUMAN_CONFIRMED",
+      "limitations": []
+    },
+    {
+      "term": "B0-B7 and E1-E7",
+      "meaning": "Standardized rowing training-zone codes.",
+      "status": "HUMAN_CONFIRMED",
+      "limitations": [
+        "Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied."
+      ]
+    }
+  ],
+  "known_context": {
+    "session_candidate": {
+      "boat_class": "DOUBLE_SCULL",
+      "world_rowing_code": "2x",
+      "crew_category": "MEN",
+      "athlete_ids": [
+        "synthetic-athlete-a",
+        "synthetic-athlete-b"
+      ],
+      "experience": "EXPERIENCED",
+      "route_heading_deg": 0.0
+    },
+    "human_confirmations": {
+      "resistance_band_used": null,
+      "coach_observed_technique": null,
+      "perceived_effort": null
+    },
+    "input_notice": "All people, dates, route coordinates, telemetry, and weather in this case are synthetic."
+  },
+  "plan": {
+    "schema_version": "wake.training_plan.v1",
+    "plan_id": "synthetic-plan-002",
+    "scheduled_date": "2026-01-20",
+    "timezone": "America/Sao_Paulo",
+    "source": {
+      "kind": "SYNTHETIC",
+      "provenance": "DERIVED_SYNTHETIC",
+      "source_ref": "anonymized pattern derived from an approved coach plan"
+    },
+    "modality": "WATER",
+    "athlete_scope": {
+      "kind": "CREW",
+      "ids": [
+        "synthetic-athlete-a",
+        "synthetic-athlete-b"
+      ]
+    },
+    "goal_id": "synthetic-goal-regatta-01",
+    "coach_language": "6 x 1 km; first 3 at 20 SPM with resistance band, last 3 at 23 SPM; 3-5 minutes active recovery.",
+    "blocks": [
+      {
+        "block_id": "work-band",
+        "kind": "WORK",
+        "repetitions": 3,
+        "distance_m": 1000,
+        "duration_s": null,
+        "stroke_rate": {
+          "min_spm": 19,
+          "max_spm": 21
+        },
+        "zone": "B2/B3",
+        "zone_system": "STANDARD_ROWING_ZONES",
+        "recovery": {
+          "min_s": 180,
+          "max_s": 300,
+          "mode": "ACTIVE_LIGHT_ROWING"
+        },
+        "equipment": [
+          "RESISTANCE_BAND"
+        ],
+        "instructions": [
+          "Keep the work interval continuous."
+        ]
+      },
+      {
+        "block_id": "work-free",
+        "kind": "WORK",
+        "repetitions": 3,
+        "distance_m": 1000,
+        "duration_s": null,
+        "stroke_rate": {
+          "min_spm": 22,
+          "max_spm": 24
+        },
+        "zone": "B2/B3",
+        "zone_system": "STANDARD_ROWING_ZONES",
+        "recovery": {
+          "min_s": 180,
+          "max_s": 300,
+          "mode": "ACTIVE_LIGHT_ROWING"
+        },
+        "equipment": [],
+        "instructions": [
+          "Remove the resistance band before this block."
+        ]
+      }
+    ],
+    "unresolved_terms": [],
+    "notes": "Synthetic evaluation plan inspired by the structure of a real rowing prescription; it is not a record of an athlete's workout."
+  },
+  "sources": [
+    {
+      "source_id": "speedcoach-synthetic",
+      "kind": "SPEEDCOACH",
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metrics": {
+        "start_time": "2026-01-20T06:00:00.000-03:00",
+        "duration_s": 3044.648,
+        "end_distance_m": 8041.345,
+        "average_positive_spm": 19.03,
+        "positive_spm_rows": 613,
+        "route_points": 614,
+        "rejected_rows": 0,
+        "input_format": "WAKE_NORMALIZED_TELEMETRY_CSV",
+        "normalized_sha256": "5f76d0af4da638538afbc2849b980c50babcc5de4507683a413cb7d1e0e278b4"
+      },
+      "quality_flags": [
+        "GPS_PRESENT",
+        "SPM_PRESENT"
+      ],
+      "time_series_windows": [
+        {
+          "start_offset_s": 0,
+          "end_offset_s": 30,
+          "distance_start_m": 0.0,
+          "distance_end_m": 83.3,
+          "average_speed_m_s": 2.776,
+          "average_spm": 20.33,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 30,
+          "end_offset_s": 60,
+          "distance_start_m": 100.1,
+          "distance_end_m": 183.9,
+          "average_speed_m_s": 3.355,
+          "average_spm": 19.81,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 60,
+          "end_offset_s": 90,
+          "distance_start_m": 200.6,
+          "distance_end_m": 283.0,
+          "average_speed_m_s": 3.304,
+          "average_spm": 20.07,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 90,
+          "end_offset_s": 120,
+          "distance_start_m": 299.5,
+          "distance_end_m": 382.2,
+          "average_speed_m_s": 3.304,
+          "average_spm": 19.97,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 120,
+          "end_offset_s": 150,
+          "distance_start_m": 398.9,
+          "distance_end_m": 482.5,
+          "average_speed_m_s": 3.344,
+          "average_spm": 19.85,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 150,
+          "end_offset_s": 180,
+          "distance_start_m": 499.2,
+          "distance_end_m": 582.2,
+          "average_speed_m_s": 3.324,
+          "average_spm": 20.2,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 180,
+          "end_offset_s": 210,
+          "distance_start_m": 598.6,
+          "distance_end_m": 680.9,
+          "average_speed_m_s": 3.289,
+          "average_spm": 19.72,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 210,
+          "end_offset_s": 240,
+          "distance_start_m": 697.4,
+          "distance_end_m": 780.6,
+          "average_speed_m_s": 3.324,
+          "average_spm": 20.25,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 240,
+          "end_offset_s": 270,
+          "distance_start_m": 797.4,
+          "distance_end_m": 881.1,
+          "average_speed_m_s": 3.349,
+          "average_spm": 19.79,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 270,
+          "end_offset_s": 300,
+          "distance_start_m": 897.6,
+          "distance_end_m": 980.0,
+          "average_speed_m_s": 3.299,
+          "average_spm": 20.14,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 300,
+          "end_offset_s": 330,
+          "distance_start_m": 996.4,
+          "distance_end_m": 1043.7,
+          "average_speed_m_s": 2.184,
+          "average_spm": 17.07,
+          "samples": 7
+        },
+        {
+          "start_offset_s": 330,
+          "end_offset_s": 360,
+          "distance_start_m": 1052.4,
+          "distance_end_m": 1095.9,
+          "average_speed_m_s": 1.741,
+          "average_spm": 16.23,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 360,
+          "end_offset_s": 390,
+          "distance_start_m": 1104.5,
+          "distance_end_m": 1146.6,
+          "average_speed_m_s": 1.69,
+          "average_spm": 15.91,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 390,
+          "end_offset_s": 420,
+          "distance_start_m": 1155.0,
+          "distance_end_m": 1196.5,
+          "average_speed_m_s": 1.662,
+          "average_spm": 15.94,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 420,
+          "end_offset_s": 450,
+          "distance_start_m": 1204.9,
+          "distance_end_m": 1247.4,
+          "average_speed_m_s": 1.695,
+          "average_spm": 16.2,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 450,
+          "end_offset_s": 480,
+          "distance_start_m": 1255.9,
+          "distance_end_m": 1299.4,
+          "average_speed_m_s": 1.736,
+          "average_spm": 15.81,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 480,
+          "end_offset_s": 510,
+          "distance_start_m": 1308.3,
+          "distance_end_m": 1351.7,
+          "average_speed_m_s": 1.742,
+          "average_spm": 16.09,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 510,
+          "end_offset_s": 540,
+          "distance_start_m": 1360.3,
+          "distance_end_m": 1401.7,
+          "average_speed_m_s": 1.668,
+          "average_spm": 16.1,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 540,
+          "end_offset_s": 570,
+          "distance_start_m": 1410.1,
+          "distance_end_m": 1493.6,
+          "average_speed_m_s": 3.063,
+          "average_spm": 19.33,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 570,
+          "end_offset_s": 600,
+          "distance_start_m": 1510.4,
+          "distance_end_m": 1593.9,
+          "average_speed_m_s": 3.34,
+          "average_spm": 20.09,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 600,
+          "end_offset_s": 630,
+          "distance_start_m": 1610.5,
+          "distance_end_m": 1692.5,
+          "average_speed_m_s": 3.289,
+          "average_spm": 19.86,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 630,
+          "end_offset_s": 660,
+          "distance_start_m": 1709.1,
+          "distance_end_m": 1792.0,
+          "average_speed_m_s": 3.317,
+          "average_spm": 20.27,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 660,
+          "end_offset_s": 690,
+          "distance_start_m": 1808.7,
+          "distance_end_m": 1892.6,
+          "average_speed_m_s": 3.352,
+          "average_spm": 19.79,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 690,
+          "end_offset_s": 720,
+          "distance_start_m": 1909.4,
+          "distance_end_m": 1992.0,
+          "average_speed_m_s": 3.314,
+          "average_spm": 20.24,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 720,
+          "end_offset_s": 750,
+          "distance_start_m": 2008.6,
+          "distance_end_m": 2090.5,
+          "average_speed_m_s": 3.282,
+          "average_spm": 19.82,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 750,
+          "end_offset_s": 780,
+          "distance_start_m": 2107.0,
+          "distance_end_m": 2190.7,
+          "average_speed_m_s": 3.34,
+          "average_spm": 20.07,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 780,
+          "end_offset_s": 810,
+          "distance_start_m": 2207.6,
+          "distance_end_m": 2290.9,
+          "average_speed_m_s": 3.34,
+          "average_spm": 20.04,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 810,
+          "end_offset_s": 840,
+          "distance_start_m": 2307.6,
+          "distance_end_m": 2390.1,
+          "average_speed_m_s": 3.306,
+          "average_spm": 19.87,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 840,
+          "end_offset_s": 870,
+          "distance_start_m": 2406.7,
+          "distance_end_m": 2451.7,
+          "average_speed_m_s": 2.135,
+          "average_spm": 17.21,
+          "samples": 7
+        },
+        {
+          "start_offset_s": 870,
+          "end_offset_s": 900,
+          "distance_start_m": 2460.3,
+          "distance_end_m": 2503.6,
+          "average_speed_m_s": 1.73,
+          "average_spm": 15.83,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 900,
+          "end_offset_s": 930,
+          "distance_start_m": 2512.5,
+          "distance_end_m": 2556.3,
+          "average_speed_m_s": 1.758,
+          "average_spm": 16.21,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 930,
+          "end_offset_s": 960,
+          "distance_start_m": 2565.1,
+          "distance_end_m": 2607.2,
+          "average_speed_m_s": 1.696,
+          "average_spm": 15.91,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 960,
+          "end_offset_s": 990,
+          "distance_start_m": 2615.5,
+          "distance_end_m": 2657.1,
+          "average_speed_m_s": 1.664,
+          "average_spm": 15.94,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 990,
+          "end_offset_s": 1020,
+          "distance_start_m": 2665.3,
+          "distance_end_m": 2707.5,
+          "average_speed_m_s": 1.679,
+          "average_spm": 16.21,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1020,
+          "end_offset_s": 1050,
+          "distance_start_m": 2716.1,
+          "distance_end_m": 2759.6,
+          "average_speed_m_s": 1.736,
+          "average_spm": 15.84,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1050,
+          "end_offset_s": 1080,
+          "distance_start_m": 2768.3,
+          "distance_end_m": 2811.5,
+          "average_speed_m_s": 1.731,
+          "average_spm": 16.06,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1080,
+          "end_offset_s": 1110,
+          "distance_start_m": 2820.2,
+          "distance_end_m": 2904.2,
+          "average_speed_m_s": 3.089,
+          "average_spm": 19.15,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1110,
+          "end_offset_s": 1140,
+          "distance_start_m": 2920.8,
+          "distance_end_m": 3003.9,
+          "average_speed_m_s": 3.326,
+          "average_spm": 20.22,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1140,
+          "end_offset_s": 1170,
+          "distance_start_m": 3020.5,
+          "distance_end_m": 3102.6,
+          "average_speed_m_s": 3.289,
+          "average_spm": 19.7,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1170,
+          "end_offset_s": 1200,
+          "distance_start_m": 3119.0,
+          "distance_end_m": 3202.4,
+          "average_speed_m_s": 3.327,
+          "average_spm": 20.12,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1200,
+          "end_offset_s": 1230,
+          "distance_start_m": 3219.2,
+          "distance_end_m": 3303.1,
+          "average_speed_m_s": 3.357,
+          "average_spm": 19.9,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1230,
+          "end_offset_s": 1260,
+          "distance_start_m": 3319.7,
+          "distance_end_m": 3402.1,
+          "average_speed_m_s": 3.301,
+          "average_spm": 20.01,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1260,
+          "end_offset_s": 1290,
+          "distance_start_m": 3418.6,
+          "distance_end_m": 3501.2,
+          "average_speed_m_s": 3.302,
+          "average_spm": 20.12,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1290,
+          "end_offset_s": 1320,
+          "distance_start_m": 3517.8,
+          "distance_end_m": 3601.4,
+          "average_speed_m_s": 3.341,
+          "average_spm": 19.84,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1320,
+          "end_offset_s": 1350,
+          "distance_start_m": 3618.2,
+          "distance_end_m": 3701.3,
+          "average_speed_m_s": 3.328,
+          "average_spm": 20.25,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1350,
+          "end_offset_s": 1380,
+          "distance_start_m": 3717.8,
+          "distance_end_m": 3799.8,
+          "average_speed_m_s": 3.285,
+          "average_spm": 19.73,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1380,
+          "end_offset_s": 1410,
+          "distance_start_m": 3816.5,
+          "distance_end_m": 3861.8,
+          "average_speed_m_s": 2.133,
+          "average_spm": 17.25,
+          "samples": 7
+        },
+        {
+          "start_offset_s": 1410,
+          "end_offset_s": 1440,
+          "distance_start_m": 3870.2,
+          "distance_end_m": 3911.7,
+          "average_speed_m_s": 1.662,
+          "average_spm": 16.01,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1440,
+          "end_offset_s": 1470,
+          "distance_start_m": 3920.3,
+          "distance_end_m": 3963.1,
+          "average_speed_m_s": 1.713,
+          "average_spm": 15.85,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1470,
+          "end_offset_s": 1500,
+          "distance_start_m": 3971.8,
+          "distance_end_m": 4015.3,
+          "average_speed_m_s": 1.742,
+          "average_spm": 16.18,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1500,
+          "end_offset_s": 1530,
+          "distance_start_m": 4024.2,
+          "distance_end_m": 4067.2,
+          "average_speed_m_s": 1.728,
+          "average_spm": 15.89,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1530,
+          "end_offset_s": 1560,
+          "distance_start_m": 4075.5,
+          "distance_end_m": 4117.1,
+          "average_speed_m_s": 1.665,
+          "average_spm": 15.93,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1560,
+          "end_offset_s": 1590,
+          "distance_start_m": 4125.5,
+          "distance_end_m": 4166.9,
+          "average_speed_m_s": 1.66,
+          "average_spm": 16.24,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1590,
+          "end_offset_s": 1620,
+          "distance_start_m": 4175.5,
+          "distance_end_m": 4218.8,
+          "average_speed_m_s": 1.727,
+          "average_spm": 15.83,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1620,
+          "end_offset_s": 1650,
+          "distance_start_m": 4227.5,
+          "distance_end_m": 4318.8,
+          "average_speed_m_s": 3.335,
+          "average_spm": 21.61,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1650,
+          "end_offset_s": 1680,
+          "distance_start_m": 4337.0,
+          "distance_end_m": 4427.3,
+          "average_speed_m_s": 3.618,
+          "average_spm": 23.13,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1680,
+          "end_offset_s": 1710,
+          "distance_start_m": 4445.4,
+          "distance_end_m": 4535.4,
+          "average_speed_m_s": 3.601,
+          "average_spm": 22.97,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1710,
+          "end_offset_s": 1740,
+          "distance_start_m": 4553.7,
+          "distance_end_m": 4645.5,
+          "average_speed_m_s": 3.67,
+          "average_spm": 22.95,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1740,
+          "end_offset_s": 1770,
+          "distance_start_m": 4663.8,
+          "distance_end_m": 4754.3,
+          "average_speed_m_s": 3.627,
+          "average_spm": 23.11,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1770,
+          "end_offset_s": 1800,
+          "distance_start_m": 4772.0,
+          "distance_end_m": 4859.0,
+          "average_speed_m_s": 3.49,
+          "average_spm": 22.8,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1800,
+          "end_offset_s": 1830,
+          "distance_start_m": 4876.0,
+          "distance_end_m": 4959.6,
+          "average_speed_m_s": 3.356,
+          "average_spm": 23.3,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1830,
+          "end_offset_s": 1860,
+          "distance_start_m": 4976.1,
+          "distance_end_m": 5057.5,
+          "average_speed_m_s": 3.264,
+          "average_spm": 22.72,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1860,
+          "end_offset_s": 1890,
+          "distance_start_m": 5073.4,
+          "distance_end_m": 5152.1,
+          "average_speed_m_s": 3.151,
+          "average_spm": 23.15,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1890,
+          "end_offset_s": 1920,
+          "distance_start_m": 5167.8,
+          "distance_end_m": 5236.3,
+          "average_speed_m_s": 2.907,
+          "average_spm": 21.79,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1920,
+          "end_offset_s": 1950,
+          "distance_start_m": 5245.1,
+          "distance_end_m": 5288.7,
+          "average_speed_m_s": 1.747,
+          "average_spm": 15.82,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1950,
+          "end_offset_s": 1980,
+          "distance_start_m": 5297.3,
+          "distance_end_m": 5339.0,
+          "average_speed_m_s": 1.677,
+          "average_spm": 16.05,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 1980,
+          "end_offset_s": 2010,
+          "distance_start_m": 5347.4,
+          "distance_end_m": 5388.7,
+          "average_speed_m_s": 1.657,
+          "average_spm": 16.1,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2010,
+          "end_offset_s": 2040,
+          "distance_start_m": 5397.1,
+          "distance_end_m": 5439.7,
+          "average_speed_m_s": 1.699,
+          "average_spm": 15.82,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2040,
+          "end_offset_s": 2070,
+          "distance_start_m": 5448.2,
+          "distance_end_m": 5491.7,
+          "average_speed_m_s": 1.734,
+          "average_spm": 16.19,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2070,
+          "end_offset_s": 2100,
+          "distance_start_m": 5500.3,
+          "distance_end_m": 5543.7,
+          "average_speed_m_s": 1.734,
+          "average_spm": 15.97,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2100,
+          "end_offset_s": 2130,
+          "distance_start_m": 5552.0,
+          "distance_end_m": 5593.6,
+          "average_speed_m_s": 1.665,
+          "average_spm": 15.87,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2130,
+          "end_offset_s": 2160,
+          "distance_start_m": 5601.8,
+          "distance_end_m": 5649.9,
+          "average_speed_m_s": 1.875,
+          "average_spm": 16.91,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2160,
+          "end_offset_s": 2190,
+          "distance_start_m": 5664.9,
+          "distance_end_m": 5739.8,
+          "average_speed_m_s": 2.999,
+          "average_spm": 20.06,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2190,
+          "end_offset_s": 2220,
+          "distance_start_m": 5754.7,
+          "distance_end_m": 5828.3,
+          "average_speed_m_s": 2.95,
+          "average_spm": 19.89,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2220,
+          "end_offset_s": 2250,
+          "distance_start_m": 5843.1,
+          "distance_end_m": 5916.9,
+          "average_speed_m_s": 2.951,
+          "average_spm": 20.2,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2250,
+          "end_offset_s": 2280,
+          "distance_start_m": 5931.7,
+          "distance_end_m": 6006.8,
+          "average_speed_m_s": 2.998,
+          "average_spm": 19.76,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2280,
+          "end_offset_s": 2310,
+          "distance_start_m": 6021.9,
+          "distance_end_m": 6096.1,
+          "average_speed_m_s": 2.977,
+          "average_spm": 20.23,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2310,
+          "end_offset_s": 2340,
+          "distance_start_m": 6110.8,
+          "distance_end_m": 6184.6,
+          "average_speed_m_s": 2.948,
+          "average_spm": 19.78,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2340,
+          "end_offset_s": 2370,
+          "distance_start_m": 6199.2,
+          "distance_end_m": 6273.2,
+          "average_speed_m_s": 2.955,
+          "average_spm": 20.12,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2370,
+          "end_offset_s": 2400,
+          "distance_start_m": 6288.2,
+          "distance_end_m": 6363.0,
+          "average_speed_m_s": 2.992,
+          "average_spm": 19.96,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2400,
+          "end_offset_s": 2430,
+          "distance_start_m": 6377.9,
+          "distance_end_m": 6451.7,
+          "average_speed_m_s": 2.958,
+          "average_spm": 19.9,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2430,
+          "end_offset_s": 2460,
+          "distance_start_m": 6466.4,
+          "distance_end_m": 6539.9,
+          "average_speed_m_s": 2.941,
+          "average_spm": 20.16,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2460,
+          "end_offset_s": 2490,
+          "distance_start_m": 6554.7,
+          "distance_end_m": 6634.9,
+          "average_speed_m_s": 2.991,
+          "average_spm": 19.78,
+          "samples": 7
+        },
+        {
+          "start_offset_s": 2490,
+          "end_offset_s": 2520,
+          "distance_start_m": 6643.6,
+          "distance_end_m": 6687.1,
+          "average_speed_m_s": 1.739,
+          "average_spm": 15.79,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2520,
+          "end_offset_s": 2550,
+          "distance_start_m": 6695.7,
+          "distance_end_m": 6738.1,
+          "average_speed_m_s": 1.7,
+          "average_spm": 16.07,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2550,
+          "end_offset_s": 2580,
+          "distance_start_m": 6746.2,
+          "distance_end_m": 6787.5,
+          "average_speed_m_s": 1.649,
+          "average_spm": 16.09,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2580,
+          "end_offset_s": 2610,
+          "distance_start_m": 6795.8,
+          "distance_end_m": 6837.6,
+          "average_speed_m_s": 1.67,
+          "average_spm": 15.86,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2610,
+          "end_offset_s": 2640,
+          "distance_start_m": 6846.2,
+          "distance_end_m": 6889.2,
+          "average_speed_m_s": 1.718,
+          "average_spm": 16.17,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2640,
+          "end_offset_s": 2670,
+          "distance_start_m": 6897.9,
+          "distance_end_m": 6941.5,
+          "average_speed_m_s": 1.743,
+          "average_spm": 15.98,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2670,
+          "end_offset_s": 2700,
+          "distance_start_m": 6950.0,
+          "distance_end_m": 6991.7,
+          "average_speed_m_s": 1.673,
+          "average_spm": 15.86,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2700,
+          "end_offset_s": 2730,
+          "distance_start_m": 7000.0,
+          "distance_end_m": 7041.3,
+          "average_speed_m_s": 1.656,
+          "average_spm": 16.22,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2730,
+          "end_offset_s": 2760,
+          "distance_start_m": 7057.0,
+          "distance_end_m": 7135.4,
+          "average_speed_m_s": 3.136,
+          "average_spm": 22.76,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2760,
+          "end_offset_s": 2790,
+          "distance_start_m": 7151.0,
+          "distance_end_m": 7230.0,
+          "average_speed_m_s": 3.151,
+          "average_spm": 23.18,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2790,
+          "end_offset_s": 2820,
+          "distance_start_m": 7245.9,
+          "distance_end_m": 7326.3,
+          "average_speed_m_s": 3.21,
+          "average_spm": 22.83,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2820,
+          "end_offset_s": 2850,
+          "distance_start_m": 7342.3,
+          "distance_end_m": 7421.4,
+          "average_speed_m_s": 3.17,
+          "average_spm": 23.08,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2850,
+          "end_offset_s": 2880,
+          "distance_start_m": 7437.1,
+          "distance_end_m": 7515.9,
+          "average_speed_m_s": 3.149,
+          "average_spm": 23.02,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2880,
+          "end_offset_s": 2910,
+          "distance_start_m": 7531.7,
+          "distance_end_m": 7610.9,
+          "average_speed_m_s": 3.17,
+          "average_spm": 22.83,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2910,
+          "end_offset_s": 2940,
+          "distance_start_m": 7626.9,
+          "distance_end_m": 7706.8,
+          "average_speed_m_s": 3.196,
+          "average_spm": 23.17,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2940,
+          "end_offset_s": 2970,
+          "distance_start_m": 7722.6,
+          "distance_end_m": 7801.0,
+          "average_speed_m_s": 3.14,
+          "average_spm": 22.75,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 2970,
+          "end_offset_s": 3000,
+          "distance_start_m": 7816.7,
+          "distance_end_m": 7895.7,
+          "average_speed_m_s": 3.156,
+          "average_spm": 23.28,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 3000,
+          "end_offset_s": 3030,
+          "distance_start_m": 7911.7,
+          "distance_end_m": 7991.6,
+          "average_speed_m_s": 3.196,
+          "average_spm": 22.8,
+          "samples": 6
+        },
+        {
+          "start_offset_s": 3030,
+          "end_offset_s": 3060,
+          "distance_start_m": 8007.5,
+          "distance_end_m": 8041.3,
+          "average_speed_m_s": 3.18,
+          "average_spm": 22.95,
+          "samples": 4
+        }
+      ]
+    }
+  ],
+  "cross_source_findings": [],
+  "environment": {
+    "timeline_id": "synthetic-environment-002",
+    "source": {
+      "kind": "SYNTHETIC",
+      "source_ref": "scripts/generate_synthetic_cases.py",
+      "quality": "HIGH"
+    },
+    "direction_convention": "METEOROLOGICAL_FROM_DEGREES_TRUE_NORTH",
+    "route_heading_deg": 0.0,
+    "method": "Effective headwind projects meteorological wind-from direction onto the known boat heading; time alignment supports association but does not establish causation.",
+    "time_series_windows": [
+      {
+        "elapsed_s": 0.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 30.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 60.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 90.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 120.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 150.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 180.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 210.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 240.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 270.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 300.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 330.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 360.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 390.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 420.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 450.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 480.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 510.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 540.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 570.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 600.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 630.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 660.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 690.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 720.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 750.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 780.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 810.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 840.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 870.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 900.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 930.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 960.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 990.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1020.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1050.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1080.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1110.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1140.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1170.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1200.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1230.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1260.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1290.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1320.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1350.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1380.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1410.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1440.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1470.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1500.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1530.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1560.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1590.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1620.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1650.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1680.0,
+        "wind_speed_m_s": 1.0,
+        "wind_direction_from_deg": 180.0,
+        "gust_speed_m_s": 1.3,
+        "effective_headwind_m_s": -1.0
+      },
+      {
+        "elapsed_s": 1710.0,
+        "wind_speed_m_s": 1.668,
+        "wind_direction_from_deg": 153.262,
+        "gust_speed_m_s": 2.147,
+        "effective_headwind_m_s": -1.49
+      },
+      {
+        "elapsed_s": 1740.0,
+        "wind_speed_m_s": 2.418,
+        "wind_direction_from_deg": 123.262,
+        "gust_speed_m_s": 3.097,
+        "effective_headwind_m_s": -1.326
+      },
+      {
+        "elapsed_s": 1770.0,
+        "wind_speed_m_s": 3.168,
+        "wind_direction_from_deg": 93.262,
+        "gust_speed_m_s": 4.047,
+        "effective_headwind_m_s": -0.18
+      },
+      {
+        "elapsed_s": 1800.0,
+        "wind_speed_m_s": 3.918,
+        "wind_direction_from_deg": 63.262,
+        "gust_speed_m_s": 4.997,
+        "effective_headwind_m_s": 1.763
+      },
+      {
+        "elapsed_s": 1830.0,
+        "wind_speed_m_s": 4.668,
+        "wind_direction_from_deg": 33.262,
+        "gust_speed_m_s": 5.947,
+        "effective_headwind_m_s": 3.903
+      },
+      {
+        "elapsed_s": 1860.0,
+        "wind_speed_m_s": 5.418,
+        "wind_direction_from_deg": 3.262,
+        "gust_speed_m_s": 6.897,
+        "effective_headwind_m_s": 5.409
+      },
+      {
+        "elapsed_s": 1890.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 1920.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 1950.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 1980.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2010.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2040.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2070.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2100.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2130.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2160.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2190.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2220.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2250.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2280.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2310.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2340.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2370.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2400.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2430.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2460.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2490.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2520.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2550.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2580.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2610.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2640.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2670.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2700.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2730.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2760.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2790.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2820.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2850.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2880.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2910.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2940.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 2970.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 3000.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 3030.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      },
+      {
+        "elapsed_s": 3060.0,
+        "wind_speed_m_s": 5.5,
+        "wind_direction_from_deg": 0.0,
+        "gust_speed_m_s": 7.0,
+        "effective_headwind_m_s": 5.5
+      }
+    ]
+  },
+  "evidence_gaps": [
+    "Telemetry cannot confirm whether the prescribed resistance band was used.",
+    "No coach technique or crew-synchronization observation is supplied.",
+    "No perceived effort report is supplied.",
+    "Mobile telemetry is not supplied; route and distance cannot be independently corroborated."
+  ]
+}

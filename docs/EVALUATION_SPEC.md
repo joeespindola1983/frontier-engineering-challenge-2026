@@ -80,6 +80,38 @@ The grader intentionally does not use a model-as-judge. Structured values, toler
 - required-question precision;
 - runtime, model tokens, and approximate cost.
 
+## Evidence ablation protocol
+
+The controlled baseline comparison answers whether the bounded WAKE workflow
+outperforms one direct model call on the same evidence. It does not establish the
+incremental value of mobile telemetry or superiority over a human coach.
+
+Evaluate optional-source value by running the same frozen case and workflow with:
+
+1. plan + SpeedCoach only;
+2. plan + SpeedCoach + context/environment;
+3. the full bundle including mobile telemetry.
+
+Record which rubric dimensions are applicable in each condition. Compare
+deviation precision/recall, source-selection accuracy, unsupported-claim rate,
+required-abstention recall, session-association confidence, and required-question
+precision. Never award a reduced-evidence condition for a capability its inputs
+cannot support.
+
+A later coach-process pilot must compare a coach reviewing plan + SpeedCoach with
+the same coach reviewing a WAKE briefing over the same evidence. Measure review
+time, material omissions, corrections, usefulness, and confidence. With one coach
+or a small number of sessions, label the result a usability pilot rather than a
+general performance claim. Do not claim improved athletic performance without a
+longitudinal outcome study.
+
+The first ground-truth-free condition bundle is frozen under
+`evaluation/ablation-inputs/v1/`. Its manifest records the base session, summary
+hashes, included source files, and capabilities available in each condition. It
+is input preparation only; it must not be presented as an ablation result until
+the same versioned runner executes every condition and the condition-aware
+scoring contract is frozen.
+
 ## Baseline protocol
 
 The simple baseline will use one direct model call with:

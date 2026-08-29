@@ -64,8 +64,8 @@ Give athletes a meaningful history of distance, progress, races, results, boats,
 
 The preferred demonstration is one self-contained investigation:
 
-1. receive a planned session plus paired SpeedCoach and mobile exports;
-2. identify or confirm that the recordings represent the same outing despite timing differences;
+1. receive a planned session plus a SpeedCoach export, with mobile, environment, and human context when available;
+2. use optional mobile evidence to corroborate the outing despite timing differences, or state that independent association is unavailable;
 3. extract and reconcile distance, speed/pace, SPM, route, intervals, and sensor quality when available;
 4. request missing boat, crew, intent, and perceived-effort context;
 5. compare planned versus performed without inventing technique observations;
@@ -77,6 +77,8 @@ Synthetic history may be used for repeatable evaluation. Approved anonymized rea
 ## Success definition
 
 A coach should receive a more complete, evidence-backed, and actionable reconstruction than a reasonable simple baseline while spending less manual effort. The primary metric and scoring rubric must be fixed before final implementation and applied to the same cases for baseline and agent.
+
+The current controlled score compares WAKE with a direct model call, not with a human coach. A separate coach-process pilot is required before claiming reduced human review time. The product claim is that WAKE prepares a consistent, exception-focused briefing for coach review; it does not replace rowing judgment.
 
 ## Non-goals for the hackathon
 

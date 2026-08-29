@@ -91,7 +91,7 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
     <main className="page page-narrow">
       <PrototypeNotice />
       <header className="page-header">
-        <div className="page-header-copy"><div className="kicker">New session review</div><h1>Bring the evidence together.</h1><p className="lede">The public synthetic sample is ready to investigate. A connected local runtime can validate a complete five-source bundle without exposing evaluation ground truth.</p></div>
+        <div className="page-header-copy"><div className="kicker">New session review</div><h1>Bring the evidence together.</h1><p className="lede">Start with the training plan and SpeedCoach recording. Optional evidence expands what WAKE can verify without blocking the core review.</p></div>
       </header>
       <div className="intake-layout">
         <section>
@@ -100,12 +100,12 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
             {evidenceSourceDefinitions.map((source, index) => {
               const selected = files[source.kind as EvidenceKind];
               return (
-                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Replace'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
+                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title} · {source.required ? 'Core' : 'Optional'}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Choose'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
               );
             })}
           </div>
-          {hasSelectedFiles ? <p className="upload-boundary">Custom evidence is validated only when all five files are selected. A different bundle cannot reuse the committed replay.</p> : null}
-          <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>The boat, crew, goal, and session request will be read from the selected context file.</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
+          {hasSelectedFiles ? <p className="upload-boundary">Plan and SpeedCoach enable the core review. Missing mobile, environment, or context will remain visible as evidence gaps. A different bundle cannot reuse the committed replay.</p> : null}
+          <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>{files.CONTEXT ? 'Boat, crew, goal, and observations will be read from the selected context file.' : 'No context file selected. Boat, crew, goal, and human observations will remain unknown.'}</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
           <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
         </section>

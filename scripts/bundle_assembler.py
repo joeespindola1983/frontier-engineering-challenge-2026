@@ -18,7 +18,7 @@ from datetime import datetime
 
 
 SUMMARY_VERSION = "wake.case_summary.v1"
-ASSEMBLER_VERSION = "scripts/bundle_assembler.py@1.0"
+ASSEMBLER_VERSION = "scripts/bundle_assembler.py@1.1"
 DOMAIN_KNOWLEDGE = [
     {
         "term": "voga",
@@ -276,6 +276,25 @@ def _known_context(context: dict) -> dict:
     return {key: value for key, value in context.items() if key not in excluded}
 
 
+def _default_context(plan: dict) -> dict:
+    """Create neutral process context without inventing rowing facts."""
+    plan_id = plan["plan_id"]
+    return {
+        "schema_version": "wake.generated_session_context.v1",
+        "case_id": f"uploaded-{plan_id}",
+        "investigation_request": (
+            "Compare the planned and performed session and state what remains unknown."
+        ),
+        "provided_sources": [],
+        "session_candidate": {},
+        "human_confirmations": {},
+        "input_notice": (
+            "No session context was supplied; boat, crew, goal, and human observations "
+            "remain unknown."
+        ),
+    }
+
+
 def _human_evidence_gaps(context: dict, plan: dict | None) -> list[str]:
     confirmations = context.get("human_confirmations", {})
     gaps = []
@@ -296,87 +315,114 @@ def _human_evidence_gaps(context: dict, plan: dict | None) -> list[str]:
 def assemble_case_summary(
     *,
     plan: dict | None,
-    context: dict,
+    context: dict | None,
     environment: dict | None,
     telemetry_sources: list[dict],
     input_hashes: dict[str, str],
 ) -> dict:
     """Return a deterministic compact summary from validated source values."""
+    if plan is None:
+        raise ValueError("Summary assembly requires a training plan.")
+    context_supplied = context is not None
+    context = context or _default_context(plan)
     by_kind = {source["kind"]: source for source in telemetry_sources}
-    if set(by_kind) != {"SPEEDCOACH", "MOBILE"} or len(telemetry_sources) != 2:
-        raise ValueError("Summary assembly requires one SPEEDCOACH and one MOBILE source.")
+    if (
+        "SPEEDCOACH" not in by_kind
+        or not set(by_kind).issubset({"SPEEDCOACH", "MOBILE"})
+        or len(by_kind) != len(telemetry_sources)
+    ):
+        raise ValueError(
+            "Summary assembly requires one SPEEDCOACH source and accepts one optional MOBILE source."
+        )
 
     summaries = {}
     source_rows = {}
     for kind in ("SPEEDCOACH", "MOBILE"):
+        if kind not in by_kind:
+            continue
         summaries[kind], source_rows[kind] = _source_summary(by_kind[kind], context)
 
     speedcoach = summaries["SPEEDCOACH"]
-    mobile = summaries["MOBILE"]
     findings = []
-    refs = [speedcoach["evidence_refs"][0], mobile["evidence_refs"][0]]
-
-    offset = _clock_offset(
-        speedcoach["metrics"]["start_time"], mobile["metrics"]["start_time"]
-    )
     evidence_gaps = _human_evidence_gaps(context, plan)
-    if offset is not None:
-        findings.append(
-            {
-                "finding_id": "mobile-clock-offset",
-                "type": "CLOCK_OFFSET",
-                "summary": "The mobile clock start differs from the SpeedCoach clock start.",
-                "values": {"mobile_from_speedcoach_s": offset},
-                "evidence_refs": refs,
-            }
+    if not context_supplied:
+        evidence_gaps.append(
+            "Session context is not supplied; boat, crew, goal, and human observations remain unknown."
+        )
+    mobile = summaries.get("MOBILE")
+    if mobile is None:
+        evidence_gaps.append(
+            "Mobile telemetry is not supplied; route and distance cannot be independently corroborated."
         )
     else:
-        evidence_gaps.append(
-            "Clock offset cannot be computed safely because timestamp timezone context is missing or incompatible."
+        refs = [speedcoach["evidence_refs"][0], mobile["evidence_refs"][0]]
+        offset = _clock_offset(
+            speedcoach["metrics"]["start_time"], mobile["metrics"]["start_time"]
         )
-
-    speedcoach_distance = speedcoach["metrics"]["end_distance_m"]
-    mobile_distance = mobile["metrics"]["end_distance_m"]
-    if speedcoach_distance > 0:
-        ratio = mobile_distance / speedcoach_distance
-        difference_percent = round((ratio - 1) * 100, 3)
-        findings.append(
-            {
-                "finding_id": "distance-bias",
-                "type": "DISTANCE_CONFLICT",
-                "summary": "The two cumulative distance sources end at different values.",
-                "values": {
-                    "mobile_to_speedcoach_ratio": round(ratio, 5),
-                    "difference_percent": difference_percent,
-                },
-                "evidence_refs": refs,
-            }
-        )
-        if abs(difference_percent) >= 1:
-            mobile["quality_flags"] = list(
-                dict.fromkeys([*mobile["quality_flags"], "DISTANCE_BIAS_PRESENT"])
+        if offset is not None:
+            findings.append(
+                {
+                    "finding_id": "mobile-clock-offset",
+                    "type": "CLOCK_OFFSET",
+                    "summary": "The mobile clock start differs from the SpeedCoach clock start.",
+                    "values": {"mobile_from_speedcoach_s": offset},
+                    "evidence_refs": refs,
+                }
+            )
+        else:
+            evidence_gaps.append(
+                "Clock offset cannot be computed safely because timestamp timezone context is missing or incompatible."
             )
 
-    routes = {kind: _gps_route(rows) for kind, rows in source_rows.items()}
-    if routes["SPEEDCOACH"] and routes["MOBILE"]:
-        findings.append(
-            {
-                "finding_id": "route-overlap",
-                "type": "ROUTE_OVERLAP",
-                "summary": "The two GPS routes are compared spatially in both directions.",
-                "values": {
-                    "speedcoach_to_mobile": _nearest_stats(
-                        routes["SPEEDCOACH"], routes["MOBILE"]
-                    ),
-                    "mobile_to_speedcoach": _nearest_stats(
-                        routes["MOBILE"], routes["SPEEDCOACH"]
-                    ),
-                },
-                "evidence_refs": refs,
-            }
+        speedcoach_distance = speedcoach["metrics"]["end_distance_m"]
+        mobile_distance = mobile["metrics"]["end_distance_m"]
+        if speedcoach_distance > 0:
+            ratio = mobile_distance / speedcoach_distance
+            difference_percent = round((ratio - 1) * 100, 3)
+            findings.append(
+                {
+                    "finding_id": "distance-bias",
+                    "type": "DISTANCE_CONFLICT",
+                    "summary": "The two cumulative distance sources end at different values.",
+                    "values": {
+                        "mobile_to_speedcoach_ratio": round(ratio, 5),
+                        "difference_percent": difference_percent,
+                    },
+                    "evidence_refs": refs,
+                }
+            )
+            if abs(difference_percent) >= 1:
+                mobile["quality_flags"] = list(
+                    dict.fromkeys([*mobile["quality_flags"], "DISTANCE_BIAS_PRESENT"])
+                )
+
+        routes = {kind: _gps_route(rows) for kind, rows in source_rows.items()}
+        if routes["SPEEDCOACH"] and routes["MOBILE"]:
+            findings.append(
+                {
+                    "finding_id": "route-overlap",
+                    "type": "ROUTE_OVERLAP",
+                    "summary": "The two GPS routes are compared spatially in both directions.",
+                    "values": {
+                        "speedcoach_to_mobile": _nearest_stats(
+                            routes["SPEEDCOACH"], routes["MOBILE"]
+                        ),
+                        "mobile_to_speedcoach": _nearest_stats(
+                            routes["MOBILE"], routes["SPEEDCOACH"]
+                        ),
+                    },
+                    "evidence_refs": refs,
+                }
+            )
+        else:
+            evidence_gaps.append(
+                "Route overlap cannot be assessed because one GPS route is absent."
+            )
+
+    if environment is None:
+        evidence_gaps.append(
+            "Environmental timeline is not supplied; condition-aware interpretation is unavailable."
         )
-    else:
-        evidence_gaps.append("Route overlap cannot be assessed because one GPS route is absent.")
 
     case_id = context["case_id"]
     return {
@@ -389,7 +435,11 @@ def assemble_case_summary(
         "domain_knowledge": DOMAIN_KNOWLEDGE,
         "known_context": _known_context(context),
         "plan": plan,
-        "sources": [speedcoach, mobile],
+        "sources": [
+            summaries[kind]
+            for kind in ("SPEEDCOACH", "MOBILE")
+            if kind in summaries
+        ],
         "cross_source_findings": findings,
         "environment": _environment_summary(environment, context),
         "evidence_gaps": evidence_gaps,

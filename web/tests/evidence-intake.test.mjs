@@ -17,13 +17,13 @@ function fakeFile(name, text) {
 
 test('defines the complete evidence bundle in a stable investigation order', () => {
   assert.deepEqual(
-    evidenceSourceDefinitions.map(({ kind, defaultName }) => [kind, defaultName]),
+    evidenceSourceDefinitions.map(({ kind, defaultName, required }) => [kind, defaultName, required]),
     [
-      ['PLAN', 'plan.json'],
-      ['SPEEDCOACH', 'speedcoach.csv'],
-      ['MOBILE', 'mobile.csv'],
-      ['ENVIRONMENT', 'environment.json'],
-      ['CONTEXT', 'context.json'],
+      ['PLAN', 'plan.json', true],
+      ['SPEEDCOACH', 'speedcoach.csv', true],
+      ['MOBILE', 'mobile.csv', false],
+      ['ENVIRONMENT', 'environment.json', false],
+      ['CONTEXT', 'context.json', false],
     ],
   );
 });
@@ -56,13 +56,31 @@ test('uploads every selected source and returns source ids in contract order', a
   assert.equal(calls[0].name, 'plan.json');
 });
 
-test('rejects a partial upload bundle before sending any source', async () => {
+test('uploads the minimum plan and SpeedCoach bundle without optional evidence', async () => {
+  const calls = [];
+  const client = {
+    uploadSource: async (source) => {
+      calls.push(source.kind);
+      return { source_id: `source-${source.kind.toLowerCase()}` };
+    },
+  };
+
+  const sourceIds = await uploadEvidenceBundle(client, {
+    PLAN: fakeFile('plan.json', '{}'),
+    SPEEDCOACH: fakeFile('speedcoach.csv', 'telemetry'),
+  });
+
+  assert.deepEqual(calls, ['PLAN', 'SPEEDCOACH']);
+  assert.deepEqual(sourceIds, ['source-plan', 'source-speedcoach']);
+});
+
+test('rejects a bundle missing a core source before uploading', async () => {
   let calls = 0;
   const client = { uploadSource: async () => { calls += 1; } };
 
   await assert.rejects(
     uploadEvidenceBundle(client, { PLAN: fakeFile('plan.json', '{}') }),
-    /Select all five evidence files/,
+    /Select the training plan and SpeedCoach recording/,
   );
   assert.equal(calls, 0);
 });

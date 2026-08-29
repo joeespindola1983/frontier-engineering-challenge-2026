@@ -1,0 +1,62 @@
+# WAKE Progressive Evidence Contract
+
+**Status:** implemented for local source preparation and explicit live execution
+
+WAKE must work with evidence already available in a rowing club and become more
+capable as additional sources are supplied. Optional evidence may increase
+confidence or unlock a new type of interpretation, but its absence must never be
+silently converted into a fact.
+
+## Source roles
+
+### Core evidence
+
+- **Training plan:** defines the intended work, recovery, SPM ranges, and known
+  instructions.
+- **SpeedCoach:** supplies the primary water-session execution stream for the MVP.
+
+Both are required for the current plan-versus-performed workflow. Without a plan,
+WAKE could only summarize a recording; without SpeedCoach, the current MVP cannot
+verify water-session execution.
+
+### Evidence enhancers
+
+- **Mobile telemetry:** independently corroborates route and distance, helps
+  associate recordings whose clocks differ, and exposes cross-device conflicts.
+  Mobile SPM is trusted only when its quality report supports it.
+- **Environment:** enables time-aligned condition interpretation. It does not
+  establish that wind caused a performance change.
+- **Session context:** supplies boat, crew, goal, equipment confirmation, perceived
+  effort, and coach observations as human evidence.
+
+## Graceful degradation
+
+| Available evidence | Supported conclusion | Explicit limitation |
+| --- | --- | --- |
+| Plan + SpeedCoach | Reconstruct planned versus performed work, SPM, distance, pace, and deviations | Route and distance have no independent corroboration |
+| + Mobile | Compare clocks, routes, and cumulative distance; detect source conflicts | Mobile does not automatically replace SpeedCoach for SPM |
+| + Environment | Associate time-aligned conditions with session changes | Association is not causation |
+| + Context | Interpret boat, crew, goal, and human observations | Human confirmation remains distinct from telemetry |
+
+The preparation response exposes every source as `CORE` or `ENHANCER` and as
+`PRESENT` or `ABSENT`. The compact case summary records the consequences of each
+absence in `evidence_gaps`.
+
+## Evaluation implication
+
+Mobile value must be measured, not assumed. Use the same fixed case in at least
+three evidence conditions:
+
+1. plan + SpeedCoach;
+2. plan + SpeedCoach + context/environment;
+3. the full bundle including mobile.
+
+Compare deviation precision/recall, source-selection accuracy, unsupported-claim
+rate, required-abstention recall, session-association confidence, and required
+question precision. This ablation is separate from the existing direct-model
+baseline and from any future coach usability pilot.
+
+The deterministic version 1 inputs are frozen at
+`evaluation/ablation-inputs/v1/manifest.json`. They contain no evaluator answers
+and can be rebuilt with `scripts/build_evidence_ablation.py`. No model result has
+been recorded for these inputs yet.

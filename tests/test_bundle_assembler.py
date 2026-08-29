@@ -25,13 +25,19 @@ def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def build_public_summary(*, route_heading: float | None = 0.0) -> dict:
+def build_public_summary(
+    *,
+    route_heading: float | None = 0.0,
+    include_mobile: bool = True,
+    include_environment: bool = True,
+    include_context: bool = True,
+) -> dict:
     telemetry = []
     input_hashes = {}
-    for kind, filename in (
-        ("SPEEDCOACH", "speedcoach.csv"),
-        ("MOBILE", "mobile.csv"),
-    ):
+    telemetry_files = [("SPEEDCOACH", "speedcoach.csv")]
+    if include_mobile:
+        telemetry_files.append(("MOBILE", "mobile.csv"))
+    for kind, filename in telemetry_files:
         content = (CASE_INPUT / filename).read_bytes()
         normalized = source_adapters.normalize_source(
             kind=kind,
@@ -48,24 +54,83 @@ def build_public_summary(*, route_heading: float | None = 0.0) -> dict:
         )
         input_hashes[filename] = normalized.report["input_sha256"]
 
-    for filename in ("plan.json", "environment.json", "context.json"):
+    json_filenames = ["plan.json"]
+    if include_environment:
+        json_filenames.append("environment.json")
+    if include_context:
+        json_filenames.append("context.json")
+    for filename in json_filenames:
         input_hashes[filename] = bundle_assembler.sha256_bytes(
             (CASE_INPUT / filename).read_bytes()
         )
 
-    context = read_json(CASE_INPUT / "context.json")
-    if route_heading is None:
+    context = read_json(CASE_INPUT / "context.json") if include_context else None
+    if context is not None and route_heading is None:
         context["session_candidate"].pop("route_heading_deg")
     return bundle_assembler.assemble_case_summary(
         plan=read_json(CASE_INPUT / "plan.json"),
         context=context,
-        environment=read_json(CASE_INPUT / "environment.json"),
+        environment=(
+            read_json(CASE_INPUT / "environment.json")
+            if include_environment
+            else None
+        ),
         telemetry_sources=telemetry,
         input_hashes=input_hashes,
     )
 
 
 class BundleAssemblerTests(unittest.TestCase):
+    def test_plan_and_speedcoach_are_a_valid_minimum_evidence_bundle(self) -> None:
+        summary = build_public_summary(
+            include_mobile=False,
+            include_environment=False,
+            include_context=False,
+        )
+        schema = read_json(ROOT / "schemas/case-summary.schema.json")
+
+        jsonschema.validate(instance=summary, schema=schema)
+        self.assertEqual(summary["case_id"], "uploaded-synthetic-plan-002")
+        self.assertEqual(
+            summary["investigation_request"],
+            "Compare the planned and performed session and state what remains unknown.",
+        )
+        self.assertEqual(
+            [source["kind"] for source in summary["sources"]],
+            ["SPEEDCOACH"],
+        )
+        self.assertEqual(summary["cross_source_findings"], [])
+        self.assertIsNone(summary["environment"])
+        gaps = " ".join(summary["evidence_gaps"]).lower()
+        self.assertIn("mobile telemetry is not supplied", gaps)
+        self.assertIn("environmental timeline is not supplied", gaps)
+        self.assertIn("session context is not supplied", gaps)
+
+    def test_speedcoach_only_route_is_selected_without_false_corroboration(self) -> None:
+        summary = build_public_summary(
+            include_mobile=False,
+            include_environment=False,
+            include_context=False,
+        )
+
+        trust = wake_tools.assess_source_trust(summary)
+        alignment = wake_tools.assess_session_alignment(summary)
+
+        self.assertEqual(
+            trust["metrics"]["route"]["selected_source_id"],
+            "speedcoach",
+        )
+        self.assertEqual(
+            trust["metrics"]["route"]["corroborating_source_ids"],
+            [],
+        )
+        self.assertEqual(trust["metrics"]["route"]["confidence"], "MEDIUM")
+        self.assertIn(
+            "single GPS source",
+            " ".join(trust["metrics"]["route"]["reasons"]),
+        )
+        self.assertEqual(alignment["decision"], "INSUFFICIENT")
+
     def test_five_sources_become_a_valid_ground_truth_free_summary(self) -> None:
         summary = build_public_summary()
         schema = read_json(ROOT / "schemas/case-summary.schema.json")

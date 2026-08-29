@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic five-source compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle checkpoint/briefing transitions and durable storage remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic progressive-evidence compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle checkpoint/briefing transitions and durable storage remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -40,7 +40,7 @@ The first implementation uses one orchestrating agent and four direct determinis
 
 Raw SpeedCoach vendor CSV, pre-existing WAKE mobile sensor CSV, and already normalized telemetry CSV now produce one canonical seven-column telemetry stream plus a versioned quality report. The report preserves source reference, input and normalized hashes, accepted/rejected row counts, time range, duration, maximum distance, GPS coverage, positive SPM rows, and quality flags. It does not repair missing SPM. SpeedCoach timestamps derived from its local start clock are explicitly marked `TIMEZONE_UNKNOWN`; mobile epoch timestamps are normalized to UTC.
 
-Plan, environment, and context inputs are validated but already expected in normalized JSON for this slice. The bundle assembler joins exactly one of each source type and emits the existing `wake.case_summary.v1` contract without evaluation answers. WhatsApp/PDF extraction and Concept2 remain separate adapters.
+Plan, environment, and context inputs are validated but already expected in normalized JSON for this slice. The bundle assembler requires one plan and one SpeedCoach stream, accepts mobile, environment, and context independently, and emits the existing `wake.case_summary.v1` contract without evaluation answers. Missing enhancers become explicit evidence gaps, and cross-source findings are computed only when their inputs exist. WhatsApp/PDF extraction and Concept2 remain separate adapters.
 
 ### Session matcher and aligner — first candidate-evidence slice implemented
 

@@ -1,0 +1,61 @@
+{
+  "schema": "wake.evidence_ablation_manifest.v1",
+  "version": "1.0",
+  "generator": "scripts/build_evidence_ablation.py@1.0",
+  "base_case_id": "case-002-wind-shift-plan-deviation",
+  "purpose": "Measure the marginal behavior enabled by context, environment, and mobile evidence while preserving the same underlying synthetic session.",
+  "conditions": {
+    "core": {
+      "path": "core.json",
+      "sha256": "9f12731c99677cf179a39466a756b6a199d41bde8817f81ae1cd142c9a4af315",
+      "bytes": 30236,
+      "summary_case_id": "ablation-case-002-wind-shift-plan-deviation-core",
+      "source_files": [
+        "plan.json",
+        "speedcoach.csv"
+      ],
+      "capabilities": [
+        "PLAN_EXECUTION",
+        "SINGLE_SOURCE_METRIC_TRUST"
+      ]
+    },
+    "context-environment": {
+      "path": "context-environment.json",
+      "sha256": "02d34e4aabc9f961f6bc624e634c4d09b2bf0f87682d42c71a22ec480853c4c6",
+      "bytes": 50540,
+      "summary_case_id": "ablation-case-002-wind-shift-plan-deviation-context-environment",
+      "source_files": [
+        "plan.json",
+        "speedcoach.csv",
+        "environment.json",
+        "context.json"
+      ],
+      "capabilities": [
+        "PLAN_EXECUTION",
+        "SINGLE_SOURCE_METRIC_TRUST",
+        "ENVIRONMENT_ASSOCIATION",
+        "HUMAN_CONTEXT"
+      ]
+    },
+    "full": {
+      "path": "full.json",
+      "sha256": "3580e9255e4a18ee7072f851b5c395f34eff1aa414670fba4f388ed06f1304ae",
+      "bytes": 52505,
+      "summary_case_id": "ablation-case-002-wind-shift-plan-deviation-full",
+      "source_files": [
+        "plan.json",
+        "speedcoach.csv",
+        "mobile.csv",
+        "environment.json",
+        "context.json"
+      ],
+      "capabilities": [
+        "PLAN_EXECUTION",
+        "CROSS_SOURCE_METRIC_TRUST",
+        "SESSION_CORROBORATION",
+        "ENVIRONMENT_ASSOCIATION",
+        "HUMAN_CONTEXT"
+      ]
+    }
+  }
+}

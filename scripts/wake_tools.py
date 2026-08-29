@@ -166,8 +166,18 @@ def assess_source_trust(summary: dict) -> dict:
             "route": {
                 "selected_source_id": selected_route["source_id"] if selected_route else None,
                 "corroborating_source_ids": route_corrob,
-                "confidence": "HIGH" if selected_route and route_corrob else "MEDIUM",
-                "reasons": ["GPS-present routes can corroborate one another."],
+                "confidence": (
+                    "HIGH" if selected_route and route_corrob
+                    else "MEDIUM" if selected_route
+                    else "NONE"
+                ),
+                "reasons": [
+                    "Multiple GPS sources corroborate the selected route."
+                    if selected_route and route_corrob
+                    else "The route is observed by a single GPS source without independent corroboration."
+                    if selected_route
+                    else "No source contains usable GPS route evidence."
+                ],
                 "evidence_refs": [
                     ref for source in gps_sources for ref in source["evidence_refs"]
                 ],

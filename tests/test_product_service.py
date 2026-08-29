@@ -43,7 +43,9 @@ class FakeBundleRunner:
 
     def __call__(self, summary: dict, evidence: dict[str, bytes]) -> dict:
         self.calls.append((copy.deepcopy(summary), copy.deepcopy(evidence)))
-        return copy.deepcopy(read_json(COMMITTED_OUTPUT))
+        output = copy.deepcopy(read_json(COMMITTED_OUTPUT))
+        output["case_id"] = summary["case_id"]
+        return output
 
 
 class WakeProductServiceTests(unittest.TestCase):
@@ -314,7 +316,18 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(response["status"], "READY")
         self.assertNotIn("content", response)
 
-    def _upload_public_bundle(self, *, context_suffix: str = "") -> list[str]:
+    def _upload_public_bundle(
+        self,
+        *,
+        context_suffix: str = "",
+        kinds: tuple[str, ...] = (
+            "PLAN",
+            "SPEEDCOACH",
+            "MOBILE",
+            "ENVIRONMENT",
+            "CONTEXT",
+        ),
+    ) -> list[str]:
         source_ids = []
         for kind, filename in (
             ("PLAN", "plan.json"),
@@ -323,6 +336,8 @@ class WakeProductServiceTests(unittest.TestCase):
             ("ENVIRONMENT", "environment.json"),
             ("CONTEXT", "context.json"),
         ):
+            if kind not in kinds:
+                continue
             content = (CASE_INPUT / filename).read_bytes()
             if kind == "CONTEXT" and context_suffix:
                 context = json.loads(content)
@@ -336,6 +351,55 @@ class WakeProductServiceTests(unittest.TestCase):
                 )["source_id"]
             )
         return source_ids
+
+    def test_minimum_plan_and_speedcoach_bundle_prepares_with_explicit_gaps(self) -> None:
+        source_ids = self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+
+        prepared = self.service.prepare_source_bundle(source_ids)
+
+        self.assertEqual(prepared["status"], "READY_FOR_LIVE")
+        self.assertEqual(prepared["source_count"], 2)
+        self.assertEqual(
+            prepared["source_coverage"],
+            [
+                {"kind": "PLAN", "role": "CORE", "status": "PRESENT"},
+                {"kind": "SPEEDCOACH", "role": "CORE", "status": "PRESENT"},
+                {"kind": "MOBILE", "role": "ENHANCER", "status": "ABSENT"},
+                {"kind": "ENVIRONMENT", "role": "ENHANCER", "status": "ABSENT"},
+                {"kind": "CONTEXT", "role": "ENHANCER", "status": "ABSENT"},
+            ],
+        )
+        self.assertEqual(prepared["finding_types"], [])
+        gaps = " ".join(prepared["evidence_gaps"]).lower()
+        self.assertIn("mobile telemetry is not supplied", gaps)
+        self.assertIn("environmental timeline is not supplied", gaps)
+        self.assertIn("session context is not supplied", gaps)
+        self.assertEqual(self.bundle_runner.calls, [])
+
+    def test_preparation_rejects_a_bundle_without_a_core_source(self) -> None:
+        speedcoach_only = self._upload_public_bundle(kinds=("SPEEDCOACH",))
+        plan_only = self._upload_public_bundle(kinds=("PLAN",))
+
+        with self.assertRaisesRegex(ValueError, "PLAN and SPEEDCOACH"):
+            self.service.prepare_source_bundle(speedcoach_only)
+        with self.assertRaisesRegex(ValueError, "PLAN and SPEEDCOACH"):
+            self.service.prepare_source_bundle(plan_only)
+
+    def test_minimum_bundle_execution_passes_only_supplied_evidence(self) -> None:
+        prepared = self.service.prepare_source_bundle(
+            self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        )
+
+        result, created = self.service.execute_source_bundle(
+            prepared["bundle_id"],
+            mode="live",
+        )
+
+        self.assertTrue(created)
+        self.assertEqual(result["status"], "AGENT_COMPLETED")
+        summary, evidence = self.bundle_runner.calls[0]
+        self.assertEqual(summary["case_id"], "uploaded-synthetic-plan-002")
+        self.assertEqual(set(evidence), {"plan.json", "speedcoach.csv"})
 
     def test_uploaded_sources_prepare_a_new_agent_bundle_without_api_call(self) -> None:
         source_ids = self._upload_public_bundle()

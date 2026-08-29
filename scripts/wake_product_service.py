@@ -40,7 +40,9 @@ ROOT = Path(__file__).resolve().parents[1]
 REPLAY_OUTPUTS = ROOT / "evaluation/runs/comparison-v1-20260829/agent/outputs"
 PUBLIC_REPLAY_CASE_ID = "case-002-wind-shift-plan-deviation"
 VALID_ANSWERS = {"YES", "NO", "UNKNOWN"}
-SOURCE_KINDS = {"PLAN", "SPEEDCOACH", "MOBILE", "ENVIRONMENT", "CONTEXT"}
+SOURCE_ORDER = ("PLAN", "SPEEDCOACH", "MOBILE", "ENVIRONMENT", "CONTEXT")
+SOURCE_KINDS = set(SOURCE_ORDER)
+CORE_SOURCE_KINDS = {"PLAN", "SPEEDCOACH"}
 SOURCE_FILENAMES = {
     "PLAN": "plan.json",
     "SPEEDCOACH": "speedcoach.csv",
@@ -189,13 +191,25 @@ class WakeProductService:
             if not key.startswith("_")
         }
 
-    def _source_group(self, source_ids: list[str]) -> dict[str, dict]:
+    def _source_group(
+        self,
+        source_ids: list[str],
+        *,
+        required_kinds: set[str] = CORE_SOURCE_KINDS,
+    ) -> dict[str, dict]:
         try:
             sources = [self.sources[source_id] for source_id in source_ids]
         except KeyError as error:
             raise ValueError(f"Unknown source: {error.args[0]}") from error
         grouped = {source["kind"]: source for source in sources}
-        if len(sources) != len(SOURCE_KINDS) or set(grouped) != SOURCE_KINDS:
+        if len(grouped) != len(sources):
+            raise ValueError("A source bundle cannot contain duplicate source kinds.")
+        if not required_kinds.issubset(grouped):
+            if required_kinds == CORE_SOURCE_KINDS:
+                raise ValueError(
+                    "A source bundle requires one PLAN and SPEEDCOACH source; "
+                    "MOBILE, ENVIRONMENT, and CONTEXT are optional."
+                )
             raise ValueError(
                 "A source bundle requires one PLAN, SPEEDCOACH, MOBILE, "
                 "ENVIRONMENT, and CONTEXT source."
@@ -206,10 +220,16 @@ class WakeProductService:
         """Build and retain an agent-ready summary without executing an agent."""
         grouped = self._source_group(source_ids)
         plan = json.loads(grouped["PLAN"]["_content"].decode("utf-8"))
-        environment = json.loads(
-            grouped["ENVIRONMENT"]["_content"].decode("utf-8")
+        environment = (
+            json.loads(grouped["ENVIRONMENT"]["_content"].decode("utf-8"))
+            if "ENVIRONMENT" in grouped
+            else None
         )
-        context = json.loads(grouped["CONTEXT"]["_content"].decode("utf-8"))
+        context = (
+            json.loads(grouped["CONTEXT"]["_content"].decode("utf-8"))
+            if "CONTEXT" in grouped
+            else None
+        )
         telemetry_sources = [
             {
                 "source_id": grouped[kind]["source_id"],
@@ -219,6 +239,7 @@ class WakeProductService:
                 "normalization": grouped[kind]["normalization"],
             }
             for kind in ("SPEEDCOACH", "MOBILE")
+            if kind in grouped
         ]
         summary = assemble_case_summary(
             plan=plan,
@@ -247,6 +268,14 @@ class WakeProductService:
             "status": "READY_FOR_LIVE",
             "summary_sha256": summary_digest,
             "source_count": len(grouped),
+            "source_coverage": [
+                {
+                    "kind": kind,
+                    "role": "CORE" if kind in CORE_SOURCE_KINDS else "ENHANCER",
+                    "status": "PRESENT" if kind in grouped else "ABSENT",
+                }
+                for kind in SOURCE_ORDER
+            ],
             "finding_types": [
                 finding["type"] for finding in summary["cross_source_findings"]
             ],
@@ -286,13 +315,16 @@ class WakeProductService:
 
         bundle = self.source_bundles[bundle_id]
         grouped = self._source_group(bundle["source_ids"])
-        evidence = {
-            "plan.json": grouped["PLAN"]["_content"],
-            "speedcoach.csv": grouped["SPEEDCOACH"]["_normalized_content"],
-            "mobile.csv": grouped["MOBILE"]["_normalized_content"],
-            "environment.json": grouped["ENVIRONMENT"]["_content"],
-            "context.json": grouped["CONTEXT"]["_content"],
-        }
+        evidence = {}
+        for kind in SOURCE_ORDER:
+            if kind not in grouped:
+                continue
+            source = grouped[kind]
+            evidence[SOURCE_FILENAMES[kind]] = (
+                source["_normalized_content"]
+                if kind in {"SPEEDCOACH", "MOBILE"}
+                else source["_content"]
+            )
         analysis = self.bundle_live_runner(bundle["summary"], evidence)
         jsonschema.validate(
             instance=analysis,
@@ -352,7 +384,7 @@ class WakeProductService:
         *,
         mode: str = "replay",
     ) -> dict:
-        grouped = self._source_group(source_ids)
+        grouped = self._source_group(source_ids, required_kinds=SOURCE_KINDS)
 
         if mode != "replay":
             raise ValueError(

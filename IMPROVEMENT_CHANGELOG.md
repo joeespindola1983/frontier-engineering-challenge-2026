@@ -182,6 +182,28 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** UI hard-coding is an evidence failure, not merely a design limitation: it can convert a correct agent result into a false coach-facing claim after verification has already passed.
 - **Next step:** Generalize checkpoint answers, verified briefing findings, and goal-memory proposals from the adapted review; then enable the page's custom live path under its existing local-runtime and live-mode opt-ins.
 
+### 18. Progressive evidence instead of mandatory mobile telemetry
+
+- **Hypothesis:** Plan + SpeedCoach should support the core planned-versus-performed workflow, while mobile, environment, and context should add measurable capabilities without becoming adoption blockers.
+- **Change:** Replaced exact five-source preparation with a progressive evidence contract. Plan and SpeedCoach are core; mobile, environment, and context are optional enhancers. The assembler creates neutral missing context, computes cross-source findings only when prerequisites exist, records capability gaps, and never invents route corroboration. Preparation returns ordered source coverage, live execution receives only supplied evidence, and the intake labels core versus optional sources. Exact five-source identity remains mandatory only for committed replay reuse.
+- **Evaluation:** RED tests first failed because the assembler and service required all five sources and the browser rejected partial bundles. A second RED caught misleading single-source route language. GREEN tests cover schema-valid minimum preparation, deterministic generated context, explicit missing mobile/environment/context gaps, single-source route confidence without false corroboration, rejection when either core source is absent, optional-file upload order, and minimum-bundle execution with only `plan.json` and `speedcoach.csv`. The final repository verification passes 81 Python tests, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** The runtime now matches the product thesis: WAKE works with common club evidence and becomes more capable as corroborating sources arrive. The existing full public case and replay isolation remain intact. This change does not yet measure the marginal model-quality gain from mobile evidence.
+- **Cost/runtime:** No model call and no API cost. The complete Python test and verifier command completed locally in 12.777 seconds of unittest runtime; web tests completed in 0.215 seconds. Build time is not used as a product-performance claim.
+- **Decision:** Keep the progressive evidence contract. Evaluate it with a same-case evidence ablation before claiming mobile value in the final submission.
+- **Learning:** A source can be important without being mandatory. Product confidence should degrade explicitly by capability rather than collapsing into an all-or-nothing upload requirement.
+- **Next step:** Generate frozen reduced-evidence variants of the implemented case and run the same bounded workflow to quantify the marginal value of context, environment, and mobile evidence.
+
+### 19. Frozen progressive-evidence ablation inputs
+
+- **Hypothesis:** Freezing three inputs over the same synthetic session can isolate the evidence variable before any model call and prevent later prompt, case, or source changes from being mistaken for mobile value.
+- **Change:** Added a deterministic ablation generator and committed `core`, `context-environment`, and `full` compact summaries plus a versioned manifest. Every condition records its summary hash, source files, available capabilities, and distinct run-safe case identity. The generator uses public fixtures and production normalizers/assembler without reading evaluator answers.
+- **Evaluation:** RED failed on the missing generator module. GREEN tests rebuild two directories byte-for-byte, scan generated JSON for evaluator-answer leakage, validate the condition order and shared base-session identity, assert the expected source/environment/cross-source boundaries, and verify every manifest hash. Final verification passes 83 Python tests, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** Reproducible no-cost inputs now exist for the next ablation run. They demonstrate evidence removal correctly but do not yet constitute a model-quality result.
+- **Cost/runtime:** No model call and no API cost. Generation uses only deterministic local adapters and schema validation.
+- **Decision:** Keep ablation input version 1 frozen. Do not edit it after outputs are visible; create a new version instead.
+- **Learning:** A fair source-value experiment begins with immutable evidence conditions, not with comparing whichever outputs happen to be available.
+- **Next step:** Implement one versioned runner and condition-aware scorer, dry-run all three requests, then explicitly authorize a paid run before reporting mobile value.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

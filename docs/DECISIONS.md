@@ -190,7 +190,7 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-29 - Prepare new source bundles without executing them
 
-- **Status:** accepted as compact-summary assembly version 1.
+- **Status:** superseded for new bundles by the progressive evidence contract below; retained as the official full-bundle history.
 - **Decision:** Assemble exactly one validated plan, SpeedCoach stream, mobile stream, environment timeline, and context document into `wake.case_summary.v1` deterministically. Record input hashes, preserve source quality and missing SPM, compare clocks only when timezone representations are compatible, compute distance conflict and bidirectional GPS overlap, project wind only with a known route heading, and keep human-only facts as evidence gaps. Store the full summary in process memory and return compact preparation metadata with `agent_called: false`.
 - **Rationale:** Parsing and analysis are different authority boundaries. A novel upload must receive its own traceable input before it can ever reach a model, but preparation must neither spend budget nor let changed evidence inherit the public replay. Explicit abstention on missing route heading also prevents an environmental projection from becoming fabricated evidence.
 
@@ -205,6 +205,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Status:** accepted for the coach-review boundary.
 - **Decision:** Return a compact review bundle after prepared execution and adapt it from plan, context, verified segments, deviations, source policy, environmental assessment, and follow-up questions. Derive work count, distance label, boat/crew label, provenance, source names, clock visibility, and environmental absence from those values. Remove case-002-only reconstruction prose and the fixed fourth-interval wind marker from the page. Keep new-bundle execution unavailable from the page until checkpoint and briefing state are equally generic.
 - **Rationale:** A technically live agent is not a functional product if its UI silently rewrites every result into the demonstration story. Testing with a women's `1x`, four 500 m repetitions, authenticated upload IDs, and no environment proves that the adapter responds to evidence rather than fixture identity. Delaying page invocation avoids a half-working flow after the review screen.
+
+## 2026-08-29 - Adopt a progressive evidence contract
+
+- **Status:** accepted for product preparation and explicit live execution; the official replay remains unchanged.
+- **Decision:** Require a training plan and SpeedCoach recording for the MVP plan-versus-performed workflow. Treat mobile telemetry, environment, and session context as independent evidence enhancers. Mark every source as core/enhancer and present/absent, compute cross-source claims only when their prerequisites exist, and preserve missing capabilities as evidence gaps. Keep the exact five-source requirement only for byte-identical public replay eligibility.
+- **Rationale:** SpeedCoach already supports the central execution analysis. Making the pre-existing experimental mobile application mandatory would reduce adoption and overstate hackathon scope. Optional mobile evidence still adds measurable value through route/distance corroboration, clock alignment, and conflict detection. An evidence-ablation experiment must quantify that marginal value before the final submission claims it.
 
 ## Pending decisions
 
