@@ -69,3 +69,10 @@ The report intentionally omits an overall score across conditions. Missing
 mobile or environment is not a failure when that source was deliberately removed;
 false corroboration, unsupported environmental claims, or selection of broken
 mobile SPM are failures.
+
+The first official v1 run is preserved under
+`evaluation/runs/evidence-ablation-v1/official-20260829/`. Core passed 7/8 checks
+but failed by converting segment-boundary distance loss into an unsupported
+distance shortfall. Context/environment passed 10/10, and full evidence passed
+12/12 while demonstrating route corroboration and mobile-SPM rejection. Because
+the core deviation signature changed, the overall experiment status is `FAIL`.

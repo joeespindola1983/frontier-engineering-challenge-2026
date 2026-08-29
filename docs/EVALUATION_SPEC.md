@@ -122,6 +122,13 @@ corroboration, and rejection of broken mobile SPM. It also requires the executio
 and deviation signature to remain stable across conditions. It does not calculate
 one overall score that would punish deliberately unavailable capabilities.
 
+The official v1 run cost US$0.298604 and produced a failing experiment report.
+The core condition added an unsupported aggregate distance-shortfall deviation
+from telemetry-derived segment boundaries; context/environment and full evidence
+passed their 10 and 12 applicable checks respectively. The failure remains part
+of the evidence. Any correction must be evaluated as a new workflow iteration;
+the v1 outputs and contract must not be rewritten.
+
 ## Baseline protocol
 
 The simple baseline will use one direct model call with:

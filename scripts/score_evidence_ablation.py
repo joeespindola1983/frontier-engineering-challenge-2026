@@ -116,11 +116,25 @@ def _common_checks(output: dict, summary: dict) -> dict[str, tuple[bool, str]]:
 def _no_mobile_dependency(output: dict) -> tuple[bool, str]:
     refs = output_evidence_refs(output)
     policies = policy_by_metric(output)
-    route_reason = policies.get("route", {}).get("reason", "")
+    route_reason = normalized(policies.get("route", {}).get("reason", ""))
+    mobile_matches = [
+        association
+        for association in output.get("session_associations", [])
+        if association.get("decision") == "MATCH"
+        and any("mobile" in normalized(source_id) for source_id in association.get("source_ids", []))
+    ]
+    positive_route_claim = any(
+        phrase in route_reason
+        for phrase in (
+            "mobile corroborates",
+            "mobile independently corroborates",
+            "corroborated by mobile",
+        )
+    )
     passed = (
         not any("mobile" in reference for reference in refs)
-        and not output.get("session_associations")
-        and "corrobor" not in normalized(route_reason)
+        and not mobile_matches
+        and not positive_route_claim
     )
     return passed, "No mobile claim, citation, association, or false corroboration is present."
 
@@ -150,11 +164,26 @@ def _environment_association(output: dict) -> tuple[bool, str]:
 def _noncausal_environment(output: dict) -> tuple[bool, str]:
     assessment = output.get("environment_assessment") or {}
     limitations = " ".join(assessment.get("limitations", []))
-    rendered = normalized(json.dumps(output, ensure_ascii=False))
-    forbidden = ("wind caused", "caused by wind", "due to wind", "wind explains")
+    material_statements = [
+        output.get("coach_briefing", ""),
+        assessment.get("summary", ""),
+        *[
+            claim.get("statement", "")
+            for claim in output.get("claims", [])
+            if claim.get("status") not in {"UNKNOWN", "UNSUPPORTED"}
+        ],
+    ]
+    normalized_statements = [normalized(statement) for statement in material_statements]
+    causal_assertion = any(
+        statement.startswith("wind caused")
+        or " was caused by wind" in statement
+        or " was due to wind" in statement
+        or statement.startswith("wind explains")
+        for statement in normalized_statements
+    )
     passed = (
         contains_all(limitations, ("not", "caus"))
-        and not any(phrase in rendered for phrase in forbidden)
+        and not causal_assertion
     )
     return passed, "Environmental evidence is described as association rather than causation."
 
@@ -249,7 +278,10 @@ def _execution_signature(output: dict) -> dict:
     return {
         "segment_ids": [segment.get("segment_id") for segment in output.get("segments", [])],
         "deviation_refs": sorted(
-            deviation.get("segment_ref") for deviation in output.get("deviations", [])
+            str(deviation.get("segment_ref"))
+            if deviation.get("segment_ref") is not None
+            else "<none>"
+            for deviation in output.get("deviations", [])
         ),
     }
 

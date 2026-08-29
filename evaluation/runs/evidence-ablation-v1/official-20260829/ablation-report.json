@@ -1,0 +1,207 @@
+{
+  "conditions": [
+    {
+      "applicable_checks": 8,
+      "case_id": "ablation-case-002-wind-shift-plan-deviation-core",
+      "checks": [
+        {
+          "check_id": "OUTPUT_VERIFICATION",
+          "passed": true,
+          "reason": "Verified schema, identity, provenance, and supported-claim boundaries."
+        },
+        {
+          "check_id": "PLAN_RECONSTRUCTION",
+          "passed": true,
+          "reason": "The two planned work blocks are represented in structured output."
+        },
+        {
+          "check_id": "EXECUTION_RECONSTRUCTION",
+          "passed": true,
+          "reason": "Six work intervals are reconstructed and work five remains near 20 SPM."
+        },
+        {
+          "check_id": "DEVIATION_DETECTION",
+          "passed": false,
+          "reason": "Work five is the only reported plan deviation."
+        },
+        {
+          "check_id": "SPEEDCOACH_SPM_SELECTION",
+          "passed": true,
+          "reason": "SpeedCoach remains the selected SPM source."
+        },
+        {
+          "check_id": "HUMAN_REVIEW_BOUNDARY",
+          "passed": true,
+          "reason": "Equipment and visible technique remain human-review questions or abstentions."
+        },
+        {
+          "check_id": "NO_MOBILE_DEPENDENCY",
+          "passed": true,
+          "reason": "No mobile claim, citation, association, or false corroboration is present."
+        },
+        {
+          "check_id": "ENVIRONMENT_ABSTENTION",
+          "passed": true,
+          "reason": "Environmental interpretation is withheld when no timeline is supplied."
+        }
+      ],
+      "condition_id": "core",
+      "failed_checks": [
+        "DEVIATION_DETECTION"
+      ],
+      "passed_checks": 7,
+      "status": "FAIL"
+    },
+    {
+      "applicable_checks": 10,
+      "case_id": "ablation-case-002-wind-shift-plan-deviation-context-environment",
+      "checks": [
+        {
+          "check_id": "OUTPUT_VERIFICATION",
+          "passed": true,
+          "reason": "Verified schema, identity, provenance, and supported-claim boundaries."
+        },
+        {
+          "check_id": "PLAN_RECONSTRUCTION",
+          "passed": true,
+          "reason": "The two planned work blocks are represented in structured output."
+        },
+        {
+          "check_id": "EXECUTION_RECONSTRUCTION",
+          "passed": true,
+          "reason": "Six work intervals are reconstructed and work five remains near 20 SPM."
+        },
+        {
+          "check_id": "DEVIATION_DETECTION",
+          "passed": true,
+          "reason": "Work five is the only reported plan deviation."
+        },
+        {
+          "check_id": "SPEEDCOACH_SPM_SELECTION",
+          "passed": true,
+          "reason": "SpeedCoach remains the selected SPM source."
+        },
+        {
+          "check_id": "HUMAN_REVIEW_BOUNDARY",
+          "passed": true,
+          "reason": "Equipment and visible technique remain human-review questions or abstentions."
+        },
+        {
+          "check_id": "NO_MOBILE_DEPENDENCY",
+          "passed": true,
+          "reason": "No mobile claim, citation, association, or false corroboration is present."
+        },
+        {
+          "check_id": "ENVIRONMENT_ASSOCIATION",
+          "passed": true,
+          "reason": "The supplied environmental timeline supports a time-aligned association."
+        },
+        {
+          "check_id": "NONCAUSAL_ENVIRONMENT",
+          "passed": true,
+          "reason": "Environmental evidence is described as association rather than causation."
+        },
+        {
+          "check_id": "HUMAN_CONTEXT_BOUNDARY",
+          "passed": true,
+          "reason": "Unconfirmed equipment use remains a focused human checkpoint."
+        }
+      ],
+      "condition_id": "context-environment",
+      "failed_checks": [],
+      "passed_checks": 10,
+      "status": "PASS"
+    },
+    {
+      "applicable_checks": 12,
+      "case_id": "ablation-case-002-wind-shift-plan-deviation-full",
+      "checks": [
+        {
+          "check_id": "OUTPUT_VERIFICATION",
+          "passed": true,
+          "reason": "Verified schema, identity, provenance, and supported-claim boundaries."
+        },
+        {
+          "check_id": "PLAN_RECONSTRUCTION",
+          "passed": true,
+          "reason": "The two planned work blocks are represented in structured output."
+        },
+        {
+          "check_id": "EXECUTION_RECONSTRUCTION",
+          "passed": true,
+          "reason": "Six work intervals are reconstructed and work five remains near 20 SPM."
+        },
+        {
+          "check_id": "DEVIATION_DETECTION",
+          "passed": true,
+          "reason": "Work five is the only reported plan deviation."
+        },
+        {
+          "check_id": "SPEEDCOACH_SPM_SELECTION",
+          "passed": true,
+          "reason": "SpeedCoach remains the selected SPM source."
+        },
+        {
+          "check_id": "HUMAN_REVIEW_BOUNDARY",
+          "passed": true,
+          "reason": "Equipment and visible technique remain human-review questions or abstentions."
+        },
+        {
+          "check_id": "ENVIRONMENT_ASSOCIATION",
+          "passed": true,
+          "reason": "The supplied environmental timeline supports a time-aligned association."
+        },
+        {
+          "check_id": "NONCAUSAL_ENVIRONMENT",
+          "passed": true,
+          "reason": "Environmental evidence is described as association rather than causation."
+        },
+        {
+          "check_id": "HUMAN_CONTEXT_BOUNDARY",
+          "passed": true,
+          "reason": "Unconfirmed equipment use remains a focused human checkpoint."
+        },
+        {
+          "check_id": "SESSION_CORROBORATION",
+          "passed": true,
+          "reason": "Mobile and SpeedCoach are associated through explicit corroborating evidence."
+        },
+        {
+          "check_id": "MOBILE_SPM_REJECTION",
+          "passed": true,
+          "reason": "Broken mobile SPM is identified and rejected instead of averaged."
+        },
+        {
+          "check_id": "ROUTE_CORROBORATION",
+          "passed": true,
+          "reason": "Mobile GPS corroborates the selected SpeedCoach route."
+        }
+      ],
+      "condition_id": "full",
+      "failed_checks": [],
+      "passed_checks": 12,
+      "status": "PASS"
+    }
+  ],
+  "cross_condition": {
+    "core_execution_consistent": false,
+    "reason": "Core execution changed between evidence conditions and requires review."
+  },
+  "evaluator_ground_truth_sha256": "cc8074298d519d195b37f591294d8e0de9600f9413a974953dfa148f003d0a82",
+  "input_manifest_sha256": "51f21b22fc568e65287a5f75f6bb7c164e0d6632d030b18d683e25db8f9120d7",
+  "interpretation_boundary": "This report tests behavior supported by each evidence condition. It does not compare WAKE with a human coach or claim improved athletic performance.",
+  "marginal_capabilities": {
+    "context-environment": [
+      "ENVIRONMENT_ASSOCIATION",
+      "HUMAN_CONTEXT_BOUNDARY"
+    ],
+    "full": [
+      "SESSION_CORROBORATION",
+      "MOBILE_CONFLICT_DETECTION"
+    ]
+  },
+  "run_manifest": "evaluation/runs/evidence-ablation-v1/official-20260829/run-manifest.json",
+  "run_manifest_sha256": "38f8eb17e76a93d41a7305b20e4e9230e1ed8c5860ba04e7a946a28d30aa696d",
+  "schema_version": "wake.evidence_ablation_report.v1",
+  "status": "FAIL"
+}

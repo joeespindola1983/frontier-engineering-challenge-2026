@@ -320,6 +320,31 @@ class EvidenceAblationScorerTests(unittest.TestCase):
         self.assertIn("NONCAUSAL_ENVIRONMENT", by_id["context-environment"]["failed_checks"])
         self.assertIn("MOBILE_SPM_REJECTION", by_id["full"]["failed_checks"])
 
+    def test_report_handles_a_deviation_without_segment_reference_as_a_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            run_manifest, outputs = self._write_run(root)
+            core = outputs["core"]
+            core["deviations"].append(
+                {
+                    "type": "RECONSTRUCTED_WORK_DISTANCE_SHORTFALL",
+                    "segment_ref": None,
+                    "description": "Aggregate reconstructed distance was below the plan.",
+                    "confidence": 0.7,
+                    "evidence_refs": ["input/plan.json", "input/speedcoach.csv"],
+                }
+            )
+            run_evidence_ablation.write_json(
+                root / "outputs" / f"{core['case_id']}.json",
+                core,
+            )
+
+            report = score_evidence_ablation.score_run(run_manifest)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertFalse(report["cross_condition"]["core_execution_consistent"])
+        self.assertIn("DEVIATION_DETECTION", report["conditions"][0]["failed_checks"])
+
 
 if __name__ == "__main__":
     unittest.main()

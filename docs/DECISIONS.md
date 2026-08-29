@@ -218,6 +218,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Execute all three frozen conditions with the same prompt, model configuration, output schema, and bounded runner. Isolate the evidence directory per condition. Report common execution consistency and capability-specific checks rather than a single score across unequal inputs. Treat false mobile corroboration in reduced conditions, causal wind language, and selection of broken mobile SPM as explicit failures. Keep paid execution behind literal `--execute` and `OPENAI_API_KEY`.
 - **Rationale:** Removing a source intentionally makes some rubric dimensions inapplicable. A single aggregate would confuse unavailable capability with poor reasoning and could falsely make the full bundle look better merely because it contains more information. Capability reporting answers the actual product question: what remains reliable with core evidence, and what becomes supportable when an enhancer is added.
 
+## 2026-08-29 - Preserve the failed v1 ablation and version the correction
+
+- **Status:** accepted after the official evidence-ablation run.
+- **Decision:** Preserve the frozen v1 inputs, prompt, outputs, trajectories, and failing capability report unchanged. Treat telemetry-derived segment distance as insufficient evidence of prescribed-distance completion until a new workflow version states and tests that boundary explicitly.
+- **Rationale:** The core condition added an unsupported distance-shortfall deviation while the richer conditions did not. Rewriting v1 would hide the most useful experimental finding; a versioned TDD correction keeps both the improvement history and the next comparison auditable.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

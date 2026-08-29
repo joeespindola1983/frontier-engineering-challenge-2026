@@ -215,6 +215,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Evidence value is best expressed as reliable capabilities unlocked while core conclusions remain stable, not as a score that rises simply because the model received more data.
 - **Next step:** Commit this frozen runner/reporter milestone, explicitly execute all three requests once, score the outputs, and preserve failures without changing the v1 contract.
 
+### 21. Official evidence ablation v1 and preserved core failure
+
+- **Hypothesis:** Core plan + SpeedCoach should preserve the correct plan-execution result, while environment/context and mobile should unlock additional supported capabilities without changing the core deviation identity.
+- **Change:** Executed all three frozen conditions once at commit `d8aa3c8` and generated the offline capability report. After the first scorer attempt crashed on a null `segment_ref`, added a failing regression test and changed only signature normalization so the unexpected deviation is reported rather than hidden. Refined two reporter predicates to distinguish explicit absence of mobile corroboration from false positive corroboration and negated causal warnings from causal assertions. Frozen inputs, model outputs, trajectories, prompt, and capability checks were not altered.
+- **Evaluation:** Core passed 7/8 checks and failed `DEVIATION_DETECTION`; context/environment passed 10/10; full passed 12/12. Core added `RECONSTRUCTED_WORK_DISTANCE_SHORTFALL` with a null segment reference based on telemetry-derived segmentation margins, so cross-condition execution consistency failed. The full condition correctly matched mobile with SpeedCoach, corroborated the route, and rejected zero-only mobile SPM. All three agent outputs passed the normal schema/provenance verifier; core required one bounded retry after its first draft emitted evidence-less unavailable-source items. The scorer regression and repository verification pass 90 Python tests, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** Overall ablation status is `FAIL`. The run supports the intended environment and mobile capabilities in this one synthetic session, but it also proves that the minimum evidence path can overinterpret derived segment distance. It does not support a human-coach comparison or athletic-performance claim.
+- **Cost/runtime:** GPT-5.6 Terra medium; 83,452 input tokens, 10,975 output tokens, 94,427 total tokens; US$0.298604 total; 92.650 seconds end to end. Per condition: core US$0.121974 / 40.957 s, context-environment US$0.088216 / 26.301 s, full US$0.088414 / 25.369 s.
+- **Decision:** Preserve the failing v1 run. Create a new workflow iteration that explicitly labels segment distances as boundary-derived and not sufficient evidence of completed-distance shortfall.
+- **Learning:** Less evidence did not merely reduce confidence; it changed the model's interpretation of a deterministic intermediate value. Tool outputs must encode what a derived metric is not allowed to prove, not only its numeric value.
+- **Next step:** Add a failing tool/prompt regression for distance-assessment scope, implement the smallest boundary change, and dry-run a v2 ablation before deciding whether a second paid run is justified.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

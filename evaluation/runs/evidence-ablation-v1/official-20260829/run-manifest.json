@@ -1,0 +1,41 @@
+{
+  "approximate_total_cost_usd": 0.298604,
+  "case_runtime_ms_total": 92627,
+  "cases": [
+    "ablation-case-002-wind-shift-plan-deviation-core",
+    "ablation-case-002-wind-shift-plan-deviation-context-environment",
+    "ablation-case-002-wind-shift-plan-deviation-full"
+  ],
+  "config_sha256": "f54f9fcc88fe1732545005cd034ccd74858d375ba474cc0acff02783af06e824",
+  "created_at": "2026-08-29T23:18:11.842+00:00",
+  "experiment": {
+    "base_case_id": "case-002-wind-shift-plan-deviation",
+    "condition_order": [
+      "core",
+      "context-environment",
+      "full"
+    ],
+    "input_manifest_sha256": "51f21b22fc568e65287a5f75f6bb7c164e0d6632d030b18d683e25db8f9120d7",
+    "input_version": "1.0",
+    "schema_version": "wake.evidence_ablation_run.v1",
+    "scoring_status": "NOT_SCORED"
+  },
+  "finished_at": "2026-08-29T23:18:11.842+00:00",
+  "git_commit": "d8aa3c85a8f54442bde243494a23b07027e38324",
+  "prompt_sha256": "5aa5728d63a9a5094420da75760ca59a900680d5544242531349fe7189cf061c",
+  "run_id": "official-20260829",
+  "runtime_ms": 92650,
+  "schema_version": "wake.agent_run.v1",
+  "started_at": "2026-08-29T23:16:39.197+00:00",
+  "total_usage": {
+    "input_tokens": 83452,
+    "output_tokens": 10975,
+    "total_tokens": 94427
+  },
+  "trajectories": [
+    "trajectories/ablation-case-002-wind-shift-plan-deviation-core.trajectory.json",
+    "trajectories/ablation-case-002-wind-shift-plan-deviation-context-environment.trajectory.json",
+    "trajectories/ablation-case-002-wind-shift-plan-deviation-full.trajectory.json"
+  ],
+  "workflow": "wake-agent-v1-tool-loop"
+}

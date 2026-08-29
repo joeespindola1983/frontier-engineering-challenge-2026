@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** the first controlled comparison is complete. On two implemented cases, WAKE scored **63.34/100** against **38.86/100** for the direct-call baseline: **+24.48 points** (**+63.0% relative**) for US$0.062338 incremental API cost. The single-case calibration preflight remains explicitly excluded.
+**Hackathon status:** the first controlled comparison is complete. On two implemented cases, WAKE scored **63.34/100** against **38.86/100** for the direct-call baseline: **+24.48 points** (**+63.0% relative**) for US$0.062338 incremental API cost. The first progressive-evidence ablation is also recorded: core plan + SpeedCoach passed 7/8 checks but failed on an unsupported derived-distance deviation; context/environment passed 10/10; and the full mobile bundle passed 12/12 for US$0.298604 total. These are workflow/capability results, not a human-coach comparison.
 
 ## The problem
 
