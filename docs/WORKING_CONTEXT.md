@@ -170,6 +170,14 @@ The selected first case is a three-device outing with SpeedCoach, iOS, and Andro
 
 The fixture is published at `data/fixtures/case-001-misaligned-double-scull`. Its coordinates, dates, serials, models, and workout IDs are transformed, and high-frequency phone rows are minimized. The private source manifest remains ignored. `scripts/verify_hero_fixture.py` provides the public integrity and behavior check.
 
+### Coach plans and derived-synthetic evaluation
+
+A real multi-week competition plan and ten daily WhatsApp crops were reviewed. The daily images reproduce individual dates from the master plan, showing that the coach maintains a longer periodization artifact while athletes consume a daily slice. The plans include distance- and duration-based work, SPM progressions, recovery ranges, resistance equipment, starts, race preparation, mobility, strength, and alternative prescriptions such as minimum/maximum repetitions.
+
+The plan dates do not match the private April telemetry and must never be represented as the corresponding prescription. The accepted use is to preserve only anonymized plan patterns while generating entirely synthetic executions with exact ground truth.
+
+Evaluation specification v1.0 now defines a 100-point rubric and a 16-case registry. Case 002 implements a six-by-one-kilometer prescription with a wind shift during work interval four, an actual SPM deviation in work interval five, a 37-second mobile clock offset, 1.2% mobile distance bias, and mobile SPM stuck at zero. The case requires abstention about resistance-band use, visible technique, and crew synchronization.
+
 ## Time alignment insight
 
 Starting and stopping multiple devices at exactly the same time is unrealistic. Differences may be seconds or minutes, and a user may forget to stop one recording for much longer.
@@ -277,15 +285,7 @@ The UI only needs enough polish to make that end-to-end execution understandable
 
 ## Evaluation direction
 
-The primary metric is not yet accepted. Candidate dimensions include:
-
-- correctness of reconstructed session facts against a reviewed reference;
-- unsupported-claim rate;
-- calibration or appropriate abstention when evidence is insufficient;
-- success in selecting the trusted source for each metric;
-- usefulness and precision of follow-up questions;
-- coach-rated usefulness of the final briefing;
-- human time required per session.
+The accepted primary metric is macro-average weighted rubric score from 0 to 100 across implemented fixed cases. Its dimensions are plan interpretation, session association/alignment, segment reconstruction, metric-level source trust, deviation detection, environmental interpretation, evidence/abstention, and follow-up questions. Unsupported-claim rate, required-abstention recall, boundary error, runtime, cost, and later coach-rated usefulness remain secondary metrics.
 
 A likely evaluation will use ten or more fixed cases, including scenarios such as:
 
@@ -300,7 +300,7 @@ A likely evaluation will use ten or more fixed cases, including scenarios such a
 - a plan that was not followed;
 - a request to infer technique that the evidence cannot support.
 
-The baseline may be a direct model prompt over the same compact session summary without investigation tools, memory, or verification. The exact baseline and scoring rubric must be fixed before optimization.
+The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The concrete model, prompt, deterministic summarizer, and grader implementation remain to be built and pinned before the first score.
 
 ## Demonstration story
 
@@ -326,8 +326,8 @@ A candidate five-minute narrative is:
 
 ## Open product and engineering questions
 
-- What is the normalized session/evidence schema?
-- What is the primary metric and who establishes the reference answers?
+- Which domain expert independently reviews each ground-truth answer before final scoring?
+- Which schema revisions are justified by parser and grader implementation evidence?
 - Which runtime, model, SDK, database, and UI stack best fit the weekend?
 - Is one orchestrating agent plus verifier enough, or does an evaluated failure justify another specialized agent?
 - How should evidence, trajectories, cost, and runtime be packaged for judges?

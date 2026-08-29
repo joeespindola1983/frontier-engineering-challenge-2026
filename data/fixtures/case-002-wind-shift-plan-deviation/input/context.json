@@ -1,0 +1,44 @@
+{
+  "schema_version": "wake.synthetic_case_context.v1",
+  "case_id": "case-002-wind-shift-plan-deviation",
+  "investigation_request": "Compare the planned and performed session, explain supported speed changes, identify real deviations, and state what remains unknown.",
+  "provided_sources": [
+    {
+      "source_id": "speedcoach-synthetic",
+      "kind": "SPEEDCOACH",
+      "path": "speedcoach.csv"
+    },
+    {
+      "source_id": "mobile-synthetic",
+      "kind": "MOBILE",
+      "path": "mobile.csv"
+    },
+    {
+      "source_id": "synthetic-environment-002",
+      "kind": "ENVIRONMENT",
+      "path": "environment.json"
+    },
+    {
+      "source_id": "synthetic-plan-002",
+      "kind": "TRAINING_PLAN",
+      "path": "plan.json"
+    }
+  ],
+  "session_candidate": {
+    "boat_class": "DOUBLE_SCULL",
+    "world_rowing_code": "2x",
+    "crew_category": "MEN",
+    "athlete_ids": [
+      "synthetic-athlete-a",
+      "synthetic-athlete-b"
+    ],
+    "experience": "EXPERIENCED",
+    "route_heading_deg": 0.0
+  },
+  "human_confirmations": {
+    "resistance_band_used": null,
+    "coach_observed_technique": null,
+    "perceived_effort": null
+  },
+  "input_notice": "All people, dates, route coordinates, telemetry, and weather in this case are synthetic."
+}

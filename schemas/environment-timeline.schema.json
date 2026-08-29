@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wake-rowing.dev/schemas/environment-timeline.schema.json",
+  "title": "WAKE Environment Timeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "timeline_id", "source", "direction_convention", "samples"],
+  "properties": {
+    "schema_version": {"const": "wake.environment_timeline.v1"},
+    "timeline_id": {"type": "string"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source_ref", "quality"],
+      "properties": {
+        "kind": {"enum": ["WEATHER_STATION", "WEATHER_API", "ON_BOAT_SENSOR", "HUMAN", "SYNTHETIC"]},
+        "source_ref": {"type": "string"},
+        "quality": {"enum": ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]}
+      }
+    },
+    "direction_convention": {"const": "METEOROLOGICAL_FROM_DEGREES_TRUE_NORTH"},
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["timestamp", "wind_speed_m_s", "wind_direction_deg", "gust_speed_m_s", "temperature_c"],
+        "properties": {
+          "timestamp": {"type": "string", "format": "date-time"},
+          "wind_speed_m_s": {"type": "number", "minimum": 0},
+          "wind_direction_deg": {"type": "number", "minimum": 0, "exclusiveMaximum": 360},
+          "gust_speed_m_s": {"type": ["number", "null"], "minimum": 0},
+          "temperature_c": {"type": ["number", "null"]}
+        }
+      }
+    }
+  }
+}

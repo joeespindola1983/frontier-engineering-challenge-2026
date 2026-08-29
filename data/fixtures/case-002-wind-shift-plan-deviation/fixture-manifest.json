@@ -1,0 +1,38 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-002-wind-shift-plan-deviation",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_synthetic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260829,
+  "files": {
+    "README.md": {
+      "sha256": "cfd445f543f91d872b037dddb89786e7f34a5df934b9093285bdad6099a1d0ce",
+      "bytes": 1243
+    },
+    "input/plan.json": {
+      "sha256": "d9de9348818473c53678c0b6b739ab735963a882b8db596f256df38e3202dfbb",
+      "bytes": 1767
+    },
+    "input/context.json": {
+      "sha256": "e6d9320261ced80b14bffbf6812c9d48c74ef4930d686df56a406ede30da3b48",
+      "bytes": 1265
+    },
+    "input/speedcoach.csv": {
+      "sha256": "c48af984c4bac0a8dbdcc5d66b6932d998514ce90cc297ebf63ed195b48813e3",
+      "bytes": 52327
+    },
+    "input/mobile.csv": {
+      "sha256": "783897638823daf5a8e916e4731b2e131307495a6a9b02a142e48a215ea27255",
+      "bytes": 26302
+    },
+    "input/environment.json": {
+      "sha256": "b494d72843465766f2959822db2d3112cfb560ee70b038bfdc4168780fadd9ad",
+      "bytes": 19420
+    },
+    "ground-truth.json": {
+      "sha256": "cc8074298d519d195b37f591294d8e0de9600f9413a974953dfa148f003d0a82",
+      "bytes": 5724
+    }
+  }
+}

@@ -52,6 +52,12 @@ Created during the hackathon:
 
 The ignored local source manifest pins the seven private input files by SHA-256. The public repository contains no raw private export, original source path, real coordinate, real date, serial, phone model, or workout UUID.
 
+## Reuse record: coach plan patterns
+
+A multi-week coach plan PDF and daily WhatsApp image crops existed before the competition. They demonstrate how a master periodization plan is distributed as daily instructions and contain real rowing notation, ranges, recovery, equipment, mobility, and strength work.
+
+The raw PDF and images remain outside Git. The second public case reuses only an anonymized prescription pattern: six one-kilometer intervals, two SPM targets, active recovery, and a resistance instruction. Every athlete, date, coordinate, environmental sample, and telemetry row in case 002 is newly generated synthetic data. The generator, schemas, ground truth, rubric, and verification are hackathon work.
+
 ## Reuse requirements
 
 Before reusing any earlier code or component:

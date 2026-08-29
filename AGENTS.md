@@ -67,4 +67,4 @@ A separate mobile rowing application existed before the hackathon. It captured m
 
 ## Current phase
 
-The project is in discovery and evidence design. No runtime stack, model, database, UI framework, primary metric, or final evaluation fixture set has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.
+The project is in evaluation-contract and deterministic-tool development. The primary metric, first schema versions, 16-case registry, and two public fixtures are accepted. No runtime stack, model, database, UI framework, runnable baseline, or agent workflow has been accepted yet. Record those choices in `docs/DECISIONS.md` before treating them as stable.

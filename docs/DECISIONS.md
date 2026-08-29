@@ -68,10 +68,33 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Store private paths and source hashes only in ignored `private-data/`. Commit the generated fixture, public content hashes, generator, and a standalone verifier.
 - **Rationale:** Maintainers with approved raw data can reproduce the transformation, while judges can verify the published artifact without private access.
 
+## 2026-08-29 - Freeze the first evaluation rubric before the baseline
+
+- **Status:** accepted as evaluation specification version 1.0.
+- **Decision:** Use macro-average weighted rubric score from 0 to 100 as the primary metric across implemented fixed cases. Score plan interpretation, session alignment, segmentation, metric-level trust, deviation detection, environmental interpretation, evidence/abstention, and follow-up questions.
+- **Rationale:** A fixed rubric prevents the baseline or final workflow from redefining success after outputs are visible. Secondary metrics retain diagnostic detail, especially unsupported-claim rate and required-abstention recall.
+
+## 2026-08-29 - Register sixteen cases and separate demonstration from diagnosis
+
+- **Status:** accepted; two cases implemented and fourteen planned.
+- **Decision:** Keep complex cases for the product demonstration and add isolated synthetic cases for individual failure modes. Planned cases do not enter the evaluation denominator until their fixtures and ground truth are committed.
+- **Rationale:** Three examples can tell the story but cannot characterize the full workflow. Isolated cases make regressions attributable, while a complex hero case demonstrates why the components matter together.
+
+## 2026-08-29 - Use derived-synthetic plans without fabricating real history
+
+- **Status:** accepted.
+- **Decision:** Use the structure of approved real coach prescriptions to create anonymized synthetic plans and entirely synthetic athletes, dates, routes, weather, and telemetry. Never attach an unrelated real session to a plan or imply that a synthetic execution occurred.
+- **Rationale:** Real prescriptions provide domain realism; deterministic synthetic execution provides exact ground truth and privacy-safe adversarial cases.
+
+## 2026-08-29 - Accept the first normalized evidence contracts
+
+- **Status:** accepted as version 1; revision expected through implementation evidence.
+- **Decision:** Version JSON Schemas for training plans, recorded sessions, environment timelines, evidence claims, and evaluation ground truth.
+- **Rationale:** The contracts separate observed evidence, derived values, human confirmation, conflicts, and unsupported claims before agent prompting begins.
+
 ## Pending decisions
 
 - Technology stack and deployment target.
-- Primary metric and evaluation rubric.
-- Baseline definition.
+- Concrete baseline model, prompt, and input-summary implementation.
 - Agent/tool framework and model.
-- Normalized evidence and session schemas beyond the first fixture contract.
+- Schema revisions justified by parser and grader implementation evidence.

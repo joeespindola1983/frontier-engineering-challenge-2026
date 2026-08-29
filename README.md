@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** first reproducible evaluation fixture complete; baseline and agent workflow are not implemented yet.
+**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, and versioned evidence contracts are complete. The runnable baseline and agent workflow are not implemented yet.
 
 ## The problem
 
@@ -55,14 +55,16 @@ The repository will preserve:
 - [Decision log](docs/DECISIONS.md)
 - [Submission requirements](docs/SUBMISSION_REQUIREMENTS.md)
 - [Private dataset audit](docs/DATASET_AUDIT.md)
+- [Evaluation specification](docs/EVALUATION_SPEC.md)
+- [Normalized data contracts](schemas/README.md)
 - [Public evaluation fixtures](data/fixtures/README.md)
 
 ## Current repository state
 
-The repository now contains one difficult, anonymized multi-device fixture and a deterministic verifier. The application stack, primary evaluation rubric, and baseline still need to be fixed before the final agent workflow is implemented.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, and public verifiers. The application stack, concrete baseline model/prompt, and agent workflow still need to be implemented.
 
 Verify the current evidence case with:
 
 ```bash
-python3 scripts/verify_hero_fixture.py
+python3 scripts/verify_all.py
 ```

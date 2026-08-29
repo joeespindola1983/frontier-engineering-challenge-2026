@@ -1,0 +1,71 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "synthetic-plan-002",
+  "scheduled_date": "2026-01-20",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "DERIVED_SYNTHETIC",
+    "source_ref": "anonymized pattern derived from an approved coach plan"
+  },
+  "modality": "WATER",
+  "athlete_scope": {
+    "kind": "CREW",
+    "ids": [
+      "synthetic-athlete-a",
+      "synthetic-athlete-b"
+    ]
+  },
+  "goal_id": "synthetic-goal-regatta-01",
+  "coach_language": "6 x 1 km; first 3 at 20 SPM with resistance band, last 3 at 23 SPM; 3-5 minutes active recovery.",
+  "blocks": [
+    {
+      "block_id": "work-band",
+      "kind": "WORK",
+      "repetitions": 3,
+      "distance_m": 1000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 19,
+        "max_spm": 21
+      },
+      "zone": "B2/B3",
+      "recovery": {
+        "min_s": 180,
+        "max_s": 300,
+        "mode": "ACTIVE_LIGHT_ROWING"
+      },
+      "equipment": [
+        "RESISTANCE_BAND"
+      ],
+      "instructions": [
+        "Keep the work interval continuous."
+      ]
+    },
+    {
+      "block_id": "work-free",
+      "kind": "WORK",
+      "repetitions": 3,
+      "distance_m": 1000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 22,
+        "max_spm": 24
+      },
+      "zone": "B2/B3",
+      "recovery": {
+        "min_s": 180,
+        "max_s": 300,
+        "mode": "ACTIVE_LIGHT_ROWING"
+      },
+      "equipment": [],
+      "instructions": [
+        "Remove the resistance band before this block."
+      ]
+    }
+  ],
+  "unresolved_terms": [
+    "B2/B3"
+  ],
+  "notes": "Synthetic evaluation plan inspired by the structure of a real rowing prescription; it is not a record of an athlete's workout."
+}

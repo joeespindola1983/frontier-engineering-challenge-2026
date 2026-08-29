@@ -9,10 +9,10 @@ Each case separates:
 - `source-manifest.json`: hashes and transformation metadata for integrity checks;
 - `README.md`: the case's purpose and limitations.
 
-Run the current fixture verifier from the repository root:
+Run every implemented fixture verifier from the repository root:
 
 ```bash
-python3 scripts/verify_hero_fixture.py
+python3 scripts/verify_all.py
 ```
 
 Private source manifests belong under the ignored `private-data/` directory. Never commit those manifests or the original exports.

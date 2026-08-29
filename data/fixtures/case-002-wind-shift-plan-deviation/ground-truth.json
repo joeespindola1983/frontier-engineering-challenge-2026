@@ -1,0 +1,201 @@
+{
+  "schema_version": "wake.evaluation_ground_truth.v1",
+  "fixture_id": "case-002-wind-shift-plan-deviation",
+  "fixture_version": "1.0",
+  "applicable_dimensions": [
+    "plan_interpretation",
+    "session_association_and_alignment",
+    "segment_reconstruction",
+    "metric_level_source_trust",
+    "deviation_detection",
+    "environmental_interpretation",
+    "evidence_and_abstention",
+    "follow_up_questions"
+  ],
+  "expected_session_matches": [
+    {
+      "source_ids": [
+        "speedcoach-synthetic",
+        "mobile-synthetic"
+      ],
+      "decision": "MATCH",
+      "clock_offset_s": 37.0
+    }
+  ],
+  "expected_segments": [
+    {
+      "segment_id": "work-01",
+      "kind": "WORK",
+      "start_offset_s": 0.0,
+      "end_offset_s": 301.092,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 3.321,
+      "average_spm": 20.02,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-01",
+      "kind": "RECOVERY",
+      "start_offset_s": 301.092,
+      "end_offset_s": 541.092,
+      "distance_m": 410.06,
+      "average_speed_m_s": 1.709,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-02",
+      "kind": "WORK",
+      "start_offset_s": 541.092,
+      "end_offset_s": 842.123,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 3.322,
+      "average_spm": 20.02,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-02",
+      "kind": "RECOVERY",
+      "start_offset_s": 842.123,
+      "end_offset_s": 1082.123,
+      "distance_m": 410.133,
+      "average_speed_m_s": 1.709,
+      "average_spm": 16.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-03",
+      "kind": "WORK",
+      "start_offset_s": 1082.123,
+      "end_offset_s": 1383.262,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 3.32,
+      "average_spm": 19.97,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-03",
+      "kind": "RECOVERY",
+      "start_offset_s": 1383.262,
+      "end_offset_s": 1623.262,
+      "distance_m": 407.307,
+      "average_speed_m_s": 1.697,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-04",
+      "kind": "WORK",
+      "start_offset_s": 1623.262,
+      "end_offset_s": 1912.301,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 3.459,
+      "average_spm": 22.99,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-04",
+      "kind": "RECOVERY",
+      "start_offset_s": 1912.301,
+      "end_offset_s": 2152.301,
+      "distance_m": 407.414,
+      "average_speed_m_s": 1.698,
+      "average_spm": 16.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-05",
+      "kind": "WORK",
+      "start_offset_s": 2152.301,
+      "end_offset_s": 2489.056,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 2.97,
+      "average_spm": 19.99,
+      "compliance": "DEVIATION"
+    },
+    {
+      "segment_id": "recovery-05",
+      "kind": "RECOVERY",
+      "start_offset_s": 2489.056,
+      "end_offset_s": 2729.056,
+      "distance_m": 406.431,
+      "average_speed_m_s": 1.693,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-06",
+      "kind": "WORK",
+      "start_offset_s": 2729.056,
+      "end_offset_s": 3044.648,
+      "distance_m": 1000.0,
+      "average_speed_m_s": 3.168,
+      "average_spm": 22.97,
+      "compliance": "COMPLIANT"
+    }
+  ],
+  "expected_source_policy": {
+    "stroke_rate_spm": "speedcoach-synthetic",
+    "distance_m": "speedcoach-synthetic",
+    "route": "speedcoach-synthetic corroborated by mobile-synthetic",
+    "environment": "synthetic-environment-002",
+    "resistance_band_used": "human confirmation required"
+  },
+  "expected_claims": [
+    {
+      "claim_id": "completed-six-work-intervals",
+      "expectation": "Six 1,000 m work intervals were completed.",
+      "evidence_refs": [
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    },
+    {
+      "claim_id": "fifth-interval-spm-deviation",
+      "expectation": "The fifth work interval averaged about 20 SPM, below the prescribed 22-24 SPM range.",
+      "evidence_refs": [
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    },
+    {
+      "claim_id": "wind-shift-during-fourth",
+      "expectation": "Wind changed from light tailwind toward strong headwind around 1773.3 seconds, during the fourth work interval.",
+      "evidence_refs": [
+        "environment.json",
+        "speedcoach.csv"
+      ]
+    },
+    {
+      "claim_id": "slower-not-automatically-failed",
+      "expectation": "Slower speed after the wind shift is not sufficient evidence of poor execution or athlete regression.",
+      "evidence_refs": [
+        "environment.json",
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    },
+    {
+      "claim_id": "mobile-spm-unusable",
+      "expectation": "The mobile SPM channel is stuck at zero and must not support stroke-rate claims.",
+      "evidence_refs": [
+        "mobile.csv"
+      ]
+    }
+  ],
+  "required_abstentions": [
+    "Do not claim that the resistance band was used; the plan prescribes it but telemetry cannot observe it.",
+    "Do not claim a technical rowing fault or crew synchronization problem from these inputs.",
+    "Do not claim that wind caused every speed change or quantify athlete regression.",
+    "Do not claim real athlete, location, date, or weather observations; the case is synthetic."
+  ],
+  "required_questions": [
+    "Was the resistance band actually used during the first three work intervals?"
+  ],
+  "tolerances": {
+    "segment_boundary_s": 10.0,
+    "distance_m": 15.0,
+    "stroke_rate_spm": 1.0,
+    "clock_offset_s": 0.1
+  }
+}

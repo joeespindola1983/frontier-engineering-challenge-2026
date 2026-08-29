@@ -1,0 +1,103 @@
+{
+  "schema": "wake.evaluation_registry.v1",
+  "version": "1.0",
+  "frozen_on": "2026-08-29",
+  "cases": [
+    {
+      "case_id": "case-001-misaligned-double-scull",
+      "status": "IMPLEMENTED",
+      "provenance": "REAL_ANONYMIZED",
+      "dimensions": ["session_matching", "metric_trust", "abstention", "human_context"]
+    },
+    {
+      "case_id": "case-002-wind-shift-plan-deviation",
+      "status": "IMPLEMENTED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["plan", "segmentation", "metric_trust", "deviation", "environment", "abstention"]
+    },
+    {
+      "case_id": "case-003-calm-expert-compliant",
+      "status": "PLANNED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["plan", "segmentation", "deviation"]
+    },
+    {
+      "case_id": "case-004-steady-headwind-compliant",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["deviation", "environment"]
+    },
+    {
+      "case_id": "case-005-tailwind-fast-not-improvement",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["environment", "abstention"]
+    },
+    {
+      "case_id": "case-006-crosswind-gusts",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["environment", "abstention"]
+    },
+    {
+      "case_id": "case-007-incomplete-intervals",
+      "status": "PLANNED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["segmentation", "deviation"]
+    },
+    {
+      "case_id": "case-008-correct-distance-wrong-spm",
+      "status": "PLANNED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["metric_trust", "deviation"]
+    },
+    {
+      "case_id": "case-009-excess-recovery",
+      "status": "PLANNED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["segmentation", "deviation"]
+    },
+    {
+      "case_id": "case-010-mobile-spm-zero",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["metric_trust", "abstention"]
+    },
+    {
+      "case_id": "case-011-missing-environment-evidence",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["environment", "abstention", "questions"]
+    },
+    {
+      "case_id": "case-012-near-time-different-route",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["session_matching"]
+    },
+    {
+      "case_id": "case-013-experience-relative-baseline",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["deviation", "abstention", "human_context"]
+    },
+    {
+      "case_id": "case-014-boat-class-change",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["metric_trust", "human_context"]
+    },
+    {
+      "case_id": "case-015-crew-change",
+      "status": "PLANNED",
+      "provenance": "SYNTHETIC",
+      "dimensions": ["abstention", "human_context"]
+    },
+    {
+      "case_id": "case-016-daily-plan-revision",
+      "status": "PLANNED",
+      "provenance": "DERIVED_SYNTHETIC",
+      "dimensions": ["plan", "metric_trust", "questions"]
+    }
+  ]
+}

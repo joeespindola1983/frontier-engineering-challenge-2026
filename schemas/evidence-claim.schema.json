@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wake-rowing.dev/schemas/evidence-claim.schema.json",
+  "title": "WAKE Evidence Claim",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "claim_id", "subject_ref", "predicate", "value", "status", "confidence", "evidence_refs", "method", "limitations"],
+  "properties": {
+    "schema_version": {"const": "wake.evidence_claim.v1"},
+    "claim_id": {"type": "string"},
+    "subject_ref": {"type": "string"},
+    "predicate": {"type": "string"},
+    "value": {},
+    "unit": {"type": ["string", "null"]},
+    "status": {"enum": ["OBSERVED", "DERIVED", "HUMAN_CONFIRMED", "INFERRED", "CONFLICTED", "UNKNOWN", "UNSUPPORTED"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "method": {"type": ["string", "null"]},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}

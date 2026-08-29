@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wake-rowing.dev/schemas/training-plan.schema.json",
+  "title": "WAKE Training Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "plan_id", "scheduled_date", "timezone", "source", "modality", "blocks"],
+  "properties": {
+    "schema_version": {"const": "wake.training_plan.v1"},
+    "plan_id": {"type": "string", "minLength": 1},
+    "scheduled_date": {"type": "string", "format": "date"},
+    "timezone": {"type": "string", "minLength": 1},
+    "source": {"$ref": "#/$defs/source"},
+    "modality": {"enum": ["WATER", "INDOOR_ROWER", "STRENGTH", "MOBILITY", "RUNNING", "MIXED"]},
+    "athlete_scope": {"$ref": "#/$defs/athlete_scope"},
+    "goal_id": {"type": ["string", "null"]},
+    "coach_language": {"type": ["string", "null"]},
+    "blocks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/block"}},
+    "unresolved_terms": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "provenance", "source_ref"],
+      "properties": {
+        "kind": {"enum": ["WHATSAPP_IMAGE", "PDF", "SPREADSHEET", "HUMAN_ENTRY", "SYNTHETIC"]},
+        "provenance": {"enum": ["REAL", "REAL_ANONYMIZED", "DERIVED_SYNTHETIC", "SYNTHETIC"]},
+        "source_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "athlete_scope": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["kind", "ids"],
+      "properties": {
+        "kind": {"enum": ["TEAM", "SQUAD", "CREW", "INDIVIDUAL"]},
+        "ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "stroke_rate": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["min_spm", "max_spm"],
+      "properties": {
+        "min_spm": {"type": "number", "minimum": 1},
+        "max_spm": {"type": "number", "minimum": 1}
+      }
+    },
+    "recovery": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["min_s", "max_s", "mode"],
+      "properties": {
+        "min_s": {"type": "number", "minimum": 0},
+        "max_s": {"type": "number", "minimum": 0},
+        "mode": {"enum": ["PASSIVE", "ACTIVE_LIGHT_ROWING", "UNSPECIFIED"]}
+      }
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["block_id", "kind", "repetitions", "distance_m", "duration_s", "stroke_rate", "zone", "recovery", "equipment", "instructions"],
+      "properties": {
+        "block_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["WARMUP", "WORK", "RECOVERY", "COOLDOWN", "STRENGTH", "MOBILITY", "NOTE"]},
+        "repetitions": {"type": "integer", "minimum": 1},
+        "distance_m": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "duration_s": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "stroke_rate": {"$ref": "#/$defs/stroke_rate"},
+        "zone": {"type": ["string", "null"]},
+        "recovery": {"$ref": "#/$defs/recovery"},
+        "equipment": {"type": "array", "items": {"type": "string"}},
+        "instructions": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wake-rowing.dev/schemas/recorded-session.schema.json",
+  "title": "WAKE Recorded Session",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "session_id", "start_time", "end_time", "timezone", "modality", "athlete_ids", "boat", "sources", "series_refs", "segments"],
+  "properties": {
+    "schema_version": {"const": "wake.recorded_session.v1"},
+    "session_id": {"type": "string", "minLength": 1},
+    "start_time": {"type": "string", "format": "date-time"},
+    "end_time": {"type": "string", "format": "date-time"},
+    "timezone": {"type": "string", "minLength": 1},
+    "modality": {"enum": ["WATER", "INDOOR_ROWER", "STRENGTH", "MOBILITY", "RUNNING", "MIXED"]},
+    "athlete_ids": {"type": "array", "items": {"type": "string"}},
+    "boat": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["class", "physical_boat_id", "crew_category"],
+      "properties": {
+        "class": {"type": ["string", "null"]},
+        "physical_boat_id": {"type": ["string", "null"]},
+        "crew_category": {"type": ["string", "null"]}
+      }
+    },
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+    "series_refs": {"type": "array", "items": {"$ref": "#/$defs/series_ref"}},
+    "segments": {"type": "array", "items": {"$ref": "#/$defs/segment"}},
+    "plan_id": {"type": ["string", "null"]},
+    "environment_timeline_id": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "kind", "clock_offset_s", "quality_flags"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "kind": {"enum": ["SPEEDCOACH", "MOBILE_IOS", "MOBILE_ANDROID", "CONCEPT2", "HUMAN", "OTHER"]},
+        "clock_offset_s": {"type": ["number", "null"]},
+        "quality_flags": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "series_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "source_id", "path", "unit"],
+      "properties": {
+        "metric": {"type": "string"},
+        "source_id": {"type": "string"},
+        "path": {"type": "string"},
+        "unit": {"type": ["string", "null"]}
+      }
+    },
+    "segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["segment_id", "kind", "start_offset_s", "end_offset_s", "distance_m", "average_speed_m_s", "average_spm", "evidence_refs"],
+      "properties": {
+        "segment_id": {"type": "string"},
+        "kind": {"enum": ["WORK", "RECOVERY", "WARMUP", "COOLDOWN", "UNKNOWN"]},
+        "start_offset_s": {"type": "number", "minimum": 0},
+        "end_offset_s": {"type": "number", "minimum": 0},
+        "distance_m": {"type": ["number", "null"]},
+        "average_speed_m_s": {"type": ["number", "null"]},
+        "average_spm": {"type": ["number", "null"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

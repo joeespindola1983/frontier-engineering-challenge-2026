@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** provisional. The first fixture and its verifier are implemented; the product architecture remains a hypothesis until evaluated.
+**Status:** provisional. Two fixtures, the first normalized contracts, and their verifiers are implemented; the product architecture remains a hypothesis until evaluated.
 
 ## Proposed flow
 
@@ -74,13 +74,14 @@ Capture structured runtime events without private chain-of-thought: run identifi
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
+The evaluation protocol is now frozen in `docs/EVALUATION_SPEC.md`. The next architecture checkpoint is a deterministic input summarizer plus one versioned direct-call baseline prompt.
+
 ## Open decisions
 
 - Application/runtime stack.
 - Model and agent SDK.
 - Local versus hosted execution.
-- Normalized session schema.
 - Data store and memory representation.
 - Weather provider and historical-data availability.
-- Primary success metric and grader design.
+- Concrete grader implementation and calibration.
 - User interface scope for the five-minute demonstration.
