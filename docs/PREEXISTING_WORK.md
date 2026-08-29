@@ -38,6 +38,20 @@ The following are candidates to be built and evaluated during the hackathon. The
 - a human-review checkpoint;
 - baseline, evaluation cases, graders, trajectories, reproduction commands, and user-facing demo.
 
+## Reuse record: first public fixture
+
+The first public evaluation case uses exports captured before the competition by the existing mobile application and a SpeedCoach device. Only data formats and approved recordings are reused; no parser or application source code has been copied into this repository.
+
+Created during the hackathon:
+
+- the case selection and human-confirmed men's `2x` reference context;
+- the deterministic privacy transformation;
+- the minimized public fixture and its hashes;
+- the evaluator-only ground truth and abstention requirements;
+- the integrity, privacy, route-overlap, timing, and metric verifier.
+
+The ignored local source manifest pins the seven private input files by SHA-256. The public repository contains no raw private export, original source path, real coordinate, real date, serial, phone model, or workout UUID.
+
 ## Reuse requirements
 
 Before reusing any earlier code or component:
@@ -56,5 +70,5 @@ Raw sessions may contain GPS routes, timestamps, device identifiers, and athlete
 
 - Record the exact pre-competition application repository and commit/snapshot.
 - Inventory each real candidate session and its consent/provenance status.
-- Decide whether any earlier parser code will be reused or only its exported data format.
+- If earlier parser code is later reused, record its exact repository commit and license before copying it. The first fixture uses only exported data formats.
 - Document licenses and service terms for every final dependency and external data provider.

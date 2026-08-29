@@ -1,6 +1,6 @@
 # Working Context and Discovery History
 
-**Last updated:** 2026-08-28
+**Last updated:** 2026-08-29
 **Status:** living handoff document, not a stable specification
 
 ## Purpose
@@ -151,6 +151,24 @@ The existing private workspace contains several potentially useful combinations.
 - Older deleted session exports appear recoverable from the pre-existing application's Git history, but no recovery should be described as hackathon evidence until the data is restored, reviewed, and approved.
 
 Raw data remains outside the public repository. Any public case must be minimized, anonymized, or synthesized while preserving the failure mode being tested.
+
+### Private corpus audit and selected hero case
+
+A read-only audit found a useful but uneven corpus: 18 SpeedCoach CSVs (17 unique), 39 mobile telemetry files (38 unique), 32 unique mobile workout summaries, and 23 watch CSVs. Thirty-seven unique mobile telemetry files contain GPS. Raw mobile SPM is present in only three sessions, and the available watch files contain no positive heart-rate or watch-SPM values. No Concept2 export was found in the audited folder. ZIP archives, generated reports, and databases are treated as derived packaging rather than primary evidence.
+
+The selected first case is a three-device outing with SpeedCoach, iOS, and Android recordings. A human domain expert confirmed that all three represent one men's double scull (`2x`) session with two athletes. The evidence itself is deliberately contradictory:
+
+- mobile start clocks are almost one hour later than SpeedCoach;
+- route-overlap p95 is below 5 m for both phone-to-SpeedCoach comparisons;
+- SpeedCoach reports 3,915.3 m, 25:25.8, 22.0 SPM, and 549 strokes;
+- raw phone GPS distance is close to 4 km, while mobile summaries claim substantially longer distances;
+- neither raw mobile sensor stream contains SPM values;
+- iOS gyroscope data is present, while Android gyroscope values are zero;
+- iOS reports `SINGLE_SCULL` and Android reports `OC1`, although the confirmed boat is `2x`;
+- mobile metadata claims watch availability, but no watch evidence is supplied in the public case;
+- no planned workout or coach technique observation exists for the outing.
+
+The fixture is published at `data/fixtures/case-001-misaligned-double-scull`. Its coordinates, dates, serials, models, and workout IDs are transformed, and high-frequency phone rows are minimized. The private source manifest remains ignored. `scripts/verify_hero_fixture.py` provides the public integrity and behavior check.
 
 ## Time alignment insight
 
@@ -308,8 +326,6 @@ A candidate five-minute narrative is:
 
 ## Open product and engineering questions
 
-- Which single case best demonstrates the full agent loop?
-- Which private sessions can safely become anonymized public fixtures?
 - What is the normalized session/evidence schema?
 - What is the primary metric and who establishes the reference answers?
 - Which runtime, model, SDK, database, and UI stack best fit the weekend?

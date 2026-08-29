@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** provisional. This document describes the smallest architecture worth evaluating; it is not an implementation claim.
+**Status:** provisional. The first fixture and its verifier are implemented; the product architecture remains a hypothesis until evaluated.
 
 ## Proposed flow
 
@@ -83,5 +83,4 @@ The baseline should represent a reasonable simple approach to the same task, suc
 - Data store and memory representation.
 - Weather provider and historical-data availability.
 - Primary success metric and grader design.
-- Public fixture format and anonymization method.
 - User interface scope for the five-minute demonstration.

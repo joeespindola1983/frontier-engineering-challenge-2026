@@ -4,11 +4,12 @@ This changelog will connect every meaningful experiment to evidence produced wit
 
 ## Current status
 
-No runnable baseline, evaluation cases, or measured results exist yet.
+One reproducible evaluation case now exists. There is still no runnable agent baseline or measured agent-quality result.
 
 | Stage | What we tried and why | Evidence | Decision / learning |
 | --- | --- | --- | --- |
 | Discovery | Defined the rowing bottleneck and an initial evidence-backed workflow before selecting a stack. | Domain interview notes summarized in the product brief; no quantitative result yet. | Proceed to fixture audit and define the baseline and primary metric before implementing the final workflow. |
+| Data audit and hero fixture | Audited the private export corpus and selected a three-device case that concentrates matching, clock, source-conflict, and missing-evidence failures. Built a minimized deterministic transformation rather than publishing raw files. | `python3 scripts/verify_hero_fixture.py` verifies public hashes, privacy invariants, 549 SpeedCoach strokes, mobile evidence availability, preserved clock offsets, and route-overlap p95 below 5 m. This is fixture evidence, not an agent improvement score. | Keep this as case 001. Define the rubric and freeze a simple baseline before adding agent behavior. |
 
 ## Entry template
 

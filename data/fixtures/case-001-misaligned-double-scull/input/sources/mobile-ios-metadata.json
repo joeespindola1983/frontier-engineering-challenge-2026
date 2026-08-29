@@ -1,0 +1,21 @@
+{
+  "schema": "remo_raw_v1",
+  "workoutId": "fixture-session-ios",
+  "platform": "ios",
+  "deviceModel": "fixture-mobile-ios",
+  "osVersion": "26.5",
+  "appVersion": "7.0.2",
+  "appBuild": "121",
+  "rowerType": "OLYMPIC",
+  "boatType": "SINGLE_SCULL",
+  "startTime": "2026-01-15T10:59:18.826Z",
+  "durationSeconds": 1543,
+  "totalDistanceM": 4625,
+  "avgSpm": 22,
+  "totalStrokes": 562,
+  "maxSpeedMs": 3.909274973023346,
+  "hasWatchData": true,
+  "watchSources": [
+    "apple_watch"
+  ]
+}

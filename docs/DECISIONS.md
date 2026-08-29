@@ -44,11 +44,34 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Commit the problem definition, pre-existing boundary, requirements, architecture hypothesis, and changelog before choosing an implementation stack.
 - **Rationale:** The hackathon requires a genuine improvement story. Recording assumptions before experiments makes later results auditable and avoids rewriting the history after the solution exists.
 
+## 2026-08-29 - Select the misaligned men's 2x session as the hero case
+
+- **Status:** accepted.
+- **Decision:** Use one real, three-device outing as the first end-to-end evaluation case. A human domain expert confirmed that the recordings describe the same men's double scull (`2x`) session with two athletes.
+- **Rationale:** The case contains several valuable failure modes at once: device clocks differ by almost one hour, route evidence strongly matches, source summaries disagree, mobile raw SPM is absent, Android gyroscope readings are zero, and both mobile boat defaults are wrong.
+
+## 2026-08-29 - Preserve conflicts and require abstention in the hero case
+
+- **Status:** accepted.
+- **Decision:** Keep the incorrect `SINGLE_SCULL` and `OC1` source values and conflicting distance/SPM summaries. The reference answer must prefer the confirmed `2x` context, choose evidence per metric, expose disagreements, and abstain from plan-compliance and technique claims.
+- **Rationale:** Cleaning away contradictions would remove the agentic work. No planned workout or direct technique observation exists for this outing.
+
+## 2026-08-29 - Publish a transformed, minimized fixture
+
+- **Status:** accepted.
+- **Decision:** Translate the route to a synthetic origin, shift all dates by one shared deterministic delta, replace identifiers, and retain only one mobile sensor row per distinct GPS position plus the final row. Keep original schemas and metric failure modes.
+- **Rationale:** The transformation preserves matching, timing, source-quality, and reconciliation behavior while removing the real route, date, serials, device models, workout IDs, and unnecessary high-frequency motion data.
+
+## 2026-08-29 - Keep raw-data regeneration local and verification public
+
+- **Status:** accepted.
+- **Decision:** Store private paths and source hashes only in ignored `private-data/`. Commit the generated fixture, public content hashes, generator, and a standalone verifier.
+- **Rationale:** Maintainers with approved raw data can reproduce the transformation, while judges can verify the published artifact without private access.
+
 ## Pending decisions
 
 - Technology stack and deployment target.
-- Exact weekend demo case.
 - Primary metric and evaluation rubric.
 - Baseline definition.
 - Agent/tool framework and model.
-- Data schema and public fixture set.
+- Normalized evidence and session schemas beyond the first fixture contract.

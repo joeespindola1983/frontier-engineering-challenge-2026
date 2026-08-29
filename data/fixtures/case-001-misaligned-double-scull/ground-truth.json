@@ -1,0 +1,72 @@
+{
+  "schema": "wake.evaluation_ground_truth.v1",
+  "case_id": "case-001-misaligned-double-scull",
+  "same_physical_session": true,
+  "confirmed_context": {
+    "boat_class": "DOUBLE_SCULL",
+    "world_rowing_code": "2x",
+    "crew_category": "MEN",
+    "athlete_count": 2,
+    "confirmation_source": "human domain expert"
+  },
+  "expected_findings": {
+    "recording_match": {
+      "decision": "MATCH",
+      "strongest_evidence": [
+        "near-identical route geometry",
+        "similar raw GPS distance",
+        "overlapping recording duration after clock normalization"
+      ],
+      "clock_offsets_from_speedcoach_seconds": {
+        "mobile_ios_first_sensor": 3589.127,
+        "mobile_android_first_sensor": 3564.821
+      },
+      "clock_offset_cause": "UNKNOWN"
+    },
+    "speedcoach": {
+      "total_distance_m": 3915.3,
+      "elapsed_time": "00:25:25.8",
+      "average_spm": 22.0,
+      "total_strokes": 549
+    },
+    "mobile_ios": {
+      "raw_max_distance_m": 3955.583797779428,
+      "raw_duration_s": 1543.24,
+      "summary_distance_m": 4625,
+      "summary_elapsed_s": 1564,
+      "summary_average_spm": 22,
+      "summary_total_strokes": 562,
+      "raw_spm_available": false,
+      "raw_gyroscope_available": true,
+      "reported_boat_type": "SINGLE_SCULL"
+    },
+    "mobile_android": {
+      "raw_max_distance_m": 3973.992555239362,
+      "raw_duration_s": 1567.027,
+      "summary_distance_m": 4456,
+      "summary_elapsed_s": 1618,
+      "summary_average_spm": 24,
+      "summary_total_strokes": 556,
+      "raw_spm_available": false,
+      "raw_gyroscope_available": false,
+      "reported_boat_type": "OC1"
+    },
+    "source_policy": {
+      "stroke_rate": "Use SpeedCoach for supported SPM claims; mobile raw telemetry contains no SPM evidence.",
+      "distance": "Expose the disagreement between raw GPS distance, SpeedCoach distance, and mobile summaries; do not average them into false precision.",
+      "boat_class": "Prefer the human-confirmed 2x context over conflicting device defaults and retain the conflict as provenance.",
+      "watch": "The mobile metadata claims watch data exists, but no watch evidence is supplied in this case. Do not claim watch-derived metrics."
+    }
+  },
+  "required_abstentions": [
+    "Do not evaluate planned-versus-performed compliance because no planned workout is supplied.",
+    "Do not infer rowing technique, blade work, balance, or crew synchronization from these files.",
+    "Do not infer heart rate because no usable heart-rate evidence is supplied.",
+    "Do not assert why the device clocks differ; only report the observed offsets.",
+    "Do not identify the athletes, real location, real date, or physical boat."
+  ],
+  "required_follow_up": [
+    "Ask for the planned workout before assessing compliance.",
+    "Ask for coach or athlete observations before making technique claims."
+  ]
+}

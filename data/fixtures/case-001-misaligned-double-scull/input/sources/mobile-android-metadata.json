@@ -1,0 +1,21 @@
+{
+  "schema": "remo_raw_v1",
+  "workoutId": "fixture-session-android",
+  "platform": "android",
+  "deviceModel": "fixture-mobile-android",
+  "osVersion": "14",
+  "appVersion": "7.0.2",
+  "appBuild": "1",
+  "rowerType": "OUTRIGGER",
+  "boatType": "OC1",
+  "startTime": "2026-01-15T10:58:23.993Z",
+  "durationSeconds": 1566,
+  "totalDistanceM": 4456,
+  "avgSpm": 24,
+  "totalStrokes": 556,
+  "maxSpeedMs": 3.9033363471577807,
+  "hasWatchData": true,
+  "watchSources": [
+    "apple_watch"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "wake.session_context.v1",
+  "case_id": "case-001-misaligned-double-scull",
+  "investigation_request": "Determine whether the supplied recordings represent one rowing session, reconcile their claims per metric, and state what cannot yet be evaluated.",
+  "provided_sources": [
+    {
+      "source_id": "speedcoach",
+      "files": ["sources/speedcoach.csv"]
+    },
+    {
+      "source_id": "mobile-ios",
+      "files": [
+        "sources/mobile-ios-sensor.csv",
+        "sources/mobile-ios-workout.csv",
+        "sources/mobile-ios-metadata.json"
+      ]
+    },
+    {
+      "source_id": "mobile-android",
+      "files": [
+        "sources/mobile-android-sensor.csv",
+        "sources/mobile-android-workout.csv",
+        "sources/mobile-android-metadata.json"
+      ]
+    }
+  ],
+  "planned_workout": null,
+  "crew_context": null,
+  "coach_observation": null,
+  "environment_observation": null,
+  "goal_context": null
+}

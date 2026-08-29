@@ -1,0 +1,58 @@
+{
+  "schema": "wake.fixture_source_manifest.v1",
+  "fixture_id": "case-001-misaligned-double-scull",
+  "generator": "scripts/build_hero_fixture.py",
+  "transformation": {
+    "version": 1,
+    "synthetic_speedcoach_start": "2026-01-15T06:59:50-03:00",
+    "synthetic_coordinate_origin": {
+      "latitude": 10.0,
+      "longitude": 10.0
+    },
+    "mobile_sensor_sampling": "first row of each distinct GPS position plus final row"
+  },
+  "files": {
+    "input/sources/speedcoach.csv": {
+      "source_role": "speedcoach",
+      "sha256": "65584101c11a768fc42e37e631a49d0756f0b003e5d9a6b23c53a021da830a1c",
+      "rows_or_fields": 579,
+      "bytes": 75963
+    },
+    "input/sources/mobile-ios-sensor.csv": {
+      "source_role": "ios_sensor",
+      "sha256": "5d089e03a5e102261edb06ec0583af07dd0ed62ecb5a95372bf08ae05c1330ba",
+      "rows_or_fields": 923,
+      "bytes": 463495
+    },
+    "input/sources/mobile-ios-workout.csv": {
+      "source_role": "ios_workout",
+      "sha256": "4afd29f8c97b80496d8bcec24417cfe5a44be10ce1c9c5b9785ff41404538972",
+      "rows_or_fields": 308,
+      "bytes": 27535
+    },
+    "input/sources/mobile-ios-metadata.json": {
+      "source_role": "ios_metadata",
+      "sha256": "5fc2f7380b0885902f8a23be3fe3d79e548d444cb4bbe7c8425dbf856520e16c",
+      "rows_or_fields": 17,
+      "bytes": 490
+    },
+    "input/sources/mobile-android-sensor.csv": {
+      "source_role": "android_sensor",
+      "sha256": "2abe837962d4b59e653fbe2d50d2ad2a78fa03509458ebb15ff3b70907b220e1",
+      "rows_or_fields": 776,
+      "bytes": 327056
+    },
+    "input/sources/mobile-android-workout.csv": {
+      "source_role": "android_workout",
+      "sha256": "310e857fd36ba46c7fdd38b8677a91ab665f1d9f8fccd7024b085983f61be447",
+      "rows_or_fields": 303,
+      "bytes": 27016
+    },
+    "input/sources/mobile-android-metadata.json": {
+      "source_role": "android_metadata",
+      "sha256": "6bcdbde394cf4bdde91ae2561b634e6cc46010180983aada3c28795723b9666b",
+      "rows_or_fields": 17,
+      "bytes": 492
+    }
+  }
+}
