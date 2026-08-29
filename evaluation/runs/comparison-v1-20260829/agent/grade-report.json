@@ -1,0 +1,232 @@
+{
+  "cases": [
+    {
+      "applicable_points": 45,
+      "case_id": "case-001-misaligned-double-scull",
+      "dimensions": [
+        {
+          "dimension": "session_association_and_alignment",
+          "earned_points": 12.0,
+          "evidence_refs": [
+            "input/sources/mobile-android-sensor.csv",
+            "input/sources/mobile-ios-sensor.csv",
+            "input/sources/speedcoach.csv"
+          ],
+          "reasons": [
+            "Matched 1 of 1 expected session decisions with source and clock evidence."
+          ],
+          "score_ratio": 0.8,
+          "weight": 15
+        },
+        {
+          "dimension": "metric_level_source_trust",
+          "earned_points": 7.5,
+          "evidence_refs": [
+            "input/sources/mobile-android-sensor.csv",
+            "input/sources/mobile-android-workout.csv",
+            "input/sources/mobile-ios-sensor.csv",
+            "input/sources/mobile-ios-workout.csv",
+            "input/sources/speedcoach.csv"
+          ],
+          "reasons": [
+            "Passed 2 of 4 metric-level source checks."
+          ],
+          "score_ratio": 0.5,
+          "weight": 15
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "earned_points": 0.0,
+          "evidence_refs": [
+            "input/sources/mobile-android-sensor.csv",
+            "input/sources/mobile-android-workout.csv",
+            "input/sources/mobile-ios-sensor.csv",
+            "input/sources/mobile-ios-workout.csv",
+            "input/sources/speedcoach.csv"
+          ],
+          "reasons": [
+            "Unsupported confident claim asserted: technique."
+          ],
+          "score_ratio": 0.0,
+          "weight": 10
+        },
+        {
+          "dimension": "follow_up_questions",
+          "earned_points": 1.67,
+          "evidence_refs": [
+            "input/sources/mobile-android-sensor.csv",
+            "input/sources/mobile-android-workout.csv",
+            "input/sources/mobile-ios-sensor.csv",
+            "input/sources/mobile-ios-workout.csv",
+            "input/sources/speedcoach.csv"
+          ],
+          "reasons": [
+            "Required-question precision=0.250, recall=0.500."
+          ],
+          "score_ratio": 0.3333,
+          "weight": 5
+        }
+      ],
+      "earned_points": 21.17,
+      "grader_version": "1.1",
+      "schema_version": "wake.grader_result.v1",
+      "score": 47.04,
+      "secondary_metrics": {
+        "required_abstention_recall": 0.0,
+        "required_question_precision": 0.25,
+        "session_match_precision": 1.0,
+        "session_match_recall": 1.0,
+        "trusted_source_selection_accuracy": 0.5,
+        "unsupported_material_claim_rate": 0.25
+      }
+    },
+    {
+      "applicable_points": 100,
+      "case_id": "case-002-wind-shift-plan-deviation",
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "earned_points": 15.0,
+          "evidence_refs": [
+            "input/plan.json"
+          ],
+          "reasons": [
+            "Plan structure, SPM ranges, recovery, and equipment were recovered."
+          ],
+          "score_ratio": 1.0,
+          "weight": 15
+        },
+        {
+          "dimension": "session_association_and_alignment",
+          "earned_points": 15.0,
+          "evidence_refs": [
+            "input/mobile.csv",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Matched 1 of 1 expected session decisions with source and clock evidence."
+          ],
+          "score_ratio": 1.0,
+          "weight": 15
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "earned_points": 13.64,
+          "evidence_refs": [
+            "input/plan.json",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Reconstructed 11 segments against 11 expected segments within frozen tolerances."
+          ],
+          "score_ratio": 0.9091,
+          "weight": 15
+        },
+        {
+          "dimension": "metric_level_source_trust",
+          "earned_points": 9.0,
+          "evidence_refs": [
+            "input/environment.json",
+            "input/mobile.csv",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Passed 3 of 5 metric-level source checks."
+          ],
+          "score_ratio": 0.6,
+          "weight": 15
+        },
+        {
+          "dimension": "deviation_detection",
+          "earned_points": 15.0,
+          "evidence_refs": [
+            "input/plan.json",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Deviation precision=1.000, recall=1.000; expected ['work-05'], predicted ['work-05']."
+          ],
+          "score_ratio": 1.0,
+          "weight": 15
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "earned_points": 7.0,
+          "evidence_refs": [
+            "input/environment.json",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Passed 4 of 5 environmental interpretation checks."
+          ],
+          "score_ratio": 0.7,
+          "weight": 10
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "earned_points": 5.0,
+          "evidence_refs": [
+            "input/environment.json",
+            "input/mobile.csv",
+            "input/plan.json",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Required-abstention recall=0.000; material-claim evidence validity=1.000."
+          ],
+          "score_ratio": 0.5,
+          "weight": 10
+        },
+        {
+          "dimension": "follow_up_questions",
+          "earned_points": 0.0,
+          "evidence_refs": [
+            "input/environment.json",
+            "input/mobile.csv",
+            "input/plan.json",
+            "input/speedcoach.csv"
+          ],
+          "reasons": [
+            "Required-question precision=0.000, recall=0.000."
+          ],
+          "score_ratio": 0.0,
+          "weight": 5
+        }
+      ],
+      "earned_points": 79.64,
+      "grader_version": "1.1",
+      "schema_version": "wake.grader_result.v1",
+      "score": 79.64,
+      "secondary_metrics": {
+        "deviation_precision": 1.0,
+        "deviation_recall": 1.0,
+        "mean_segment_boundary_error_s": 2.5,
+        "mean_segment_distance_error_m": 12.913,
+        "plan_block_extraction_accuracy": 1.0,
+        "required_abstention_recall": 0.0,
+        "required_question_precision": 0.0,
+        "session_match_precision": 1.0,
+        "session_match_recall": 1.0,
+        "trusted_source_selection_accuracy": 0.6,
+        "unsupported_material_claim_rate": 0.0
+      }
+    }
+  ],
+  "dimension_macro_average_percent": {
+    "deviation_detection": 100.0,
+    "environmental_interpretation": 70.0,
+    "evidence_and_abstention": 25.0,
+    "follow_up_questions": 16.66,
+    "metric_level_source_trust": 55.0,
+    "plan_interpretation": 100.0,
+    "segment_reconstruction": 90.91,
+    "session_association_and_alignment": 90.0
+  },
+  "graded_case_count": 2,
+  "grader_config_sha256": "a3f3d526124d0c5b7687ef38b48dfc52a82f0291af7a718884540b0dcbc32d87",
+  "grader_version": "1.1",
+  "implemented_case_count": 2,
+  "macro_average_score": 63.34,
+  "rubric_version": "1.0",
+  "schema_version": "wake.grader_run.v1"
+}

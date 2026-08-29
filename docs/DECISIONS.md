@@ -146,8 +146,14 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Treat the first paid, single-case baseline execution as a calibration preflight and exclude it from official results. Preserve grader v1.0, add RED regression tests for connected pairwise source matches, common metric aliases, and explicit “unassessable” language, then freeze grader v1.1 without changing rubric weights, ground truth, or model configuration.
 - **Rationale:** The preflight showed that v1.0 scored equivalent structured representations as incorrect. Versioning the generic corrections before either official arm is run prevents a model-specific score patch while keeping the calibration history auditable.
 
+## 2026-08-29 - Keep the bounded single-agent workflow after comparison v1
+
+- **Status:** accepted for the hackathon demonstration; broader validation pending.
+- **Decision:** Keep the four-tool bounded WAKE loop as the primary demonstrated workflow. It scored 63.34/100 versus 38.86/100 for the direct-call baseline on the two implemented cases at an incremental API cost of US$0.062338. Do not add a multi-agent architecture until a fixed-case failure demonstrates that it is necessary.
+- **Rationale:** The measured gain came primarily from deterministic reconstruction and deviation analysis, while the remaining failures concern missing human context, follow-up precision, and abstention expression. More orchestration would not directly address those observed bottlenecks.
+
 ## Pending decisions
 
 - Deployment target and product application stack beyond the evaluation runner.
-- First official paid baseline and agent execution.
+- Reliable end-to-end runtime instrumentation for the agent runner.
 - Schema revisions justified by parser and grader implementation evidence.

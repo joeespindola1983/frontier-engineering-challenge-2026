@@ -1,0 +1,334 @@
+{
+  "abstentions": [
+    "No conclusion is made about B2/B3 physiological-zone compliance.",
+    "No conclusion is made about resistance-band use or removal.",
+    "No technique, crew-synchronization, medical, or perceived-effort conclusion is made.",
+    "Speed changes are not treated as proof of athlete improvement or regression."
+  ],
+  "case_id": "case-002-wind-shift-plan-deviation",
+  "claims": [
+    {
+      "claim_id": "performed-structure",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [
+        "Segment boundaries are inferred from 30-second aggregated telemetry windows."
+      ],
+      "statement": "The SpeedCoach record supports six work-like segments separated by five active, lower-rate rowing recoveries. The inferred recoveries are each approximately 240 seconds, within the prescribed 180-300 second range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "first-block-rate-adherence",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [
+        "This assesses segment-average stroke rate, not every individual stroke."
+      ],
+      "statement": "The first three inferred work segments averaged approximately 20 SPM, within the planned 19-21 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "second-block-rate-adherence",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [
+        "This assesses segment-average stroke rate, not every individual stroke."
+      ],
+      "statement": "Work-4 and work-6 averaged approximately 22.75 and 23.00 SPM, respectively, within the planned 22-24 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "wind-speed-pattern",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_synthetic_cases.py"
+      ],
+      "limitations": [
+        "The supplied environment series supports association with speed changes but cannot prove wind was the sole cause."
+      ],
+      "statement": "Speed declined during work-4 from roughly 3.6-3.7 m/s early in the segment toward 2.9-3.2 m/s late in the segment as effective headwind changed from tailwind/near-neutral conditions to a strong headwind. Work-5 then occurred under the sustained +5.5 m/s effective headwind and averaged about 3.0 m/s.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "zone-assessment",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "plan.json"
+      ],
+      "limitations": [
+        "Standardized zone codes are supplied without their exact physiological boundaries."
+      ],
+      "statement": "B2/B3 adherence cannot be determined from the supplied evidence because the detailed physiological boundaries for the standardized zone codes, and heart-rate, power, lactate, and perceived-effort evidence, are unavailable.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "equipment-assessment",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "plan.json"
+      ],
+      "limitations": [
+        "Telemetry cannot confirm whether prescribed resistance equipment was used."
+      ],
+      "statement": "Use of the prescribed resistance band in the first three work repetitions, and its removal before the final three, cannot be verified from the telemetry.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "technique-assessment",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "limitations": [
+        "No coach observation or crew-synchronization evidence is supplied."
+      ],
+      "statement": "Technique quality, crew synchronization, and medical state cannot be assessed from GPS and ordinary SPM telemetry.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "Six work segments and all five active recoveries are supported; recoveries were on prescription. The first three reps held about 20 SPM, and reps 4 and 6 held about 23 SPM. Rep 5 was the material rate deviation at about 20 SPM. The large late wind shift to a sustained +5.5 m/s effective headwind is a supported contributor to slower late-session speed, but it does not alone explain work-5 because rate also fell. Band use and B2/B3 compliance remain unverified.",
+  "deviations": [
+    {
+      "confidence": 0.91,
+      "description": "Work-5 averaged approximately 19.98 SPM, about 2 SPM below the prescribed 22-24 SPM range for the final three repetitions.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "segment_ref": "work-5",
+      "type": "STROKE_RATE_BELOW_PRESCRIPTION"
+    },
+    {
+      "confidence": 0.72,
+      "description": "Several inferred work segments are about 12-20 m short of, or 18 m over, 1,000 m. These small differences may reflect inferred boundaries from 30-second windows rather than a confirmed failure to complete the prescribed distance; work-6 is approximately 1,000 m.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "segment_ref": null,
+      "type": "WORK_DISTANCE_APPROXIMATION"
+    }
+  ],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.88,
+    "evidence_refs": [
+      "scripts/generate_synthetic_cases.py",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "Wind information is synthetic.",
+      "Work-5 was also rowed below its prescribed stroke-rate range, so its speed cannot be attributed to wind alone.",
+      "The fixed route heading does not assess local steering, current, or other water conditions."
+    ],
+    "summary": "A major wind shift occurred during work-4: effective headwind moved from approximately -1.0 m/s early in the session through near-neutral conditions to +5.5 m/s by 1,890 seconds, remaining at +5.5 m/s thereafter. This strongly supports an environmental association with the late work-4 and work-5 speed reduction. It does not establish causation, technique change, or fitness change."
+  },
+  "follow_up_questions": [
+    "Was the resistance band used for all of the first three work repetitions and removed before work-4?",
+    "Why was work-5 rowed near 20 SPM rather than the planned 22-24 SPM: intentional adjustment, equipment issue, fatigue, or another reason?",
+    "What perceived effort and any heart-rate or power data were recorded for the six work repetitions?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "plan.json"
+    ],
+    "prescribed_blocks": [
+      "3 x 1,000 m WORK at 19-21 SPM, B2/B3, with RESISTANCE_BAND; 180-300 s active-light-rowing recovery.",
+      "3 x 1,000 m WORK at 22-24 SPM, B2/B3, no equipment; 180-300 s active-light-rowing recovery."
+    ],
+    "status": "PARSED",
+    "summary": "Water session prescribed as 6 x 1,000 m: first 3 work repetitions at 19-21 SPM with a resistance band, then 3 at 22-24 SPM without it; active-light-rowing recoveries of 180-300 seconds; all work prescribed in B2/B3."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 20.01,
+      "confidence": 0.9,
+      "distance_m": 980,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16.04,
+      "confidence": 0.89,
+      "distance_m": 421.7,
+      "end_offset_s": 540,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 19.96,
+      "confidence": 0.9,
+      "distance_m": 988.4,
+      "end_offset_s": 840,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 540
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.89,
+      "distance_m": 421.4,
+      "end_offset_s": 1080,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 840
+    },
+    {
+      "average_spm": 19.98,
+      "confidence": 0.9,
+      "distance_m": 988.3,
+      "end_offset_s": 1380,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 1080
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.89,
+      "distance_m": 419,
+      "end_offset_s": 1620,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 1380
+    },
+    {
+      "average_spm": 22.75,
+      "confidence": 0.89,
+      "distance_m": 1017.5,
+      "end_offset_s": 1920,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 1620
+    },
+    {
+      "average_spm": 16.09,
+      "confidence": 0.89,
+      "distance_m": 413.6,
+      "end_offset_s": 2160,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-4",
+      "start_offset_s": 1920
+    },
+    {
+      "average_spm": 19.98,
+      "confidence": 0.88,
+      "distance_m": 985,
+      "end_offset_s": 2490,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-5",
+      "start_offset_s": 2160
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.89,
+      "distance_m": 406.4,
+      "end_offset_s": 2730,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-5",
+      "start_offset_s": 2490
+    },
+    {
+      "average_spm": 23.0,
+      "confidence": 0.86,
+      "distance_m": 1000.045,
+      "end_offset_s": 3044.648,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-6",
+      "start_offset_s": 2730
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.96,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "reason": "The recordings have closely overlapping bidirectional routes, a quantified 37-second clock offset, and only a 1.2% end-distance difference. The association rests on route and timing evidence rather than timestamp proximity alone.",
+      "source_ids": [
+        "speedcoach-synthetic",
+        "mobile-synthetic"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "Elapsed time, work/recovery segmentation, speed, and stroke rate",
+      "reason": "SpeedCoach supplies time-resolved speed, distance, and positive SPM observations. Mobile SPM is entirely zero and therefore unusable for stroke rate.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.84,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "Cumulative distance",
+      "reason": "SpeedCoach provides the time-resolved distance series used for segmentation. Mobile ends 1.2% higher and is explicitly flagged for distance bias; the discrepancy is retained as a limitation rather than averaged.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "scripts/generate_synthetic_cases.py"
+      ],
+      "metric": "Wind exposure",
+      "reason": "Environmental wind is assessed from the supplied synthetic environment timeline, independently of either telemetry device.",
+      "selected_source_id": null
+    }
+  ]
+}

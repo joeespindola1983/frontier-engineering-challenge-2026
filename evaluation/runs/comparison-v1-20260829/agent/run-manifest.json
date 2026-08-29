@@ -1,0 +1,23 @@
+{
+  "approximate_total_cost_usd": 0.172278,
+  "cases": [
+    "case-001-misaligned-double-scull",
+    "case-002-wind-shift-plan-deviation"
+  ],
+  "config_sha256": "f54f9fcc88fe1732545005cd034ccd74858d375ba474cc0acff02783af06e824",
+  "created_at": "2026-08-29T19:47:40.829+00:00",
+  "git_commit": "b1d9a46df42e178987b67b37990cf37659d7e506",
+  "prompt_sha256": "5aa5728d63a9a5094420da75760ca59a900680d5544242531349fe7189cf061c",
+  "run_id": "agent",
+  "schema_version": "wake.agent_run.v1",
+  "total_usage": {
+    "input_tokens": 43605,
+    "output_tokens": 7089,
+    "total_tokens": 50694
+  },
+  "trajectories": [
+    "trajectories/case-001-misaligned-double-scull.trajectory.json",
+    "trajectories/case-002-wind-shift-plan-deviation.trajectory.json"
+  ],
+  "workflow": "wake-agent-v1-tool-loop"
+}

@@ -1,0 +1,240 @@
+{
+  "abstentions": [
+    "No planned-versus-executed workout assessment or target-SPM compliance assessment is possible because no plan was supplied.",
+    "No work/recovery segmentation is assigned from the available evidence alone.",
+    "No conclusion is made about the cause of the clock offsets.",
+    "No conclusion is made about actual boat class, crew, seat, technique, synchronization, resistance-equipment use, physiology, or medical state.",
+    "No environmental association or causal explanation is asserted."
+  ],
+  "case_id": "case-001-misaligned-double-scull",
+  "claims": [
+    {
+      "claim_id": "same-outing",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "limitations": [
+        "Mobile clocks differ from the SpeedCoach clock by 3564.821 s (Android) and 3589.127 s (iOS); the cause is unknown. The association is route-based rather than clock-based."
+      ],
+      "statement": "The three recordings are supported as records of the same rowing outing.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "selected-session-distance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "limitations": [
+        "Mobile raw and reported summary distances conflict and are not combined with the selected value."
+      ],
+      "statement": "The selected session distance is 3915.3 m from SpeedCoach.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "selected-session-spm",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "limitations": [
+        "The mobile raw sensor datasets contain no positive SPM rows; their reported summary SPM values cannot be validated from supplied raw SPM."
+      ],
+      "statement": "The selected overall stroke rate is 22.0 SPM from SpeedCoach.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "temporary-rate-speed-rise",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "limitations": [
+        "Without a workout plan or finer-grained approved segmentation, this cannot be classified as an interval, sprint, or deviation."
+      ],
+      "statement": "SpeedCoach recorded a 60-second window from 1260 to 1320 s with average 27.67 SPM and 3.145 m/s, above adjacent displayed windows.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "boat-context",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "limitations": [
+        "The iOS workout reports SINGLE_SCULL while the Android workout reports OC1; neither conflicting report establishes actual equipment, crew, or seat."
+      ],
+      "statement": "Boat class, crew composition, and seat cannot be established from the supplied recordings.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "technique-and-physiology",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "limitations": [
+        "No coach observation, usable heart-rate/watch evidence, or validated technique measurement is supplied. GPS, stroke rate, and phone motion do not establish these outcomes."
+      ],
+      "statement": "Technique quality, crew synchronization, heart-rate response, physiological training zone, and medical state cannot be evaluated from this evidence.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The recordings are strongly supported as one outing by close GPS-route overlap, despite unresolved approximately one-hour clock disagreement. Use SpeedCoach for the reviewed session values: 3915.3 m in 25:25.8 at 22.0 SPM. Do not blend mobile distances or SPM summaries: both mobile distance records conflict internally and neither raw mobile stream contains usable SPM. A brief SpeedCoach rise appears at 1260\u20131320 s (27.67 SPM; 3.145 m/s), but no plan supports calling it an interval or deviation. Plan compliance, boat/crew context, technique, physiology, and environmental effects remain unevaluated.",
+  "deviations": [
+    {
+      "confidence": 0.99,
+      "description": "The Android and iOS start clocks are respectively 3564.821 s and 3589.127 s later than the SpeedCoach clock. This conflict is preserved; its cause is not supplied.",
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "segment_ref": null,
+      "type": "CLOCK_CONFLICT"
+    },
+    {
+      "confidence": 0.98,
+      "description": "Both mobile sources have flagged conflicts between raw maximum distance and reported summary distance, so their distance summaries are not reconciled by averaging.",
+      "evidence_refs": [
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "segment_ref": null,
+      "type": "MOBILE_DISTANCE_CONFLICT"
+    },
+    {
+      "confidence": 0.98,
+      "description": "Mobile-reported boat types conflict: iOS reports SINGLE_SCULL and Android reports OC1.",
+      "evidence_refs": [
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "segment_ref": null,
+      "type": "CONTEXT_CONFLICT"
+    }
+  ],
+  "environment_assessment": {
+    "association": "UNKNOWN",
+    "confidence": 0,
+    "evidence_refs": [
+      "input/sources/speedcoach.csv"
+    ],
+    "limitations": [
+      "No weather, wind, current, or time-aligned environmental timeline is available.",
+      "No causal conclusion about performance can be made."
+    ],
+    "summary": "No environmental evidence was supplied; no association between conditions and recorded speed or stroke-rate variation can be assessed."
+  },
+  "follow_up_questions": [
+    "Can the athlete or coach supply the planned workout, including work/recovery structure and target SPM ranges?",
+    "Which device clock settings or timezone synchronization explain the approximately one-hour mobile-to-SpeedCoach offsets?",
+    "What were the actual boat class, crew configuration, and seat for this outing?",
+    "If training-load or condition effects are needed, can usable heart-rate/watch data and time-aligned weather/current observations be supplied?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [],
+    "prescribed_blocks": [],
+    "status": "NOT_SUPPLIED",
+    "summary": "No planned workout was supplied, so prescribed blocks, target SPM compliance, and planned-versus-executed deviations cannot be evaluated."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 22,
+      "confidence": 0.95,
+      "distance_m": 3915.3,
+      "end_offset_s": 1525.8,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "kind": "UNKNOWN",
+      "segment_id": "observed-session-speedcoach",
+      "start_offset_s": 0
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.96,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "reason": "The GPS routes overlap closely in both directions despite large mobile-to-SpeedCoach clock offsets. Route evidence supports one outing; it does not resolve the offset cause.",
+      "source_ids": [
+        "speedcoach",
+        "mobile-ios",
+        "mobile-android"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "SpeedCoach supplies recorded SPM; both mobile raw sensor datasets have no positive SPM rows. Mobile summary SPM values are therefore not selected for reconciliation.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "SpeedCoach reports 3915.3 m with no supplied distance-conflict flag. Both mobile sources are flagged for raw-versus-summary distance conflict, so their reported distances are rejected rather than averaged.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "metric": "speed_m_s",
+      "reason": "Only SpeedCoach supplies time-window speed values suitable for within-session speed review. No compatible mobile speed-window series is supplied.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "metric": "route",
+      "reason": "The SpeedCoach GPS route is selected and is corroborated by close bidirectional overlap with each mobile GPS route.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "metric": "environment",
+      "reason": "No environmental observations or time-aligned environmental series were supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

@@ -4,7 +4,7 @@ This changelog will connect every meaningful experiment to evidence produced wit
 
 ## Current status
 
-Two reproducible evaluation cases, evaluation specification version 1.0, comparable baseline and agent runners, and deterministic grader v1.1 now exist. One paid single-case preflight was used only for calibration and is excluded from the pending official comparison.
+Two reproducible evaluation cases, evaluation specification version 1.0, comparable baseline and agent runners, and deterministic grader v1.1 now exist. The first official comparison measured WAKE at 63.34/100 versus 38.86/100 for the direct baseline. The earlier paid single-case preflight remains excluded.
 
 ## Experiments
 
@@ -81,6 +81,18 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Keep the schema correction and grader v1.1; remove the preflight from official comparison membership.
 - **Learning:** Deterministic grading still needs semantic-equivalence calibration, but corrections must be versioned and made before inspecting official results rather than patched after seeing a winner.
 - **Next step:** Execute fresh two-case baseline and agent runs, then grade both without changing v1.1.
+
+### 9. Official baseline versus bounded WAKE agent
+
+- **Hypothesis:** Deterministic investigation tools plus evidence verification will improve session reconstruction, metric-level trust, deviation detection, and abstention over a direct structured call with the same model.
+- **Change:** No code, prompt, fixture, ground truth, or grader change was made between arms. The direct baseline and bounded WAKE agent each processed the same two public summaries using GPT-5.6 Terra at medium reasoning. Both output directories were scored offline with grader v1.1 and configuration hash `a3f3d526124d0c5b7687ef38b48dfc52a82f0291af7a718884540b0dcbc32d87`.
+- **Evaluation:** Baseline scored 38.86/100 macro-average (case 001: 38.71; case 002: 39.00). WAKE scored 63.34/100 (case 001: 47.04; case 002: 79.64), an absolute gain of 24.48 points and a 63.0% relative gain. In case 002, WAKE achieved perfect deviation precision/recall, reconstructed all 11 segments with 2.5 s mean boundary error, and improved trusted-source accuracy from 0.0 to 0.6. All eight tool calls completed; the verifier rejected case 001 once for missing evidence references and the bounded retry passed.
+- **Result:** The agentic workflow materially outperformed the direct-call baseline on the fixed implemented cases, with the strongest evidence in the plan-versus-execution case. Case 001 remained weak because it missed confirmed human context, over-asked questions, and received no evidence/abstention credit.
+- **Cost/runtime:** Baseline used 22,735 tokens and cost US$0.109940. WAKE used 50,694 tokens and cost US$0.172278. Incremental agent cost was US$0.062338; total official comparison cost was US$0.282218. Baseline per-case runtimes were recorded (22,429 ms and 35,771 ms); agent v1 did not record a reliable end-to-end runtime and none is inferred.
+- **Decision:** Keep the bounded single-agent tool loop as the demonstrated workflow. Do not add more agents until a fixed-case experiment justifies their complexity.
+- **Learning:** Deterministic segmentation and source-selection tools created the largest measurable gain. The next quality bottlenecks are context recovery, compact required questions, and explicit abstention phrasing—not additional dashboard surface area.
+- **Validity note:** Only two cases are implemented. After the freeze, both case-001 outputs also exposed that grader v1.1 treats some negative phrases such as “cannot be evaluated” as a technique assertion. The grader was not changed after official results; this limitation is documented for a future version and affects the absolute case-001 scores.
+- **Next step:** Add runtime observability through TDD, improve human-context handling without leaking evaluator truth, and implement additional fixed cases before claiming broader generalization.
 
 ## Entry template
 

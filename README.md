@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, comparable baseline/agent runners, and deterministic grader v1.1 are complete. One paid single-case preflight calibrated generic grader behavior; it is excluded from the official comparison, which is still pending.
+**Hackathon status:** the first controlled comparison is complete. On two implemented cases, WAKE scored **63.34/100** against **38.86/100** for the direct-call baseline: **+24.48 points** (**+63.0% relative**) for US$0.062338 incremental API cost. The single-case calibration preflight remains explicitly excluded.
 
 ## The problem
 
@@ -66,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, and an offline grader. A paid single-case preflight is retained as calibration evidence but excluded from scoring; the first official comparison still needs to be completed.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, an offline grader, and the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md). Only two cases are implemented, so the result supports the current workflow without claiming broad generalization.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 

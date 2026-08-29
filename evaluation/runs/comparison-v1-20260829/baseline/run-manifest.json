@@ -1,0 +1,22 @@
+{
+  "approximate_total_cost_usd": 0.10994,
+  "case_manifests": [
+    "cases/case-001-misaligned-double-scull.run.json",
+    "cases/case-002-wind-shift-plan-deviation.run.json"
+  ],
+  "cases": [
+    "case-001-misaligned-double-scull",
+    "case-002-wind-shift-plan-deviation"
+  ],
+  "created_at": "2026-08-29T19:46:23.373+00:00",
+  "run_id": "baseline",
+  "schema_version": "wake.evaluation_run.v1",
+  "total_usage": {
+    "cached_input_tokens": 4885,
+    "input_tokens": 16288,
+    "output_tokens": 6447,
+    "reasoning_output_tokens": 2203,
+    "total_tokens": 22735
+  },
+  "workflow": "baseline-v1-direct-call"
+}

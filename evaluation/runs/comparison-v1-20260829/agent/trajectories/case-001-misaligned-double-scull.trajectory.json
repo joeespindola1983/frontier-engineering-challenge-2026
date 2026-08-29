@@ -1,0 +1,282 @@
+{
+  "case_id": "case-001-misaligned-double-scull",
+  "created_at": "2026-08-29T19:47:16.430+00:00",
+  "events": [
+    {
+      "model": "gpt-5.6-terra",
+      "output_types": [
+        "reasoning",
+        "function_call",
+        "function_call",
+        "function_call",
+        "function_call"
+      ],
+      "response_id": "resp_04cf3e354c2ec49c016a933725b54c87d2a87a4edc868a08e6",
+      "round": 1,
+      "sequence": 1,
+      "status": "completed",
+      "type": "MODEL_RESPONSE",
+      "usage": {
+        "input_tokens": 4142,
+        "output_tokens": 96,
+        "total_tokens": 4238
+      }
+    },
+    {
+      "arguments": {},
+      "call_id": "call_kT4elB8S9yY4uDjFy6eEBb3f",
+      "sequence": 2,
+      "tool": "assess_source_trust",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_kT4elB8S9yY4uDjFy6eEBb3f",
+      "result": {
+        "metrics": {
+          "distance_m": {
+            "confidence": "HIGH",
+            "evidence_refs": [
+              "input/sources/speedcoach.csv",
+              "input/sources/mobile-ios-sensor.csv",
+              "input/sources/mobile-ios-workout.csv",
+              "input/sources/mobile-ios-metadata.json",
+              "input/sources/mobile-android-sensor.csv",
+              "input/sources/mobile-android-workout.csv",
+              "input/sources/mobile-android-metadata.json"
+            ],
+            "reasons": [
+              "speedcoach: no supplied distance conflict flag",
+              "mobile-ios: distance conflict or bias flag",
+              "mobile-android: distance conflict or bias flag"
+            ],
+            "rejected_source_ids": [
+              "mobile-ios",
+              "mobile-android"
+            ],
+            "selected_source_id": "speedcoach"
+          },
+          "route": {
+            "confidence": "HIGH",
+            "corroborating_source_ids": [
+              "mobile-ios",
+              "mobile-android"
+            ],
+            "evidence_refs": [
+              "input/sources/speedcoach.csv",
+              "input/sources/mobile-ios-sensor.csv",
+              "input/sources/mobile-ios-workout.csv",
+              "input/sources/mobile-ios-metadata.json",
+              "input/sources/mobile-android-sensor.csv",
+              "input/sources/mobile-android-workout.csv",
+              "input/sources/mobile-android-metadata.json"
+            ],
+            "reasons": [
+              "GPS-present routes can corroborate one another."
+            ],
+            "selected_source_id": "speedcoach"
+          },
+          "stroke_rate_spm": {
+            "confidence": "HIGH",
+            "evidence_refs": [
+              "input/sources/speedcoach.csv",
+              "input/sources/mobile-ios-sensor.csv",
+              "input/sources/mobile-ios-workout.csv",
+              "input/sources/mobile-ios-metadata.json",
+              "input/sources/mobile-android-sensor.csv",
+              "input/sources/mobile-android-workout.csv",
+              "input/sources/mobile-android-metadata.json"
+            ],
+            "reasons": [
+              "speedcoach: SPM_PRESENT",
+              "mobile-ios: RAW_SPM_ABSENT",
+              "mobile-android: RAW_SPM_ABSENT"
+            ],
+            "rejected_source_ids": [
+              "mobile-ios",
+              "mobile-android"
+            ],
+            "selected_source_id": "speedcoach"
+          }
+        },
+        "status": "COMPLETED"
+      },
+      "sequence": 3,
+      "tool": "assess_source_trust",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_Htg4T6LVJRvj9HMYZ0hYNH9X",
+      "sequence": 4,
+      "tool": "assess_session_alignment",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_Htg4T6LVJRvj9HMYZ0hYNH9X",
+      "result": {
+        "confidence": "HIGH",
+        "decision": "MATCH",
+        "evidence_refs": [
+          "input/sources/mobile-android-sensor.csv",
+          "input/sources/mobile-ios-sensor.csv",
+          "input/sources/speedcoach.csv"
+        ],
+        "largest_clock_offset_s": 3589.127,
+        "largest_route_p95_m": 4.607,
+        "limitations": [
+          "Clock disagreement is preserved and its cause is unknown; route evidence, not clock equality, supports the decision."
+        ],
+        "status": "COMPLETED"
+      },
+      "sequence": 5,
+      "tool": "assess_session_alignment",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_adqIHx9HzhjkChZkSuDRpWna",
+      "sequence": 6,
+      "tool": "reconstruct_plan_execution",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_adqIHx9HzhjkChZkSuDRpWna",
+      "result": {
+        "equipment_confirmation": "UNKNOWN",
+        "evidence_refs": [],
+        "reason": "No planned workout is supplied.",
+        "segments": [],
+        "status": "INSUFFICIENT"
+      },
+      "sequence": 7,
+      "tool": "reconstruct_plan_execution",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_oHXz0NpkZD6VqwCMMDJuckpp",
+      "sequence": 8,
+      "tool": "analyze_environment",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_oHXz0NpkZD6VqwCMMDJuckpp",
+      "result": {
+        "causal_conclusion": "NOT_ESTABLISHED",
+        "evidence_refs": [],
+        "reason": "No environmental timeline is supplied.",
+        "status": "INSUFFICIENT"
+      },
+      "sequence": 9,
+      "tool": "analyze_environment",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "output_types": [
+        "reasoning",
+        "message"
+      ],
+      "response_id": "resp_04cf3e354c2ec49c016a933728101487d28e7c0f77cb387061",
+      "round": 2,
+      "sequence": 10,
+      "status": "completed",
+      "type": "MODEL_RESPONSE",
+      "usage": {
+        "input_tokens": 4895,
+        "output_tokens": 2267,
+        "total_tokens": 7162
+      }
+    },
+    {
+      "checks": [
+        "schema",
+        "case_identity",
+        "evidence_references",
+        "material_evidence_presence",
+        "source_identity",
+        "unsupported_claim_boundaries",
+        "broken_spm_source"
+      ],
+      "errors": [
+        "source_policy item 'environment' has no evidence references.",
+        "environment_assessment item 'environment_assessment' has no evidence references."
+      ],
+      "passed": false,
+      "sequence": 11,
+      "type": "VERIFICATION"
+    },
+    {
+      "attempt": 1,
+      "errors": [
+        "source_policy item 'environment' has no evidence references.",
+        "environment_assessment item 'environment_assessment' has no evidence references."
+      ],
+      "sequence": 12,
+      "type": "RETRY_REQUESTED"
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "output_types": [
+        "reasoning",
+        "message"
+      ],
+      "response_id": "resp_04cf3e354c2ec49c016a93373a40f087d29cf9e16982f90ca5",
+      "round": 3,
+      "sequence": 13,
+      "status": "completed",
+      "type": "MODEL_RESPONSE",
+      "usage": {
+        "input_tokens": 7206,
+        "output_tokens": 1985,
+        "total_tokens": 9191
+      }
+    },
+    {
+      "checks": [
+        "schema",
+        "case_identity",
+        "evidence_references",
+        "material_evidence_presence",
+        "source_identity",
+        "unsupported_claim_boundaries",
+        "broken_spm_source"
+      ],
+      "errors": [],
+      "passed": true,
+      "sequence": 14,
+      "type": "VERIFICATION"
+    },
+    {
+      "case_id": "case-001-misaligned-double-scull",
+      "sequence": 15,
+      "type": "FINAL_OUTPUT"
+    }
+  ],
+  "git_commit": "b1d9a46df42e178987b67b37990cf37659d7e506",
+  "model": "gpt-5.6-terra",
+  "private_chain_of_thought_stored": false,
+  "prompt_sha256": "5aa5728d63a9a5094420da75760ca59a900680d5544242531349fe7189cf061c",
+  "run_id": "agent",
+  "schema_version": "wake.agent_trajectory.v1",
+  "summary_request_sha256": "81e5ac913ef7bba37661b5235c384e1ecc50f28de836fe644573e8475e38f379",
+  "usage": {
+    "input_tokens": 16243,
+    "output_tokens": 4348,
+    "total_tokens": 20591
+  },
+  "verification": {
+    "checks": [
+      "schema",
+      "case_identity",
+      "evidence_references",
+      "material_evidence_presence",
+      "source_identity",
+      "unsupported_claim_boundaries",
+      "broken_spm_source"
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "wake-agent-v1-tool-loop"
+}
