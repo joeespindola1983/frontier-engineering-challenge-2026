@@ -49,6 +49,7 @@ The repository will preserve:
 ## Documentation
 
 - [Product brief](docs/PRODUCT_BRIEF.md)
+- [Working context and discovery history](docs/WORKING_CONTEXT.md)
 - [Pre-existing work boundary](docs/PREEXISTING_WORK.md)
 - [Architecture hypothesis](docs/ARCHITECTURE.md)
 - [Decision log](docs/DECISIONS.md)

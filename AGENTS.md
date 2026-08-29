@@ -10,7 +10,7 @@ The core value is not another dashboard. The agent should actively investigate s
 
 Before proposing or changing implementation:
 
-1. Read `README.md` and every file in `docs/` relevant to the task.
+1. Read `README.md`, `docs/WORKING_CONTEXT.md`, and every file in `docs/` relevant to the task.
 2. Inspect `git status` and preserve unrelated user work.
 3. Check `docs/PREEXISTING_WORK.md` before describing something as hackathon work.
 4. Check `IMPROVEMENT_CHANGELOG.md` before changing the baseline, evaluation, prompts, tools, or orchestration.
