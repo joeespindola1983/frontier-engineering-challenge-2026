@@ -53,4 +53,14 @@ Run both layers before committing an implementation change:
 uv run python scripts/test_all.py
 ```
 
-Safe baseline and agent dry-runs are available as `scripts/run_baseline.py` and `scripts/wake_agent.py`. Paid execution remains opt-in through `--execute`. Until real outputs pass the future grader, request generation, fake-client loop tests, and fixture verification must not be described as an agent-quality score.
+Safe baseline and agent dry-runs are available as `scripts/run_baseline.py` and `scripts/wake_agent.py`. Paid execution remains opt-in through `--execute`. Until real outputs are scored by the frozen grader, request generation, fake-client loop tests, and fixture verification must not be described as an agent-quality score.
+
+Grade a complete baseline or agent output directory offline:
+
+```bash
+uv run python scripts/grade_outputs.py \
+  --outputs /path/to/run/outputs \
+  --output /path/to/run/grade-report.json
+```
+
+The grader validates every output against the frozen schema, scores only implemented cases and applicable dimensions, and records its version and configuration hash. Passing grader calibration tests establishes scoring behavior; only grading real model outputs produces a measured workflow-quality score.

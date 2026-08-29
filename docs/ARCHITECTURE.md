@@ -74,7 +74,7 @@ The current runner captures structured events without private chain-of-thought: 
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
-The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, baseline runner, agent prompt, tool loop, and verifier are now versioned at v1. The next architecture checkpoint is the first real baseline/agent run and structured grader, without changing frozen inputs after seeing results.
+The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, baseline runner, agent prompt, tool loop, verifier, and deterministic grader are now versioned at v1. The next architecture checkpoint is the first real baseline/agent comparison without changing frozen inputs or scoring rules after seeing results.
 
 ## Open decisions
 
@@ -82,5 +82,4 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Local versus hosted execution.
 - Data store and memory representation.
 - Weather provider and historical-data availability.
-- Concrete grader implementation and calibration.
 - User interface scope for the five-minute demonstration.

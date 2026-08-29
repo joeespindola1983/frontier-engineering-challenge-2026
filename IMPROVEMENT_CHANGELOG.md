@@ -4,7 +4,7 @@ This changelog will connect every meaningful experiment to evidence produced wit
 
 ## Current status
 
-Two reproducible evaluation cases, evaluation specification version 1.0, a tested direct-call baseline, and the first tested agent tool loop now exist. No paid model call or measured agent-quality result has been produced.
+Two reproducible evaluation cases, evaluation specification version 1.0, comparable baseline and agent runners, and deterministic grader v1 now exist. No paid model call or measured agent-quality result has been produced.
 
 ## Experiments
 
@@ -61,6 +61,15 @@ Two reproducible evaluation cases, evaluation specification version 1.0, a teste
 - **Result:** The agent workflow is executable and its deterministic boundaries are tested. This is workflow-engineering evidence, not a model-quality score.
 - **Decision:** Keep agent workflow v1 for the first controlled comparison.
 - **Next step:** Implement the deterministic rubric grader from frozen ground truth before inspecting model answers, then execute baseline and agent cases under an explicit budget.
+
+### 7. Deterministic rubric grader
+
+- **Hypothesis:** A grader frozen before model inspection can measure baseline-versus-agent workflow value without adapting success criteria to whichever answer looks better.
+- **Change:** Added a versioned 100-point grader configuration, output-schema validation, per-case applicable-dimension normalization, numeric tolerance checks, source selection, segment and deviation metrics, evidence and abstention checks, critical zero rules, macro-averaging, and an offline CLI. Added an explicit adapter for the legacy case 001 ground truth without rewriting that frozen artifact.
+- **Evaluation:** RED runs first failed on the missing grader, exposed overly rigid clock-number parsing, then failed on missing schema/CLI contracts, the valid environment source rejected by the agent verifier, hard-coded rubric weights, and prohibited claims hidden in the coach briefing. The final `uv run python scripts/test_all.py` passes 39 tests and three public verifiers. Calibration outputs score 100 for both perfect case profiles; injected broken mobile SPM, causal wind, and visible-technique claims trigger the required zero rules; a false-positive deviation reduces precision to 0.5.
+- **Result:** Grader v1 can score a complete two-case output directory offline and reports macro-average score, per-dimension points/reasons/evidence, secondary metrics, rubric version, and configuration hash. No real model score exists yet.
+- **Decision:** Freeze grader v1 for the first controlled comparison.
+- **Next step:** Execute both frozen cases with the direct baseline and WAKE agent under the same explicit model budget, then grade both output directories without changing grader v1.
 
 ## Entry template
 

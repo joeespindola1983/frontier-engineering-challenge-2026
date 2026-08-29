@@ -222,6 +222,26 @@ class WakeAgentTests(unittest.TestCase):
             any("Unknown selected source" in error for error in verification["errors"])
         )
 
+    def test_verifier_accepts_environment_timeline_as_environment_source(self) -> None:
+        output = self.valid_output()
+        output["source_policy"] = [
+            {
+                "metric": "environment",
+                "selected_source_id": "synthetic-environment-002",
+                "confidence": 0.9,
+                "reason": "Time-aligned environmental timeline.",
+                "evidence_refs": ["input/environment.json"],
+            }
+        ]
+
+        verification = wake_agent.verify_output(
+            output=output,
+            output_schema=self.schema,
+            summary=self.summary,
+        )
+
+        self.assertTrue(verification["passed"], verification["errors"])
+
     def test_agent_retries_once_after_verifier_rejection(self) -> None:
         invalid = self.valid_output()
         invalid["claims"] = [

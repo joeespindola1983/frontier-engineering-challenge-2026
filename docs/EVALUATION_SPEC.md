@@ -56,6 +56,14 @@ Each case's ground truth identifies which dimensions apply. Non-applicable dimen
 - Using a mobile SPM channel known to be stuck at zero as valid SPM evidence sets Metric-level source trust to zero.
 - Scores must include grader reasons and evidence references, not only totals.
 
+## Deterministic grader v1
+
+`config/grader-v1.json` freezes the rubric weights, legacy-case dimension adapter, critical zero rules, and macro-average definition. `scripts/grader.py` validates structured outputs, applies numeric tolerances and categorical rules, and emits per-dimension reasons, evidence references, and secondary metrics. `scripts/grade_outputs.py` grades one complete output directory offline.
+
+Case 001 predates the full ground-truth schema. Grader v1 preserves that frozen artifact and explicitly maps it to four applicable dimensions: session association and alignment, metric-level source trust, evidence and abstention, and follow-up questions. Case 002 declares all eight dimensions directly.
+
+The grader intentionally does not use a model-as-judge. Structured values, tolerances, source IDs, critical prohibited claims, and bounded concept checks are deterministic and regression-tested. This improves reproducibility but does not make semantic grading perfect; new phrasing failures must be added as grader calibration tests before changing scoring behavior.
+
 ## Primary and secondary metrics
 
 **Primary:** macro-average weighted rubric score from 0 to 100 across the frozen case registry.

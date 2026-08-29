@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, a tested baseline v1 runner, and the first tested agent tool loop are complete. No paid model run or measured quality score exists yet.
+**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, comparable baseline/agent runners, and the deterministic grader v1 are complete. No paid model run or measured quality score exists yet.
 
 ## The problem
 
@@ -58,6 +58,7 @@ The repository will preserve:
 - [Evaluation specification](docs/EVALUATION_SPEC.md)
 - [Baseline runner](docs/BASELINE_RUNNER.md)
 - [Agent runner](docs/AGENT_RUNNER.md)
+- [Deterministic grader](docs/GRADER.md)
 - [Testing strategy](docs/TESTING_STRATEGY.md)
 - [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)
@@ -65,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, and comparable baseline and agentic OpenAI Responses API runners. The first paid model run and grader still need to be completed.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, and an offline grader. The first paid model comparison still needs to be completed.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -84,4 +85,12 @@ Preview the agent requests and its four deterministic tools without calling the 
 
 ```bash
 uv run python scripts/wake_agent.py
+```
+
+Grade a complete directory of structured outputs without network access:
+
+```bash
+uv run python scripts/grade_outputs.py \
+  --outputs /path/to/run/outputs \
+  --output /path/to/run/grade-report.json
 ```

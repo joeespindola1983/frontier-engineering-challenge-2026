@@ -240,6 +240,12 @@ def verify_output(*, output: dict, output_schema: dict, summary: dict) -> dict:
                 )
 
     sources_by_id = {source["source_id"]: source for source in summary["sources"]}
+    environment = summary.get("environment")
+    if isinstance(environment, dict) and environment.get("timeline_id"):
+        sources_by_id[environment["timeline_id"]] = {
+            "source_id": environment["timeline_id"],
+            "quality_flags": [],
+        }
     for policy in output.get("source_policy", []):
         selected_source_id = policy.get("selected_source_id")
         if (

@@ -134,8 +134,14 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Every new deterministic tool, verifier rule, runner behavior, grader, and memory policy begins with a failing behavioral test, followed by the smallest passing implementation and a green-suite refactor.
 - **Rationale:** The project owner explicitly requires TDD throughout the project, and evidence-sensitive rowing conclusions need regression protection rather than retrospective tests.
 
+## 2026-08-29 - Freeze deterministic grader v1 before model inspection
+
+- **Status:** accepted; real-output calibration pending.
+- **Decision:** Use a versioned offline grader with the frozen 100-point weights, case-applicable normalization, numeric tolerances, source-selection rules, deviation precision/recall, evidence checks, bounded concept matching, and critical zero rules. Record the grader configuration hash in run reports and do not use an LLM judge for v1.
+- **Rationale:** Implementing and testing scoring before inspecting paid model answers reduces evaluator drift. Deterministic scoring is reproducible and inexpensive; any discovered phrasing blind spot must enter through a RED calibration test rather than an ad hoc score adjustment.
+
 ## Pending decisions
 
 - Deployment target and product application stack beyond the evaluation runner.
-- First paid baseline execution and concrete grader.
+- First paid baseline and agent execution.
 - Schema revisions justified by parser and grader implementation evidence.
