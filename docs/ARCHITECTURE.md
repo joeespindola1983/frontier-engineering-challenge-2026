@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic five-source compact-summary assembly, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; new-bundle agent execution and durable storage remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic five-source compact-summary assembly, explicit prepared-bundle execution, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle coach adaptation and durable storage remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -94,7 +94,7 @@ Committed public output      bounded WAKE runner
           compact coach view model
 ```
 
-The service binds to localhost by default and uses process memory for uploaded bytes, normalized telemetry, prepared summaries, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. Five source ids may prepare a hashed compact summary without an agent call. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
+The service binds to localhost by default and uses process memory for uploaded bytes, normalized telemetry, prepared summaries, bundle results, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. Five source ids may prepare a hashed compact summary without an agent call. A separate explicit live endpoint can execute that prepared summary through the bounded runner using temporary normalized files; same-process retries are idempotent. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
 
 ## Baseline hypothesis
 
@@ -108,4 +108,4 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Data store and memory representation.
 - Weather provider and historical-data availability.
 - Authentication, club tenancy, durable uploads, and durable checkpoint state.
-- Explicitly paid execution of a prepared new-bundle summary through the bounded agent.
+- Generic adaptation of a prepared-bundle analysis into the coach review, checkpoint, briefing, and memory flow.

@@ -37,12 +37,23 @@ class FakeLiveRunner:
         return copy.deepcopy(read_json(COMMITTED_OUTPUT))
 
 
+class FakeBundleRunner:
+    def __init__(self) -> None:
+        self.calls: list[tuple[dict, dict[str, bytes]]] = []
+
+    def __call__(self, summary: dict, evidence: dict[str, bytes]) -> dict:
+        self.calls.append((copy.deepcopy(summary), copy.deepcopy(evidence)))
+        return copy.deepcopy(read_json(COMMITTED_OUTPUT))
+
+
 class WakeProductServiceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.live_runner = FakeLiveRunner()
+        self.bundle_runner = FakeBundleRunner()
         self.service = wake_product_service.WakeProductService(
             root=ROOT,
             live_runner=self.live_runner,
+            bundle_live_runner=self.bundle_runner,
         )
 
     def test_replay_investigation_uses_public_evidence_without_live_api(self) -> None:
@@ -380,6 +391,53 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertNotIn("ground-truth", serialized)
         self.assertNotIn("stroke_rate_spm", serialized)
         self.assertFalse(response["agent_called"])
+
+    def test_prepared_bundle_execution_is_explicit_and_uses_normalized_evidence(self) -> None:
+        prepared = self.service.prepare_source_bundle(
+            self._upload_public_bundle()
+        )
+        api = wake_product_service.WakeProductApi(self.service)
+
+        with self.assertRaisesRegex(ValueError, "explicit live mode"):
+            api.handle(
+                "POST",
+                f"/api/source-bundles/{prepared['bundle_id']}/execute",
+                {},
+            )
+        self.assertEqual(self.bundle_runner.calls, [])
+
+        status, result = api.handle(
+            "POST",
+            f"/api/source-bundles/{prepared['bundle_id']}/execute",
+            {"mode": "live"},
+        )
+
+        self.assertEqual(status, 201)
+        self.assertEqual(result["status"], "AGENT_COMPLETED")
+        self.assertTrue(result["agent_called"])
+        self.assertEqual(result["analysis"]["case_id"], CASE_ID)
+        self.assertEqual(len(self.bundle_runner.calls), 1)
+        summary, evidence = self.bundle_runner.calls[0]
+        self.assertEqual(summary["case_id"], CASE_ID)
+        self.assertEqual(
+            set(evidence),
+            {"plan.json", "speedcoach.csv", "mobile.csv", "environment.json", "context.json"},
+        )
+        self.assertTrue(
+            evidence["speedcoach.csv"].startswith(
+                b"timestamp,elapsed_s,distance_m,speed_m_s,stroke_rate_spm"
+            )
+        )
+        self.assertEqual(self.live_runner.calls, [])
+
+        repeated_status, repeated = api.handle(
+            "POST",
+            f"/api/source-bundles/{prepared['bundle_id']}/execute",
+            {"mode": "live"},
+        )
+        self.assertEqual(repeated_status, 200)
+        self.assertEqual(repeated, result)
+        self.assertEqual(len(self.bundle_runner.calls), 1)
 
 
 if __name__ == "__main__":

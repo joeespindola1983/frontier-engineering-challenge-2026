@@ -14,6 +14,7 @@ import binascii
 import hashlib
 import json
 import os
+import tempfile
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -90,14 +91,17 @@ class WakeProductService:
         *,
         root: Path = ROOT,
         live_runner: Callable[[str], dict] | None = None,
+        bundle_live_runner: Callable[[dict, dict[str, bytes]], dict] | None = None,
     ) -> None:
         self.root = root
         self.live_runner = live_runner
+        self.bundle_live_runner = bundle_live_runner
         self.investigations: dict[str, dict] = {}
         self.briefings: dict[str, dict] = {}
         self.goals: dict[str, dict] = {}
         self.sources: dict[str, dict] = {}
         self.source_bundles: dict[str, dict] = {}
+        self.bundle_results: dict[str, dict] = {}
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -263,6 +267,50 @@ class WakeProductService:
             "response": response,
         }
         return response
+
+    def execute_source_bundle(self, bundle_id: str, *, mode: str) -> tuple[dict, bool]:
+        """Execute one prepared bundle only after explicit live authorization.
+
+        Returns the result and whether it was newly created. Repeated requests in
+        the same process return the recorded result instead of spending twice.
+        """
+        if mode != "live":
+            raise ValueError("Prepared bundle execution requires explicit live mode.")
+        if bundle_id not in self.source_bundles:
+            raise ValueError(f"Unknown source bundle: {bundle_id}")
+        execution_id = f"execution-{bundle_id}"
+        if execution_id in self.bundle_results:
+            return self.bundle_results[execution_id], False
+        if self.bundle_live_runner is None:
+            raise ValueError("Live prepared-bundle execution is disabled for this service.")
+
+        bundle = self.source_bundles[bundle_id]
+        grouped = self._source_group(bundle["source_ids"])
+        evidence = {
+            "plan.json": grouped["PLAN"]["_content"],
+            "speedcoach.csv": grouped["SPEEDCOACH"]["_normalized_content"],
+            "mobile.csv": grouped["MOBILE"]["_normalized_content"],
+            "environment.json": grouped["ENVIRONMENT"]["_content"],
+            "context.json": grouped["CONTEXT"]["_content"],
+        }
+        analysis = self.bundle_live_runner(bundle["summary"], evidence)
+        jsonschema.validate(
+            instance=analysis,
+            schema=read_json(self.root / "schemas/analysis-output.schema.json"),
+        )
+        if analysis.get("case_id") != bundle["summary"]["case_id"]:
+            raise ValueError("Agent output does not match the prepared bundle.")
+        result = {
+            "execution_id": execution_id,
+            "bundle_id": bundle_id,
+            "case_id": bundle["summary"]["case_id"],
+            "mode": "live",
+            "status": "AGENT_COMPLETED",
+            "agent_called": True,
+            "analysis": analysis,
+        }
+        self.bundle_results[execution_id] = result
+        return result, True
 
     def create_investigation_from_sources(
         self,
@@ -551,6 +599,16 @@ class WakeProductApi:
             ):
                 raise ValueError("source_ids must be a list of strings.")
             return 201, self.service.prepare_source_bundle(source_ids)
+        if (
+            method == "POST"
+            and len(parts) == 4
+            and parts[:2] == ["api", "source-bundles"]
+            and parts[3] == "execute"
+        ):
+            result, created = self.service.execute_source_bundle(
+                parts[2], mode=str(body.get("mode", ""))
+            )
+            return (201 if created else 200), result
         if method == "POST" and parts == ["api", "investigations"]:
             if "source_ids" in body:
                 source_ids = body["source_ids"]
@@ -616,6 +674,38 @@ def build_live_runner(root: Path) -> Callable[[str], dict]:
     return execute
 
 
+def build_bundle_live_runner(
+    root: Path,
+) -> Callable[[dict, dict[str, bytes]], dict]:
+    def execute(summary: dict, evidence: dict[str, bytes]) -> dict:
+        if not os.environ.get("OPENAI_API_KEY"):
+            raise ValueError("OPENAI_API_KEY is required for live mode.")
+        from openai import OpenAI
+
+        config = read_json(DEFAULT_CONFIG)
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        output_dir = root / "evaluation/runs/product-live-bundles" / timestamp
+        with tempfile.TemporaryDirectory(prefix="wake-product-bundle-") as temporary:
+            input_dir = Path(temporary)
+            for filename, content in evidence.items():
+                (input_dir / filename).write_bytes(content)
+            result = run_agent_case(
+                client=OpenAI(),
+                config=config,
+                prompt=DEFAULT_PROMPT.read_text(encoding="utf-8"),
+                summary=summary,
+                input_dir=input_dir,
+                output_schema=read_json(DEFAULT_SCHEMA),
+                output_dir=output_dir,
+                run_id=output_dir.name,
+                now=utc_now,
+                git_commit=current_git_commit(),
+            )
+        return read_json(result["output_path"])
+
+    return execute
+
+
 def make_handler(api: WakeProductApi, *, allowed_origin: str) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         def _headers(self, status: int) -> None:
@@ -664,7 +754,10 @@ def main() -> None:
     args = parser.parse_args()
 
     service = WakeProductService(
-        live_runner=build_live_runner(ROOT) if args.allow_live else None
+        live_runner=build_live_runner(ROOT) if args.allow_live else None,
+        bundle_live_runner=(
+            build_bundle_live_runner(ROOT) if args.allow_live else None
+        ),
     )
     api = WakeProductApi(service)
     server = ThreadingHTTPServer(

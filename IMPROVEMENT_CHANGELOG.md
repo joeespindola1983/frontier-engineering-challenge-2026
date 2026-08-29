@@ -160,6 +160,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The safe bridge from sensors to an agent is itself an intelligence layer: it must know when clocks are comparable, when GPS can corroborate identity, which measurement is broken, and which rowing facts still require a human.
 - **Next step:** Add an explicitly authorized prepared-bundle live runner with isolated temporary evidence files and the same trajectory/verifier guarantees, then expose it to the local interface only behind deliberate paid opt-in.
 
+### 16. Explicit prepared-bundle execution boundary
+
+- **Hypothesis:** A prepared bundle can reuse WAKE's evaluated bounded agent safely if paid execution is a separate explicit action, normalized evidence is isolated from uploads, and repeated requests do not silently spend twice.
+- **Change:** Added an injected prepared-bundle runner, `POST /api/source-bundles/:id/execute`, analysis-schema and case-identity validation, isolated temporary evidence files, normal output/trajectory persistence, and same-process idempotence. The route rejects every mode except literal `live`; the production runner is absent unless the service starts with `--allow-live` and still requires `OPENAI_API_KEY`. It does not alter the committed replay path or teach the browser to invoke the new route.
+- **Evaluation:** RED failed across the product-service suite because the new runner injection did not exist. The new behavior test then required a refused implicit execution, zero calls before explicit authorization, canonical five-file evidence passed to the runner, a validated final analysis, no use of the legacy case runner, and a second request returning HTTP 200 with the same result and no second runner call. The product-service suite passes 19 tests; the full Python suite passes 76 tests and three public verifiers.
+- **Result:** A novel valid local bundle now has a complete technical path from typed upload to normalized compact evidence to bounded agent execution. The path is callable but deliberately not wired into the current coach UI, and no live model request was made during this experiment.
+- **Cost/runtime:** No model call and no API cost. The execution boundary was exercised with an injected deterministic fake; real latency and cost remain unmeasured for new bundles.
+- **Decision:** Keep explicit live-only execution and same-process idempotence. Do not expose the action in the coach interface until a generic analysis-to-review adapter removes case-002 assumptions.
+- **Learning:** The paid-action boundary is part of agent reliability. A correct agent loop is insufficient if upload identity, normalized evidence lifetime, output validation, and duplicate-request behavior are ambiguous.
+- **Next step:** Build a generic coach review adapter from prepared summary plus verified analysis, then connect prepare/execute/review in the local interface while keeping replay as the hosted default.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

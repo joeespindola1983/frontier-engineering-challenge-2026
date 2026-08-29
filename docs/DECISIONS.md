@@ -194,6 +194,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Assemble exactly one validated plan, SpeedCoach stream, mobile stream, environment timeline, and context document into `wake.case_summary.v1` deterministically. Record input hashes, preserve source quality and missing SPM, compare clocks only when timezone representations are compatible, compute distance conflict and bidirectional GPS overlap, project wind only with a known route heading, and keep human-only facts as evidence gaps. Store the full summary in process memory and return compact preparation metadata with `agent_called: false`.
 - **Rationale:** Parsing and analysis are different authority boundaries. A novel upload must receive its own traceable input before it can ever reach a model, but preparation must neither spend budget nor let changed evidence inherit the public replay. Explicit abstention on missing route heading also prevents an environmental projection from becoming fabricated evidence.
 
+## 2026-08-29 - Require explicit, idempotent live execution for prepared bundles
+
+- **Status:** accepted for the local demonstration runtime; no paid execution performed during implementation.
+- **Decision:** Expose prepared-bundle execution only through `POST /api/source-bundles/:id/execute` with `mode: live`, a service started with `--allow-live`, and `OPENAI_API_KEY`. Pass the compact summary and canonical evidence through an isolated temporary directory to the existing bounded runner, validate the final schema and case identity, preserve normal output/trajectory artifacts, and return the same recorded result on a repeated same-process request.
+- **Rationale:** Preparation should remain free and safe, while execution must be a deliberate budget boundary. Reusing the evaluated runner preserves its tool limits, verifier, provenance, and observability. Same-process idempotence reduces accidental duplicate charges without pretending to provide durable exactly-once semantics.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
