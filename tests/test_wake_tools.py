@@ -73,7 +73,28 @@ class WakeToolTests(unittest.TestCase):
         self.assertEqual(len(recovery), 5)
         self.assertEqual(deviations, ["work-05"])
         self.assertEqual(result["equipment_confirmation"], "UNKNOWN")
+        self.assertNotIn("distance_assessment", result)
         self.assertNotIn("ground-truth", json.dumps(result).lower())
+
+    def test_plan_analysis_v2_cannot_infer_completed_distance_from_segment_boundaries(self) -> None:
+        result = wake_tools.reconstruct_plan_execution(
+            self.case_002,
+            ROOT / "data/fixtures/case-002-wind-shift-plan-deviation/input",
+            contract_version="v2",
+        )
+
+        assessment = result["distance_assessment"]
+        self.assertEqual(assessment["status"], "INSUFFICIENT")
+        self.assertEqual(
+            assessment["scope"],
+            "PRESCRIBED_DISTANCE_COMPLETION",
+        )
+        self.assertIn("boundary-derived", assessment["reason"])
+        self.assertIn("cannot establish", assessment["reason"])
+        self.assertEqual(
+            assessment["evidence_refs"],
+            ["input/speedcoach.csv", "input/plan.json"],
+        )
 
     def test_environment_tool_reports_association_not_causation(self) -> None:
         result = wake_tools.analyze_environment(self.case_002)

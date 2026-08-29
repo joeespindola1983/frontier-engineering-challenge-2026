@@ -84,6 +84,23 @@ A passing dry-run proves request construction and data boundaries, not model
 quality. Quality can be claimed only after real baseline and agent outputs are
 scored by the frozen rubric grader.
 
+## Versioned distance boundary in v2
+
+Workflow v2 keeps the model, reasoning effort, Structured Output schema, four
+tools, round limit, and frozen ablation inputs comparable with v1. It changes one
+failure boundary discovered by the official v1 run:
+
+- `reconstruct_plan_execution` emits a structured `distance_assessment` with
+  `INSUFFICIENT` status for prescribed-distance completion;
+- the tool description and prompt identify segment distances as boundary-derived
+  from SPM classification and exclude them from total-distance conclusions;
+- the v2 verifier rejects prescribed-distance deviations built from those
+  segment values, even if the candidate output cites valid files.
+
+The v1 tool contract remains selectable for historical requests. The committed
+v2 dry-run is request evidence only; model quality requires a separate explicit
+paid execution and capability report.
+
 ## Product-service entry point
 
 `scripts/wake_product_service.py` wraps the runner behind task-level product operations. Its safe default is a committed public replay:

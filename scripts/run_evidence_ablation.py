@@ -29,6 +29,13 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_CASE_ID = "case-002-wind-shift-plan-deviation"
 PUBLIC_INPUT = ROOT / "data" / "fixtures" / BASE_CASE_ID / "input"
 DEFAULT_INPUTS = ROOT / "evaluation" / "ablation-inputs" / "v1"
+WORKFLOW_ASSETS = {
+    "v1": (DEFAULT_CONFIG, DEFAULT_PROMPT),
+    "v2": (
+        ROOT / "config" / "wake-agent-v2.json",
+        ROOT / "prompts" / "wake-agent-v2.md",
+    ),
+}
 CONDITION_ORDER = ["core", "context-environment", "full"]
 ALLOWED_EVIDENCE_FILES = {
     "plan.json",
@@ -84,6 +91,7 @@ def load_experiment(input_dir: Path = DEFAULT_INPUTS) -> tuple[dict, list[dict]]
 def experiment_metadata(
     manifest: dict,
     input_dir: Path = DEFAULT_INPUTS,
+    workflow_version: str = "v1",
 ) -> dict:
     return {
         "schema_version": "wake.evidence_ablation_run.v1",
@@ -91,26 +99,52 @@ def experiment_metadata(
         "input_version": manifest["version"],
         "condition_order": CONDITION_ORDER,
         "input_manifest_sha256": sha256_path(input_dir / "manifest.json"),
+        "workflow_version": workflow_version,
         "scoring_status": "NOT_SCORED",
     }
 
 
-def default_output_dir(mode: str) -> Path:
+def workflow_assets(workflow_version: str) -> tuple[Path, Path]:
+    try:
+        return WORKFLOW_ASSETS[workflow_version]
+    except KeyError as error:
+        raise ValueError(
+            f"Unsupported evidence ablation workflow version: {workflow_version}"
+        ) from error
+
+
+def default_output_dir(mode: str, workflow_version: str = "v1") -> Path:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return ROOT / "evaluation" / "runs" / "evidence-ablation-v1" / f"{timestamp}-{mode}"
+    return (
+        ROOT
+        / "evaluation"
+        / "runs"
+        / f"evidence-ablation-{workflow_version}"
+        / f"{timestamp}-{mode}"
+    )
 
 
-def dry_run(*, output_dir: Path, input_dir: Path = DEFAULT_INPUTS) -> Path:
+def dry_run(
+    *,
+    output_dir: Path,
+    input_dir: Path = DEFAULT_INPUTS,
+    workflow_version: str = "v1",
+) -> Path:
     manifest, summaries = load_experiment(input_dir)
+    config_path, prompt_path = workflow_assets(workflow_version)
     path = write_agent_dry_run(
-        config=read_json(DEFAULT_CONFIG),
-        prompt=DEFAULT_PROMPT.read_text(encoding="utf-8"),
+        config=read_json(config_path),
+        prompt=prompt_path.read_text(encoding="utf-8"),
         summaries=summaries,
         output_schema=read_json(DEFAULT_SCHEMA),
         output_dir=output_dir,
     )
     run_manifest = read_json(path)
-    run_manifest["experiment"] = experiment_metadata(manifest, input_dir)
+    run_manifest["experiment"] = experiment_metadata(
+        manifest,
+        input_dir,
+        workflow_version,
+    )
     write_json(path, run_manifest)
     return path
 
@@ -129,10 +163,12 @@ def execute(
     now: Callable[[], str] = utc_now,
     monotonic: Callable[[], float] = time.monotonic,
     git_commit: str | None = None,
+    workflow_version: str = "v1",
 ) -> Path:
     manifest, summaries = load_experiment(input_dir)
-    config = read_json(DEFAULT_CONFIG)
-    prompt = DEFAULT_PROMPT.read_text(encoding="utf-8")
+    config_path, prompt_path = workflow_assets(workflow_version)
+    config = read_json(config_path)
+    prompt = prompt_path.read_text(encoding="utf-8")
     output_schema = read_json(DEFAULT_SCHEMA)
     run_id = output_dir.name
     commit = git_commit or current_git_commit()
@@ -175,7 +211,11 @@ def execute(
         finished_at=finished_at,
         runtime_ms=round((finished - started) * 1000),
     )
-    run_manifest["experiment"] = experiment_metadata(manifest, input_dir)
+    run_manifest["experiment"] = experiment_metadata(
+        manifest,
+        input_dir,
+        workflow_version,
+    )
     manifest_path = output_dir / "run-manifest.json"
     write_json(manifest_path, run_manifest)
     return manifest_path
@@ -185,12 +225,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true", help="Call the OpenAI API.")
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--workflow-version",
+        choices=sorted(WORKFLOW_ASSETS),
+        default="v1",
+    )
     args = parser.parse_args()
     mode = "execute" if args.execute else "dry-run"
-    output_dir = args.output or default_output_dir(mode)
+    output_dir = args.output or default_output_dir(mode, args.workflow_version)
 
     if not args.execute:
-        path = dry_run(output_dir=output_dir)
+        path = dry_run(
+            output_dir=output_dir,
+            workflow_version=args.workflow_version,
+        )
         print(json.dumps({"mode": mode, "manifest": str(path)}, indent=2))
         return
 
@@ -198,7 +246,11 @@ def main() -> None:
         raise SystemExit("OPENAI_API_KEY is required with --execute.")
     from openai import OpenAI
 
-    path = execute(client=OpenAI(), output_dir=output_dir)
+    path = execute(
+        client=OpenAI(),
+        output_dir=output_dir,
+        workflow_version=args.workflow_version,
+    )
     print(json.dumps({"mode": mode, "manifest": str(path)}, indent=2))
 
 

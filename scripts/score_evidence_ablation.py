@@ -48,11 +48,16 @@ def contains_all(text: str, terms: tuple[str, ...]) -> bool:
     return all(term in value for term in terms)
 
 
-def _common_checks(output: dict, summary: dict) -> dict[str, tuple[bool, str]]:
+def _common_checks(
+    output: dict,
+    summary: dict,
+    workflow_version: str,
+) -> dict[str, tuple[bool, str]]:
     verification = verify_output(
         output=output,
         output_schema=read_json(DEFAULT_SCHEMA),
         summary=summary,
+        tool_contract_version=workflow_version,
     )
     plan = output.get("plan_summary") or {}
     work_segments = [
@@ -238,8 +243,13 @@ def _route_corroboration(output: dict, summary: dict) -> tuple[bool, str]:
     return passed, "Mobile GPS corroborates the selected SpeedCoach route."
 
 
-def score_condition(condition_id: str, output: dict, summary: dict) -> dict:
-    checks = _common_checks(output, summary)
+def score_condition(
+    condition_id: str,
+    output: dict,
+    summary: dict,
+    workflow_version: str = "v1",
+) -> dict:
+    checks = _common_checks(output, summary, workflow_version)
     if condition_id == "core":
         checks["NO_MOBILE_DEPENDENCY"] = _no_mobile_dependency(output)
         checks["ENVIRONMENT_ABSTENTION"] = _environment_abstention(output)
@@ -290,6 +300,9 @@ def score_run(run_manifest_path: Path) -> dict:
     run_manifest = read_json(run_manifest_path)
     input_manifest, summaries = load_experiment()
     expected_metadata = run_manifest.get("experiment", {})
+    workflow_version = expected_metadata.get("workflow_version", "v1")
+    if workflow_version not in {"v1", "v2"}:
+        raise ValueError("Run manifest references an unsupported workflow version.")
     if expected_metadata.get("condition_order") != CONDITION_ORDER:
         raise ValueError("Run manifest does not contain the frozen condition order.")
     if expected_metadata.get("input_manifest_sha256") != sha256_path(
@@ -306,7 +319,14 @@ def score_run(run_manifest_path: Path) -> dict:
         output_path = run_manifest_path.parent / "outputs" / f"{summary['case_id']}.json"
         output = read_json(output_path)
         outputs.append(output)
-        conditions.append(score_condition(condition_id, output, summary))
+        conditions.append(
+            score_condition(
+                condition_id,
+                output,
+                summary,
+                workflow_version,
+            )
+        )
 
     signatures = [_execution_signature(output) for output in outputs]
     execution_consistent = all(signature == signatures[0] for signature in signatures[1:])
@@ -333,6 +353,7 @@ def score_run(run_manifest_path: Path) -> dict:
     )
     return {
         "schema_version": "wake.evidence_ablation_report.v1",
+        "workflow_version": workflow_version,
         "status": status,
         "run_manifest": str(run_manifest_path),
         "run_manifest_sha256": sha256_path(run_manifest_path),

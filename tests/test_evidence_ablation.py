@@ -96,6 +96,29 @@ class EvidenceAblationRunnerTests(unittest.TestCase):
             )
             self.assertNotIn("ground-truth", serialized)
 
+    def test_v2_dry_run_uses_the_versioned_distance_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            manifest_path = run_evidence_ablation.dry_run(
+                output_dir=output,
+                workflow_version="v2",
+            )
+            manifest = read_json(manifest_path)
+            core_request = read_json(
+                output / manifest["requests"][
+                    "ablation-case-002-wind-shift-plan-deviation-core"
+                ]["path"]
+            )
+
+        reconstruction = next(
+            tool
+            for tool in core_request["tools"]
+            if tool["name"] == "reconstruct_plan_execution"
+        )
+        self.assertEqual(manifest["workflow"], "wake-agent-v2-tool-loop")
+        self.assertIn("boundary-derived", reconstruction["description"])
+        self.assertIn("must not be used", core_request["instructions"])
+
     def test_execution_isolates_each_conditions_evidence_files(self) -> None:
         fake_runner = FakeCaseRunner()
         monotonic = iter([10.0, 10.5])
@@ -344,6 +367,32 @@ class EvidenceAblationScorerTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertFalse(report["cross_condition"]["core_execution_consistent"])
         self.assertIn("DEVIATION_DETECTION", report["conditions"][0]["failed_checks"])
+
+    def test_v2_report_applies_the_versioned_distance_verifier(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            run_manifest, outputs = self._write_run(root)
+            manifest = read_json(run_manifest)
+            manifest["experiment"]["workflow_version"] = "v2"
+            run_evidence_ablation.write_json(run_manifest, manifest)
+            core = outputs["core"]
+            core["deviations"].append(
+                {
+                    "type": "RECONSTRUCTED_WORK_DISTANCE_SHORTFALL",
+                    "segment_ref": "work-01",
+                    "description": "Boundary-derived distance was below the prescription.",
+                    "confidence": 0.7,
+                    "evidence_refs": ["input/plan.json", "input/speedcoach.csv"],
+                }
+            )
+            run_evidence_ablation.write_json(
+                root / "outputs" / f"{core['case_id']}.json",
+                core,
+            )
+
+            report = score_evidence_ablation.score_run(run_manifest)
+
+        self.assertIn("OUTPUT_VERIFICATION", report["conditions"][0]["failed_checks"])
 
 
 if __name__ == "__main__":

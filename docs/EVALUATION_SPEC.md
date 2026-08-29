@@ -107,10 +107,9 @@ longitudinal outcome study.
 
 The first ground-truth-free condition bundle is frozen under
 `evaluation/ablation-inputs/v1/`. Its manifest records the base session, summary
-hashes, included source files, and capabilities available in each condition. It
-is input preparation only; it must not be presented as an ablation result until
-the same versioned runner executes every condition and the condition-aware
-scoring contract is frozen.
+hashes, included source files, and capabilities available in each condition. At
+freeze time it was input preparation only; later official runs are separate,
+immutable artifacts and must not rewrite this bundle.
 
 The version 1 runner and capability reporter are now implemented. Dry-run is the
 default and constructs all three structured requests. Paid execution cannot
@@ -128,6 +127,12 @@ from telemetry-derived segment boundaries; context/environment and full evidence
 passed their 10 and 12 applicable checks respectively. The failure remains part
 of the evidence. Any correction must be evaluated as a new workflow iteration;
 the v1 outputs and contract must not be rewritten.
+
+Workflow v2 is the pre-registered correction for this failure. It uses the same
+frozen summaries, model configuration, output schema, condition order, and
+capability reporter. The independent variable is the versioned distance boundary
+in the reconstruction tool, prompt, and verifier. Its committed dry-run records
+the exact three requests with `api_called: false`; it is not a quality result.
 
 ## Baseline protocol
 

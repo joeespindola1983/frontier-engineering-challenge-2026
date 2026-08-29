@@ -168,6 +168,52 @@ class WakeAgentTests(unittest.TestCase):
         self.assertEqual(client.responses.requests[0]["tool_choice"], "auto")
         self.assertEqual(client.responses.requests[0]["store"], False)
 
+    def test_v2_agent_execution_records_the_distance_assessment(self) -> None:
+        config = {
+            **self.config,
+            "workflow": "wake-agent-v2-tool-loop",
+            "tool_contract_version": "v2",
+        }
+        client = FakeClient(
+            [
+                response(
+                    "resp_tools",
+                    output=[function_call("reconstruct_plan_execution", "call_1")],
+                ),
+                response(
+                    "resp_final",
+                    output=[SimpleNamespace(type="message")],
+                    output_text=json.dumps(self.valid_output()),
+                ),
+            ]
+        )
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result = wake_agent.run_agent_case(
+                client=client,
+                config=config,
+                prompt="Investigate with v2.",
+                summary=self.summary,
+                input_dir=ROOT
+                / "data/fixtures/case-002-wind-shift-plan-deviation/input",
+                output_schema=self.schema,
+                output_dir=Path(temporary_directory),
+                run_id="wake-v2-test-run",
+                now=lambda: "2026-08-29T12:00:00+00:00",
+                monotonic_values=iter([10.0, 10.5]),
+                git_commit="abc123",
+            )
+            trajectory = read_json(result["trajectory_path"])
+
+        tool_result = next(
+            event for event in trajectory["events"] if event["type"] == "TOOL_RESULT"
+        )
+        self.assertEqual(
+            tool_result["result"]["distance_assessment"]["status"],
+            "INSUFFICIENT",
+        )
+        self.assertEqual(trajectory["workflow"], "wake-agent-v2-tool-loop")
+
     def test_run_manifest_records_wall_clock_and_aggregated_case_runtime(self) -> None:
         trajectories = [
             {
@@ -264,6 +310,33 @@ class WakeAgentTests(unittest.TestCase):
         self.assertFalse(verification["passed"])
         self.assertTrue(
             any("has no evidence references" in error for error in verification["errors"])
+        )
+
+    def test_v2_verifier_rejects_boundary_derived_distance_shortfall(self) -> None:
+        output = self.valid_output()
+        output["deviations"] = [
+            {
+                "type": "RECONSTRUCTED_WORK_DISTANCE_SHORTFALL",
+                "segment_ref": "work-01",
+                "description": "Aggregate reconstructed work distance was below 6000 m.",
+                "confidence": 0.7,
+                "evidence_refs": ["input/plan.json", "input/speedcoach.csv"],
+            }
+        ]
+
+        verification = wake_agent.verify_output(
+            output=output,
+            output_schema=self.schema,
+            summary=self.summary,
+            tool_contract_version="v2",
+        )
+
+        self.assertFalse(verification["passed"])
+        self.assertTrue(
+            any(
+                "boundary-derived segment distance" in error
+                for error in verification["errors"]
+            )
         )
 
     def test_verifier_rejects_unknown_selected_source(self) -> None:
@@ -392,6 +465,7 @@ class WakeAgentTests(unittest.TestCase):
     def test_agent_config_is_comparable_to_frozen_baseline(self) -> None:
         baseline = read_json(ROOT / "config/baseline-v1.json")
         agent = read_json(ROOT / "config/wake-agent-v1.json")
+        agent_v2 = read_json(ROOT / "config/wake-agent-v2.json")
 
         for field in [
             "provider",
@@ -403,8 +477,41 @@ class WakeAgentTests(unittest.TestCase):
             "store",
         ]:
             self.assertEqual(agent[field], baseline[field])
+            self.assertEqual(agent_v2[field], baseline[field])
         self.assertEqual(agent["max_rounds"], 4)
         self.assertEqual(agent["max_verifier_retries"], 1)
+        self.assertEqual(agent_v2["tool_contract_version"], "v2")
+        self.assertEqual(agent_v2["workflow"], "wake-agent-v2-tool-loop")
+
+    def test_v2_request_exposes_the_segment_distance_boundary_to_the_model(self) -> None:
+        config = {**self.config, "tool_contract_version": "v2"}
+
+        request = wake_agent.build_agent_request(
+            config=config,
+            prompt="Investigate with the v2 evidence boundary.",
+            conversation_input=[],
+            output_schema=self.schema,
+        )
+
+        reconstruction = next(
+            tool
+            for tool in request["tools"]
+            if tool["name"] == "reconstruct_plan_execution"
+        )
+        v1_request = wake_agent.build_agent_request(
+            config=self.config,
+            prompt="Investigate with v1.",
+            conversation_input=[],
+            output_schema=self.schema,
+        )
+        v1_reconstruction = next(
+            tool
+            for tool in v1_request["tools"]
+            if tool["name"] == "reconstruct_plan_execution"
+        )
+        self.assertIn("boundary-derived", reconstruction["description"])
+        self.assertIn("cannot establish", reconstruction["description"])
+        self.assertNotIn("boundary-derived", v1_reconstruction["description"])
 
     def test_dry_run_writes_requests_without_calling_api_or_ground_truth(self) -> None:
         client = FakeClient([])

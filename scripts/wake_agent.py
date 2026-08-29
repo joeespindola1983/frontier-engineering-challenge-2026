@@ -26,7 +26,7 @@ from run_baseline import (
     utc_now,
     write_json,
 )
-from wake_tools import TOOL_DEFINITIONS, execute_tool
+from wake_tools import TOOL_DEFINITIONS, execute_tool, tool_definitions
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,7 +57,7 @@ def build_agent_request(
         "store": config["store"],
         "parallel_tool_calls": True,
         "tool_choice": "auto",
-        "tools": TOOL_DEFINITIONS,
+        "tools": tool_definitions(config.get("tool_contract_version", "v1")),
         "text": {
             "format": {
                 "type": "json_schema",
@@ -175,7 +175,13 @@ def output_evidence_refs(value: object) -> list[str]:
     return refs
 
 
-def verify_output(*, output: dict, output_schema: dict, summary: dict) -> dict:
+def verify_output(
+    *,
+    output: dict,
+    output_schema: dict,
+    summary: dict,
+    tool_contract_version: str = "v1",
+) -> dict:
     errors: list[str] = []
     try:
         jsonschema.validate(instance=output, schema=output_schema)
@@ -225,6 +231,22 @@ def verify_output(*, output: dict, output_schema: dict, summary: dict) -> dict:
                 f"{collection_name} item {identifier!r} has no evidence references."
             )
 
+    if tool_contract_version == "v2":
+        for deviation in output.get("deviations", []):
+            deviation_type = str(deviation.get("type", "")).upper()
+            if (
+                "DISTANCE" in deviation_type
+                and any(
+                    marker in deviation_type
+                    for marker in ("SHORTFALL", "INCOMPLETE", "MISSED")
+                )
+            ):
+                errors.append(
+                    "Prescribed-distance completion deviation relies on "
+                    "boundary-derived segment distance, which the v2 tool contract "
+                    "marks insufficient for that conclusion."
+                )
+
     prohibited_terms = {
         "technique": "visible technique",
         "synchronization": "crew synchronization",
@@ -266,18 +288,21 @@ def verify_output(*, output: dict, output_schema: dict, summary: dict) -> dict:
                 f"Broken SPM source selected: {source['source_id']}"
             )
 
+    checks = [
+        "schema",
+        "case_identity",
+        "evidence_references",
+        "material_evidence_presence",
+        "source_identity",
+        "unsupported_claim_boundaries",
+        "broken_spm_source",
+    ]
+    if tool_contract_version == "v2":
+        checks.insert(4, "derived_distance_scope")
     return {
         "passed": not errors,
         "errors": errors,
-        "checks": [
-            "schema",
-            "case_identity",
-            "evidence_references",
-            "material_evidence_presence",
-            "source_identity",
-            "unsupported_claim_boundaries",
-            "broken_spm_source",
-        ],
+        "checks": checks,
     }
 
 
@@ -353,7 +378,13 @@ def run_agent_case(
                     tool=name,
                     arguments=arguments,
                 )
-                result = execute_tool(name, summary, input_dir, arguments)
+                result = execute_tool(
+                    name,
+                    summary,
+                    input_dir,
+                    arguments,
+                    contract_version=config.get("tool_contract_version", "v1"),
+                )
                 add_event(
                     "TOOL_RESULT",
                     call_id=call_id,
@@ -381,6 +412,7 @@ def run_agent_case(
             output=candidate,
             output_schema=output_schema,
             summary=summary,
+            tool_contract_version=config.get("tool_contract_version", "v1"),
         )
         add_event("VERIFICATION", **verification)
         if verification["passed"]:

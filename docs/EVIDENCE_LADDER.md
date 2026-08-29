@@ -58,9 +58,9 @@ baseline and from any future coach usability pilot.
 
 The deterministic version 1 inputs are frozen at
 `evaluation/ablation-inputs/v1/manifest.json`. They contain no evaluator answers
-and can be rebuilt with `scripts/build_evidence_ablation.py`. No model result has
-been recorded for these inputs yet. `scripts/run_evidence_ablation.py` generates
-all three requests by default and requires explicit `--execute` plus an API key
+and can be rebuilt with `scripts/build_evidence_ablation.py`.
+`scripts/run_evidence_ablation.py` generates all three requests by default and
+requires explicit `--execute` plus an API key
 for a paid run. `scripts/score_evidence_ablation.py` verifies each output against
 its available capabilities and checks that the core execution result remains
 stable as evidence is added.
@@ -76,3 +76,9 @@ but failed by converting segment-boundary distance loss into an unsupported
 distance shortfall. Context/environment passed 10/10, and full evidence passed
 12/12 while demonstrating route corroboration and mobile-SPM rejection. Because
 the core deviation signature changed, the overall experiment status is `FAIL`.
+
+Workflow v2 keeps those inputs frozen and changes only the failure boundary:
+segment distances produced by SPM classification are explicitly insufficient for
+prescribed-distance completion or shortfall. The prompt and tool description
+state the same rule, and the verifier rejects a conflicting deviation. The
+committed v2 preflight contains no model call or quality result.

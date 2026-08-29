@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import csv
 import statistics
 from pathlib import Path
@@ -75,6 +76,27 @@ TOOL_DEFINITIONS = [
         "strict": True,
     },
 ]
+
+
+TOOL_DEFINITIONS_V2 = copy.deepcopy(TOOL_DEFINITIONS)
+for definition in TOOL_DEFINITIONS_V2:
+    if definition["name"] == "reconstruct_plan_execution":
+        definition["description"] = (
+            "When a plan exists, reconstruct work and recovery intervals from the "
+            "approved input telemetry, compare work SPM with prescribed ranges, and "
+            "state whether equipment use is confirmed. Per-segment distances are "
+            "boundary-derived from SPM classification and cannot establish total "
+            "completed distance or a prescribed-distance shortfall. Returns "
+            "INSUFFICIENT when a plan or compatible telemetry is unavailable."
+        )
+
+
+def tool_definitions(contract_version: str) -> list[dict]:
+    if contract_version == "v1":
+        return TOOL_DEFINITIONS
+    if contract_version == "v2":
+        return TOOL_DEFINITIONS_V2
+    raise ValueError(f"Unsupported tool contract version: {contract_version}")
 
 
 def source_has_flag(source: dict, flag: str) -> bool:
@@ -284,7 +306,12 @@ def expanded_spm_targets(plan: dict) -> list[dict]:
     return targets
 
 
-def reconstruct_plan_execution(summary: dict, input_dir: Path) -> dict:
+def reconstruct_plan_execution(
+    summary: dict,
+    input_dir: Path,
+    *,
+    contract_version: str = "v1",
+) -> dict:
     plan = summary.get("plan")
     if not plan:
         return {
@@ -367,7 +394,7 @@ def reconstruct_plan_execution(summary: dict, input_dir: Path) -> dict:
         else "CONFIRMED_NOT_USED" if equipment_value is False
         else "UNKNOWN"
     )
-    return {
+    result = {
         "status": "COMPLETED",
         "method": "SPM threshold derived from the lowest planned work range minus 1 SPM.",
         "segments": segments,
@@ -377,6 +404,18 @@ def reconstruct_plan_execution(summary: dict, input_dir: Path) -> dict:
         ],
         "evidence_refs": ["input/speedcoach.csv", "input/plan.json"],
     }
+    if contract_version == "v2":
+        result["distance_assessment"] = {
+            "status": "INSUFFICIENT",
+            "scope": "PRESCRIBED_DISTANCE_COMPLETION",
+            "reason": (
+                "Per-segment distances are boundary-derived from SPM classification. "
+                "They exclude transition samples and cannot establish total completed "
+                "distance or a prescribed-distance shortfall."
+            ),
+            "evidence_refs": ["input/speedcoach.csv", "input/plan.json"],
+        }
+    return result
 
 
 def analyze_environment(summary: dict) -> dict:
@@ -423,14 +462,23 @@ def analyze_environment(summary: dict) -> dict:
     }
 
 
-def execute_tool(name: str, summary: dict, input_dir: Path, arguments: dict) -> dict:
+def execute_tool(
+    name: str,
+    summary: dict,
+    input_dir: Path,
+    arguments: dict,
+    *,
+    contract_version: str = "v1",
+) -> dict:
     if arguments:
         raise ValueError(f"{name} does not accept arguments")
     handlers = {
         "assess_source_trust": lambda: assess_source_trust(summary),
         "assess_session_alignment": lambda: assess_session_alignment(summary),
         "reconstruct_plan_execution": lambda: reconstruct_plan_execution(
-            summary, input_dir
+            summary,
+            input_dir,
+            contract_version=contract_version,
         ),
         "analyze_environment": lambda: analyze_environment(summary),
     }

@@ -224,6 +224,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Preserve the frozen v1 inputs, prompt, outputs, trajectories, and failing capability report unchanged. Treat telemetry-derived segment distance as insufficient evidence of prescribed-distance completion until a new workflow version states and tests that boundary explicitly.
 - **Rationale:** The core condition added an unsupported distance-shortfall deviation while the richer conditions did not. Rewriting v1 would hide the most useful experimental finding; a versioned TDD correction keeps both the improvement history and the next comparison auditable.
 
+## 2026-08-29 - Enforce the v2 distance boundary in three layers
+
+- **Status:** accepted as a candidate workflow; paid evaluation pending.
+- **Decision:** Keep the v1 tool contract selectable and introduce v2 through a versioned config and prompt. In v2, the reconstruction tool returns an `INSUFFICIENT` prescribed-distance assessment, the instructions prohibit summing boundary-derived segment distances, and the verifier rejects a conflicting distance-completion deviation.
+- **Rationale:** Prompt wording alone cannot guarantee the boundary. Encoding the same rule in deterministic evidence and output verification makes the failure observable, correctable through the bounded retry, and regression-tested without rewriting the official v1 experiment.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

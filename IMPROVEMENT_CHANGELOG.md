@@ -226,6 +226,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Less evidence did not merely reduce confidence; it changed the model's interpretation of a deterministic intermediate value. Tool outputs must encode what a derived metric is not allowed to prove, not only its numeric value.
 - **Next step:** Add a failing tool/prompt regression for distance-assessment scope, implement the smallest boundary change, and dry-run a v2 ablation before deciding whether a second paid run is justified.
 
+### 22. Versioned v2 distance-assessment boundary
+
+- **Hypothesis:** The core workflow will stop converting SPM-segmentation margins into a completed-distance shortfall if the limitation is encoded consistently in deterministic evidence, agent instructions, and output verification.
+- **Change:** Preserved v1 and added a selectable v2 tool contract, config, and prompt. The v2 reconstruction result marks prescribed-distance completion `INSUFFICIENT`, explains that segment distances exclude transition samples, and cites the plan and SpeedCoach. The tool description and prompt prohibit summing those values. The verifier rejects any v2 distance-completion deviation from this boundary, and the ablation runner/scorer record and apply the selected workflow version.
+- **Evaluation:** RED first failed because the reconstruction tool did not accept v2; the request still exposed the v1 description; the runner did not accept `workflow_version`; the verifier accepted the original distance-shortfall shape and then accepted the same claim with a segment reference; and the scorer applied v1 verification to a v2 run. Each boundary received the smallest passing change. The committed preflight contains the exact three v2 requests over unchanged frozen inputs with `api_called: false`; a compatibility regeneration produced byte-identical v1 request hashes. Final verification passes 96 Python tests in 10.348 seconds, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** The deterministic candidate now prevents the observed failure before, during, and after model generation while leaving v1 selectable. This is request and contract evidence only; no paid v2 output or quality result exists.
+- **Cost/runtime:** No model call and no API cost. Local test runtime is recorded by the completing commit, not presented as product performance.
+- **Decision:** Keep the v2 candidate and no-cost preflight. Do not claim that it fixes model behavior until the same three-condition paid comparison is executed and scored.
+- **Learning:** A limitation discovered in a tool-derived number should be machine-readable and verifier-enforced, not left as a prompt-only caution.
+- **Next step:** Run the full repository suite, commit the v2 candidate, then decide whether the expected roughly US$0.30 repeat experiment is justified.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
