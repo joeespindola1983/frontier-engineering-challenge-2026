@@ -127,6 +127,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A product API should compress agent evidence for the user task just as deterministic tools compress raw sensor data for the model.
 - **Next step:** Validate the complete repository, publish the replay-compatible interface update, and prepare the live local demonstration command for the video.
 
+### 13. Independent source intake with replay isolation
+
+- **Hypothesis:** A real intake boundary can make the product workflow more functional while preventing a novel file from receiving a canned analysis that belongs to the public demonstration case.
+- **Change:** Added five typed process-local source uploads for plan, SpeedCoach, mobile, environment, and context. The service validates filenames, a 10 MiB size limit, JSON schemas or minimum fields, telemetry columns, and recognized SpeedCoach/WAKE mobile formats; records SHA-256 provenance; returns metadata only; and accepts five source ids for investigation creation. The web intake can replace the ready sample files when a local runtime is configured. Source-based replay requires an exact byte match to public case 002.
+- **Evaluation:** RED first failed on missing `upload_source`, `POST /api/sources`, client upload behavior, and the evidence-intake module. GREEN now includes seven new Python ingestion/API tests and three new JavaScript intake tests covering the exact public bundle, malformed plans, incomplete telemetry, path traversal, raw vendor/mobile detection, modified-bundle rejection, Base64 upload, stable source order, and all-or-nothing browser submission. The product-service suite has 14 tests and the web suite has 14 tests; final repository verification is recorded with the completing commit.
+- **Result:** WAKE now receives evidence as independent typed inputs through a task-level boundary instead of merely drawing four filenames. A changed file cannot inherit committed conclusions. Recognition of a raw format is deliberately not presented as end-to-end parsing or live analysis.
+- **Cost/runtime:** No model call and no API cost. Runtime was exercised only as deterministic local behavior and is not reported as a performance benchmark.
+- **Decision:** Keep process-local intake and exact replay isolation. Do not accept private hosted uploads or claim arbitrary-bundle investigation until normalization, storage, identity, and tenancy are separately tested.
+- **Learning:** Provenance begins before agent reasoning. File identity, format validation, and replay eligibility are part of the evidence model, not generic upload plumbing.
+- **Next step:** Build the deterministic raw-to-normalized adapter for a new bundle, beginning with SpeedCoach vendor and WAKE mobile sensor CSVs, then assemble a ground-truth-free compact case summary for explicitly enabled live execution.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

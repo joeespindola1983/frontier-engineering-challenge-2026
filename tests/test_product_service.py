@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import copy
 import json
 import sys
@@ -19,6 +20,7 @@ def read_json(path: Path) -> dict:
 
 
 CASE_ID = "case-002-wind-shift-plan-deviation"
+CASE_INPUT = ROOT / "data/fixtures" / CASE_ID / "input"
 COMMITTED_OUTPUT = (
     ROOT
     / "evaluation/runs/comparison-v1-20260829/agent/outputs"
@@ -157,6 +159,116 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(checkpoint_status, 200)
         self.assertEqual(approval_status, 200)
         self.assertEqual(len(goal["approvedSessions"]), 1)
+
+    def test_independent_public_sources_can_start_the_exact_replay(self) -> None:
+        source_ids = []
+        for kind, filename in (
+            ("PLAN", "plan.json"),
+            ("SPEEDCOACH", "speedcoach.csv"),
+            ("MOBILE", "mobile.csv"),
+            ("ENVIRONMENT", "environment.json"),
+            ("CONTEXT", "context.json"),
+        ):
+            source = self.service.upload_source(
+                kind=kind,
+                name=filename,
+                content=(CASE_INPUT / filename).read_bytes(),
+            )
+            source_ids.append(source["source_id"])
+            self.assertEqual(source["status"], "READY")
+            self.assertNotIn("content", source)
+
+        result = self.service.create_investigation_from_sources(
+            source_ids,
+            mode="replay",
+        )
+
+        self.assertEqual(result["case_id"], CASE_ID)
+        self.assertEqual(result["status"], "QUESTION_REQUIRED")
+        self.assertEqual(self.live_runner.calls, [])
+
+    def test_invalid_plan_is_rejected_before_it_becomes_evidence(self) -> None:
+        with self.assertRaisesRegex(ValueError, "training plan"):
+            self.service.upload_source(
+                kind="PLAN",
+                name="plan.json",
+                content=b"{}",
+            )
+
+    def test_normalized_telemetry_requires_the_analysis_columns(self) -> None:
+        with self.assertRaisesRegex(ValueError, "required columns"):
+            self.service.upload_source(
+                kind="SPEEDCOACH",
+                name="speedcoach.csv",
+                content=b"timestamp,distance_m\n2026-01-20T06:00:00Z,0\n",
+            )
+
+    def test_source_name_cannot_escape_the_source_store(self) -> None:
+        with self.assertRaisesRegex(ValueError, "file name"):
+            self.service.upload_source(
+                kind="PLAN",
+                name="../plan.json",
+                content=(CASE_INPUT / "plan.json").read_bytes(),
+            )
+
+    def test_raw_vendor_and_native_mobile_formats_are_identified(self) -> None:
+        case_one = (
+            ROOT
+            / "data/fixtures/case-001-misaligned-double-scull/input/sources"
+        )
+        speedcoach = self.service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach-export.csv",
+            content=(case_one / "speedcoach.csv").read_bytes(),
+        )
+        mobile = self.service.upload_source(
+            kind="MOBILE",
+            name="mobile-sensor.csv",
+            content=(case_one / "mobile-ios-sensor.csv").read_bytes(),
+        )
+
+        self.assertEqual(speedcoach["format"], "SPEEDCOACH_VENDOR_CSV")
+        self.assertEqual(mobile["format"], "WAKE_MOBILE_SENSOR_CSV")
+
+    def test_modified_bundle_cannot_inherit_the_committed_replay(self) -> None:
+        source_ids = []
+        for kind, filename in (
+            ("PLAN", "plan.json"),
+            ("SPEEDCOACH", "speedcoach.csv"),
+            ("MOBILE", "mobile.csv"),
+            ("ENVIRONMENT", "environment.json"),
+            ("CONTEXT", "context.json"),
+        ):
+            content = (CASE_INPUT / filename).read_bytes()
+            if kind == "CONTEXT":
+                context = json.loads(content)
+                context["investigation_request"] += " New question."
+                content = json.dumps(context).encode("utf-8")
+            source_ids.append(
+                self.service.upload_source(
+                    kind=kind,
+                    name=filename,
+                    content=content,
+                )["source_id"]
+            )
+
+        with self.assertRaisesRegex(ValueError, "committed public demonstration bundle"):
+            self.service.create_investigation_from_sources(source_ids, mode="replay")
+
+    def test_http_source_upload_accepts_base64_and_returns_metadata_only(self) -> None:
+        api = wake_product_service.WakeProductApi(self.service)
+        encoded = base64.b64encode((CASE_INPUT / "plan.json").read_bytes()).decode()
+
+        status, response = api.handle(
+            "POST",
+            "/api/sources",
+            {"kind": "PLAN", "name": "plan.json", "content_base64": encoded},
+        )
+
+        self.assertEqual(status, 201)
+        self.assertEqual(response["kind"], "PLAN")
+        self.assertEqual(response["status"], "READY")
+        self.assertNotIn("content", response)
 
 
 if __name__ == "__main__":

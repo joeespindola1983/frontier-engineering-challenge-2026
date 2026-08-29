@@ -9,6 +9,11 @@ explicitly requests ``mode: live``.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
+import csv
+import hashlib
+import io
 import json
 import os
 from datetime import datetime, timezone
@@ -16,6 +21,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Callable
 from urllib.parse import urlsplit
+
+import jsonschema
 
 from run_baseline import current_git_commit, read_json, utc_now
 from wake_agent import (
@@ -30,7 +37,23 @@ from wake_agent import (
 
 ROOT = Path(__file__).resolve().parents[1]
 REPLAY_OUTPUTS = ROOT / "evaluation/runs/comparison-v1-20260829/agent/outputs"
+PUBLIC_REPLAY_CASE_ID = "case-002-wind-shift-plan-deviation"
 VALID_ANSWERS = {"YES", "NO", "UNKNOWN"}
+SOURCE_KINDS = {"PLAN", "SPEEDCOACH", "MOBILE", "ENVIRONMENT", "CONTEXT"}
+SOURCE_FILENAMES = {
+    "PLAN": "plan.json",
+    "SPEEDCOACH": "speedcoach.csv",
+    "MOBILE": "mobile.csv",
+    "ENVIRONMENT": "environment.json",
+    "CONTEXT": "context.json",
+}
+MAX_SOURCE_BYTES = 10 * 1024 * 1024
+NORMALIZED_TELEMETRY_COLUMNS = {
+    "elapsed_s",
+    "distance_m",
+    "speed_m_s",
+    "stroke_rate_spm",
+}
 
 
 def equipment_from_answer(answer: str) -> dict:
@@ -79,6 +102,137 @@ class WakeProductService:
         self.investigations: dict[str, dict] = {}
         self.briefings: dict[str, dict] = {}
         self.goals: dict[str, dict] = {}
+        self.sources: dict[str, dict] = {}
+
+    def _validate_json_source(self, kind: str, content: bytes) -> str:
+        try:
+            value = json.loads(content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ValueError(f"Invalid {kind.lower()} JSON.") from error
+
+        schema_name = {
+            "PLAN": "training-plan.schema.json",
+            "ENVIRONMENT": "environment-timeline.schema.json",
+        }.get(kind)
+        if schema_name:
+            schema = read_json(self.root / "schemas" / schema_name)
+            try:
+                jsonschema.validate(instance=value, schema=schema)
+            except jsonschema.ValidationError as error:
+                label = "training plan" if kind == "PLAN" else "environment timeline"
+                raise ValueError(f"Invalid {label}: {error.message}") from error
+        elif not isinstance(value, dict) or not {
+            "schema_version",
+            "case_id",
+            "investigation_request",
+        }.issubset(value):
+            raise ValueError("Invalid context JSON: required fields are missing.")
+
+        return {
+            "PLAN": "WAKE_TRAINING_PLAN_JSON",
+            "ENVIRONMENT": "WAKE_ENVIRONMENT_TIMELINE_JSON",
+            "CONTEXT": "WAKE_SESSION_CONTEXT_JSON",
+        }[kind]
+
+    def _validate_csv_source(self, kind: str, content: bytes) -> str:
+        try:
+            text = content.decode("utf-8-sig")
+        except UnicodeDecodeError as error:
+            raise ValueError(f"Invalid {kind.lower()} CSV encoding.") from error
+        if not text.strip():
+            raise ValueError(f"Empty {kind.lower()} CSV.")
+
+        if kind == "SPEEDCOACH" and "\nPer-Stroke Data:\n" in f"\n{text}":
+            return "SPEEDCOACH_VENDOR_CSV"
+
+        rows = csv.reader(io.StringIO(text))
+        header = next(rows, [])
+        columns = {column.strip() for column in header}
+        if NORMALIZED_TELEMETRY_COLUMNS.issubset(columns):
+            return "WAKE_NORMALIZED_TELEMETRY_CSV"
+        if kind == "MOBILE" and {
+            "sampleType",
+            "timestamp",
+            "distance",
+            "latitude",
+            "longitude",
+            "speed",
+        }.issubset(columns):
+            return "WAKE_MOBILE_SENSOR_CSV"
+        raise ValueError(
+            f"Invalid {kind.lower()} telemetry: required columns are missing."
+        )
+
+    def upload_source(self, *, kind: str, name: str, content: bytes) -> dict:
+        kind = kind.upper()
+        if kind not in SOURCE_KINDS:
+            raise ValueError(f"Unsupported source kind: {kind}")
+        if (
+            not name
+            or name in {".", ".."}
+            or Path(name).name != name
+            or "/" in name
+            or "\\" in name
+        ):
+            raise ValueError("Source file name must not contain a path.")
+        if not content:
+            raise ValueError("Source content is empty.")
+        if len(content) > MAX_SOURCE_BYTES:
+            raise ValueError("Source exceeds the 10 MiB prototype limit.")
+
+        source_format = (
+            self._validate_json_source(kind, content)
+            if kind in {"PLAN", "ENVIRONMENT", "CONTEXT"}
+            else self._validate_csv_source(kind, content)
+        )
+        digest = hashlib.sha256(content).hexdigest()
+        source_id = f"source-{kind.lower()}-{digest[:12]}"
+        stored = {
+            "source_id": source_id,
+            "kind": kind,
+            "name": name,
+            "status": "READY",
+            "format": source_format,
+            "sha256": digest,
+            "size_bytes": len(content),
+            "_content": content,
+        }
+        self.sources[source_id] = stored
+        return {key: value for key, value in stored.items() if not key.startswith("_")}
+
+    def create_investigation_from_sources(
+        self,
+        source_ids: list[str],
+        *,
+        mode: str = "replay",
+    ) -> dict:
+        try:
+            sources = [self.sources[source_id] for source_id in source_ids]
+        except KeyError as error:
+            raise ValueError(f"Unknown source: {error.args[0]}") from error
+        grouped = {source["kind"]: source for source in sources}
+        if len(sources) != len(SOURCE_KINDS) or set(grouped) != SOURCE_KINDS:
+            raise ValueError(
+                "An investigation requires one PLAN, SPEEDCOACH, MOBILE, "
+                "ENVIRONMENT, and CONTEXT source."
+            )
+
+        if mode != "replay":
+            raise ValueError(
+                "New uploaded bundles are not connected to live execution yet."
+            )
+        public_input = self.root / "data/fixtures" / PUBLIC_REPLAY_CASE_ID / "input"
+        exact_public_bundle = all(
+            source["_content"]
+            == (public_input / SOURCE_FILENAMES[kind]).read_bytes()
+            for kind, source in grouped.items()
+        )
+        if not exact_public_bundle:
+            raise ValueError(
+                "Replay is available only for the committed public demonstration "
+                "bundle; new uploaded evidence requires a future live source adapter."
+            )
+        return self.create_investigation(PUBLIC_REPLAY_CASE_ID, mode="replay")
 
     def _public_case_bundle(self, case_id: str, analysis: dict) -> dict:
         public_case_input_dir(self.root, case_id)
@@ -320,7 +474,30 @@ class WakeProductApi:
     def handle(self, method: str, path: str, body: dict | None = None) -> tuple[int, dict]:
         body = body or {}
         parts = [part for part in urlsplit(path).path.split("/") if part]
+        if method == "POST" and parts == ["api", "sources"]:
+            try:
+                content = base64.b64decode(
+                    str(body.get("content_base64", "")),
+                    validate=True,
+                )
+            except (binascii.Error, ValueError) as error:
+                raise ValueError("Source content_base64 is invalid.") from error
+            return 201, self.service.upload_source(
+                kind=str(body.get("kind", "")),
+                name=str(body.get("name", "")),
+                content=content,
+            )
         if method == "POST" and parts == ["api", "investigations"]:
+            if "source_ids" in body:
+                source_ids = body["source_ids"]
+                if not isinstance(source_ids, list) or not all(
+                    isinstance(source_id, str) for source_id in source_ids
+                ):
+                    raise ValueError("source_ids must be a list of strings.")
+                return 201, self.service.create_investigation_from_sources(
+                    source_ids,
+                    mode=str(body.get("mode", "replay")),
+                )
             return 201, self.service.create_investigation(
                 str(body.get("case_id", "")),
                 mode=str(body.get("mode", "replay")),

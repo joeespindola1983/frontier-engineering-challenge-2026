@@ -104,7 +104,7 @@ session inbox -> evidence intake -> review -> human checkpoint
               -> verified briefing -> approved goal memory
 ```
 
-It is a product replay, not a live upload backend. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
+The hosted product remains a safe replay. When connected to the local product service, its intake can upload and validate one complete five-source bundle (plan, SpeedCoach, mobile, environment, and context). Only the byte-identical public demonstration bundle can use committed replay output; different evidence cannot inherit that answer. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
 
 ```bash
 cd web
@@ -129,3 +129,5 @@ NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 npm run dev
 ```
 
 Live agent execution is deliberately double opt-in: start the service with `--allow-live` and build the web interface with `NEXT_PUBLIC_WAKE_RUNTIME_MODE=live`. It also requires `OPENAI_API_KEY`, incurs API cost, and writes a normal agent output and trajectory under `evaluation/runs/product-live/`.
+
+Uploaded source bytes and workflow state are process-local and non-durable. The current source boundary validates normalized plan/environment/context JSON, normalized telemetry CSV, raw SpeedCoach vendor CSV, and pre-existing WAKE mobile sensor CSV. Parsing a new raw bundle into a live compact case summary is the next adapter slice and is not claimed as implemented.

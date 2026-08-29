@@ -77,6 +77,60 @@ test('HTTP client calls only task-level product endpoints', async () => {
   );
 });
 
+test('HTTP client uploads typed evidence before source-based investigation', async () => {
+  const requests = [];
+  const responses = [
+    {
+      source_id: 'source-plan-abc123',
+      kind: 'PLAN',
+      status: 'READY',
+      format: 'WAKE_TRAINING_PLAN_JSON',
+    },
+    {
+      investigation_id: 'investigation-case-002',
+      checkpoint_id: 'checkpoint-case-002',
+      goal_id: 'goal-case-002',
+      status: 'QUESTION_REQUIRED',
+      mode: 'replay',
+      review: { analysis: {}, summary: {}, context: {} },
+    },
+  ];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return { ok: true, json: async () => responses.shift() };
+    },
+    reviewAdapter: () => demoReview,
+  });
+
+  const source = await client.uploadSource({
+    kind: 'PLAN',
+    name: 'plan.json',
+    contentBase64: 'e30=',
+  });
+  const investigation = await client.createInvestigation({
+    sourceIds: [source.source_id],
+  });
+
+  assert.deepEqual(
+    requests.map(({ url }) => url),
+    [
+      'http://127.0.0.1:8788/api/sources',
+      'http://127.0.0.1:8788/api/investigations',
+    ],
+  );
+  assert.deepEqual(JSON.parse(requests[0].init.body), {
+    kind: 'PLAN',
+    name: 'plan.json',
+    content_base64: 'e30=',
+  });
+  assert.deepEqual(JSON.parse(requests[1].init.body).source_ids, [
+    'source-plan-abc123',
+  ]);
+  assert.equal(investigation.review, demoReview);
+});
+
 test('HTTP errors stay visible to the product flow', async () => {
   const client = new HttpWakeClient({
     baseUrl: 'http://127.0.0.1:8788',

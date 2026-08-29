@@ -57,11 +57,11 @@ export class HttpWakeClient {
     return payload;
   }
 
-  async createInvestigation({ mode = 'replay' } = {}) {
-    const payload = await this.request('/api/investigations', {
-      case_id: 'case-002-wind-shift-plan-deviation',
-      mode,
-    });
+  async createInvestigation({ mode = 'replay', sourceIds } = {}) {
+    const request = { mode };
+    if (sourceIds) request.source_ids = sourceIds;
+    else request.case_id = 'case-002-wind-shift-plan-deviation';
+    const payload = await this.request('/api/investigations', request);
     return {
       investigationId: payload.investigation_id,
       checkpointId: payload.checkpoint_id,
@@ -70,6 +70,14 @@ export class HttpWakeClient {
       mode: payload.mode,
       review: this.reviewAdapter(payload.review),
     };
+  }
+
+  uploadSource({ kind, name, contentBase64 }) {
+    return this.request('/api/sources', {
+      kind,
+      name,
+      content_base64: contentBase64,
+    });
   }
 
   answerCheckpoint(checkpointId, answer) {

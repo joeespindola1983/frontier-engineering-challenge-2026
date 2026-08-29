@@ -176,6 +176,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Expose investigation creation, checkpoint answers, briefing approval, and goal retrieval through a small local Python HTTP service. Replay committed public output by default. Permit the existing bounded OpenAI runner only when the server is started with `--allow-live`, the browser is configured for `live`, and `OPENAI_API_KEY` exists.
 - **Rationale:** This connects the product flow to the real agent runtime without teaching the browser about low-level tools or making a normal page click silently spend API budget. A standard-library server avoids a new framework dependency during the hackathon; hosted execution and durable state remain separate decisions.
 
+## 2026-08-29 - Isolate uploaded evidence from committed replay output
+
+- **Status:** accepted for the local demonstration runtime.
+- **Decision:** Accept five typed process-local sources—plan, SpeedCoach, mobile, environment, and context—only after deterministic filename, size, schema/column, and format validation. Return metadata and SHA-256 provenance to the browser, never source bytes. Permit source-based replay only when every uploaded byte sequence exactly matches public case 002.
+- **Rationale:** An upload control is dangerous if arbitrary evidence can inherit a canned answer. Exact bundle identity lets the interface demonstrate real independent intake without overstating raw parsing or letting a modified workout receive unrelated conclusions. Durable private uploads and new-bundle live normalization remain separate TDD decisions.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

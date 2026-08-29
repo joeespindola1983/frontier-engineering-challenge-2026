@@ -83,6 +83,9 @@ button { cursor: pointer; }
 .upload-row code { color: var(--accent); font-family: var(--mono); font-size: 10px; }
 .upload-row small { color: var(--muted); }
 .ready-label { padding: 4px 7px; background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.upload-file-action { padding: 6px 8px; border: 1px solid var(--line-strong); color: var(--accent); cursor: pointer; font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.upload-file-action:hover { border-color: var(--accent); }
+.upload-boundary { margin: -12px 0 24px; padding: 10px 12px; border-left: 2px solid var(--warning); background: var(--warning-soft); color: var(--ink-soft); font-size: 11px; }
 .known-context { margin: 0 0 28px; }
 .context-grid { display: flex; flex-wrap: wrap; gap: 7px; }
 .context-grid span { padding: 7px 9px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); font-size: 11px; }

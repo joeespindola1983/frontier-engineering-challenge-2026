@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, the bounded single-agent evaluation loop, and a coach-facing product replay are implemented. The replay demonstrates checkpoint and approval policy in memory; durable storage and live source ingestion remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; raw new-bundle execution and durable storage remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -92,7 +92,7 @@ Committed public output      bounded WAKE runner
           compact coach view model
 ```
 
-The service binds to localhost by default and uses process memory for investigation, briefing, and goal state. It is a demonstration application boundary, not a production multi-tenant backend.
+The service binds to localhost by default and uses process memory for uploaded bytes, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Five source ids may start an investigation, but committed replay is released only for an exact byte match to public case 002. Detection of SpeedCoach vendor and WAKE mobile sensor formats does not yet imply end-to-end normalization for arbitrary uploads. It is a demonstration application boundary, not a production multi-tenant backend.
 
 ## Baseline hypothesis
 
@@ -105,4 +105,5 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Hosted execution for the Python agent runtime.
 - Data store and memory representation.
 - Weather provider and historical-data availability.
-- Authentication, club tenancy, uploads, and durable checkpoint state.
+- Authentication, club tenancy, durable uploads, and durable checkpoint state.
+- Raw uploaded bundle normalization into a compact live-agent case summary.

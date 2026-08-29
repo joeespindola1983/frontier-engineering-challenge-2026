@@ -24,7 +24,7 @@ npm audit
 
 - The replay contains no private athlete or route data.
 - It does not read evaluator ground truth.
-- It does not upload evidence or invoke the live agent.
+- The hosted build does not upload evidence or invoke the live agent.
 - Checkpoint answers and approved goal memory are in-memory browser state.
 - The compact demo data is regression-tested against the committed agent output.
 
@@ -51,5 +51,7 @@ npm run dev
 ```
 
 The product client calls only task-level endpoints; source trust and agent tools remain server-side.
+
+With the local service configured, the intake also accepts one complete five-file bundle. Each file is validated independently and the browser receives metadata rather than stored bytes. The exact public case-002 files can exercise source-based replay; any changed bundle is blocked from reusing the committed answer. Arbitrary raw-bundle normalization is not implemented yet, even when a SpeedCoach or WAKE mobile format is recognized.
 
 See `../docs/PRODUCT_INTERFACE.md` for the product contract.

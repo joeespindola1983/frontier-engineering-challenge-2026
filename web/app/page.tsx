@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { demoReview } from './lib/demo-review.mjs';
+import { evidenceSourceDefinitions, uploadEvidenceBundle } from './lib/evidence-intake.mjs';
 import { createWakeClient } from './lib/product-client.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
@@ -9,6 +10,8 @@ type Screen = 'sessions' | 'intake' | 'review' | 'briefing' | 'memory';
 type Briefing = ReturnType<typeof resolveCheckpoint>;
 type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
+type EvidenceKind = 'PLAN' | 'SPEEDCOACH' | 'MOBILE' | 'ENVIRONMENT' | 'CONTEXT';
+type EvidenceFiles = Partial<Record<EvidenceKind, File>>;
 
 const configuredRuntimeUrl = process.env.NEXT_PUBLIC_WAKE_API_URL ?? '';
 const configuredRuntimeMode = process.env.NEXT_PUBLIC_WAKE_RUNTIME_MODE === 'live' ? 'live' : 'replay';
@@ -80,30 +83,30 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
   );
 }
 
-function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: () => void; processing: boolean; error: string }) {
-  const sources = [
-    ['Training plan', 'plan.json', 'Prescription and recovery structure'],
-    ['SpeedCoach recording', 'speedcoach.csv', 'Distance, speed, route, and SPM'],
-    ['Mobile recording', 'mobile.csv', 'Route corroboration; SPM rejected'],
-    ['Environmental timeline', 'environment.json', 'Time-aligned wind observations'],
-  ];
+function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (files: EvidenceFiles) => void; processing: boolean; error: string }) {
+  const [files, setFiles] = useState<EvidenceFiles>({});
+  const hasSelectedFiles = Object.keys(files).length > 0;
   return (
     <main className="page page-narrow">
       <PrototypeNotice />
       <header className="page-header">
-        <div className="page-header-copy"><div className="kicker">New session review</div><h1>Bring the evidence together.</h1><p className="lede">Partial evidence is accepted. This replay uses the committed public synthetic case and never exposes evaluation ground truth.</p></div>
+        <div className="page-header-copy"><div className="kicker">New session review</div><h1>Bring the evidence together.</h1><p className="lede">The public synthetic sample is ready to investigate. A connected local runtime can validate a complete five-source bundle without exposing evaluation ground truth.</p></div>
       </header>
       <div className="intake-layout">
         <section>
           <div className="kicker">Evidence ready</div>
           <div className="upload-list">
-            {sources.map(([title, file, description], index) => (
-              <div className="upload-row" key={file}><span className="upload-index">0{index + 1}</span><div><strong>{title}</strong><code>{file}</code><small>{description}</small></div><span className="ready-label">Ready</span></div>
-            ))}
+            {evidenceSourceDefinitions.map((source, index) => {
+              const selected = files[source.kind as EvidenceKind];
+              return (
+                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Replace'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
+              );
+            })}
           </div>
+          {hasSelectedFiles ? <p className="upload-boundary">Custom evidence is validated only when all five files are selected. A different bundle cannot reuse the committed replay.</p> : null}
           <div className="known-context"><div className="kicker">Known context</div><div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div></div>
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
-          <button className="button button-primary" disabled={processing} onClick={onInvestigate} type="button">{processing ? 'Investigating…' : 'Investigate session'}</button>
+          <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
         </section>
         <aside className="process-note"><div className="kicker">What WAKE will do</div><ol><li>Match and align recordings.</li><li>Reconstruct plan blocks.</li><li>Select trust per metric.</li><li>Preserve unsupported unknowns.</li><li>Ask one material question.</li></ol></aside>
       </div>
@@ -201,7 +204,7 @@ export default function Home() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  async function investigate() { setProcessing(true); setError(''); try { const result = await client.createInvestigation({ mode: configuredRuntimeMode }); setReview(result.review); setCheckpointId(result.checkpointId); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
+  async function investigate(files: EvidenceFiles = {}) { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files) : undefined; const result = await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
   async function completeReview(answer: string) { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, answer); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
