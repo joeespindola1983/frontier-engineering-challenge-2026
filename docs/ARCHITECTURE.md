@@ -74,7 +74,25 @@ The current runner captures structured events without private chain-of-thought: 
 
 The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
 
-The current adapter boundary is intentionally compatible with a later task-level HTTP service. The browser does not choose trusted sources, compute compliance, infer causal environmental effects, or create memory without approval.
+The adapter boundary now has a local task-level HTTP implementation. The browser creates an investigation, submits one checkpoint answer, and approves a briefing. The service returns a compact public evidence bundle and delegates live analysis to the existing bounded runner only after explicit opt-in. The browser does not choose trusted sources, compute compliance, infer causal environmental effects, or create memory without approval.
+
+```text
+React product client
+        |
+        | POST investigation / answer checkpoint / approve briefing
+        v
+Local product service
+        |                         |
+        | replay (default)        | live (double opt-in)
+        v                         v
+Committed public output      bounded WAKE runner
+        |                         |
+        +------------+------------+
+                     v
+          compact coach view model
+```
+
+The service binds to localhost by default and uses process memory for investigation, briefing, and goal state. It is a demonstration application boundary, not a production multi-tenant backend.
 
 ## Baseline hypothesis
 
@@ -84,7 +102,7 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 
 ## Open decisions
 
-- Live API and hosted execution for the Python agent runtime.
+- Hosted execution for the Python agent runtime.
 - Data store and memory representation.
 - Weather provider and historical-data availability.
 - Authentication, club tenancy, uploads, and durable checkpoint state.

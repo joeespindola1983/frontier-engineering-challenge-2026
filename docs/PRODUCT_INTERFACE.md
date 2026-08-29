@@ -27,7 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 
-The UI replays committed public case 002. It does not upload files, call the agent, persist answers, or access evaluator ground truth.
+The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service. The service may replay the same output or invoke the bounded agent when live execution is explicitly enabled. Source upload and durable persistence are not implemented.
 
 ## Evidence boundaries
 
@@ -47,10 +47,20 @@ The current implementation therefore keeps work interval five as the material SP
 
 Coach navigation contains only Sessions and Goal memory. Baseline comparisons, fixtures, grader scores, run trajectories, and replay controls remain repository or terminal evidence for the hackathon submission.
 
-## Future task-level API
+## Task-level API
 
-The replay adapter may later be replaced by an application service exposing tasks such as source upload, investigation creation, checkpoint answer, briefing approval, and goal retrieval. The application service—not the browser—must own source validation, agent execution, checkpoint persistence, and durable memory.
+The local application service exposes:
+
+```text
+POST /api/investigations
+GET  /api/investigations/:id
+POST /api/checkpoints/:id/answers
+POST /api/briefings/:id/approve
+GET  /api/goals/:id
+```
+
+The service—not the browser—selects replay versus explicitly enabled live agent execution and owns the checkpoint and approval transition. Current state is process-local. A future hosted service must add authentication, source validation, durable persistence, and club tenancy before accepting private data.
 
 ## Acceptance boundary
 
-The current slice is accepted when its behavioral tests, lint, and production build pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. Live ingestion and durable storage require separate TDD experiments.
+The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. Live source ingestion and durable storage require separate TDD experiments.

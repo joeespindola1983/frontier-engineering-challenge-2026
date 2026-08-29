@@ -28,4 +28,28 @@ npm audit
 - Checkpoint answers and approved goal memory are in-memory browser state.
 - The compact demo data is regression-tested against the committed agent output.
 
+## Connect the local product service
+
+Start the service from the repository root:
+
+```bash
+uv run python scripts/wake_product_service.py
+```
+
+Then start the interface with the explicit service URL:
+
+```bash
+NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 npm run dev
+```
+
+This still uses replay mode and makes no API call. Live execution additionally requires the service flag `--allow-live`, `OPENAI_API_KEY`, and:
+
+```bash
+NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 \
+NEXT_PUBLIC_WAKE_RUNTIME_MODE=live \
+npm run dev
+```
+
+The product client calls only task-level endpoints; source trust and agent tools remain server-side.
+
 See `../docs/PRODUCT_INTERFACE.md` for the product contract.

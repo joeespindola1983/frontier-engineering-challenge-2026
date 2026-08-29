@@ -1,0 +1,90 @@
+import { demoReview } from './demo-review.mjs';
+import { buildSessionReview } from './replay-adapter.mjs';
+import { approveBriefingMemory, resolveCheckpoint } from './workflow-state.mjs';
+
+
+export class ReplayWakeClient {
+  constructor(review = demoReview) {
+    this.review = review;
+    this.briefings = new Map();
+  }
+
+  async createInvestigation() {
+    return {
+      investigationId: `investigation-${this.review.sessionId}`,
+      checkpointId: this.review.checkpoint.checkpointId,
+      goalId: `goal-${this.review.sessionId}`,
+      status: 'QUESTION_REQUIRED',
+      mode: 'replay',
+      review: this.review,
+    };
+  }
+
+  async answerCheckpoint(checkpointId, answer) {
+    if (checkpointId !== this.review.checkpoint.checkpointId) {
+      throw new Error(`Unknown checkpoint: ${checkpointId}`);
+    }
+    const briefing = resolveCheckpoint(this.review, answer);
+    this.briefings.set(briefing.briefingId, briefing);
+    return briefing;
+  }
+
+  async approveBriefing(briefingId) {
+    const briefing = this.briefings.get(briefingId);
+    if (!briefing) throw new Error(`Unknown briefing: ${briefingId}`);
+    return approveBriefingMemory(briefing, true);
+  }
+}
+
+
+export class HttpWakeClient {
+  constructor({ baseUrl, fetchImpl = fetch, reviewAdapter = buildSessionReview }) {
+    this.baseUrl = baseUrl.replace(/\/$/, '');
+    this.fetchImpl = fetchImpl;
+    this.reviewAdapter = reviewAdapter;
+  }
+
+  async request(path, body) {
+    const response = await this.fetchImpl(`${this.baseUrl}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.error || `WAKE runtime failed with ${response.status}.`);
+    }
+    return payload;
+  }
+
+  async createInvestigation({ mode = 'replay' } = {}) {
+    const payload = await this.request('/api/investigations', {
+      case_id: 'case-002-wind-shift-plan-deviation',
+      mode,
+    });
+    return {
+      investigationId: payload.investigation_id,
+      checkpointId: payload.checkpoint_id,
+      goalId: payload.goal_id,
+      status: payload.status,
+      mode: payload.mode,
+      review: this.reviewAdapter(payload.review),
+    };
+  }
+
+  answerCheckpoint(checkpointId, answer) {
+    return this.request(`/api/checkpoints/${checkpointId}/answers`, { answer });
+  }
+
+  approveBriefing(briefingId) {
+    return this.request(`/api/briefings/${briefingId}/approve`, {});
+  }
+}
+
+
+export function createWakeClient({ baseUrl = '', fetchImpl } = {}) {
+  if (baseUrl.trim()) {
+    return new HttpWakeClient({ baseUrl, fetchImpl });
+  }
+  return new ReplayWakeClient();
+}

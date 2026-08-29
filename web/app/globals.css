@@ -194,6 +194,8 @@ button { cursor: pointer; }
 .button-primary:hover { border-color: #09584d; background: #09584d; }
 .button-small { min-height: 34px; padding: 0 13px; font-size: 12px; }
 .button-quiet { border-color: transparent; padding-inline: 3px; color: var(--accent); }
+.button:disabled { cursor: wait; opacity: 0.62; }
+.runtime-error { margin: 0 0 16px; padding: 10px 12px; border-left: 2px solid var(--danger); background: #f8eaea; color: #7d3030; font-size: 11px; }
 
 @media (max-width: 900px) {
   .topbar-inner { grid-template-columns: auto 1fr; }

@@ -287,7 +287,7 @@ The UI only needs enough polish to make that end-to-end execution understandable
 
 ### Implemented product-facing slice
 
-The first web slice now follows the coach workflow rather than the hackathon evaluation workflow: session inbox, evidence intake, review, one equipment checkpoint, verified briefing, and approval-gated goal memory. It is implemented as a clearly labeled synthetic replay of committed case 002, not as a live upload backend.
+The first web slice now follows the coach workflow rather than the hackathon evaluation workflow: session inbox, evidence intake, review, one equipment checkpoint, verified briefing, and approval-gated goal memory. The hosted version remains a clearly labeled synthetic replay of committed case 002. A local task-level HTTP service now connects the same interface contract to replay or explicitly enabled live agent execution; it is not yet a source-upload or durable backend.
 
 The supplied visual prototype was retained as a direction, but repository evidence changed three important details: wind is a time-aligned association rather than a causal explanation; only one reviewed session appears in memory; and coach confirmation is stored as human context without rewriting telemetry. Evaluation scores, fixture controls, and trajectories remain outside the product navigation.
 
@@ -338,7 +338,7 @@ A candidate five-minute narrative is:
 
 - Which domain expert independently reviews each ground-truth answer before final scoring?
 - Which schema revisions are justified by parser and grader implementation evidence?
-- Which database, product runtime, UI stack, and minimal agent orchestration best fit the weekend beyond the accepted Python evaluation runner?
+- Which database and hosted runtime should replace the accepted process-local product service after the weekend?
 - Is one orchestrating agent plus verifier enough, or does an evaluated failure justify another specialized agent?
 - How should evidence, trajectories, cost, and runtime be packaged for judges?
 - Which weather and mapping services have acceptable terms and reproducible historical data?

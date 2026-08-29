@@ -170,6 +170,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Derive the first UI view model from committed public case-002 agent output and test it against that artifact. Label the replay as synthetic, preserve metric-level source policy and unsupported unknowns, describe wind only as time-aligned association, and create in-memory goal history only after explicit coach approval.
 - **Rationale:** The replay makes the complete product value legible without inventing athletes, sessions, causal claims, or a weekend-scale persistence system. Its adapter boundary can later be replaced by a task-level API without moving reasoning into the browser.
 
+## 2026-08-29 - Add a local task-level product service with explicit live opt-in
+
+- **Status:** accepted for the demonstration runtime.
+- **Decision:** Expose investigation creation, checkpoint answers, briefing approval, and goal retrieval through a small local Python HTTP service. Replay committed public output by default. Permit the existing bounded OpenAI runner only when the server is started with `--allow-live`, the browser is configured for `live`, and `OPENAI_API_KEY` exists.
+- **Rationale:** This connects the product flow to the real agent runtime without teaching the browser about low-level tools or making a normal page click silently spend API budget. A standard-library server avoids a new framework dependency during the hackathon; hosted execution and durable state remain separate decisions.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

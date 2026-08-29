@@ -83,3 +83,19 @@ values to prove loop, runtime, cost, and manifest behavior without network cost.
 A passing dry-run proves request construction and data boundaries, not model
 quality. Quality can be claimed only after real baseline and agent outputs are
 scored by the frozen rubric grader.
+
+## Product-service entry point
+
+`scripts/wake_product_service.py` wraps the runner behind task-level product operations. Its safe default is a committed public replay:
+
+```bash
+uv run python scripts/wake_product_service.py
+```
+
+Live mode is available only through all three conditions:
+
+1. the server is started with `--allow-live`;
+2. the investigation request explicitly uses `mode: live`;
+3. `OPENAI_API_KEY` exists.
+
+Every live execution still uses `run_agent_case`, preserving its verifier, bounded rounds, trajectory, runtime, token, and cost evidence. The HTTP service never exposes low-level tool names to the product client.

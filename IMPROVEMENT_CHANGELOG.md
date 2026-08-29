@@ -116,6 +116,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The interface itself is an evidence boundary. Claims become more trustworthy when source choice, unknowns, human confirmation, and approval are visible without forcing the coach to inspect the full agent trace.
 - **Next step:** Record the five-minute demonstration, then replace the replay adapter with a tested task-level service only if the remaining hackathon time permits.
 
+### 12. Task-level product runtime boundary
+
+- **Hypothesis:** Connecting the coach interface to task-level operations can demonstrate a real agent runtime without exposing tools in the browser or turning an ordinary click into an implicit paid call.
+- **Change:** Added a process-local Python product service for investigation creation, checkpoint answers, briefing approval, and goal retrieval. Added an asynchronous web client with replay and HTTP adapters. Replay remains the default; live execution requires server `--allow-live`, client `live` mode, and `OPENAI_API_KEY`. The service reuses the bounded runner and preserves its normal trajectory output.
+- **Evaluation:** RED began with missing Python service and JavaScript client modules. A second RED caught an incorrect checkpoint route, and a third converted an oversized HTTP response into a compact product contract. Seven Python service tests and four new client tests now cover replay/live boundaries, task-level routes, checkpoint provenance, preserved telemetry, unknowns, approval-gated memory, compact context, and visible HTTP errors. A real localhost sequence completed investigation, `UNKNOWN` checkpoint, and approval without an API call.
+- **Result:** The interface can use the same asynchronous contract for free hosted replay or a local live WAKE investigation. The browser never receives evaluator ground truth or low-level tool controls. Hosted Python execution, uploads, authentication, and durable state remain unimplemented.
+- **Cost/runtime:** No model call and no API cost. HTTP replay latency was checked only as functional local behavior and is not presented as a benchmark.
+- **Decision:** Keep the task-level service and explicit three-part live opt-in. Do not enable live calls by default or move evidence reasoning into the frontend.
+- **Learning:** A product API should compress agent evidence for the user task just as deterministic tools compress raw sensor data for the model.
+- **Next step:** Validate the complete repository, publish the replay-compatible interface update, and prepare the live local demonstration command for the video.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

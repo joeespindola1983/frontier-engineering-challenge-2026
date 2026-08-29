@@ -114,3 +114,18 @@ npm run dev
 ```
 
 Node.js 22.13 or newer is required. See [Product interface contract](docs/PRODUCT_INTERFACE.md) and [web implementation notes](web/README.md).
+
+Run the task-level product service locally in no-cost replay mode:
+
+```bash
+uv run python scripts/wake_product_service.py
+```
+
+Then connect the web development server to it:
+
+```bash
+cd web
+NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 npm run dev
+```
+
+Live agent execution is deliberately double opt-in: start the service with `--allow-live` and build the web interface with `NEXT_PUBLIC_WAKE_RUNTIME_MODE=live`. It also requires `OPENAI_API_KEY`, incurs API cost, and writes a normal agent output and trajectory under `evaluation/runs/product-live/`.
