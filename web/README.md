@@ -52,6 +52,6 @@ npm run dev
 
 The product client calls only task-level endpoints; source trust and agent tools remain server-side.
 
-With the local service configured, the intake also accepts one complete five-file bundle. Each file is validated independently and the browser receives metadata rather than stored bytes. The exact public case-002 files can exercise source-based replay; any changed bundle is blocked from reusing the committed answer. Arbitrary raw-bundle normalization is not implemented yet, even when a SpeedCoach or WAKE mobile format is recognized.
+With the local service configured, the intake also accepts one complete five-file bundle. Each file is validated independently and the browser receives metadata rather than stored bytes. SpeedCoach vendor and WAKE mobile sensor CSVs are normalized deterministically, with missing SPM preserved as missing. The exact public case-002 files can exercise source-based replay; any changed bundle is blocked from reusing the committed answer until normalized-bundle summary assembly is implemented.
 
 See `../docs/PRODUCT_INTERFACE.md` for the product contract.

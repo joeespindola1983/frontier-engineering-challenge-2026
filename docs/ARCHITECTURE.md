@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; raw new-bundle execution and durable storage remain hypotheses until evaluated.
+**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; new-bundle summary assembly/execution and durable storage remain hypotheses until evaluated.
 
 ## Proposed flow
 
@@ -36,9 +36,11 @@ The first implementation uses one orchestrating agent and four direct determinis
 
 ## Proposed components
 
-### Source adapters
+### Source adapters — first telemetry slice implemented
 
-Convert each supported input into a versioned normalized schema while preserving source rows or references. Parsing must be deterministic and testable.
+Raw SpeedCoach vendor CSV, pre-existing WAKE mobile sensor CSV, and already normalized telemetry CSV now produce one canonical seven-column telemetry stream plus a versioned quality report. The report preserves source reference, input and normalized hashes, accepted/rejected row counts, time range, duration, maximum distance, GPS coverage, positive SPM rows, and quality flags. It does not repair missing SPM. SpeedCoach timestamps derived from its local start clock are explicitly marked `TIMEZONE_UNKNOWN`; mobile epoch timestamps are normalized to UTC.
+
+Plan, environment, and context inputs are validated but already expected in normalized JSON for this slice. WhatsApp/PDF extraction, Concept2, source matching, and arbitrary uploaded-bundle summary assembly remain separate adapters.
 
 ### Session matcher and aligner
 
@@ -92,7 +94,7 @@ Committed public output      bounded WAKE runner
           compact coach view model
 ```
 
-The service binds to localhost by default and uses process memory for uploaded bytes, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Five source ids may start an investigation, but committed replay is released only for an exact byte match to public case 002. Detection of SpeedCoach vendor and WAKE mobile sensor formats does not yet imply end-to-end normalization for arbitrary uploads. It is a demonstration application boundary, not a production multi-tenant backend.
+The service binds to localhost by default and uses process memory for uploaded bytes, normalized telemetry, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. Five source ids may start an investigation, but committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
 
 ## Baseline hypothesis
 
@@ -106,4 +108,4 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Data store and memory representation.
 - Weather provider and historical-data availability.
 - Authentication, club tenancy, durable uploads, and durable checkpoint state.
-- Raw uploaded bundle normalization into a compact live-agent case summary.
+- Assembly of normalized uploaded sources into a compact live-agent case summary.

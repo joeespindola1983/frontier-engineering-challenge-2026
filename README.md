@@ -66,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md), and a coach-facing product replay. Only two evaluation cases are implemented, so the result supports the current workflow without claiming broad generalization.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, deterministic raw telemetry adapters, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md), and a coach-facing product replay. Only two evaluation cases are implemented, so the result supports the current workflow without claiming broad generalization.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -130,4 +130,4 @@ NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 npm run dev
 
 Live agent execution is deliberately double opt-in: start the service with `--allow-live` and build the web interface with `NEXT_PUBLIC_WAKE_RUNTIME_MODE=live`. It also requires `OPENAI_API_KEY`, incurs API cost, and writes a normal agent output and trajectory under `evaluation/runs/product-live/`.
 
-Uploaded source bytes and workflow state are process-local and non-durable. The current source boundary validates normalized plan/environment/context JSON, normalized telemetry CSV, raw SpeedCoach vendor CSV, and pre-existing WAKE mobile sensor CSV. Parsing a new raw bundle into a live compact case summary is the next adapter slice and is not claimed as implemented.
+Uploaded source bytes and workflow state are process-local and non-durable. The current source boundary validates normalized plan/environment/context JSON and deterministically normalizes normalized telemetry CSV, raw SpeedCoach vendor CSV, and pre-existing WAKE mobile sensor CSV. Every telemetry result includes input/normalized hashes, row counts, timing, distance, GPS/SPM availability, rejected-row counts, and quality flags. Missing mobile SPM remains missing. Assembling those normalized sources into a new compact case summary for live execution is the next slice and is not claimed as implemented.

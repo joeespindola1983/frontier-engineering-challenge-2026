@@ -182,6 +182,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Accept five typed process-local sources—plan, SpeedCoach, mobile, environment, and context—only after deterministic filename, size, schema/column, and format validation. Return metadata and SHA-256 provenance to the browser, never source bytes. Permit source-based replay only when every uploaded byte sequence exactly matches public case 002.
 - **Rationale:** An upload control is dangerous if arbitrary evidence can inherit a canned answer. Exact bundle identity lets the interface demonstrate real independent intake without overstating raw parsing or letting a modified workout receive unrelated conclusions. Durable private uploads and new-bundle live normalization remain separate TDD decisions.
 
+## 2026-08-29 - Normalize telemetry without repairing missing measurements
+
+- **Status:** accepted as source normalization version 1.
+- **Decision:** Deterministically convert SpeedCoach vendor per-stroke CSV, pre-existing WAKE mobile sensor CSV, and canonical telemetry CSV into the same seven-column stream. Emit a versioned quality report with original and normalized hashes. Preserve blank mobile SPM as blank, classify zero-only and absent SPM separately, derive SpeedCoach timestamps from its local clock while marking the timezone unknown, and normalize mobile epoch timestamps to UTC.
+- **Rationale:** Normalization should make sources comparable without making them falsely equivalent. Synthesizing SPM or silently assigning a timezone would convert missing context into fabricated evidence precisely where WAKE is supposed to abstain.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

@@ -138,6 +138,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Provenance begins before agent reasoning. File identity, format validation, and replay eligibility are part of the evidence model, not generic upload plumbing.
 - **Next step:** Build the deterministic raw-to-normalized adapter for a new bundle, beginning with SpeedCoach vendor and WAKE mobile sensor CSVs, then assemble a ground-truth-free compact case summary for explicitly enabled live execution.
 
+### 14. Raw telemetry normalization with preserved missingness
+
+- **Hypothesis:** Converting device-specific telemetry into one deterministic representation will enable later cross-source reasoning, but only if the adapter preserves missing measurements and clock uncertainty instead of smoothing them away.
+- **Change:** Added a raw source adapter for SpeedCoach vendor per-stroke CSV, pre-existing WAKE mobile sensor CSV, and already canonical telemetry. Each accepted file produces a deterministic seven-column CSV and a `wake.source_normalization.v1` report containing source reference, input/normalized hashes, row counts, rejected rows, timing, duration, maximum distance, GPS rows, positive SPM rows, and quality flags. The product service normalizes telemetry at upload time and exposes only safe metadata through `GET /api/sources/:id`.
+- **Evaluation:** RED failed first because `source_adapters` did not exist, raw upload metadata had no normalization report, and the source metadata endpoint was absent. Later REDs required input hash provenance, a versioned report schema, and rejection of non-finite numeric values. Six adapter tests and one new product-service test now cover 549 SpeedCoach strokes, 923 mobile samples, canonical columns, deterministic bytes, malformed vendor rejection, declared-kind enforcement, metadata-only HTTP output, UTC mobile timestamps, unknown SpeedCoach timezone, blank mobile SPM preservation, and `NaN` rejection. Final repository verification is recorded with the completing commit.
+- **Result:** WAKE can now parse the two public raw telemetry formats into a comparable internal stream without sending raw rows to a model or browser. It correctly distinguishes present, zero-only, and absent SPM. This does not yet match sources, infer a timezone, build a new compact case summary, or execute a new uploaded bundle.
+- **Cost/runtime:** No model call and no API cost. Parser runtime was tested only as deterministic local behavior and is not presented as a benchmark.
+- **Decision:** Keep source normalization v1 and the quality-report schema. Do not repair missing SPM, infer local timezone, or claim live new-bundle support.
+- **Learning:** The most important parser output is sometimes not a metric but a boundary: which values exist, which were rejected, and which clock assumptions remain unresolved.
+- **Next step:** Assemble plan, normalized telemetry, environment, and context into a ground-truth-free compact case summary, including candidate alignment evidence, before enabling explicitly paid live investigation for new uploads.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

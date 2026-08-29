@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wake-rowing.dev/schemas/source-normalization-report.schema.json",
+  "title": "WAKE Source Normalization Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_ref",
+    "input_format",
+    "input_sha256",
+    "normalized_sha256",
+    "row_count",
+    "rejected_row_count",
+    "start_time",
+    "end_time",
+    "duration_s",
+    "max_distance_m",
+    "positive_spm_rows",
+    "gps_rows",
+    "quality_flags"
+  ],
+  "properties": {
+    "schema_version": {"const": "wake.source_normalization.v1"},
+    "source_ref": {"type": "string", "minLength": 1},
+    "input_format": {
+      "enum": [
+        "SPEEDCOACH_VENDOR_CSV",
+        "WAKE_MOBILE_SENSOR_CSV",
+        "WAKE_NORMALIZED_TELEMETRY_CSV"
+      ]
+    },
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "row_count": {"type": "integer", "minimum": 1},
+    "rejected_row_count": {"type": "integer", "minimum": 0},
+    "start_time": {"type": ["string", "null"]},
+    "end_time": {"type": ["string", "null"]},
+    "duration_s": {"type": "number", "minimum": 0},
+    "max_distance_m": {"type": "number", "minimum": 0},
+    "positive_spm_rows": {"type": "integer", "minimum": 0},
+    "gps_rows": {"type": "integer", "minimum": 0},
+    "quality_flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

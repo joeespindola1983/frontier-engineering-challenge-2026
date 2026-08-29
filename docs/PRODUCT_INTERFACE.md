@@ -27,7 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 
-The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, and receive validation metadata. The service may replay the committed case or invoke the bounded agent for its existing case-level live path when explicitly enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. New-bundle normalization/execution and durable persistence are not implemented.
+The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload a complete typed source bundle, and receive validation/normalization metadata. The service may replay the committed case or invoke the bounded agent for its existing case-level live path when explicitly enabled. Uploaded files with different bytes are never allowed to inherit the committed answer. New-bundle summary assembly/execution and durable persistence are not implemented.
 
 ## Evidence boundaries
 
@@ -60,10 +60,10 @@ POST /api/briefings/:id/approve
 GET  /api/goals/:id
 ```
 
-`POST /api/sources` accepts one Base64-encoded typed file and returns metadata only: source id, kind, original name, detected format, SHA-256 hash, and byte size. It accepts at most 10 MiB per source, rejects path-bearing names, validates plan and environment schemas, validates minimum context fields, and recognizes normalized telemetry, SpeedCoach vendor, and WAKE mobile sensor CSV formats.
+`POST /api/sources` accepts one Base64-encoded typed file and returns metadata only: source id, kind, original name, detected format, SHA-256 hash, byte size, and a versioned telemetry-normalization report when applicable. It accepts at most 10 MiB per source, rejects path-bearing names, validates plan and environment schemas, validates minimum context fields, and normalizes canonical telemetry, SpeedCoach vendor, and WAKE mobile sensor CSV formats. `GET /api/sources/:id` returns the same safe metadata without raw or normalized rows.
 
-`POST /api/investigations` accepts either the fixed public case id or five source ids. Source-based replay succeeds only when the five uploaded byte sequences exactly match public case 002. Raw vendor recognition is validation, not yet end-to-end parsing. The service—not the browser—owns replay/live selection, checkpoints, and approval. All source bytes and workflow state remain process-local. A future hosted service must add authentication, R2/D1-backed persistence, club tenancy, and a tested raw-to-summary adapter before accepting private club data.
+`POST /api/investigations` accepts either the fixed public case id or five source ids. Source-based replay succeeds only when the five uploaded byte sequences exactly match public case 002. Raw telemetry parsing is implemented, but cross-source matching and compact-summary assembly for a new bundle are not. The service—not the browser—owns replay/live selection, checkpoints, and approval. All source bytes, normalized rows, and workflow state remain process-local. A future hosted service must add authentication, R2/D1-backed persistence, club tenancy, and a tested normalized-bundle-to-summary adapter before accepting private club data.
 
 ## Acceptance boundary
 
-The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. Live normalization of new source bundles and durable storage require separate TDD experiments.
+The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed data is synthetic; uncertainty is visible; and a memory session appears only after coach approval. New-bundle summary assembly/live execution and durable storage require separate TDD experiments.

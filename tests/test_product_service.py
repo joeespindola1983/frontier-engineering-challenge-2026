@@ -229,6 +229,39 @@ class WakeProductServiceTests(unittest.TestCase):
 
         self.assertEqual(speedcoach["format"], "SPEEDCOACH_VENDOR_CSV")
         self.assertEqual(mobile["format"], "WAKE_MOBILE_SENSOR_CSV")
+        self.assertEqual(speedcoach["normalization"]["row_count"], 549)
+        self.assertIn(
+            "TIMEZONE_UNKNOWN",
+            speedcoach["normalization"]["quality_flags"],
+        )
+        self.assertEqual(mobile["normalization"]["row_count"], 923)
+        self.assertEqual(mobile["normalization"]["positive_spm_rows"], 0)
+        self.assertIn(
+            "RAW_SPM_ABSENT",
+            mobile["normalization"]["quality_flags"],
+        )
+
+    def test_source_metadata_endpoint_never_returns_normalized_rows(self) -> None:
+        api = wake_product_service.WakeProductApi(self.service)
+        source = self.service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(
+                ROOT
+                / "data/fixtures/case-001-misaligned-double-scull/input/sources/speedcoach.csv"
+            ).read_bytes(),
+        )
+
+        status, metadata = api.handle(
+            "GET",
+            f"/api/sources/{source['source_id']}",
+        )
+
+        self.assertEqual(status, 200)
+        self.assertEqual(metadata["normalization"]["row_count"], 549)
+        serialized = json.dumps(metadata)
+        self.assertNotIn("normalized_csv", serialized)
+        self.assertNotIn("_content", serialized)
 
     def test_modified_bundle_cannot_inherit_the_committed_replay(self) -> None:
         source_ids = []

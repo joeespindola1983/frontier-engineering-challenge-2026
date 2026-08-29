@@ -11,9 +11,7 @@ from __future__ import annotations
 import argparse
 import base64
 import binascii
-import csv
 import hashlib
-import io
 import json
 import os
 from datetime import datetime, timezone
@@ -25,6 +23,7 @@ from urllib.parse import urlsplit
 import jsonschema
 
 from run_baseline import current_git_commit, read_json, utc_now
+from source_adapters import normalize_source
 from wake_agent import (
     DEFAULT_CONFIG,
     DEFAULT_INPUTS,
@@ -48,12 +47,6 @@ SOURCE_FILENAMES = {
     "CONTEXT": "context.json",
 }
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
-NORMALIZED_TELEMETRY_COLUMNS = {
-    "elapsed_s",
-    "distance_m",
-    "speed_m_s",
-    "stroke_rate_spm",
-}
 
 
 def equipment_from_answer(answer: str) -> dict:
@@ -134,35 +127,6 @@ class WakeProductService:
             "CONTEXT": "WAKE_SESSION_CONTEXT_JSON",
         }[kind]
 
-    def _validate_csv_source(self, kind: str, content: bytes) -> str:
-        try:
-            text = content.decode("utf-8-sig")
-        except UnicodeDecodeError as error:
-            raise ValueError(f"Invalid {kind.lower()} CSV encoding.") from error
-        if not text.strip():
-            raise ValueError(f"Empty {kind.lower()} CSV.")
-
-        if kind == "SPEEDCOACH" and "\nPer-Stroke Data:\n" in f"\n{text}":
-            return "SPEEDCOACH_VENDOR_CSV"
-
-        rows = csv.reader(io.StringIO(text))
-        header = next(rows, [])
-        columns = {column.strip() for column in header}
-        if NORMALIZED_TELEMETRY_COLUMNS.issubset(columns):
-            return "WAKE_NORMALIZED_TELEMETRY_CSV"
-        if kind == "MOBILE" and {
-            "sampleType",
-            "timestamp",
-            "distance",
-            "latitude",
-            "longitude",
-            "speed",
-        }.issubset(columns):
-            return "WAKE_MOBILE_SENSOR_CSV"
-        raise ValueError(
-            f"Invalid {kind.lower()} telemetry: required columns are missing."
-        )
-
     def upload_source(self, *, kind: str, name: str, content: bytes) -> dict:
         kind = kind.upper()
         if kind not in SOURCE_KINDS:
@@ -180,11 +144,19 @@ class WakeProductService:
         if len(content) > MAX_SOURCE_BYTES:
             raise ValueError("Source exceeds the 10 MiB prototype limit.")
 
-        source_format = (
-            self._validate_json_source(kind, content)
-            if kind in {"PLAN", "ENVIRONMENT", "CONTEXT"}
-            else self._validate_csv_source(kind, content)
-        )
+        normalization = None
+        normalized_content = None
+        if kind in {"PLAN", "ENVIRONMENT", "CONTEXT"}:
+            source_format = self._validate_json_source(kind, content)
+        else:
+            normalized = normalize_source(
+                kind=kind,
+                content=content,
+                source_ref=f"upload/{name}",
+            )
+            source_format = normalized.source_format
+            normalization = normalized.report
+            normalized_content = normalized.normalized_csv
         digest = hashlib.sha256(content).hexdigest()
         source_id = f"source-{kind.lower()}-{digest[:12]}"
         stored = {
@@ -195,10 +167,21 @@ class WakeProductService:
             "format": source_format,
             "sha256": digest,
             "size_bytes": len(content),
+            **({"normalization": normalization} if normalization else {}),
             "_content": content,
+            "_normalized_content": normalized_content,
         }
         self.sources[source_id] = stored
         return {key: value for key, value in stored.items() if not key.startswith("_")}
+
+    def get_source(self, source_id: str) -> dict:
+        if source_id not in self.sources:
+            raise KeyError(f"Unknown source: {source_id}")
+        return {
+            key: value
+            for key, value in self.sources[source_id].items()
+            if not key.startswith("_")
+        }
 
     def create_investigation_from_sources(
         self,
@@ -487,6 +470,8 @@ class WakeProductApi:
                 name=str(body.get("name", "")),
                 content=content,
             )
+        if method == "GET" and parts[:2] == ["api", "sources"] and len(parts) == 3:
+            return 200, self.service.get_source(parts[2])
         if method == "POST" and parts == ["api", "investigations"]:
             if "source_ids" in body:
                 source_ids = body["source_ids"]
