@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, comparable baseline/agent runners, and the deterministic grader v1 are complete. No paid model run or measured quality score exists yet.
+**Hackathon status:** two reproducible evaluation fixtures, a frozen rubric, versioned evidence contracts, comparable baseline/agent runners, and deterministic grader v1.1 are complete. One paid single-case preflight calibrated generic grader behavior; it is excluded from the official comparison, which is still pending.
 
 ## The problem
 
@@ -66,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, and an offline grader. The first paid model comparison still needs to be completed.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, and an offline grader. A paid single-case preflight is retained as calibration evidence but excluded from scoring; the first official comparison still needs to be completed.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 

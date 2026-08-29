@@ -140,8 +140,14 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Use a versioned offline grader with the frozen 100-point weights, case-applicable normalization, numeric tolerances, source-selection rules, deviation precision/recall, evidence checks, bounded concept matching, and critical zero rules. Record the grader configuration hash in run reports and do not use an LLM judge for v1.
 - **Rationale:** Implementing and testing scoring before inspecting paid model answers reduces evaluator drift. Deterministic scoring is reproducible and inexpensive; any discovered phrasing blind spot must enter through a RED calibration test rather than an ad hoc score adjustment.
 
+## 2026-08-29 - Calibrate and freeze deterministic grader v1.1
+
+- **Status:** accepted before the official comparison.
+- **Decision:** Treat the first paid, single-case baseline execution as a calibration preflight and exclude it from official results. Preserve grader v1.0, add RED regression tests for connected pairwise source matches, common metric aliases, and explicit “unassessable” language, then freeze grader v1.1 without changing rubric weights, ground truth, or model configuration.
+- **Rationale:** The preflight showed that v1.0 scored equivalent structured representations as incorrect. Versioning the generic corrections before either official arm is run prevents a model-specific score patch while keeping the calibration history auditable.
+
 ## Pending decisions
 
 - Deployment target and product application stack beyond the evaluation runner.
-- First paid baseline and agent execution.
+- First official paid baseline and agent execution.
 - Schema revisions justified by parser and grader implementation evidence.

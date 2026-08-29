@@ -12,9 +12,9 @@ from typing import Callable
 import jsonschema
 
 
-GRADER_VERSION = "1.0"
+GRADER_VERSION = "1.1"
 ROOT = Path(__file__).resolve().parents[1]
-GRADER_CONFIG_PATH = ROOT / "config/grader-v1.json"
+GRADER_CONFIG_PATH = ROOT / "config/grader-v1.1.json"
 GRADER_CONFIG = json.loads(GRADER_CONFIG_PATH.read_text(encoding="utf-8"))
 ANALYSIS_OUTPUT_SCHEMA = json.loads(
     (ROOT / "schemas/analysis-output.schema.json").read_text(encoding="utf-8")
@@ -168,27 +168,44 @@ def score_association(output: dict, ground_truth: dict, summary: dict) -> tuple[
     expected_items = expected_associations(ground_truth, summary)
     item_scores: list[float] = []
     matched = 0
+    correct_prediction_indexes: set[int] = set()
     for expected in expected_items:
         expected_sources = set(expected["source_ids"])
-        candidate = next(
-            (
-                item
-                for item in predicted
-                if expected_sources.issubset(set(item.get("source_ids", [])))
-            ),
-            None,
-        )
-        if candidate is None:
+        relevant_pairs = [
+            (index, item)
+            for index, item in enumerate(predicted)
+            if len(expected_sources.intersection(item.get("source_ids", []))) >= 2
+        ]
+        relevant = [item for _, item in relevant_pairs]
+        graph = {source_id: set() for source_id in expected_sources}
+        for index, item in relevant_pairs:
+            if item.get("decision") != expected["decision"]:
+                continue
+            sources = expected_sources.intersection(item.get("source_ids", []))
+            if set(item.get("source_ids", [])).issubset(expected_sources):
+                correct_prediction_indexes.add(index)
+            for source_id in sources:
+                graph[source_id].update(sources - {source_id})
+        visited: set[str] = set()
+        pending = [next(iter(expected_sources))] if expected_sources else []
+        while pending:
+            source_id = pending.pop()
+            if source_id in visited:
+                continue
+            visited.add(source_id)
+            pending.extend(graph[source_id] - visited)
+        connected = visited == expected_sources
+        if not relevant:
             item_scores.append(0.0)
             continue
-        score = 0.2
-        if candidate.get("decision") == expected["decision"]:
-            score += 0.6
+        score = 0.8 if connected else 0.0
+        if connected:
             matched += 1
         reason_numbers = [
             float(value)
             for value in re.findall(
-                r"\d+(?:\.\d+)?", str(candidate.get("reason", ""))
+                r"\d+(?:\.\d+)?",
+                " ".join(str(item.get("reason", "")) for item in relevant),
             )
         ]
         offsets = expected.get("clock_offsets", [expected.get("clock_offset_s")])
@@ -211,7 +228,7 @@ def score_association(output: dict, ground_truth: dict, summary: dict) -> tuple[
         relevant_refs(predicted, summary),
     ), {
         "session_match_precision": round(
-            matched / len(predicted), 4
+            len(correct_prediction_indexes) / len(predicted), 4
         ) if predicted else 0.0,
         "session_match_recall": round(
             matched / len(expected_items), 4
@@ -274,8 +291,21 @@ def score_segments(output: dict, ground_truth: dict, summary: dict) -> tuple[dic
 
 
 def source_policy_by_metric(output: dict) -> dict[str, dict]:
+    aliases = {
+        "boat class": "boat_class",
+        "boat type": "boat_class",
+        "distance": "distance_m",
+        "distance m": "distance_m",
+        "environment": "environment",
+        "resistance band used": "resistance_band_used",
+        "route": "route",
+        "spm": "stroke_rate_spm",
+        "stroke rate": "stroke_rate_spm",
+        "stroke rate spm": "stroke_rate_spm",
+        "watch": "watch",
+    }
     return {
-        item.get("metric"): item
+        aliases.get(normalized_text(item.get("metric", "")), item.get("metric")): item
         for item in output.get("source_policy", [])
         if item.get("metric")
     }
@@ -471,6 +501,7 @@ NON_ASSERTIVE_PHRASES = [
     "not observable",
     "remains unknown",
     "requires confirmation",
+    "unassessable",
     "unknown",
     "unsupported",
 ]

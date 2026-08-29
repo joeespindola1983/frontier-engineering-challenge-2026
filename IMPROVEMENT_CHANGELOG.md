@@ -4,7 +4,7 @@ This changelog will connect every meaningful experiment to evidence produced wit
 
 ## Current status
 
-Two reproducible evaluation cases, evaluation specification version 1.0, comparable baseline and agent runners, and deterministic grader v1 now exist. No paid model call or measured agent-quality result has been produced.
+Two reproducible evaluation cases, evaluation specification version 1.0, comparable baseline and agent runners, and deterministic grader v1.1 now exist. One paid single-case preflight was used only for calibration and is excluded from the pending official comparison.
 
 ## Experiments
 
@@ -69,7 +69,18 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Evaluation:** RED runs first failed on the missing grader, exposed overly rigid clock-number parsing, then failed on missing schema/CLI contracts, the valid environment source rejected by the agent verifier, hard-coded rubric weights, and prohibited claims hidden in the coach briefing. The final `uv run python scripts/test_all.py` passes 39 tests and three public verifiers. Calibration outputs score 100 for both perfect case profiles; injected broken mobile SPM, causal wind, and visible-technique claims trigger the required zero rules; a false-positive deviation reduces precision to 0.5.
 - **Result:** Grader v1 can score a complete two-case output directory offline and reports macro-average score, per-dimension points/reasons/evidence, secondary metrics, rubric version, and configuration hash. No real model score exists yet.
 - **Decision:** Freeze grader v1 for the first controlled comparison.
-- **Next step:** Execute both frozen cases with the direct baseline and WAKE agent under the same explicit model budget, then grade both output directories without changing grader v1.
+- **Next step:** Run one paid preflight before the official two-arm comparison.
+
+### 8. Paid preflight and grader calibration
+
+- **Hypothesis:** A single excluded real-output preflight can reveal API-contract or generic evaluator failures before they invalidate the official baseline-versus-agent comparison.
+- **Change:** The first request exposed a Structured Outputs incompatibility, so a RED regression test required an explicit `type` beside the constant schema version. One successful case-001 baseline output then exposed three representation gaps in grader v1.0. RED tests added support for connected pairwise source matches, common metric aliases, and explicit “unassessable” language; grader v1.1 records those changes while preserving v1.0.
+- **Evaluation:** The invalid-schema request returned HTTP 400 before generation. The successful preflight used case 001 only and cost US$0.039722 for 3,835 input and 2,671 output tokens. Its unchanged answer scored 3.71 under v1.0 and 73.71 under v1.1; the difference came from generic equivalence handling, while missed human-confirmed boat context and unnecessary questions remained penalized. The final suite passes 43 tests and three public verifiers.
+- **Result:** The schema is accepted by the live API, calibration history is auditable, and grader v1.1 is frozen before either official comparison arm. The preflight output and cost manifest are retained but excluded from the official score.
+- **Cost/runtime:** US$0.039722 and 24,187 ms for the successful preflight; the rejected schema request generated no model output.
+- **Decision:** Keep the schema correction and grader v1.1; remove the preflight from official comparison membership.
+- **Learning:** Deterministic grading still needs semantic-equivalence calibration, but corrections must be versioned and made before inspecting official results rather than patched after seeing a winner.
+- **Next step:** Execute fresh two-case baseline and agent runs, then grade both without changing v1.1.
 
 ## Entry template
 

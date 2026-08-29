@@ -241,9 +241,10 @@ class GraderTests(unittest.TestCase):
         )
 
     def test_versioned_grader_config_freezes_100_point_rubric(self) -> None:
-        config = read_json(ROOT / "config/grader-v1.json")
+        config = read_json(ROOT / "config/grader-v1.1.json")
 
         self.assertEqual(config["grader_version"], grader.GRADER_VERSION)
+        self.assertEqual(grader.GRADER_VERSION, "1.1")
         self.assertEqual(config["rubric_version"], "1.0")
         self.assertEqual(sum(config["dimension_weights"].values()), 100)
         self.assertEqual(config["dimension_weights"], grader.DIMENSION_WEIGHTS)
@@ -278,6 +279,71 @@ class GraderTests(unittest.TestCase):
             },
         )
         self.assertEqual(report["applicable_points"], 45)
+
+    def test_pairwise_matches_can_connect_all_sources_in_legacy_case(self) -> None:
+        case_id = "case-001-misaligned-double-scull"
+        ground_truth = fixture(case_id, "ground-truth.json")
+        output = perfect_case_001_output(ground_truth)
+        output["session_associations"] = [
+            {
+                "source_ids": ["speedcoach", "mobile-ios"],
+                "decision": "MATCH",
+                "confidence": 0.95,
+                "reason": "Route overlap with a 3589.127 second clock offset.",
+                "evidence_refs": [
+                    "input/sources/speedcoach.csv",
+                    "input/sources/mobile-ios-sensor.csv",
+                ],
+            },
+            {
+                "source_ids": ["speedcoach", "mobile-android"],
+                "decision": "MATCH",
+                "confidence": 0.95,
+                "reason": "Route overlap with a 3564.821 second clock offset.",
+                "evidence_refs": [
+                    "input/sources/speedcoach.csv",
+                    "input/sources/mobile-android-sensor.csv",
+                ],
+            },
+        ]
+
+        report = grader.grade_case(output, ground_truth, summary(case_id))
+
+        self.assertEqual(
+            self.dimension(report, "session_association_and_alignment")["earned_points"],
+            15.0,
+        )
+        self.assertEqual(report["secondary_metrics"]["session_match_precision"], 1.0)
+
+    def test_common_metric_aliases_are_canonicalized_before_source_scoring(self) -> None:
+        case_id = "case-001-misaligned-double-scull"
+        ground_truth = fixture(case_id, "ground-truth.json")
+        output = perfect_case_001_output(ground_truth)
+        aliases = {
+            "stroke_rate_spm": "stroke rate",
+            "distance_m": "distance",
+            "boat_class": "boat type",
+        }
+        for policy in output["source_policy"]:
+            policy["metric"] = aliases.get(policy["metric"], policy["metric"])
+
+        report = grader.grade_case(output, ground_truth, summary(case_id))
+
+        self.assertEqual(
+            self.dimension(report, "metric_level_source_trust")["earned_points"],
+            15.0,
+        )
+
+    def test_unassessable_technique_language_is_an_abstention_not_a_claim(self) -> None:
+        output = copy.deepcopy(self.perfect_002)
+        output["coach_briefing"] = "Technique and physiology remain unassessable."
+
+        report = grader.grade_case(output, self.gt_002, self.summary_002)
+
+        self.assertEqual(
+            self.dimension(report, "evidence_and_abstention")["earned_points"],
+            10.0,
+        )
 
     def test_broken_mobile_spm_selection_forces_source_trust_to_zero(self) -> None:
         output = copy.deepcopy(self.perfect_002)

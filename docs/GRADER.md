@@ -1,4 +1,4 @@
-# Deterministic Grader v1
+# Deterministic Grader v1.1
 
 WAKE's first grader is an offline, versioned implementation of the frozen
 100-point rubric. It must be fixed before paid baseline or agent answers are
@@ -12,7 +12,7 @@ The grader reads:
 - the corresponding evaluator-only `ground-truth.json`;
 - the public case summary for evidence-reference validation;
 - `evaluation/cases.json` to exclude planned cases from the denominator;
-- `config/grader-v1.json` for weights, versions, critical rules, and legacy
+- `config/grader-v1.1.json` for weights, versions, critical rules, and legacy
   dimension mapping.
 
 Ground truth is available only to the grader. Neither the baseline nor the WAKE
@@ -55,8 +55,15 @@ The command performs no network calls.
 
 ## Calibration boundary
 
-Grader v1 uses structured comparisons, frozen tolerances, and bounded text
+Grader v1.1 uses structured comparisons, frozen tolerances, and bounded text
 concept checks. It does not use an LLM judge. The calibration suite contains
 perfect profiles and injected critical failures, but real model phrasing may
 expose blind spots. Any scoring change must begin with a failing calibration
 test and must increment the grader version when it changes comparable results.
+
+Version 1.1 was frozen after one explicitly excluded, single-case baseline
+preflight. Three RED regression tests captured generic representation gaps:
+common metric-name aliases, connected pairwise matches that identify the same
+multi-source session, and “unassessable” as abstention language. Rubric weights,
+ground truth, tolerances, and model outputs were not changed. Version 1.0 remains
+committed for auditability; no official baseline-versus-agent result uses it.

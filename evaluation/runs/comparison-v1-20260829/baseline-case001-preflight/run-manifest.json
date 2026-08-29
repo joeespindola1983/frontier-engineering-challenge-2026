@@ -1,0 +1,20 @@
+{
+  "approximate_total_cost_usd": 0.039722,
+  "case_manifests": [
+    "cases/case-001-misaligned-double-scull.run.json"
+  ],
+  "cases": [
+    "case-001-misaligned-double-scull"
+  ],
+  "created_at": "2026-08-29T19:39:23.560+00:00",
+  "run_id": "baseline-case001-preflight",
+  "schema_version": "wake.evaluation_run.v1",
+  "total_usage": {
+    "cached_input_tokens": 0,
+    "input_tokens": 3835,
+    "output_tokens": 2671,
+    "reasoning_output_tokens": 448,
+    "total_tokens": 6506
+  },
+  "workflow": "baseline-v1-direct-call"
+}

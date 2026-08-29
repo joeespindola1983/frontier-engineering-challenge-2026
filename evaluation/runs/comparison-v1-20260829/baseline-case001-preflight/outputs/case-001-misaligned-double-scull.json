@@ -1,0 +1,267 @@
+{
+  "abstentions": [
+    "Cannot evaluate adherence to a workout plan because none was supplied.",
+    "Cannot assign detailed physiological meaning to any zone code because zone boundaries are not supplied.",
+    "Cannot determine boat class, crew configuration, or seat from the conflicting mobile metadata.",
+    "Cannot assess heart-rate response because usable heart-rate/watch data were not supplied.",
+    "Cannot assess technique, crew synchronization, medical state, or use of prescribed resistance equipment from GPS and ordinary SPM telemetry.",
+    "Cannot attribute the elevated 1260-1320 s speed/rate window to environment, athlete improvement, or regression because no environmental evidence or causal evidence is supplied."
+  ],
+  "case_id": "case-001-misaligned-double-scull",
+  "claims": [
+    {
+      "claim_id": "associated-session",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "limitations": [
+        "The cause of the clock offsets is not supplied.",
+        "Association does not validate every conflicting mobile summary metric."
+      ],
+      "statement": "SpeedCoach, iOS mobile, and Android mobile recordings are best treated as recordings of one rowing session despite their approximately one-hour clock offsets.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "selected-session-summary",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "limitations": [
+        "Mobile-reported summaries differ and are not interchangeable with this selected source."
+      ],
+      "statement": "Using SpeedCoach for the reconciled session summary, the session elapsed time was 00:25:25.8, distance was 3915.3 m, average stroke rate was 22.0 SPM, and stroke count was 549.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "mobile-raw-distance",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "limitations": [
+        "Raw GPS maximum distance is not necessarily equivalent to the application-reported summary distance."
+      ],
+      "statement": "Mobile raw GPS distances were 3955.6 m on iOS and 3974.0 m on Android, both close to but not identical with the SpeedCoach 3915.3 m distance.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "elevated-rate-window",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "limitations": [
+        "No workout plan was supplied, so this cannot be classified as intended work, a sprint, or a deviation."
+      ],
+      "statement": "From 1260 to 1320 s on the SpeedCoach timeline, observed average stroke rate was 27.67 SPM and average speed was 3.145 m/s, above the surrounding displayed one-minute windows.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "technique-and-physiology",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-android-sensor.csv"
+      ],
+      "limitations": [
+        "No coach observation, usable heart-rate/watch evidence, crew context, or technique video is supplied."
+      ],
+      "statement": "Technique quality, crew synchronization, physiological response, and medical state cannot be evaluated from the supplied evidence.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The three recordings strongly support one approximately 25:26 outing despite device-clock offsets. Use SpeedCoach as the reconciled record: 3915.3 m at 22.0 SPM average. Note a 21:00-22:00 elevated-rate/speed window (27.67 SPM, 3.145 m/s), but no plan is available to judge intent or adherence. Mobile summary distances and boat labels conflict; technique and physiology remain unassessable.",
+  "deviations": [
+    {
+      "confidence": 0.99,
+      "description": "iOS reported summary distance (4625.0 m) conflicts with its raw maximum distance (3955.6 m); Android reported summary distance (4456.0 m) conflicts with its raw maximum distance (3974.0 m).",
+      "evidence_refs": [
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "segment_ref": null,
+      "type": "MOBILE_DISTANCE_SUMMARY_CONFLICT"
+    },
+    {
+      "confidence": 0.99,
+      "description": "iOS metadata reports SINGLE_SCULL while Android metadata reports OC1; supplied evidence does not resolve the actual boat class or crew configuration.",
+      "evidence_refs": [
+        "input/sources/mobile-ios-metadata.json",
+        "input/sources/mobile-android-metadata.json"
+      ],
+      "segment_ref": null,
+      "type": "BOAT_TYPE_METADATA_CONFLICT"
+    },
+    {
+      "confidence": 0.99,
+      "description": "No planned workout or prescribed blocks were supplied, so no observed pacing or rate pattern can be assessed as compliant or non-compliant.",
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "segment_ref": null,
+      "type": "PLAN_ADHERENCE_NOT_EVALUABLE"
+    }
+  ],
+  "environment_assessment": null,
+  "follow_up_questions": [
+    "What was the planned workout, including intended work/recovery blocks, target voga, and any zone targets?",
+    "Which boat class and crew configuration were actually used, and which mobile device/export metadata should be treated as authoritative?",
+    "Were the iOS and Android phones both recording in the same boat for the full outing, and is the approximately one-hour device-clock offset expected?",
+    "Can you provide the referenced watch/heart-rate file if physiological response is to be evaluated?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [],
+    "prescribed_blocks": [],
+    "status": "NOT_SUPPLIED",
+    "summary": "No planned workout or prescribed blocks were supplied; plan adherence cannot be evaluated."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 22,
+      "confidence": 0.96,
+      "distance_m": 3915.3,
+      "end_offset_s": 1525.8,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "kind": "UNKNOWN",
+      "segment_id": "session-observed-0-1525.8",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 27.67,
+      "confidence": 0.94,
+      "distance_m": 168.4,
+      "end_offset_s": 1320,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv"
+      ],
+      "kind": "UNKNOWN",
+      "segment_id": "elevated-rate-window-1260-1320",
+      "start_offset_s": 1260
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.92,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-ios-metadata.json"
+      ],
+      "reason": "The recordings have nearly equal raw durations after the documented 3589.127 s clock offset, and their GPS routes overlap closely in both directions. The iOS summary-distance conflict and unverified boat-type label prevent certainty about all mobile-reported metrics, not the route-level association.",
+      "source_ids": [
+        "speedcoach",
+        "mobile-ios"
+      ]
+    },
+    {
+      "confidence": 0.91,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv",
+        "input/sources/mobile-android-metadata.json"
+      ],
+      "reason": "The recordings have similar raw durations after the documented 3564.821 s clock offset, and their GPS routes overlap closely in both directions. Android raw GPS distance is close to SpeedCoach distance, although its reported summary distance conflicts with its raw distance.",
+      "source_ids": [
+        "speedcoach",
+        "mobile-android"
+      ]
+    },
+    {
+      "confidence": 0.88,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-ios-metadata.json",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv",
+        "input/sources/mobile-android-metadata.json"
+      ],
+      "reason": "Both mobile recordings independently match the SpeedCoach route and begin only about 24.306 s apart by their device clocks. Their conflicting boat-type labels and internally conflicting summary distances limit confidence in the mobile metadata and summaries.",
+      "source_ids": [
+        "mobile-ios",
+        "mobile-android"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "elapsed duration",
+      "reason": "SpeedCoach provides a directly reported elapsed duration of 00:25:25.8. Mobile raw durations are nearby but differ, while mobile reported summary durations are not consistently supported by their raw records.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "distance",
+      "reason": "SpeedCoach reports 3915.3 m. Mobile raw GPS maxima are comparatively close (3955.6 m iOS and 3974.0 m Android), whereas each mobile reported summary distance materially conflicts with its own raw distance.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "stroke rate",
+      "reason": "SpeedCoach supplies SPM telemetry and a 22.0 SPM session average. Both mobile raw sensor files contain no positive SPM rows, so their reported summary SPM values cannot be corroborated from supplied raw telemetry.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/sources/speedcoach.csv",
+        "input/sources/mobile-ios-sensor.csv",
+        "input/sources/mobile-ios-workout.csv",
+        "input/sources/mobile-android-sensor.csv",
+        "input/sources/mobile-android-workout.csv"
+      ],
+      "metric": "stroke count",
+      "reason": "SpeedCoach reports 549 strokes. Mobile summaries report 562 and 556 strokes, but neither mobile raw sensor file supplies positive SPM telemetry for verification.",
+      "selected_source_id": "speedcoach"
+    },
+    {
+      "confidence": 0.05,
+      "evidence_refs": [
+        "input/sources/mobile-ios-metadata.json",
+        "input/sources/mobile-android-metadata.json"
+      ],
+      "metric": "boat type",
+      "reason": "The supplied mobile metadata conflict: iOS reports SINGLE_SCULL and Android reports OC1. Boat class, crew, and seats are not otherwise confirmed.",
+      "selected_source_id": null
+    }
+  ]
+}

@@ -91,6 +91,12 @@ class BaselineRequestTests(unittest.TestCase):
     def test_output_schema_is_valid_draft_2020_12(self) -> None:
         jsonschema.Draft202012Validator.check_schema(self.schema)
 
+    def test_structured_output_const_fields_declare_an_explicit_type(self) -> None:
+        schema_version = self.schema["properties"]["schema_version"]
+
+        self.assertEqual(schema_version["const"], "wake.analysis_output.v1.1")
+        self.assertEqual(schema_version["type"], "string")
+
     def test_execute_case_records_public_observables_without_secret(self) -> None:
         output = {
             "schema_version": "wake.analysis_output.v1.1",
