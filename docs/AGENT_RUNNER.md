@@ -98,8 +98,9 @@ failure boundary discovered by the official v1 run:
   segment values, even if the candidate output cites valid files.
 
 The v1 tool contract remains selectable for historical requests. The committed
-v2 dry-run is request evidence only; model quality requires a separate explicit
-paid execution and capability report.
+v2 preflight is request evidence only. A separate official paid execution passed
+all 8, 10, and 12 applicable condition checks and cross-condition consistency;
+that result remains limited to the single frozen synthetic session.
 
 ## Product-service entry point
 

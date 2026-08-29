@@ -134,6 +134,12 @@ capability reporter. The independent variable is the versioned distance boundary
 in the reconstruction tool, prompt, and verifier. Its committed dry-run records
 the exact three requests with `api_called: false`; it is not a quality result.
 
+The separate official v2 execution passed 8/8 core, 10/10
+context/environment, and 12/12 full-evidence checks. The only reported
+plan-execution deviation in every condition was work-05 SPM, so cross-condition
+consistency also passed. This is one repeated synthetic case, not evidence of
+broad generalization or improved athlete outcomes.
+
 ## Baseline protocol
 
 The simple baseline will use one direct model call with:

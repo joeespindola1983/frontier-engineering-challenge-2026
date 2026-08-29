@@ -82,3 +82,10 @@ segment distances produced by SPM classification are explicitly insufficient for
 prescribed-distance completion or shortfall. The prompt and tool description
 state the same rule, and the verifier rejects a conflicting deviation. The
 committed v2 preflight contains no model call or quality result.
+
+The separate official v2 run is preserved under
+`evaluation/runs/evidence-ablation-v2/official-20260829/`. Core passed 8/8,
+context/environment 10/10, and full evidence 12/12; work-05 remained the only
+plan deviation across all three conditions, so execution consistency passed.
+This supports the progressive-evidence workflow for the frozen synthetic case
+without making mobile mandatory or claiming broad generalization.

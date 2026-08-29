@@ -237,6 +237,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A limitation discovered in a tool-derived number should be machine-readable and verifier-enforced, not left as a prompt-only caution.
 - **Next step:** Run the full repository suite, commit the v2 candidate, then decide whether the expected roughly US$0.30 repeat experiment is justified.
 
+### 23. Official v2 ablation repeat
+
+- **Hypothesis:** The versioned distance boundary will remove the unsupported core shortfall while preserving the same correct SPM deviation and the optional capabilities demonstrated by context/environment and mobile evidence.
+- **Change:** Executed all three frozen conditions once at commit `3bc0cbd` with workflow v2, then generated the same condition-aware capability report offline. Added a committed-artifact regression test that recalculates the official report and requires the passing workflow version, condition counts, and cross-condition consistency.
+- **Evaluation:** Core passed 8/8, context/environment passed 10/10, and full passed 12/12. Every condition reconstructed six work intervals and reported work-05 as its only plan deviation. Cross-condition consistency passed. Context/environment retained noncausal wind association and the human equipment boundary; full retained SpeedCoach/mobile matching, route corroboration, and zero-only mobile-SPM rejection. Core and context/environment each required one verifier retry for evidence-less unavailable/insufficient items unrelated to distance; full required no retry. Final verification passes 97 Python tests in 10.247 seconds, three public verifiers, 19 web tests, ESLint, and the Vinext production build.
+- **Result:** Overall v2 ablation status is `PASS`, compared with v1 `FAIL` on the same frozen evidence conditions and capability checks. The result supports the specific distance-boundary correction and progressive-evidence workflow in this one synthetic session. It does not establish broad generalization, human-coach superiority, or improved athletic performance.
+- **Cost/runtime:** GPT-5.6 Terra medium; 101,338 input tokens, 13,000 output tokens, 114,338 total tokens; US$0.358676 total; 92.202 seconds end to end. Per condition: core US$0.119132 / 34.677 s, context-environment US$0.151718 / 38.289 s, full US$0.087826 / 19.219 s. V2 cost US$0.060072 more and used 19,911 more tokens than v1; this difference is observational and not attributed solely to the workflow change.
+- **Decision:** Accept v2 for the demonstrated workflow and preserve both official runs. Continue presenting mobile as an optional capability enhancer rather than a core requirement.
+- **Learning:** The strongest improvement was not more evidence or more agents; it was making a deterministic limitation explicit at the tool, prompt, and verifier boundaries, then testing that correction against the failure that exposed it.
+- **Next step:** Finish the generic checkpoint/briefing product path or prepare the submission narrative and video around the measured v1-to-v2 improvement, depending on remaining hackathon time.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

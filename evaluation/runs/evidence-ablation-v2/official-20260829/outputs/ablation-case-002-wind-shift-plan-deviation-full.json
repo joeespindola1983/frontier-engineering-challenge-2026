@@ -1,0 +1,370 @@
+{
+  "abstentions": [
+    "Prescribed-distance completion or shortfall is not assessed from reconstructed interval distances.",
+    "Resistance-band use and removal are not confirmed.",
+    "No conclusion is made about visible technique, crew synchronization, physiological effort, medical state, or wind causing the speed change."
+  ],
+  "case_id": "ablation-case-002-wind-shift-plan-deviation-full",
+  "claims": [
+    {
+      "claim_id": "session-match",
+      "confidence": 0.72,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "limitations": [
+        "Route agreement supports the match; the cause of the clock disagreement is unknown."
+      ],
+      "statement": "The SpeedCoach and mobile recordings are assessed as the same outing, while their 37-second clock offset remains unresolved.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "interval-structure",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Segment boundaries and attached distances are derived from SPM classification and exclude transition samples."
+      ],
+      "statement": "Six work segments and five intervening recovery segments were reconstructed from SpeedCoach stroke-rate telemetry.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "rate-compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "Work segments 1\u20134 and 6 met their respective planned stroke-rate ranges; all reconstructed recoveries were within the planned 180\u2013300 second duration range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-05-rate-deviation",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "Work segment 5 averaged 19.99 SPM, below its prescribed 22\u201324 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "speed-pattern",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "These are segment averages based on the selected SpeedCoach telemetry."
+      ],
+      "statement": "Reconstructed average work speed was 3.459 m/s in work-04, fell to 2.970 m/s in work-05, then rose to 3.168 m/s in work-06.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "distance-completion",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Segment distances are boundary-derived from SPM classification, exclude transitions, and must not be summed or compared with the prescribed total."
+      ],
+      "statement": "Completion or shortfall of the prescribed six 1 km distances cannot be established from the reconstructed segment distances.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "equipment-use",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Telemetry cannot observe resistance equipment."
+      ],
+      "statement": "Resistance-band use for the first block and removal before the second block are unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "technique-and-effort",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "GPS, SPM, speed, and phone motion cannot establish these attributes."
+      ],
+      "statement": "Technique, crew synchronization, perceived effort, and medical state remain unassessed.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "SPM reconstruction supports the planned six-work/ five-recovery structure. Intervals 1\u20134 and 6 met their rate targets and each recovery was within 3\u20135 minutes. The material execution deviation is work-05 at 19.99 SPM, below its 22\u201324 SPM target; it was also slower than work-04. A tailwind-to-headwind shift overlaps the later intervals and may be associated with this speed change, but does not establish cause. Confirm resistance-band use separately; prescribed 1 km completion cannot be verified from these reconstructed distances.",
+  "deviations": [
+    {
+      "confidence": 0.95,
+      "description": "Average stroke rate was 19.99 SPM versus the prescribed 22\u201324 SPM for this second-block work interval.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "segment_ref": "work-05",
+      "type": "STROKE_RATE_BELOW_PRESCRIBED_RANGE"
+    }
+  ],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.9,
+    "evidence_refs": [
+      "input/environment.json",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "Time alignment alone cannot determine whether wind caused the speed change.",
+      "The environmental evidence cannot establish athlete improvement or regression."
+    ],
+    "summary": "Effective wind shifted from a 1.0 m/s tailwind at the start (effective headwind \u22121.0 m/s) to a 5.5 m/s headwind, crossing from tailwind to headwind at approximately 1800 s. This timing overlaps the later work intervals and supports an association with the observed speed changes, including the slower work-05; it does not establish causation or athlete regression."
+  },
+  "follow_up_questions": [
+    "Was the resistance band used for work intervals 1\u20133 and removed before interval 4?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "input/plan.json"
+    ],
+    "prescribed_blocks": [
+      "3 \u00d7 1 km at 19\u201321 SPM with resistance band; 180\u2013300 s active recovery.",
+      "3 \u00d7 1 km at 22\u201324 SPM without resistance band; 180\u2013300 s active recovery."
+    ],
+    "status": "PARSED",
+    "summary": "Plan: 6 \u00d7 1 km, with the first three work intervals at 19\u201321 SPM using a resistance band and the last three at 22\u201324 SPM without it; active recovery prescribed for 180\u2013300 seconds between intervals."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 20.02,
+      "confidence": 0.95,
+      "distance_m": 983.374,
+      "end_offset_s": 301.092,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-01",
+      "start_offset_s": 5.0
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 401.414,
+      "end_offset_s": 541.092,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-01",
+      "start_offset_s": 306.092
+    },
+    {
+      "average_spm": 20.02,
+      "confidence": 0.95,
+      "distance_m": 983.24,
+      "end_offset_s": 842.123,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-02",
+      "start_offset_s": 546.092
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.95,
+      "distance_m": 401.844,
+      "end_offset_s": 1082.123,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-02",
+      "start_offset_s": 847.123
+    },
+    {
+      "average_spm": 19.97,
+      "confidence": 0.95,
+      "distance_m": 983.177,
+      "end_offset_s": 1383.262,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-03",
+      "start_offset_s": 1087.123
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 398.844,
+      "end_offset_s": 1623.262,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-03",
+      "start_offset_s": 1388.262
+    },
+    {
+      "average_spm": 22.99,
+      "confidence": 0.95,
+      "distance_m": 981.714,
+      "end_offset_s": 1912.301,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-04",
+      "start_offset_s": 1628.262
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.95,
+      "distance_m": 398.649,
+      "end_offset_s": 2152.301,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-04",
+      "start_offset_s": 1917.301
+    },
+    {
+      "average_spm": 19.99,
+      "confidence": 0.95,
+      "distance_m": 985.032,
+      "end_offset_s": 2489.056,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-05",
+      "start_offset_s": 2157.301
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 397.708,
+      "end_offset_s": 2729.056,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-05",
+      "start_offset_s": 2494.056
+    },
+    {
+      "average_spm": 22.97,
+      "confidence": 0.95,
+      "distance_m": 984.309,
+      "end_offset_s": 3044.648,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-06",
+      "start_offset_s": 2734.056
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.72,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "reason": "The GPS recordings spatially match despite a preserved 37-second clock-start offset; route evidence supports a common outing rather than clock equality.",
+      "source_ids": [
+        "speedcoach-synthetic",
+        "mobile-synthetic"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.97,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "SpeedCoach supplies positive SPM; mobile SPM is all zero and is not usable for stroke rate.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "SpeedCoach distance has no supplied conflict flag; mobile distance is flagged as biased and ends 1.2% higher.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "speed",
+      "reason": "SpeedCoach provides the time-windowed speed used for interval reconstruction.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "route",
+      "reason": "SpeedCoach route is selected and corroborated by the mobile GPS route; the recordings have spatial overlap.",
+      "selected_source_id": "speedcoach-synthetic"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/environment.json"
+      ],
+      "metric": "environment",
+      "reason": "A high-quality supplied environmental timeline is time-aligned to the session; it supports association only.",
+      "selected_source_id": "synthetic-environment-002"
+    },
+    {
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "metric": "equipment_context",
+      "reason": "Neither telemetry source can confirm use or removal of a resistance band.",
+      "selected_source_id": null
+    }
+  ]
+}

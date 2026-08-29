@@ -4,7 +4,7 @@
 
 WAKE is an agentic intelligence layer for rowing clubs. It turns fragmented training plans, boat and crew context, environmental conditions, and telemetry from devices such as SpeedCoach and mobile phones into evidence-backed session briefings and long-term rowing memory.
 
-**Hackathon status:** the first controlled comparison is complete. On two implemented cases, WAKE scored **63.34/100** against **38.86/100** for the direct-call baseline: **+24.48 points** (**+63.0% relative**) for US$0.062338 incremental API cost. The first progressive-evidence ablation is also recorded: core plan + SpeedCoach passed 7/8 checks but failed on an unsupported derived-distance deviation; context/environment passed 10/10; and the full mobile bundle passed 12/12 for US$0.298604 total. A TDD-built v2 candidate now blocks that distance inference at tool, prompt, and verifier boundaries; its committed preflight is no-cost and not yet a model-quality result. These are workflow/capability results, not a human-coach comparison.
+**Hackathon status:** the first controlled comparison is complete. On two implemented cases, WAKE scored **63.34/100** against **38.86/100** for the direct-call baseline: **+24.48 points** (**+63.0% relative**) for US$0.062338 incremental API cost. The progressive-evidence v1 ablation exposed an unsupported derived-distance deviation and failed cross-condition consistency. A TDD-built v2 correction then passed **8/8 core**, **10/10 context/environment**, and **12/12 full-evidence** checks with stable execution for US$0.358676. These are narrow workflow/capability results, not a human-coach comparison or proof of broad generalization.
 
 ## The problem
 
@@ -118,8 +118,9 @@ Preview the versioned v2 correction against the same frozen inputs:
 uv run python scripts/run_evidence_ablation.py --workflow-version v2
 ```
 
-The v2 preflight changes only the workflow boundary around segment distance. It
-does not call the API and must not be presented as a successful ablation result.
+The committed v2 preflight changes only the workflow boundary around segment
+distance and contains no API call. The separate official v2 run and its passing
+capability report are preserved under `evaluation/runs/evidence-ablation-v2/`.
 
 An explicit paid run uses `--execute`. After it completes, build the
 condition-aware capability report with:

@@ -230,6 +230,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Keep the v1 tool contract selectable and introduce v2 through a versioned config and prompt. In v2, the reconstruction tool returns an `INSUFFICIENT` prescribed-distance assessment, the instructions prohibit summing boundary-derived segment distances, and the verifier rejects a conflicting distance-completion deviation.
 - **Rationale:** Prompt wording alone cannot guarantee the boundary. Encoding the same rule in deterministic evidence and output verification makes the failure observable, correctable through the bounded retry, and regression-tested without rewriting the official v1 experiment.
 
+## 2026-08-29 - Accept workflow v2 after the official ablation repeat
+
+- **Status:** accepted for the demonstrated progressive-evidence workflow; broader validation pending.
+- **Decision:** Use the v2 distance boundary for the hackathon demonstration while preserving v1 as failure evidence. Report the official repeat as 8/8 core, 10/10 context/environment, 12/12 full, and stable execution across conditions at US$0.358676.
+- **Rationale:** With the same frozen inputs and capability checks, v2 removed the unsupported distance-shortfall deviation without losing environmental association, route/session corroboration, or broken-mobile-SPM rejection. One synthetic repeated case supports this workflow choice but not broad model reliability or athlete-performance claims.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

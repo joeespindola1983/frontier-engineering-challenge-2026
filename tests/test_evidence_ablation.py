@@ -394,6 +394,25 @@ class EvidenceAblationScorerTests(unittest.TestCase):
 
         self.assertIn("OUTPUT_VERIFICATION", report["conditions"][0]["failed_checks"])
 
+    def test_committed_v2_official_run_passes_every_capability_check(self) -> None:
+        run_manifest = (
+            ROOT
+            / "evaluation/runs/evidence-ablation-v2/official-20260829/run-manifest.json"
+        )
+
+        report = score_evidence_ablation.score_run(run_manifest)
+
+        self.assertEqual(report["workflow_version"], "v2")
+        self.assertEqual(report["status"], "PASS")
+        self.assertTrue(report["cross_condition"]["core_execution_consistent"])
+        self.assertEqual(
+            [
+                (condition["condition_id"], condition["passed_checks"])
+                for condition in report["conditions"]
+            ],
+            [("core", 8), ("context-environment", 10), ("full", 12)],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
