@@ -7,9 +7,10 @@ import argparse
 import hashlib
 import json
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Iterator
 
 import jsonschema
 
@@ -291,8 +292,12 @@ def run_agent_case(
     output_dir: Path,
     run_id: str,
     now: Callable[[], str],
+    monotonic_values: Iterator[float] | None = None,
     git_commit: str,
 ) -> dict[str, Path]:
+    monotonic_values = monotonic_values or iter(time.monotonic, None)
+    started_at = now()
+    started = next(monotonic_values)
     events: list[dict] = []
     conversation_input: list[object] = [
         {
@@ -408,6 +413,10 @@ def run_agent_case(
     if final_output is None or final_verification is None:
         raise RuntimeError("Agent stopped without a verified final output")
 
+    finished = next(monotonic_values)
+    finished_at = now()
+    runtime_ms = round((finished - started) * 1000)
+
     case_id = summary["case_id"]
     output_path = output_dir / "outputs" / f"{case_id}.json"
     trajectory_path = output_dir / "trajectories" / f"{case_id}.trajectory.json"
@@ -419,7 +428,10 @@ def run_agent_case(
             "run_id": run_id,
             "workflow": config["workflow"],
             "case_id": case_id,
-            "created_at": now(),
+            "created_at": finished_at,
+            "started_at": started_at,
+            "finished_at": finished_at,
+            "runtime_ms": runtime_ms,
             "git_commit": git_commit,
             "model": config["model"],
             "prompt_sha256": sha256_text(prompt),
@@ -429,10 +441,54 @@ def run_agent_case(
             "events": events,
             "verification": final_verification,
             "usage": total_usage,
+            "approximate_cost_usd": estimate_cost_usd(
+                total_usage, config["pricing"]
+            ),
             "private_chain_of_thought_stored": False,
         },
     )
     return {"output_path": output_path, "trajectory_path": trajectory_path}
+
+
+def build_agent_run_manifest(
+    *,
+    config: dict,
+    prompt: str,
+    output_dir: Path,
+    run_id: str,
+    git_commit: str,
+    artifacts: list[dict[str, object]],
+    trajectories: list[dict],
+    started_at: str,
+    finished_at: str,
+    runtime_ms: int,
+) -> dict:
+    total_usage = {
+        key: sum(item["usage"][key] for item in trajectories)
+        for key in ["input_tokens", "output_tokens", "total_tokens"]
+    }
+    return {
+        "schema_version": "wake.agent_run.v1",
+        "run_id": run_id,
+        "workflow": config["workflow"],
+        "created_at": finished_at,
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "runtime_ms": runtime_ms,
+        "case_runtime_ms_total": sum(item["runtime_ms"] for item in trajectories),
+        "git_commit": git_commit,
+        "cases": [item["case_id"] for item in trajectories],
+        "config_sha256": sha256_json(config),
+        "prompt_sha256": sha256_text(prompt),
+        "total_usage": total_usage,
+        "approximate_total_cost_usd": estimate_cost_usd(
+            total_usage, config["pricing"]
+        ),
+        "trajectories": [
+            str(Path(item["trajectory_path"]).relative_to(output_dir))
+            for item in artifacts
+        ],
+    }
 
 
 def main() -> None:
@@ -474,6 +530,8 @@ def main() -> None:
     client = OpenAI()
     run_id = output_dir.name
     git_commit = current_git_commit()
+    run_started_at = utc_now()
+    run_started = time.monotonic()
     artifacts: list[dict[str, str]] = []
     trajectories: list[dict] = []
     for summary in summaries:
@@ -492,31 +550,23 @@ def main() -> None:
         artifacts.append({key: str(value) for key, value in result.items()})
         trajectories.append(read_json(result["trajectory_path"]))
 
-    total_usage = {
-        key: sum(item["usage"][key] for item in trajectories)
-        for key in ["input_tokens", "output_tokens", "total_tokens"]
-    }
+    run_finished = time.monotonic()
+    run_finished_at = utc_now()
     run_manifest = output_dir / "run-manifest.json"
     write_json(
         run_manifest,
-        {
-            "schema_version": "wake.agent_run.v1",
-            "run_id": run_id,
-            "workflow": config["workflow"],
-            "created_at": utc_now(),
-            "git_commit": git_commit,
-            "cases": [item["case_id"] for item in trajectories],
-            "config_sha256": sha256_json(config),
-            "prompt_sha256": sha256_text(prompt),
-            "total_usage": total_usage,
-            "approximate_total_cost_usd": estimate_cost_usd(
-                total_usage, config["pricing"]
-            ),
-            "trajectories": [
-                str(Path(item["trajectory_path"]).relative_to(output_dir))
-                for item in artifacts
-            ],
-        },
+        build_agent_run_manifest(
+            config=config,
+            prompt=prompt,
+            output_dir=output_dir,
+            run_id=run_id,
+            git_commit=git_commit,
+            artifacts=artifacts,
+            trajectories=trajectories,
+            started_at=run_started_at,
+            finished_at=run_finished_at,
+            runtime_ms=round((run_finished - run_started) * 1000),
+        ),
     )
     print(
         json.dumps(

@@ -60,12 +60,26 @@ uv run python scripts/wake_agent.py --execute
 
 Each successful case writes the structured final output and an observable event
 trajectory containing request hashes, tool calls/results, verifier decisions,
-retry events, model identifiers, usage, and the Git commit. It does not record
-private chain-of-thought.
+retry events, model identifiers, start/finish timestamps, monotonic runtime,
+usage, approximate cost, and the Git commit. It does not record private
+chain-of-thought.
+
+The run manifest records two intentionally different duration fields:
+
+- `runtime_ms` is the end-to-end wall-clock duration of the sequential run,
+  including per-case execution and runner overhead before manifest writing;
+- `case_runtime_ms_total` is the sum of each successful case investigation,
+  measured from immediately before its first request until verified output.
+
+Monotonic clocks calculate durations so operating-system clock corrections do
+not produce invalid elapsed time. UTC timestamps remain available for audit and
+human inspection. Historical comparison-v1 artifacts predate these fields and
+are not rewritten retrospectively.
 
 ## Evidence status
 
-Unit and contract tests use a fake Responses client to prove loop behavior
-without cost or network dependence. A passing dry-run proves request construction
-and data boundaries, not model quality. Quality can be claimed only after real
-baseline and agent outputs are scored by the frozen rubric grader.
+Unit and contract tests use a fake Responses client and injected monotonic clock
+values to prove loop, runtime, cost, and manifest behavior without network cost.
+A passing dry-run proves request construction and data boundaries, not model
+quality. Quality can be claimed only after real baseline and agent outputs are
+scored by the frozen rubric grader.

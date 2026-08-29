@@ -94,6 +94,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Validity note:** Only two cases are implemented. After the freeze, both case-001 outputs also exposed that grader v1.1 treats some negative phrases such as “cannot be evaluated” as a technique assertion. The grader was not changed after official results; this limitation is documented for a future version and affects the absolute case-001 scores.
 - **Next step:** Add runtime observability through TDD, improve human-context handling without leaking evaluator truth, and implement additional fixed cases before claiming broader generalization.
 
+### 10. Agent runtime observability
+
+- **Hypothesis:** Separating per-case investigation time from end-to-end run time will make latency and orchestration overhead reproducible without altering model behavior or historical evidence.
+- **Change:** Added UTC start/finish timestamps, monotonic `runtime_ms`, and approximate cost to each successful trajectory. Added end-to-end `runtime_ms` and `case_runtime_ms_total` to future run manifests through a pure manifest builder. Historical comparison-v1 artifacts were not modified.
+- **Evaluation:** RED tests first failed because `run_agent_case` had no injectable monotonic clock and no run-manifest builder existed. GREEN tests use fixed timestamps and monotonic values to verify 750 ms case duration, 1,250 ms total duration, 1,000 ms summed case duration, token aggregation, and exact pinned-cost calculation without network calls. The complete suite passes 44 tests and three public verifiers.
+- **Result:** Future paid runs will expose auditable case latency, total elapsed time, runner overhead, tokens, and cost in their native artifacts.
+- **Cost/runtime:** No API calls and no model cost were required for this instrumentation experiment.
+- **Decision:** Keep the two-level runtime contract and preserve the earlier official run unchanged.
+- **Learning:** Runtime is an observable workflow property and should be designed like any other evidence contract, not inferred later from terminal duration.
+- **Next step:** Validate the complete suite, then use the prepared interface direction as the basis for the first product-facing slice.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

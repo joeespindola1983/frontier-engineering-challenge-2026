@@ -25,6 +25,11 @@ LLM output is nondeterministic, so WAKE does not treat an exact paragraph or JSO
 
 Prompts, model settings, input-summary versions, outputs, runtime, and cost must be recorded for every scored experiment.
 
+Runtime contracts use injected monotonic clock values in tests. Production
+artifacts retain UTC start/finish timestamps for audit, while elapsed
+milliseconds come from a monotonic clock and are tested independently of API
+latency.
+
 ## Test layers
 
 1. **Unit tests:** transformations and calculations with small controlled inputs.

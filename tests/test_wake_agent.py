@@ -82,6 +82,10 @@ class WakeAgentTests(unittest.TestCase):
             "store": False,
             "max_rounds": 4,
             "max_verifier_retries": 1,
+            "pricing": {
+                "input_usd_per_million_tokens": 2.0,
+                "output_usd_per_million_tokens": 12.0,
+            },
         }
 
     def valid_output(self) -> dict:
@@ -102,6 +106,12 @@ class WakeAgentTests(unittest.TestCase):
 
     def test_agent_executes_tools_then_returns_verified_output_and_trajectory(self) -> None:
         final = self.valid_output()
+        timestamps = iter(
+            [
+                "2026-08-29T12:00:00.000+00:00",
+                "2026-08-29T12:00:00.750+00:00",
+            ]
+        )
         client = FakeClient(
             [
                 response(
@@ -130,7 +140,8 @@ class WakeAgentTests(unittest.TestCase):
                 output_schema=self.schema,
                 output_dir=Path(temporary_directory),
                 run_id="wake-test-run",
-                now=lambda: "2026-08-29T12:00:00+00:00",
+                now=timestamps.__next__,
+                monotonic_values=iter([10.0, 10.75]),
                 git_commit="abc123",
             )
             trajectory = read_json(result["trajectory_path"])
@@ -148,10 +159,66 @@ class WakeAgentTests(unittest.TestCase):
             "FINAL_OUTPUT",
         ])
         self.assertTrue(trajectory["verification"]["passed"])
+        self.assertEqual(trajectory["started_at"], "2026-08-29T12:00:00.000+00:00")
+        self.assertEqual(trajectory["finished_at"], "2026-08-29T12:00:00.750+00:00")
+        self.assertEqual(trajectory["runtime_ms"], 750)
+        self.assertEqual(trajectory["approximate_cost_usd"], 0.0016)
         self.assertNotIn("reasoning", json.dumps(trajectory).lower())
         self.assertEqual(len(client.responses.requests), 2)
         self.assertEqual(client.responses.requests[0]["tool_choice"], "auto")
         self.assertEqual(client.responses.requests[0]["store"], False)
+
+    def test_run_manifest_records_wall_clock_and_aggregated_case_runtime(self) -> None:
+        trajectories = [
+            {
+                "case_id": "case-a",
+                "runtime_ms": 400,
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 50,
+                    "total_tokens": 150,
+                },
+            },
+            {
+                "case_id": "case-b",
+                "runtime_ms": 600,
+                "usage": {
+                    "input_tokens": 200,
+                    "output_tokens": 100,
+                    "total_tokens": 300,
+                },
+            },
+        ]
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output_dir = Path(temporary_directory)
+            artifacts = [
+                {
+                    "trajectory_path": output_dir
+                    / "trajectories"
+                    / f"{trajectory['case_id']}.trajectory.json"
+                }
+                for trajectory in trajectories
+            ]
+            manifest = wake_agent.build_agent_run_manifest(
+                config=self.config,
+                prompt="Investigate.",
+                output_dir=output_dir,
+                run_id="wake-runtime-test",
+                git_commit="abc123",
+                artifacts=artifacts,
+                trajectories=trajectories,
+                started_at="2026-08-29T12:00:00.000+00:00",
+                finished_at="2026-08-29T12:00:01.250+00:00",
+                runtime_ms=1250,
+            )
+
+        self.assertEqual(manifest["runtime_ms"], 1250)
+        self.assertEqual(manifest["case_runtime_ms_total"], 1000)
+        self.assertEqual(manifest["started_at"], "2026-08-29T12:00:00.000+00:00")
+        self.assertEqual(manifest["finished_at"], "2026-08-29T12:00:01.250+00:00")
+        self.assertEqual(manifest["total_usage"]["total_tokens"], 450)
+        self.assertEqual(manifest["approximate_total_cost_usd"], 0.0024)
 
     def test_verifier_rejects_invented_evidence_reference(self) -> None:
         output = self.valid_output()

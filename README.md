@@ -66,7 +66,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, an offline grader, and the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md). Only two cases are implemented, so the result supports the current workflow without claiming broad generalization.
+The repository contains one difficult anonymized multi-device fixture, one deterministic plan-versus-performance fixture with a mid-session wind shift, a 16-case registry, versioned JSON Schemas, a ground-truth-free baseline input bundle, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, an offline grader, and the [first controlled comparison](evaluation/runs/comparison-v1-20260829/README.md). Only two cases are implemented, so the result supports the current workflow without claiming broad generalization.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 

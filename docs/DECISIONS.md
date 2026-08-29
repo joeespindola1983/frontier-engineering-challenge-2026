@@ -152,8 +152,13 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Keep the four-tool bounded WAKE loop as the primary demonstrated workflow. It scored 63.34/100 versus 38.86/100 for the direct-call baseline on the two implemented cases at an incremental API cost of US$0.062338. Do not add a multi-agent architecture until a fixed-case failure demonstrates that it is necessary.
 - **Rationale:** The measured gain came primarily from deterministic reconstruction and deviation analysis, while the remaining failures concern missing human context, follow-up precision, and abstention expression. More orchestration would not directly address those observed bottlenecks.
 
+## 2026-08-29 - Measure agent runtime at case and run levels
+
+- **Status:** accepted for future executions; historical artifacts remain immutable.
+- **Decision:** Record UTC start/finish timestamps and monotonic `runtime_ms` in every successful case trajectory. Record end-to-end `runtime_ms` and `case_runtime_ms_total` separately in the run manifest, along with per-case and total approximate cost.
+- **Rationale:** A single duration is ambiguous in a tool loop. Separating wall-clock execution from summed investigation time makes runner overhead visible, while monotonic elapsed time remains reliable if the system clock changes. Existing comparison-v1 artifacts are evidence and must not be retroactively rewritten.
+
 ## Pending decisions
 
 - Deployment target and product application stack beyond the evaluation runner.
-- Reliable end-to-end runtime instrumentation for the agent runner.
 - Schema revisions justified by parser and grader implementation evidence.
