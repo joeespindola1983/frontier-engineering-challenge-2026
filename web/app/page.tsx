@@ -5,11 +5,12 @@ import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.m
 import { demoReview } from './lib/demo-review.mjs';
 import { formatEvidenceKind, formatMeasurementRange } from './lib/display-format.mjs';
 import { evidenceSourceDefinitions, uploadEvidenceBundleWithWeather } from './lib/evidence-intake.mjs';
+import { evaluationResults } from './lib/evaluation-results.mjs';
 import { createWakeClient } from './lib/product-client.mjs';
 import { sessionActionLabel, sessionStatusLabel, summarizeSessionInbox } from './lib/session-inbox.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
-type Screen = 'sessions' | 'intake' | 'review' | 'briefing' | 'memory';
+type Screen = 'sessions' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
 type Briefing = ReturnType<typeof resolveCheckpoint>;
 type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
@@ -126,6 +127,7 @@ function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen
         <nav className="primary-nav" aria-label="Primary navigation">
           <button className={sessionActive ? 'active' : ''} onClick={() => onNavigate('sessions')} type="button">Sessions</button>
           <button className={screen === 'memory' ? 'active' : ''} onClick={() => onNavigate('memory')} type="button">Goal memory</button>
+          <button className={screen === 'evaluation' ? 'active' : ''} onClick={() => onNavigate('evaluation')} type="button">Evaluation</button>
         </nav>
         <div className="topbar-actions">
           <span className="demo-label">{configuredRuntimeMode === 'live' ? 'Local live runtime' : 'Synthetic demo data'}</span>
@@ -341,6 +343,76 @@ function MemoryScreen({ memory, onBack }: { memory: GoalMemory; onBack: () => vo
   );
 }
 
+function formatProvenance(value: string) {
+  return value === 'REAL_ANONYMIZED' ? 'Real · anonymized' : value === 'DERIVED_SYNTHETIC' ? 'Derived synthetic' : 'Synthetic';
+}
+
+function EvaluationScreen({ onBack }: { onBack: () => void }) {
+  const { comparison, cost, usage, agent_observability: observability, cases, dimensions, boundaries } = evaluationResults;
+  return (
+    <main className="page evaluation-page">
+      <div className="evaluation-notice" role="note"><span>Saved result · No model call</span>This view renders committed evaluation artifacts. Opening it never runs the agent or spends API budget.</div>
+      <header className="page-header evaluation-header">
+        <div className="page-header-copy"><div className="kicker">Hackathon evidence</div><h1>Measured against the same ten sessions.</h1><p className="lede">Same model, same ten case summaries, same output schema. The difference is WAKE&apos;s bounded investigation tools and deterministic verification.</p></div>
+        <button className="button" onClick={onBack} type="button">Back to sessions</button>
+      </header>
+
+      <section className="evaluation-scoreboard" aria-label="Official evaluation result">
+        <article className="score-card score-card-wake"><div><span>Bounded WAKE agent</span><small>Four tools · verified output</small></div><strong>{comparison.wake_score.toFixed(2)}</strong><div className="score-track" aria-label={`WAKE score ${comparison.wake_score} out of 100`}><span style={{ width: `${comparison.wake_score}%` }} /></div></article>
+        <article className="score-card"><div><span>Direct model baseline</span><small>One call · no tools or verifier</small></div><strong>{comparison.baseline_score.toFixed(2)}</strong><div className="score-track score-track-baseline" aria-label={`Baseline score ${comparison.baseline_score} out of 100`}><span style={{ width: `${comparison.baseline_score}%` }} /></div></article>
+        <article className="gain-card"><span>Measured gain</span><strong>+{comparison.absolute_gain.toFixed(2)}</strong><p>points · +{comparison.relative_gain_percent.toFixed(2)}% relative</p><small>{comparison.all_cases_improved ? 'All 10 cases improved' : 'Not every case improved'}</small></article>
+      </section>
+
+      <section className="evaluation-facts" aria-label="Evaluation observability">
+        <div><span>Incremental agent cost</span><strong>US${cost.incremental_agent_usd.toFixed(6)}</strong><small>US${cost.total_usd.toFixed(6)} total comparison</small></div>
+        <div><span>Deterministic tool calls</span><strong>{observability.tool_calls}</strong><small>Four calls per case</small></div>
+        <div><span>Verifier corrections</span><strong>{observability.verifier_retries}</strong><small>Bounded first-draft retries</small></div>
+        <div><span>Saved trajectories</span><strong>{observability.trajectory_count}/10</strong><small>All final outputs verified</small></div>
+      </section>
+
+      <div className="evaluation-layout">
+        <section className="case-comparison" aria-labelledby="case-comparison-title">
+          <div className="section-heading"><div><div className="kicker">Case-by-case result</div><h2 id="case-comparison-title">No gain is hidden inside the average.</h2></div><div className="comparison-legend"><span className="legend-baseline">Direct baseline</span><span className="legend-wake">WAKE</span></div></div>
+          <div className="case-score-list">
+            {cases.map((item) => (
+              <article className="case-score-row" key={item.case_id}>
+                <div className="case-identity"><span>{item.short_id}</span><div><strong>{item.label}</strong><small>{formatProvenance(item.provenance)}</small></div></div>
+                <div className="paired-score-bars" aria-label={`${item.label}: baseline ${item.baseline_score}, WAKE ${item.wake_score}`}>
+                  <div><span style={{ width: `${item.baseline_score}%` }} /><small>{item.baseline_score.toFixed(2)}</small></div>
+                  <div className="wake-case-bar"><span style={{ width: `${item.wake_score}%` }} /><small>{item.wake_score.toFixed(2)}</small></div>
+                </div>
+                <strong className="case-delta">+{item.delta.toFixed(2)}</strong>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <aside className="evaluation-aside">
+          <section><div className="kicker">Comparable protocol</div><h3>One controlled difference</h3><p>The direct baseline had the same model, evidence summary, reasoning effort, and structured schema. It did not have WAKE&apos;s tools, loop, or verifier.</p></section>
+          <section><div className="kicker">Observed execution</div><dl><div><dt>Baseline</dt><dd>{usage.baseline_tokens.toLocaleString('en-US')} tokens · {usage.baseline_runtime_seconds.toFixed(3)} s</dd></div><div><dt>WAKE</dt><dd>{usage.wake_tokens.toLocaleString('en-US')} tokens · {usage.wake_runtime_seconds.toFixed(3)} s</dd></div></dl></section>
+          <section><div className="kicker">Saved for review</div><p>Structured answers, manifests, offline grade reports, and observable trajectories are committed. They can be reopened and regraded without another paid call.</p></section>
+          <section><div className="kicker">Claim boundary</div><ul>{boundaries.map((boundary) => <li key={boundary}>{boundary}</li>)}</ul></section>
+        </aside>
+      </div>
+
+      <section className="dimension-comparison" aria-labelledby="dimension-title">
+        <div className="section-heading"><div><div className="kicker">Dimension diagnosis</div><h2 id="dimension-title">Strong structural gains, one honest regression.</h2></div><p>Percent of available rubric credit</p></div>
+        <div className="dimension-list">
+          {dimensions.map((item) => (
+            <article className={`dimension-row${item.regression ? ' dimension-regression' : ''}`} key={item.dimension}>
+              <div><strong>{item.label}</strong>{item.regression ? <small>Needs revision</small> : null}</div>
+              <div className="dimension-bars"><div><span style={{ width: `${item.baseline_score}%` }} /></div><div><span style={{ width: `${item.wake_score}%` }} /></div></div>
+              <div className="dimension-values"><span>{item.baseline_score.toFixed(2)}</span><span>{item.wake_score.toFixed(2)}</span></div>
+              <strong className={item.regression ? 'negative-delta' : ''}>{item.delta > 0 ? '+' : ''}{item.delta.toFixed(2)}</strong>
+            </article>
+          ))}
+        </div>
+        <div className="evaluation-learning"><div><div className="kicker">Preserved failure</div><h3>Environmental interpretation: 80.00 → 76.00</h3></div><p>WAKE improved the wind-shift and calm cases but lost partial credit in the steady headwind, tailwind, and crosswind cases. The official output remains frozen; changing the prompt after seeing this result requires a new version and a fresh comparison.</p></div>
+      </section>
+    </main>
+  );
+}
+
 export default function Home() {
   const client = useMemo(() => createWakeClient({ baseUrl: configuredRuntimeUrl }), []);
   const [screen, setScreen] = useState<Screen>('sessions');
@@ -410,5 +482,5 @@ export default function Home() {
   async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); await reloadSessions(); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); await reloadSessions(); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
 }

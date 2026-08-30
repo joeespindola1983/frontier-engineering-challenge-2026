@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import test from 'node:test';
+
+import { evaluationResults } from '../app/lib/evaluation-results.mjs';
+
+
+test('committed evaluation summary exposes official scores without private evidence', () => {
+  assert.equal(evaluationResults.comparison.case_count, 10);
+  assert.equal(evaluationResults.comparison.baseline_score, 49);
+  assert.equal(evaluationResults.comparison.wake_score, 83.76);
+  assert.equal(evaluationResults.comparison.absolute_gain, 34.76);
+  assert.equal(evaluationResults.cost.total_usd, 1.139688);
+  assert.equal(evaluationResults.cases.length, 10);
+  assert.equal(evaluationResults.agent_observability.tool_calls, 40);
+  assert.equal(evaluationResults.agent_observability.verifier_retries, 5);
+  assert.ok(evaluationResults.cases.every((item) => item.wake_score > item.baseline_score));
+  assert.doesNotMatch(JSON.stringify(evaluationResults), /ground_truth|coach_briefing|input\//);
+});
+
+
+test('evaluation is a separate read-only submission evidence view', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+
+  assert.match(page, /type Screen = .*'evaluation'/);
+  assert.match(page, />Evaluation</);
+  assert.match(page, /function EvaluationScreen/);
+  assert.match(page, /Saved result · No model call/);
+  assert.match(page, /Same model, same ten case summaries, same output schema/);
+  assert.match(page, /Environmental interpretation/);
+  assert.match(page, /comparison\.wake_score/);
+  assert.match(page, /comparison\.baseline_score/);
+});

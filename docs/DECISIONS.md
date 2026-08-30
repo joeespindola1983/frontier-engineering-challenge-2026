@@ -188,6 +188,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Use a React, TypeScript, Vinext, and native-CSS web application for the coach-facing flow. Keep fixtures, baseline scores, trajectories, and grader controls in repository and terminal artifacts rather than primary product navigation.
 - **Rationale:** A coach needs a calm session review, one material question, and an approvable briefing. Exposing benchmark machinery in that path would optimize the interface for judges instead of the user.
 
+## 2026-08-30 - Add a bounded submission-only Evaluation view
+
+- **Status:** accepted for the hackathon build; the coach workflow remains separate.
+- **Decision:** Add one read-only Evaluation destination beside the operational navigation. Generate its public aggregate deterministically from the official manifests and grade reports. Show the common protocol, macro scores, every case delta, dimension diagnostics, cost, tool/retry observability, and validity boundaries. Do not expose ground truth, raw evidence, full model prose, grader controls, replay controls, or any execution action.
+- **Rationale:** The completed ten-case comparison is central submission evidence and benefits from a visual explanation, but turning the product into a benchmark console would weaken its user story. A visibly labelled `Saved result · No model call` surface makes the evidence legible to judges while keeping coaching actions, evaluation machinery, and paid execution distinct.
+
 ## 2026-08-29 - Demonstrate the interface through a faithful synthetic replay
 
 - **Status:** accepted; live ingestion remains pending.

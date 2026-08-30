@@ -2,6 +2,11 @@
 
 This React/Vinext application demonstrates the coach-facing WAKE workflow using committed public synthetic case 002.
 
+The hackathon build also includes a read-only **Evaluation** destination. Its
+scores, costs, case comparisons, and limitations are generated from the saved
+official ten-case artifacts. Opening it never calls the model or changes the
+session inbox.
+
 ## Run locally
 
 Node.js 22.13 or newer is required.
@@ -45,6 +50,7 @@ npm audit
 - The replay contains no private athlete or route data.
 - It does not read evaluator ground truth.
 - The hosted build does not upload evidence or invoke the live agent.
+- The Evaluation view contains a public aggregate only; it includes no ground truth, raw evidence, or agent execution control.
 - Checkpoint answers and approved goal memory are in-memory browser state.
 - The compact demo data is regression-tested against the committed agent output.
 

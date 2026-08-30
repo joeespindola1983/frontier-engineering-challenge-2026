@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The product interface helps a rowing coach understand one session without manually reconciling a plan, device exports, conditions, and verbal context. It is a calm review instrument, not an analytics command center or an evaluation console.
+The product interface helps a rowing coach understand one session without manually reconciling a plan, device exports, conditions, and verbal context. It remains a calm review instrument rather than an analytics command center. The hackathon build also contains a clearly separated, read-only Evaluation view for judges; that view is submission evidence, not part of the coaching workflow.
 
 ```text
 Receive fragmented evidence
@@ -27,6 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 8. an optional historical-weather intake with explicit approximate-location consent, session-timezone confirmation, coordinate-free condition preview, and a no-model preparation path in replay mode.
+9. a read-only Evaluation view generated from the committed official comparison, with case and dimension diagnostics, cost and trajectory observability, preserved limitations, and no agent invocation path.
 
 The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload the core plan and SpeedCoach sources plus any optional mobile, environment, or context evidence, receive validation/normalization metadata, and prepare a compact agent input. When live mode is explicitly enabled, the page executes the prepared bundle, adapts the verified result, completes its server-owned human checkpoint, produces a bundle-specific briefing, and proposes an approval-gated memory update. Uploaded files with different bytes are never allowed to inherit the committed answer. Titles, intervals, targets, deviations, source labels, clocks, environmental absence, checkpoint copy, and memory copy come from the selected bundle rather than case-002 constants.
 
@@ -47,7 +48,7 @@ The current implementation therefore keeps work interval five as the material SP
 
 ## Product and evaluation separation
 
-Coach navigation contains only Sessions and Goal memory. Baseline comparisons, fixtures, grader scores, run trajectories, and replay controls remain repository or terminal evidence for the hackathon submission.
+Sessions and Goal memory remain the operational coach workflow. The hackathon build exposes one additional Evaluation destination, explicitly labelled `Saved result · No model call`. It renders a compact public summary generated from committed manifests and grade reports; it cannot execute an investigation, access evaluator ground truth, expose raw evidence, or change saved workflow state. Full fixtures, structured outputs, grader controls, and trajectories remain repository artifacts rather than browser controls. A production club build may omit this submission-only destination.
 
 ## Task-level API
 
@@ -86,4 +87,4 @@ GET  /api/goals/:id
 
 ## Acceptance boundary
 
-The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed replay data is synthetic; uncertainty is visible; contributor and answer provenance remain distinct from evidence authority; and a memory session appears only after coach approval. Generic new-bundle checkpoint/briefing transitions, local restart-safe state, and page invocation are implemented and tested. Encryption, authentication, verified role identity, club tenancy, hosted private uploads, backups, and distributed exactly-once execution remain separate work.
+The current slice is accepted when its Python and JavaScript behavioral tests, lint, production build, and dependency audit pass; all displayed replay data is synthetic; uncertainty is visible; contributor and answer provenance remain distinct from evidence authority; and a memory session appears only after coach approval. The Evaluation summary must be byte-reproducible from the official artifacts, contain no ground truth or evidence references, and remain incapable of paid execution. Generic new-bundle checkpoint/briefing transitions, local restart-safe state, and page invocation are implemented and tested. Encryption, authentication, verified role identity, club tenancy, hosted private uploads, backups, and distributed exactly-once execution remain separate work.

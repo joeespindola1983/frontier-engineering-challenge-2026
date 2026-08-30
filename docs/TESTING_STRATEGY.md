@@ -62,6 +62,13 @@ upload side effects, generated-source ordering, uploaded/provider environment
 exclusivity, coordinate-free preview formatting, fallback preparation, and the
 no-agent-call replay path.
 
+The submission-only Evaluation view is built from a deterministic public
+summary generator. Tests require exact official scores, cost and observable
+trajectory counts, all ten case deltas, the preserved environmental regression,
+byte-stable generation, and the absence of evaluator ground truth, material
+output prose, or evidence references. The browser surface is read-only and has
+no client method that can execute or regrade a run.
+
 ## Commands
 
 Run the fast behavioral suite:

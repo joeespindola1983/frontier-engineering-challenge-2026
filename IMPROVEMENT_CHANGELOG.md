@@ -413,6 +413,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Deterministic tools produced large gains on structural deviations, but more orchestration does not guarantee every dimension improves. Environmental phrasing and human-context abstention remain specific targets for a future version; changing them after seeing official outputs would require a new prompt/grader version and a fresh comparison.
 - **Next step:** Expose the saved comparison in submission materials, review the environmental failures without rewriting v2, and conduct a small coach usability evaluation if time permits.
 
+### 39. Read-only visual evidence for the official comparison
+
+- **Hypothesis:** Judges and the project owner can understand the measured value more quickly if the saved comparison is visible in the product language, provided the surface cannot invoke the agent, expose evaluator-only data, or blur benchmark machinery into the coach workflow.
+- **Change:** Added a deterministic public-summary generator over the official manifests, v1.2 grade reports, v2 registry, per-case baseline manifests, and WAKE trajectories. Added a separate Evaluation destination showing macro scores, every case delta, dimension comparisons, cost, tokens, runtime, tool calls, verifier retries, saved-output status, and validity boundaries. Preserved the existing WAKE typography, palette, density, native semantic markup, and responsive behavior. The screen is explicitly labelled `Saved result · No model call` and contains no execution control.
+- **Evaluation:** RED first failed because neither the generator/module nor the Evaluation screen existed. GREEN tests require exact official values, all ten positive case deltas, the -4.00 environmental regression, byte-stable module generation, and absence of `ground_truth`, `coach_briefing`, or `input/` evidence references. The web suite passes 46 tests, ESLint, and the Vinext production build. Browser QA at desktop and 390 × 844 mobile viewports confirmed the first-viewport score hierarchy, navigation, responsive stacking, complete semantic content, and no console warnings or errors.
+- **Result:** Keep the view for the hackathon build. The first viewport now communicates 83.76 versus 49.00 and +34.76 points; deeper sections show that all ten cases improved while environmental interpretation regressed from 80.00 to 76.00. The view can be reopened without API cost because it renders committed aggregates only.
+- **Cost/runtime:** No model call and no API cost. Summary generation, tests, lint, build, and local browser rendering were deterministic. The existing paid run values are displayed but were not recomputed through the provider.
+- **Decision:** Keep Sessions and Goal memory as the operational coach workflow and treat Evaluation as submission-only evidence. Do not add grader controls, raw outputs, ground truth, or rerun buttons to the browser.
+- **Learning:** Visual proof is strongest when it includes the failure beside the headline gain. Showing the environmental regression and real-case limitation makes the 83.76 score more credible than a celebratory aggregate alone.
+- **Next step:** Use this page in the final five-minute video, then decide whether the remaining time is better spent on the submission narrative or on a small coach usability rehearsal.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
