@@ -281,6 +281,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Accepting a workflow version in evaluation is insufficient unless every production entry point names that version rather than inheriting a generic default.
 - **Next step:** Prepare the submission narrative and demonstration, then run a final rehearsal without relying on an unmeasured novel-upload call.
 
+### 27. Browser rehearsal and truthful SPM chart geometry
+
+- **Hypothesis:** The interface is demonstration-ready only if the real browser can complete the public upload workflow and the primary chart encodes different prescribed SPM ranges at different positions on one declared scale.
+- **Change:** Rehearsed the exact five-source public bundle through the local replay service. Wrapped the default browser fetch so it retains the required global receiver, stopped the session row from forwarding a click event as evidence files, and replaced the fixed target-band geometry with a tested 16–26 SPM scale computed per interval. Added a safe-bundle rehearsal guide and a prioritized visual evidence plan.
+- **Evaluation:** The first browser run failed during upload with an illegal fetch invocation. After its RED/GREEN regression, the five sources reached review, checkpoint, briefing, and approved memory. A second navigation run exposed the click-event/file-bundle bug and received its own RED/GREEN boundary test. Visual inspection then exposed identical target-band positions for 19–21 and 22–24 SPM; scale tests now require 30–50% and 60–80% positions respectively and clamp out-of-domain geometry. Final verification passes 104 Python tests, three public verifiers, 27 web tests, ESLint, and the Vinext production build.
+- **Result:** The no-cost local demonstration completes from both selected uploads and the session row. The graph now places each prescription truthfully, making the work-05 miss visually meaningful rather than label-only. Broader visual storytelling remains a separate refinement milestone.
+- **Cost/runtime:** No model call and no API cost. Browser testing used only the public synthetic bundle and process-local replay service.
+- **Decision:** Keep the browser regressions and shared SPM scale. Treat the functional hackathon MVP as complete, while distinguishing it from production readiness and presentation refinement.
+- **Learning:** Mocked HTTP success and visually plausible labels did not prove browser operability or chart truthfulness. End-to-end rehearsal and data-geometry tests are both required for a credible demonstration.
+- **Next step:** Build the decision-first synopsis, concise agentic investigation trace, and one combined evidence timeline; validate whether a coach or judge can identify value in under 30 seconds.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

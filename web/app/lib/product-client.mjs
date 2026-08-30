@@ -38,9 +38,9 @@ export class ReplayWakeClient {
 
 
 export class HttpWakeClient {
-  constructor({ baseUrl, fetchImpl = fetch, reviewAdapter = buildSessionReview }) {
+  constructor({ baseUrl, fetchImpl, reviewAdapter = buildSessionReview }) {
     this.baseUrl = baseUrl.replace(/\/$/, '');
-    this.fetchImpl = fetchImpl;
+    this.fetchImpl = fetchImpl ?? ((...args) => globalThis.fetch(...args));
     this.reviewAdapter = reviewAdapter;
   }
 

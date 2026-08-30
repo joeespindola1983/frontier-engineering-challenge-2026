@@ -27,6 +27,16 @@ test('selected evidence uses the prepared live bundle path before review', async
   assert.match(page, /setCheckpointId\(result\.checkpointId\)/);
 });
 
+test('session row opens the investigation without forwarding the click event as files', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /onClick=\{\(\) => onReview\(\)\}/);
+  assert.doesNotMatch(page, /onClick=\{onReview\}/);
+});
+
 test('live review discloses approximate usage cost without calling it a hard cap', async () => {
   const page = await readFile(
     new URL('../app/page.tsx', import.meta.url),

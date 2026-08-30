@@ -62,6 +62,7 @@ The repository will preserve:
 - [Cost authorization and observability](docs/COST_MODEL.md)
 - [Deterministic grader](docs/GRADER.md)
 - [Testing strategy](docs/TESTING_STRATEGY.md)
+- [Interface review and visual evidence plan](docs/INTERFACE_REVIEW.md)
 - [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)
 - [Public evaluation fixtures](data/fixtures/README.md)

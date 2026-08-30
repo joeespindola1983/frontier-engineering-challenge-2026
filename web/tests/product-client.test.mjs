@@ -16,6 +16,38 @@ test('uses the replay client unless an HTTP runtime URL is explicit', () => {
   );
 });
 
+test('default HTTP fetch preserves the browser global receiver', async () => {
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async function browserFetch(url, init) {
+    assert.equal(this, globalThis);
+    requests.push({ url, init });
+    return {
+      ok: true,
+      json: async () => ({
+        investigation_id: 'investigation-case-002',
+        checkpoint_id: 'checkpoint-case-002',
+        goal_id: 'goal-case-002',
+        status: 'QUESTION_REQUIRED',
+        mode: 'replay',
+        review: { analysis: {}, summary: {}, context: {} },
+      }),
+    };
+  };
+
+  try {
+    const client = new HttpWakeClient({
+      baseUrl: 'http://127.0.0.1:8788',
+      reviewAdapter: () => demoReview,
+    });
+    await client.createInvestigation();
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+
+  assert.equal(requests.length, 1);
+});
+
 test('replay client follows the asynchronous product contract without API calls', async () => {
   const client = new ReplayWakeClient(demoReview);
 

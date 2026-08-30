@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
 import { demoReview } from './lib/demo-review.mjs';
 import { evidenceSourceDefinitions, uploadEvidenceBundle } from './lib/evidence-intake.mjs';
 import { createWakeClient } from './lib/product-client.mjs';
@@ -83,7 +84,7 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
       </section>
       {error ? <div className="runtime-error" role="alert">{error}</div> : null}
       <section className="session-list" aria-label="Session reviews">
-        <button className="session-row" disabled={processing} onClick={onReview} type="button">
+        <button className="session-row" disabled={processing} onClick={() => onReview()} type="button">
           <div><div className="session-title">{demoReview.title}</div><div className="session-subtitle">Plan, SpeedCoach, mobile telemetry, and wind timeline</div></div>
           <div><span className="meta-label">Date</span><span>{formatDate(demoReview.scheduledDate)}</span></div>
           <div><span className="meta-label">Goal</span><span>Regatta preparation</span></div>
@@ -129,14 +130,14 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
 function IntervalChart({ review }: { review: Review }) {
   return (
     <section className="interval-chart" aria-labelledby="interval-title">
-      <div className="chart-legend"><span id="interval-title">Average stroke rate by work interval</span><span>Shaded area = prescribed range</span></div>
+      <div className="chart-legend"><span id="interval-title">Average stroke rate by work interval</span><span>Scale {STROKE_RATE_DOMAIN.min}–{STROKE_RATE_DOMAIN.max} SPM · shaded area = prescribed range</span></div>
       <div className="interval-bars">
         {review.workIntervals.map((interval) => {
           const isDeviation = interval.status === 'DEVIATION';
-          const height = Math.max(38, Math.min(88, interval.averageSpm * 3.25));
+          const geometry = buildStrokeRateGeometry(interval);
           return (
             <div className="interval-column" key={interval.segmentId} aria-label={`Work ${interval.index}: ${interval.averageSpm} SPM; target ${interval.targetMinSpm} to ${interval.targetMaxSpm} SPM; ${isDeviation ? 'deviation' : 'within range'}`}>
-              <div className="interval-plot"><div className="target-band" /><div className={`interval-bar${isDeviation ? ' deviation' : ''}`} style={{ height: `${height}%` }} /></div>
+              <div className="interval-plot"><div className="target-band" style={{ bottom: `${geometry.targetBottomPercent}%`, height: `${geometry.targetHeightPercent}%` }} /><div className={`interval-bar${isDeviation ? ' deviation' : ''}`} style={{ height: `${geometry.measuredPercent}%` }} /></div>
               <div className="interval-label"><span>W{interval.index}</span><span>{Math.round(interval.averageSpm)} SPM</span></div><small>{interval.targetMinSpm}–{interval.targetMaxSpm} target</small>
             </div>
           );

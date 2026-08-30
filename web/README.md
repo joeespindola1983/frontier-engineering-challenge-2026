@@ -67,4 +67,24 @@ The product client calls only task-level endpoints; source trust and agent tools
 
 With the local service configured, the intake requires a plan and SpeedCoach file and accepts mobile, environment, and context files independently. Each selected file is validated and the browser receives metadata rather than stored bytes. SpeedCoach vendor and WAKE mobile sensor CSVs are normalized deterministically, with missing SPM preserved as missing. In explicit live mode, a selected bundle now continues through preparation, bounded-agent execution, its own human checkpoint, verified briefing, and approval-gated process-local memory. Only the exact five-file public case-002 bundle can reuse committed replay output.
 
+## Safe browser rehearsal bundle
+
+Use the five public synthetic files under:
+
+```text
+../data/fixtures/case-002-wind-shift-plan-deviation/input/
+```
+
+Select them in this order:
+
+1. `plan.json` as Training plan;
+2. `speedcoach.csv` as SpeedCoach recording;
+3. `mobile.csv` as Mobile recording;
+4. `environment.json` as Environmental timeline;
+5. `context.json` as Session context.
+
+With the service in replay mode, this exact byte-identical bundle exercises the
+real upload and validation boundary without calling the model or incurring API
+cost. A changed bundle cannot inherit its conclusions.
+
 See `../docs/PRODUCT_INTERFACE.md` for the product contract.
