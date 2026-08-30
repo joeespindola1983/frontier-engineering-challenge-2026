@@ -272,6 +272,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Persist validated source bytes, normalized telemetry, prepared bundles, investigations, checkpoint answers, briefings, approved goal memory, weather-cache metadata, and cost observations in a versioned JSON state file under the Git-ignored `private-data/wake-product/` boundary. Restrict the file to the current OS user. Represent analysis completion, coach view, human response, and coach approval as independent session milestones; make investigation creation idempotent so reopening cannot erase an existing answer. Expose safe list/detail/view session endpoints that never return raw or normalized telemetry rows.
 - **Rationale:** A reset form and one aggregate status cannot tell a coach whether evidence was merely received, analysed, seen, answered, or accepted into club memory. A local restart-safe state file makes the weekend workflow functional and demonstrable without claiming a production database. The boundary must remain explicit: this store is not encrypted, authenticated, multi-tenant, backed up, or distributed exactly-once storage.
 
+## 2026-08-30 - Use one safe launcher for the local product stack
+
+- **Status:** accepted for development and demonstration rehearsal.
+- **Decision:** Start the Python product service and Vinext dashboard through `scripts/start_dashboard.sh`. Keep replay with no model call as the default, enable the optional weather adapter, wait for both readiness endpoints, restore the existing ignored state store, and terminate both child processes from one `Ctrl+C`. Require `--live` plus `OPENAI_API_KEY` for paid execution, preserve the explicit US$0.20 start authorization, and never print the key. Allow separate manual commands to remain available for process-level debugging.
+- **Rationale:** The product depends on matching API origin, browser runtime mode, service capabilities, ports, Node version, and paid-execution gates. Re-entering those independently makes demo startup error-prone and can accidentally create a mismatch between a live browser and replay-only service. A tested launcher improves reproducibility without weakening the cost boundary.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

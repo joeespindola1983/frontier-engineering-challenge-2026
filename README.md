@@ -147,6 +147,20 @@ session inbox -> evidence intake -> review -> human checkpoint
 
 The hosted product remains a safe replay. When connected to the local product service, its intake requires a plan and SpeedCoach recording and accepts mobile, environment, and context as optional evidence enhancers. The service prepares a new ground-truth-free compact summary containing source coverage, quality, supported cross-source findings, and explicit evidence gaps. Only the byte-identical five-source public demonstration bundle can use committed replay output; different evidence cannot inherit that answer, and prepared new bundles are not executed automatically. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
 
+Start the API and dashboard together in the safe replay mode:
+
+```bash
+./scripts/start_dashboard.sh
+```
+
+This enables optional historical-weather enrichment, restores the ignored local
+session store, waits for both services to become ready, and serves the interface
+at `http://localhost:3000/`. It makes no model call. Press `Ctrl+C` once to stop
+both processes. Use `./scripts/start_dashboard.sh --help` for port overrides,
+weather opt-out, and the explicit paid `--live` mode.
+
+The separate commands below remain useful when debugging either process.
+
 ```bash
 cd web
 npm install

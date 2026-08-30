@@ -6,6 +6,26 @@ This React/Vinext application demonstrates the coach-facing WAKE workflow using 
 
 Node.js 22.13 or newer is required.
 
+From the repository root, the recommended complete local startup is:
+
+```bash
+./scripts/start_dashboard.sh
+```
+
+It starts the Python product service and this development server, enables the
+optional weather adapter, waits for readiness, and stops both with one
+`Ctrl+C`. Replay is the default and cannot invoke the model. The launcher also
+finds a compatible Homebrew Node installation when an older Node version is
+first on `PATH`.
+
+For explicit paid execution, use `./scripts/start_dashboard.sh --live`. That
+mode loads the ignored repository `.env`, requires `OPENAI_API_KEY`, and keeps
+the existing US$0.20 start authorization visible. It is authorization to start,
+not a provider billing cap. Run `./scripts/start_dashboard.sh --help` for all
+options.
+
+To run only the web process:
+
 ```bash
 npm install
 npm test

@@ -347,6 +347,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** “Analysed,” “seen,” “answered,” and “accepted into memory” are different product facts. Treating them as one review status created both a usability failure and a data-loss illusion. The final verifier also exposed that scanning every fixture file as UTF-8 crashes on Finder metadata; the privacy regression now scans only declared text formats while preserving the private-path check.
 - **Next step:** Let the project owner QA the inbox wording and information density, then decide whether a production-storage architecture belongs in the submission roadmap or distracts from the demonstrated agentic workflow.
 
+### 33. One-command, replay-safe local product startup
+
+- **Hypothesis:** A demonstration launcher can reduce environment and cost-mode mistakes if it owns API/dashboard coordination while preserving replay as the safe default.
+- **Change:** Added a portable shell launcher that starts the task-level Python service with historical weather, waits for its session endpoint, starts Vinext with the matching API URL and runtime mode, waits for the coach page, monitors both processes, and stops both through one `Ctrl+C`. It discovers a compatible Homebrew Node executable when an older Node is earlier on `PATH`, rejects occupied or conflicting ports, and offers a secret-free `--print-plan`. Paid execution remains behind `--live`, repository-local `.env` loading, `OPENAI_API_KEY`, and the existing visible cost authorization.
+- **Evaluation:** RED first produced five failures because no launcher existed. GREEN passes five launcher contract tests covering shell syntax, replay/no-model disclosure, weather and endpoint configuration, missing-key rejection, paid-mode disclosure, cost authorization, and secret hygiene. The complete deterministic suite passes 140 Python tests, three public verifiers, 44 web tests, ESLint, and the Vinext production build. A real replay smoke rehearsal started both services, restored the saved session inbox through `GET /api/sessions`, returned HTTP 200 for the coach page, and released both ports after one `Ctrl+C`.
+- **Result:** The documented local startup is now one command, while the original per-process commands remain available for debugging. No live model execution is enabled by default. The launcher handled the host's Node-version mismatch and terminated without leaving the API or dashboard listening.
+- **Cost/runtime:** No LLM call and no model cost. The launcher reported readiness after the initial development compile; exact startup latency was not instrumented as a product metric.
+- **Decision:** Keep the launcher as the recommended development and demonstration entry point. Do not use it to hide whether the runtime is replay or live.
+- **Learning:** Reproducibility includes operational configuration, not only fixtures and prompts. The host had Node 20 first on `PATH` while the compatible Homebrew Node was installed elsewhere, which is exactly the kind of rehearsal failure a single checked entry point should handle.
+- **Next step:** Use the launcher for the owner-led interface QA and record any usability failures separately from startup reliability.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
