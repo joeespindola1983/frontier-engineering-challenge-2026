@@ -123,4 +123,10 @@ the trajectory's usage, runtime, and approximate cost; the process-local ledger
 counts an idempotent execution only once and is available through
 `GET /api/runtime/costs`.
 
-Every live execution still uses `run_agent_case`, preserving its verifier, bounded rounds, trajectory, runtime, token, and cost evidence. The HTTP service never exposes low-level tool names to the product client. See `docs/COST_MODEL.md` for the measured reference, projections, limitations, and optimization policy.
+Every live product execution loads `config/wake-agent-v2.json` and
+`prompts/wake-agent-v2.md` explicitly, then uses `run_agent_case`, preserving
+the accepted distance boundary, verifier, bounded rounds, trajectory, runtime,
+token, and cost evidence. Historical v1 evaluation artifacts and the generic
+agent CLI default remain unchanged. The HTTP service never exposes low-level
+tool names to the product client. See `docs/COST_MODEL.md` for the measured
+reference, projections, limitations, and optimization policy.

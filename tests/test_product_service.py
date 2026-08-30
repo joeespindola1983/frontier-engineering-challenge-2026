@@ -85,6 +85,14 @@ class WakeProductServiceTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "positive finite"):
                     wake_product_service.validate_required_cost_authorization(invalid)
 
+    def test_product_live_workflow_loads_the_accepted_v2_assets(self) -> None:
+        config, prompt = wake_product_service.load_product_workflow_assets(ROOT)
+
+        self.assertEqual(config["config_version"], "wake.agent_config.v2")
+        self.assertEqual(config["tool_contract_version"], "v2")
+        self.assertIn("WAKE Investigation Agent Prompt v2", prompt)
+        self.assertIn("boundary-derived from SPM classification", prompt)
+
     def test_replay_investigation_uses_public_evidence_without_live_api(self) -> None:
         result = self.service.create_investigation(CASE_ID, mode="replay")
 

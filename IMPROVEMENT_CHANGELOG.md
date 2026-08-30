@@ -270,6 +270,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Product cost safety requires two separate truths: permission before execution and provider-reported usage after execution. Conflating them would turn a UI setting into a false hard-cap guarantee.
 - **Next step:** Run complete repository verification, then assemble the submission narrative and five-minute demonstration around the measured workflow improvement, transparent cost, and one reliable replay path.
 
+### 26. Product live runtime alignment with accepted workflow v2
+
+- **Hypothesis:** The live product path must load the accepted v2 assets explicitly or it can reintroduce the boundary-derived distance failure already fixed and measured in the evaluation workflow.
+- **Change:** Added one product-workflow asset loader and made both fixed-case and prepared-bundle live runners use `wake-agent-v2.json` with `wake-agent-v2.md`. The historical v1 artifacts and generic agent CLI defaults remain unchanged for reproducibility.
+- **Evaluation:** RED failed because the product service exposed no accepted-workflow loader and still imported the v1 defaults. GREEN requires config version v2, tool contract v2, and the v2 distance-boundary instruction before either live runner is constructed. Final verification passes 104 Python tests and three public verifiers; the prior 23 web tests, ESLint, production build, and zero-vulnerability audit remain valid because this correction changes only the Python runner asset selection.
+- **Result:** A product live execution now uses the same versioned distance boundary that passed the official v2 ablation instead of silently falling back to v1.
+- **Cost/runtime:** No model call and no API cost. This is a deterministic runtime-selection correction.
+- **Decision:** Keep explicit v2 product assets and preserve v1 only where historical compatibility is intentional.
+- **Learning:** Accepting a workflow version in evaluation is insufficient unless every production entry point names that version rather than inheriting a generic default.
+- **Next step:** Prepare the submission narrative and demonstration, then run a final rehearsal without relying on an unmeasured novel-upload call.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

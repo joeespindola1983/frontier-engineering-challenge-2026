@@ -28,9 +28,7 @@ from bundle_assembler import assemble_case_summary
 from run_baseline import current_git_commit, read_json, utc_now
 from source_adapters import normalize_source
 from wake_agent import (
-    DEFAULT_CONFIG,
     DEFAULT_INPUTS,
-    DEFAULT_PROMPT,
     DEFAULT_SCHEMA,
     public_case_input_dir,
     run_agent_case,
@@ -53,6 +51,13 @@ SOURCE_FILENAMES = {
 }
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
 DEFAULT_REQUIRED_COST_AUTHORIZATION_USD = 0.20
+
+
+def load_product_workflow_assets(root: Path = ROOT) -> tuple[dict, str]:
+    return (
+        read_json(root / "config/wake-agent-v2.json"),
+        (root / "prompts/wake-agent-v2.md").read_text(encoding="utf-8"),
+    )
 
 
 def validate_required_cost_authorization(value: float) -> float:
@@ -901,19 +906,20 @@ class WakeProductApi:
 
 
 def build_live_runner(root: Path) -> Callable[[str], dict]:
+    config, prompt = load_product_workflow_assets(root)
+
     def execute(case_id: str) -> dict:
         if not os.environ.get("OPENAI_API_KEY"):
             raise ValueError("OPENAI_API_KEY is required for live mode.")
         from openai import OpenAI
 
-        config = read_json(DEFAULT_CONFIG)
         summary = read_json(DEFAULT_INPUTS / f"{case_id}.json")
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         output_dir = root / "evaluation/runs/product-live" / timestamp
         result = run_agent_case(
             client=OpenAI(),
             config=config,
-            prompt=DEFAULT_PROMPT.read_text(encoding="utf-8"),
+            prompt=prompt,
             summary=summary,
             input_dir=public_case_input_dir(root, case_id),
             output_schema=read_json(DEFAULT_SCHEMA),
@@ -942,12 +948,13 @@ def load_product_run_envelope(artifacts: dict[str, Path]) -> dict:
 def build_bundle_live_runner(
     root: Path,
 ) -> Callable[[dict, dict[str, bytes]], dict]:
+    config, prompt = load_product_workflow_assets(root)
+
     def execute(summary: dict, evidence: dict[str, bytes]) -> dict:
         if not os.environ.get("OPENAI_API_KEY"):
             raise ValueError("OPENAI_API_KEY is required for live mode.")
         from openai import OpenAI
 
-        config = read_json(DEFAULT_CONFIG)
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         output_dir = root / "evaluation/runs/product-live-bundles" / timestamp
         with tempfile.TemporaryDirectory(prefix="wake-product-bundle-") as temporary:
@@ -957,7 +964,7 @@ def build_bundle_live_runner(
             result = run_agent_case(
                 client=OpenAI(),
                 config=config,
-                prompt=DEFAULT_PROMPT.read_text(encoding="utf-8"),
+                prompt=prompt,
                 summary=summary,
                 input_dir=input_dir,
                 output_schema=read_json(DEFAULT_SCHEMA),
