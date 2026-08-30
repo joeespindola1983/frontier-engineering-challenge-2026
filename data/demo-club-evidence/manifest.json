@@ -1,0 +1,31 @@
+{
+  "schema_version": "wake.demo_club_evidence_manifest.v1",
+  "generator": "scripts/generate_demo_club_evidence.py",
+  "cases": [
+    {
+      "case_id": "club-bridge-mixed-20260820-spm",
+      "title": "Bridge Mixed 2x · second 4 km interval below target SPM",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "generator_version": "1.0",
+      "input_sha256": {
+        "context.json": "df3c0f299acecce50c26634ce9048232c6edd7e7898582b7151f90c662846c60",
+        "plan.json": "5b45d76b9a3d6bc8d1da1a5931027ca21f16e1d6cd60268fc6eadecd654a18c8",
+        "speedcoach.csv": "be6706518e60e678b10a9f195cfd0ac534566c9ad9f5cd09958ab53e5aae0c17"
+      },
+      "agent_executed": false
+    },
+    {
+      "case_id": "club-atlas-men-20260828-recovery",
+      "title": "Atlas Men 4x · second recovery above planned maximum",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "generator_version": "1.0",
+      "input_sha256": {
+        "context.json": "286571f53fc0b86c9dacb786cf60b19bac7795efff7d4788ef7c56032e04e7ab",
+        "plan.json": "1c6fb3a75747a6cdf48e80f489ba90c533e0b79545742fcb57913b46ebce006c",
+        "speedcoach.csv": "885f15d03f8021ff371e7b7eedcda9f12983308dfb080d0f076fe08e1d729e40"
+      },
+      "agent_executed": false
+    }
+  ],
+  "boundary": "These are complete public synthetic source bundles, not observed athlete sessions and not completed agent analyses."
+}

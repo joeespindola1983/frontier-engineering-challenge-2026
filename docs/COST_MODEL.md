@@ -54,9 +54,10 @@ investigation; the other eight require a human answer or missing source first.
 Adding one future longitudinal synthesis produces three projected paid
 executions. At the observed ten-case average this projects to approximately
 US$0.213455; at the accepted US$0.15 planning reference it projects to US$0.45;
-and three US$0.20 start authorizations total US$0.60. None of these values is an
-observed club-period charge: complete source bundles and the synthesis runner
-have not yet been executed.
+and three US$0.20 start authorizations total US$0.60. The two investigation
+bundles are now complete and deterministically preflighted, but none of these
+values is an observed club-period charge: neither candidate nor the future
+synthesis has been executed through the model.
 
 ## Runtime contract
 

@@ -73,9 +73,12 @@ The demo-club period screen is tested independently from model behavior. Tests
 require all recorded activities to be classified, session findings to be
 derived from observations rather than prefilled labels, every attention signal
 to carry evidence references, human/source gaps to remain outside the paid
-queue, clean screens not to imply full plan compliance, zero complete source
-bundles to remain visible, and cost projections to retain their observed,
-planning, and authorization meanings.
+queue, clean screens not to imply full plan compliance, complete source bundles
+to be counted only when linked to the paid queue, and cost projections to retain
+their observed, planning, and authorization meanings. A separate public
+verifier checks the two demo-club bundles for reproducible generation, input
+hashes, privacy invariants, schema validity, and exact deterministic deviation
+identities without invoking a model.
 
 ## Commands
 

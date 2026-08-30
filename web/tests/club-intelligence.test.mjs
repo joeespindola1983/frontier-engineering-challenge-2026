@@ -18,7 +18,7 @@ test('screens every recorded activity without calling a model', () => {
   assert.equal(analysis.coverage.planned_outings_scanned, 38);
   assert.equal(analysis.coverage.compact_evidence_summaries, 35);
   assert.equal(analysis.coverage.linked_plans, 34);
-  assert.equal(analysis.coverage.complete_source_bundles, 0);
+  assert.equal(analysis.coverage.complete_source_bundles, 2);
   assert.equal(analysis.activity_assessments.length, demoClub.activities.length);
   assert.equal(analysis.deterministic_analysis_cost_usd, 0);
 });
@@ -38,6 +38,7 @@ test('derives session findings from observations with evidence references', () =
 
   const spm = findings.find((signal) => signal.code === 'SPM_BELOW_PLAN');
   assert.equal(spm.route, 'AGENT_INVESTIGATION');
+  assert.match(spm.statement, /work-02/);
   assert.match(spm.statement, /18 SPM/);
   assert.ok(spm.evidence_refs.some((ref) => ref.endsWith(':plan-spm-target')));
   assert.ok(spm.evidence_refs.some((ref) => ref.endsWith(':speedcoach-work-spm')));
@@ -66,7 +67,8 @@ test('routes ten attention signals without paying for human or source gaps', () 
   });
   assert.equal(analysis.deep_investigations.completed, 0);
   assert.equal(analysis.deep_investigations.queued, 2);
-  assert.equal(analysis.deep_investigations.status, 'REQUIRES_SOURCE_BUNDLES');
+  assert.equal(analysis.deep_investigations.status, 'READY_FOR_AUTHORIZATION');
+  assert.ok(analysis.deep_investigations.queue.every((signal) => signal.source_bundle_id));
   assert.equal(analysis.longitudinal_synthesis.status, 'NOT_EXECUTED');
   assert.equal(analysis.cost_forecast.paid_executions, 3);
   assert.equal(analysis.cost_forecast.observed_projection_usd, 0.213455);
@@ -100,6 +102,7 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
   assert.match(page, /buildClubPeriodAnalysis/);
   assert.match(page, /Deterministic scan complete/);
   assert.match(page, /Deep agent analysis has not run yet/);
+  assert.match(page, /complete bundles passed deterministic preflight/);
   assert.match(page, /planning_projection_usd/);
   assert.doesNotMatch(page, /Executed as planned/);
 });

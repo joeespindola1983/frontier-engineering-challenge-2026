@@ -78,19 +78,19 @@ const unavailableKeys = new Set([
 
 const evidenceOverridesByKey = {
   'crew-2x-mixed-a:2026-08-20': {
+    source_bundle_id: 'club-bridge-mixed-20260820-spm',
     plan: {
       stroke_rate_target: { min_spm: 20, max_spm: 20 },
     },
     speedcoach: {
       work_interval_spm: [
         { segment_id: 'work-01', average_spm: 20 },
-        { segment_id: 'work-02', average_spm: 20 },
-        { segment_id: 'work-03', average_spm: 18 },
-        { segment_id: 'work-04', average_spm: 20 },
+        { segment_id: 'work-02', average_spm: 18 },
       ],
     },
   },
   'crew-4x-men:2026-08-28': {
+    source_bundle_id: 'club-atlas-men-20260828-recovery',
     plan: {
       planned_recovery_s: { value: 180, tolerance_s: 30 },
     },
@@ -122,6 +122,7 @@ function buildEvidence(outingId, key) {
   const workIntervalSpm = override.speedcoach?.work_interval_spm;
   const recoveryDurations = override.speedcoach?.recovery_durations_s;
   return {
+    source_bundle_id: override.source_bundle_id ?? null,
     plan: {
       linked: planLinked,
       source_ref: planLinked ? `${outingId}:plan` : null,

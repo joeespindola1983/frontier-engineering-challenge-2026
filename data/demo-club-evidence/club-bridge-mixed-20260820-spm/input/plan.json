@@ -1,0 +1,46 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-club-bridge-mixed-20260820-spm",
+  "scheduled_date": "2026-08-20",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_demo_club_evidence.py"
+  },
+  "modality": "WATER",
+  "athlete_scope": {
+    "kind": "CREW",
+    "ids": [
+      "crew-2x-mixed-a"
+    ]
+  },
+  "goal_id": "wake-demo-club-two-week-period",
+  "coach_language": "2 x 4 km at voga 20 with active recovery.",
+  "blocks": [
+    {
+      "block_id": "work-main",
+      "kind": "WORK",
+      "repetitions": 2,
+      "distance_m": 4000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 20,
+        "max_spm": 20
+      },
+      "zone": "B2/B3",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": {
+        "min_s": 120,
+        "max_s": 300,
+        "mode": "ACTIVE_LIGHT_ROWING"
+      },
+      "equipment": [],
+      "instructions": [
+        "Keep each work interval continuous."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Real-informed synthetic prescription. It models a supplied rowing-plan pattern and does not describe a real athlete session."
+}

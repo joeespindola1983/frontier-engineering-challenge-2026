@@ -328,9 +328,15 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-30 - Screen the full club period before paid investigation
 
-- **Status:** accepted for the deterministic demo-club layer; source-bundle generation and longitudinal model execution remain pending.
+- **Status:** accepted for the deterministic demo-club layer; source-bundle generation is complete and paid longitudinal execution remains pending.
 - **Decision:** Replace prewritten demo-club findings with compact plan, SpeedCoach, and context observations and derive attention through `wake.club_period_analysis.v1`. Screen every recorded activity at zero model cost. Route supported numeric anomalies to a future bounded investigation, but route crew availability, participation gaps, missing plans, and missing athlete context to their human or source dependency first. Show complete-source-bundle coverage, deep-investigation progress, synthesis status, and the three distinct cost projections in the interface.
-- **Rationale:** Paying a model to repeat a stored answer is circular, while calling it on every record wastes budget and hides orchestration value. Deterministic screening can cover the club consistently; the agent should spend reasoning only where evidence is complete and ambiguity remains. Zero complete source bundles means the current two candidates must not be labelled ready for authorization or analysed.
+- **Rationale:** Paying a model to repeat a stored answer is circular, while calling it on every record wastes budget and hides orchestration value. Deterministic screening can cover the club consistently; the agent should spend reasoning only where evidence is complete and ambiguity remains. The two numeric candidates now become ready for authorization only because their complete public bundles pass deterministic preflight; readiness is not the same as execution.
+
+## 2026-08-30 - Preflight public club candidates before paid execution
+
+- **Status:** accepted; no model call has been made for either candidate.
+- **Decision:** Generate two complete real-informed synthetic plan + SpeedCoach + context bundles from a deterministic script, preserve their input hashes and fictional boundary in a manifest, and require the public verifier to reproduce the expected `work-02` SPM and `recovery-02` duration deviations before showing `READY_FOR_AUTHORIZATION`. Keep `agent_executed: false`, `0/2` completed, and longitudinal synthesis `NOT_EXECUTED` until an explicit paid run is authorized.
+- **Rationale:** Compact UI observations are sufficient for cheap triage but not a defensible agent input. Complete source artifacts make the next paid comparison reproducible, while preflight separates parser/tool correctness from model behavior and prevents the interface from implying that a prepared case was already analysed.
 
 ## Pending decisions
 

@@ -159,6 +159,7 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
       entity_name: crewById.get(outing.crew_id).name,
       statement: signal.statement,
       evidence_refs: signal.evidence_refs,
+      source_bundle_id: outing.evidence?.source_bundle_id ?? null,
     }));
   });
   const gapSignals = club.participation_gaps.map((gap) => ({
@@ -182,6 +183,8 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
   );
   const activityAssessments = club.activities.map((activity) => activityAssessment(activity, outingById));
   const deepQueue = attentionSignals.filter((signal) => signal.route === 'AGENT_INVESTIGATION');
+  const completeSourceBundles = deepQueue.filter((signal) => signal.source_bundle_id).length;
+  const allDeepBundlesReady = deepQueue.length > 0 && completeSourceBundles === deepQueue.length;
   const paidExecutions = deepQueue.length + 1;
   const observedAverage = costBasis.observed_total_cost_usd / costBasis.observed_cases;
 
@@ -199,7 +202,7 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
       disrupted_outings_scanned: club.outings.filter((outing) => outing.outcome === 'CREW_UNAVAILABLE').length,
       compact_evidence_summaries: club.outings.filter((outing) => outing.evidence).length,
       linked_plans: club.outings.filter((outing) => outing.evidence?.plan.linked).length,
-      complete_source_bundles: 0,
+      complete_source_bundles: completeSourceBundles,
     },
     activity_assessments: activityAssessments,
     outing_assessments: outingAssessments,
@@ -208,7 +211,11 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
     deep_investigations: {
       completed: 0,
       queued: deepQueue.length,
-      status: deepQueue.length ? 'REQUIRES_SOURCE_BUNDLES' : 'NOT_REQUIRED',
+      status: !deepQueue.length
+        ? 'NOT_REQUIRED'
+        : allDeepBundlesReady
+          ? 'READY_FOR_AUTHORIZATION'
+          : 'REQUIRES_SOURCE_BUNDLES',
       queue: deepQueue,
     },
     longitudinal_synthesis: {
