@@ -58,6 +58,18 @@ A multi-week coach plan PDF and daily WhatsApp image crops existed before the co
 
 The raw PDF and images remain outside Git. The second public case reuses only an anonymized prescription pattern: six one-kilometer intervals, two SPM targets, active recovery, and a resistance instruction. Every athlete, date, coordinate, environmental sample, and telemetry row in case 002 is newly generated synthetic data. The generator, schemas, ground truth, rubric, and verification are hackathon work.
 
+## Reuse record: regional competition documents
+
+An official first-stage programme and a separate second-stage result sheet were
+supplied during the hackathon as domain references. They contain real club and
+athlete identities and therefore remain outside Git. The public Competition
+Review reuses only structural patterns: category-distance relationships,
+repeated race numbers, multiple club entries, result fields, displayed-time
+ties, and non-classified rows. Every public competition name, club, athlete,
+lineup, time, rank, and outcome is newly created synthetic data. The normalized
+event identity, deterministic report builder, interface, tests, and evidence
+boundaries are hackathon work.
+
 ## Reuse record: supplied interface prototype v2
 
 A product-interface prototype and architecture note were developed during the hackathon in a separate workspace after the first WAKE context handoff, then supplied as the visual and interaction base for this repository. They are not pre-competition work and are not evidence that the product backend was already implemented.

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
 import { buildClubPeriodAnalysis } from './lib/club-intelligence.mjs';
+import { demoCompetitionReview } from './lib/competition-review.mjs';
 import { buildLongitudinalPilot } from './lib/longitudinal-intelligence.mjs';
 import { demoClub, listCoachAttention, summarizeAthlete, summarizeClub, summarizeCrew } from './lib/demo-club.mjs';
 import { demoReview } from './lib/demo-review.mjs';
@@ -13,7 +14,7 @@ import { createWakeClient } from './lib/product-client.mjs';
 import { sessionActionLabel, sessionStatusLabel, summarizeSessionInbox } from './lib/session-inbox.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
-type Screen = 'sessions' | 'club-crew' | 'club-athlete' | 'longitudinal-pilot' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
+type Screen = 'sessions' | 'club-crew' | 'club-athlete' | 'longitudinal-pilot' | 'competition' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
 type Briefing = ReturnType<typeof resolveCheckpoint>;
 type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
@@ -129,6 +130,7 @@ function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen
         </button>
         <nav className="primary-nav" aria-label="Primary navigation">
           <button className={sessionActive ? 'active' : ''} onClick={() => onNavigate('sessions')} type="button">Sessions</button>
+          <button className={screen === 'competition' ? 'active' : ''} onClick={() => onNavigate('competition')} type="button">Competition</button>
           <button className={screen === 'memory' ? 'active' : ''} onClick={() => onNavigate('memory')} type="button">Goal memory</button>
           <button className={screen === 'evaluation' ? 'active' : ''} onClick={() => onNavigate('evaluation')} type="button">Evaluation</button>
         </nav>
@@ -203,6 +205,28 @@ function ergWorkoutLabel(value: string) {
     FIXED_TIME: 'Fixed time',
     INTERVAL: 'Intervals',
   }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
+function competitionCategoryLabel(value: string) {
+  return {
+    BEGINNER: 'Beginner',
+    ASPIRANT: 'Aspirant',
+    JUNIOR: 'Junior',
+    SENIOR: 'Senior',
+    MASTER_B: 'Master B',
+    MASTER_C: 'Master C',
+    MASTER_D: 'Master D',
+    MASTER_E: 'Master E',
+    PARA_PR1: 'Para-rowing PR1',
+    PARA_PR2: 'Para-rowing PR2',
+    PARA_PR3: 'Para-rowing PR3',
+  }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
+function formatRaceTime(seconds: number | null) {
+  if (seconds === null) return 'N/C';
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}:${(seconds % 60).toFixed(1).padStart(4, '0')}`;
 }
 
 function ClubOverview({ onOpenCrew, onOpenAthlete, onOpenLongitudinalPilot }: { onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; onOpenLongitudinalPilot: () => void }) {
@@ -326,6 +350,7 @@ function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpe
         </div>
         <div className="page-header-actions">
           <button className="button" onClick={() => onNavigate('evaluation')} type="button">View evaluation results</button>
+          <button className="button" onClick={() => onNavigate('competition')} type="button">Open competition review</button>
           <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
         </div>
       </header>
@@ -504,6 +529,73 @@ function MemoryScreen({ memory, onBack }: { memory: GoalMemory; onBack: () => vo
   );
 }
 
+function CompetitionReviewScreen({ onBack }: { onBack: () => void }) {
+  const report = demoCompetitionReview;
+  const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
+  const selectedEntry = report.entries.find((entry) => entry.entry_id === selectedEntryId) ?? null;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [selectedEntryId]);
+
+  if (selectedEntry) {
+    return (
+      <main className="page competition-page">
+        <div className="competition-notice" role="note"><span>Real-informed synthetic regatta</span>No real athlete is attached to this fictional result or training history.</div>
+        <header className="page-header competition-header"><div className="page-header-copy"><div className="kicker">Boat report · Race {selectedEntry.event.race_number}</div><h1>{selectedEntry.crew.name}</h1><p className="lede">{selectedEntry.event.label} · {selectedEntry.distance.distance_m.toLocaleString('en-US')} m · {selectedEntry.boat.name}</p></div><button className="button" onClick={() => setSelectedEntryId(null)} type="button">Back to competition</button></header>
+
+        <section className="competition-boat-stats" aria-label="Boat result summary">
+          <div><span>Official result</span><strong>{selectedEntry.status === 'FINISHED' ? `${selectedEntry.official_rank}/${selectedEntry.field.field_size}` : 'N/C'}</strong><small>official rank preserved</small></div>
+          <div><span>Finish time</span><strong>{formatRaceTime(selectedEntry.finish_time_s)}</strong><small>{selectedEntry.status === 'FINISHED' ? `${formatRaceTime(selectedEntry.pace_500m_s)} /500 m` : 'no classified time'}</small></div>
+          <div><span>Gap to winner</span><strong>{selectedEntry.gap_to_winner_s === null ? '—' : `+${selectedEntry.gap_to_winner_s.toFixed(1)} s`}</strong><small>{selectedEntry.gap_to_winner_pct === null ? 'not available' : `+${selectedEntry.gap_to_winner_pct.toFixed(2)}%`}</small></div>
+          <div><span>Shared work</span><strong>{selectedEntry.training_context.shared_outings}</strong><small>{(selectedEntry.training_context.shared_distance_m / 1000).toFixed(1)} km before race day</small></div>
+        </section>
+
+        <div className="competition-boat-layout">
+          <div>
+            <section className="competition-context-card"><div className="kicker">Training context, not causation</div><h2>What preceded this start</h2><p>The lineup completed <strong>{selectedEntry.training_context.shared_outings} shared outings</strong> and had {selectedEntry.training_context.disrupted_outings} disrupted outing{selectedEntry.training_context.disrupted_outings === 1 ? '' : 's'} in the two-week window. Its last shared record was {formatDate(selectedEntry.training_context.last_shared_outing_date)}.</p><div className="competition-boundary-line"><strong>Not established</strong><span>WAKE cannot claim that this training caused the result, or recommend crew selection from this result alone.</span></div></section>
+
+            <section className="competition-field-section"><div className="section-heading compact-heading"><div><div className="kicker">Competitive field</div><h2>Official order retained</h2></div><span>{selectedEntry.event.finisher_count}/{selectedEntry.event.field_size} classified</span></div><div className="competition-result-table"><div className="competition-result-head"><span>Rank</span><span>Entry</span><span>Club</span><span>Time</span></div>{selectedEntry.event.results.map((result) => <article className={result.entry_id === selectedEntry.entry_id ? 'our-result' : ''} key={result.entry_id}><strong>{result.official_rank ?? 'N/C'}</strong><div><span>{result.crew_label}</span><small>{result.athletes.map((athlete) => athlete.name).join(' · ')}</small></div><span>{result.club.name}</span><code>{formatRaceTime(result.finish_time_s)}</code>{result.official_tie_preserved ? <small className="official-tie">Displayed-time tie · official rank retained</small> : null}</article>)}</div></section>
+          </div>
+
+          <aside className="competition-boat-aside">
+            <section><div className="kicker">Distance provenance</div><h3>{selectedEntry.distance.distance_m.toLocaleString('en-US')} m category reference</h3><p>The distance follows the same-federation, same-season programme pattern for {competitionCategoryLabel(selectedEntry.event.category)}. It was not directly printed in the separate stage result supplied to WAKE.</p><code>{selectedEntry.distance.evidence_ref}</code></section>
+            <section><div className="kicker">Lineup snapshot</div>{selectedEntry.athletes.map((athlete, index) => <div className="competition-lineup-row" key={athlete.athlete_id}><span>{selectedEntry.athletes.length - index}</span><strong>{athlete.name}</strong></div>)}</section>
+            <section className={selectedEntry.status === 'NOT_CLASSIFIED' ? 'question-needed' : ''}><div className="kicker">Human context</div><h3>{selectedEntry.status === 'NOT_CLASSIFIED' ? 'Reason still missing' : 'Race context still missing'}</h3><p>{selectedEntry.next_question}</p><small>Conditions, incidents, penalties, and lineup changes remain human-supplied context.</small></section>
+          </aside>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="page competition-page">
+      <div className="competition-notice" role="note"><span>Real-informed synthetic regatta</span>Categories, field shapes, distance rules, ties, and non-completion patterns are grounded in supplied official material; every displayed identity and outcome is fictional.</div>
+      <header className="page-header competition-header"><div className="page-header-copy"><div className="kicker">Goal readiness → race outcome → next cycle</div><h1>Competition Review</h1><p className="lede">Connect every club entry to its athletes, boat, previous shared work, official result, and the full competitive field.</p></div><button className="button" onClick={onBack} type="button">Back to sessions</button></header>
+
+      <section className="competition-scoreboard" aria-label="Club competition summary">
+        <div><span>Our entries</span><strong>{report.summary.entries}</strong><small>{report.summary.events_entered} events</small></div>
+        <div><span>Athletes</span><strong>{report.summary.athletes_entered}</strong><small>{report.summary.multi_start_athletes} with multiple starts</small></div>
+        <div><span>Wins</span><strong>{report.summary.wins}</strong><small>{report.summary.podiums} podium finishes</small></div>
+        <div><span>Classified</span><strong>{report.summary.finishers}/{report.summary.entries}</strong><small>{report.summary.not_classified} needs context</small></div>
+        <div><span>Opposition</span><strong>{report.summary.opponent_clubs}</strong><small>fictional competitor clubs</small></div>
+      </section>
+
+      <div className="competition-overview-layout">
+        <section className="competition-entry-section"><div className="section-heading compact-heading"><div><div className="kicker">Our entries</div><h2>Ten boats, one connected club history</h2></div><p>Open any boat to inspect the field and its pre-race evidence.</p></div><div className="competition-entry-list">{report.entries.map((entry) => <article className={entry.status === 'NOT_CLASSIFIED' ? 'needs-context' : ''} key={entry.entry_id}><div className="competition-place"><strong>{entry.official_rank ?? 'N/C'}</strong><small>of {entry.field.field_size}</small></div><div className="competition-entry-copy"><span>Race {entry.event.race_number} · {entry.event.label}</span><h3>{entry.crew.name}</h3><p>{entry.athletes.map((athlete) => athlete.name).join(' · ')}</p><small>{entry.training_context.shared_outings} shared outings · {(entry.training_context.shared_distance_m / 1000).toFixed(1)} km contextual history</small></div><div className="competition-entry-metrics"><strong>{formatRaceTime(entry.finish_time_s)}</strong><span>{entry.pace_500m_s === null ? 'Missing race context' : `${formatRaceTime(entry.pace_500m_s)} /500 m`}</span><button onClick={() => setSelectedEntryId(entry.entry_id)} type="button">Open boat report →</button></div></article>)}</div></section>
+
+        <aside className="competition-overview-aside">
+          <section><div className="kicker">Competitive field</div><h2>Eight events reconstructed</h2><p>Results retain opponent club, crew, athlete identities, official order, time, and non-completion. Raw time never replaces the published rank.</p>{report.events.map((event) => <div className="competition-event-row" key={event.event_id}><div><strong>R{event.race_number} · {event.label}</strong><small>{event.distance_m.toLocaleString('en-US')} m · {event.field_size} entries</small></div><span>{formatRaceTime(event.winning_time_s)}</span></div>)}</section>
+          <section><div className="kicker">Distance provenance</div><h3>Category rule, not boat-size guess</h3><p>500 m for Beginner; 1,000 m for Aspirant and Master; 2,000 m for Senior. Each derived pace keeps the category reference and the missing stage confirmation visible.</p></section>
+          <section><div className="kicker">Training context, not causation</div><h3>Outcome evidence closes a loop</h3><p>The report can show what preceded the race and what happened in the field. It cannot prove that one session, athlete, lineup, or condition caused the result.</p></section>
+        </aside>
+      </div>
+
+      <section className="competition-athlete-section"><div className="section-heading compact-heading"><div><div className="kicker">Athlete race load</div><h2>Every athlete across every entry</h2></div><p>Starts remain linked to their exact crew snapshots.</p></div><div className="competition-athlete-grid">{report.athlete_starts.map((item) => <article key={item.athlete_id}><strong>{item.athlete.name}</strong><span>{item.starts} starts</span><small>{item.entry_ids.map((entryId) => report.entries.find((entry) => entry.entry_id === entryId)?.crew.name).join(' · ')}</small></article>)}</div></section>
+    </main>
+  );
+}
+
 function formatProvenance(value: string) {
   return value === 'REAL_ANONYMIZED' ? 'Real · anonymized' : value === 'DERIVED_SYNTHETIC' ? 'Derived synthetic' : 'Synthetic';
 }
@@ -601,6 +693,10 @@ export default function Home() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [screen]);
+
   async function reloadSessions() {
     const inbox = await client.listSessions();
     setSessions(inbox.sessions ?? []);
@@ -659,5 +755,5 @@ export default function Home() {
   function openCrew(crewId: string) { setSelectedCrewId(crewId); setScreen('club-crew'); }
   function openAthlete(athleteId: string) { setSelectedAthleteId(athleteId); setScreen('club-athlete'); }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenAthlete={openAthlete} onOpenCrew={openCrew} onOpenLongitudinalPilot={() => setScreen('longitudinal-pilot')} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'club-crew' ? <CrewScreen crewId={selectedCrewId} onBack={() => setScreen('sessions')} onOpenAthlete={openAthlete} /> : null}{screen === 'club-athlete' ? <AthleteScreen athleteId={selectedAthleteId} onBack={() => setScreen('sessions')} onOpenCrew={openCrew} /> : null}{screen === 'longitudinal-pilot' ? <LongitudinalPilotScreen onBack={() => setScreen('sessions')} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenAthlete={openAthlete} onOpenCrew={openCrew} onOpenLongitudinalPilot={() => setScreen('longitudinal-pilot')} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'club-crew' ? <CrewScreen crewId={selectedCrewId} onBack={() => setScreen('sessions')} onOpenAthlete={openAthlete} /> : null}{screen === 'club-athlete' ? <AthleteScreen athleteId={selectedAthleteId} onBack={() => setScreen('sessions')} onOpenCrew={openCrew} /> : null}{screen === 'longitudinal-pilot' ? <LongitudinalPilotScreen onBack={() => setScreen('sessions')} /> : null}{screen === 'competition' ? <CompetitionReviewScreen onBack={() => setScreen('sessions')} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
 }

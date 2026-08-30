@@ -7,6 +7,13 @@ scores, costs, case comparisons, and limitations are generated from the saved
 official ten-case artifacts. Opening it never calls the model or changes the
 session inbox.
 
+The deterministic **Competition Review** connects the real-informed synthetic
+club to a fictional regional regatta. It exposes one consolidated club result,
+ten boat reports, all sixteen athlete start histories, complete fictional
+fields, category-distance provenance, official-order ties, and a missing-context
+route for N/C. The private real programme and result documents inform only the
+fixture shape; no real athlete identity is copied into the application.
+
 ## Run locally
 
 Node.js 22.13 or newer is required.

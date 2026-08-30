@@ -546,6 +546,83 @@ button { cursor: pointer; }
 .saved-report-behavior strong { color: var(--accent); }
 .saved-report-behavior span { color: var(--ink-soft); }
 
+.competition-page { padding-bottom: 96px; }
+.competition-notice { margin-top: 18px; padding: 10px 13px; display: flex; gap: 10px; border-left: 2px solid var(--accent); background: var(--accent-soft); color: var(--ink-soft); font-size: 9px; }
+.competition-notice span { flex: 0 0 auto; color: var(--accent); font-family: var(--mono); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.competition-header h1 { max-width: 760px; }
+.competition-scoreboard, .competition-boat-stats { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+.competition-scoreboard > div, .competition-boat-stats > div { min-height: 118px; padding: 20px 18px 18px 0; display: grid; align-content: center; border-right: 1px solid var(--line); }
+.competition-scoreboard > div:not(:first-child), .competition-boat-stats > div:not(:first-child) { padding-left: 18px; }
+.competition-scoreboard > div:last-child, .competition-boat-stats > div:last-child { border-right: 0; }
+.competition-scoreboard span, .competition-boat-stats span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+.competition-scoreboard strong, .competition-boat-stats strong { margin-top: 5px; color: var(--accent); font-size: 27px; line-height: 1; }
+.competition-scoreboard small, .competition-boat-stats small { margin-top: 7px; color: var(--ink-soft); font-size: 9px; }
+.competition-boat-stats { grid-template-columns: repeat(4, 1fr); }
+
+.competition-overview-layout, .competition-boat-layout { padding-top: 62px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, 0.55fr); gap: 54px; align-items: start; }
+.competition-entry-section .section-heading p, .competition-athlete-section .section-heading p { max-width: 300px; color: var(--muted); font-size: 9px; text-align: right; }
+.competition-entry-list { border-top: 1px solid var(--line-strong); }
+.competition-entry-list article { min-height: 112px; display: grid; grid-template-columns: 58px minmax(0, 1fr) 142px; gap: 20px; align-items: center; border-bottom: 1px solid var(--line); }
+.competition-entry-list article.needs-context { background: linear-gradient(90deg, transparent 55%, var(--warning-soft)); }
+.competition-place { display: grid; align-content: center; justify-items: center; }
+.competition-place strong { color: var(--accent); font-family: var(--mono); font-size: 24px; }
+.competition-place small { color: var(--muted); font-family: var(--mono); font-size: 7px; text-transform: uppercase; }
+.competition-entry-copy { min-width: 0; }
+.competition-entry-copy > span { color: var(--accent); font-family: var(--mono); font-size: 7px; letter-spacing: 0.05em; text-transform: uppercase; }
+.competition-entry-copy h3 { margin: 5px 0 3px; font-size: 17px; }
+.competition-entry-copy p { margin: 0; overflow: hidden; color: var(--ink-soft); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.competition-entry-copy small { display: block; margin-top: 7px; color: var(--muted); font-size: 8px; }
+.competition-entry-metrics { display: grid; justify-items: end; }
+.competition-entry-metrics strong { font-family: var(--mono); font-size: 15px; }
+.competition-entry-metrics span { margin-top: 2px; color: var(--muted); font-family: var(--mono); font-size: 8px; }
+.competition-entry-metrics button { margin-top: 10px; padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 9px; font-weight: 700; }
+.competition-entry-metrics button:hover { text-decoration: underline; }
+
+.competition-overview-aside, .competition-boat-aside { border-top: 2px solid var(--accent); background: var(--surface); }
+.competition-overview-aside > section, .competition-boat-aside > section { padding: 21px 22px; border-bottom: 1px solid var(--line); }
+.competition-overview-aside h2, .competition-overview-aside h3, .competition-boat-aside h3 { margin: 6px 0 8px; font-size: 17px; }
+.competition-overview-aside p, .competition-boat-aside p { margin: 0; color: var(--muted); font-size: 10px; }
+.competition-boat-aside code { display: block; margin-top: 12px; overflow-wrap: anywhere; color: var(--accent); font-size: 8px; }
+.competition-event-row { padding: 12px 0; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; border-bottom: 1px solid var(--line); }
+.competition-event-row:last-child { border-bottom: 0; }
+.competition-event-row div { display: grid; }
+.competition-event-row strong { font-size: 9px; }
+.competition-event-row small { margin-top: 3px; color: var(--muted); font-family: var(--mono); font-size: 7px; }
+.competition-event-row > span { font-family: var(--mono); font-size: 9px; }
+
+.competition-athlete-section { padding-top: 72px; }
+.competition-athlete-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
+.competition-athlete-grid article { min-height: 112px; padding: 17px; display: grid; align-content: start; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.competition-athlete-grid strong { font-size: 12px; }
+.competition-athlete-grid span { margin-top: 5px; color: var(--accent); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.competition-athlete-grid small { margin-top: 9px; color: var(--muted); font-size: 8px; line-height: 1.45; }
+
+.competition-context-card { padding: 28px; border: 1px solid var(--line-strong); background: linear-gradient(135deg, rgba(220, 235, 231, 0.55), rgba(255, 255, 255, 0.45)); }
+.competition-context-card h2 { margin: 6px 0 12px; font-size: 28px; }
+.competition-context-card > p { max-width: 680px; color: var(--ink-soft); font-size: 13px; }
+.competition-boundary-line { margin-top: 22px; padding-top: 17px; display: grid; grid-template-columns: 120px 1fr; gap: 18px; border-top: 1px solid var(--line); }
+.competition-boundary-line strong { color: var(--warning); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.competition-boundary-line span { color: var(--muted); font-size: 9px; }
+.competition-field-section { padding-top: 54px; }
+.competition-field-section .section-heading > span { color: var(--muted); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.competition-result-table { border-top: 1px solid var(--line-strong); }
+.competition-result-head, .competition-result-table article { min-height: 42px; display: grid; grid-template-columns: 48px minmax(230px, 1.4fr) minmax(130px, 0.7fr) 70px; gap: 15px; align-items: center; border-bottom: 1px solid var(--line); }
+.competition-result-head { min-height: 30px; color: var(--muted); font-family: var(--mono); font-size: 7px; letter-spacing: 0.05em; text-transform: uppercase; }
+.competition-result-table article { position: relative; min-height: 68px; }
+.competition-result-table article.our-result { background: linear-gradient(90deg, var(--accent-soft), transparent); }
+.competition-result-table article > strong { color: var(--accent); font-family: var(--mono); font-size: 14px; text-align: center; }
+.competition-result-table article > div { min-width: 0; display: grid; }
+.competition-result-table article > div span { font-size: 10px; font-weight: 700; }
+.competition-result-table article > div small { margin-top: 3px; overflow: hidden; color: var(--muted); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.competition-result-table article > span { color: var(--ink-soft); font-size: 9px; }
+.competition-result-table article > code { font-size: 9px; }
+.official-tie { position: absolute; right: 0; bottom: 3px; color: var(--warning); font-family: var(--mono); font-size: 6px; text-transform: uppercase; }
+.competition-lineup-row { min-height: 34px; display: grid; grid-template-columns: 25px 1fr; gap: 8px; align-items: center; border-bottom: 1px solid var(--line); }
+.competition-lineup-row span { color: var(--line-strong); font-family: var(--mono); font-size: 8px; }
+.competition-lineup-row strong { font-size: 9px; }
+.competition-boat-aside .question-needed { border-left: 2px solid var(--warning); background: var(--warning-soft); }
+.competition-boat-aside section > small { display: block; margin-top: 10px; color: var(--muted); font-size: 8px; }
+
 .button { min-height: 42px; padding: 0 17px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line-strong); border-radius: 3px; background: transparent; color: var(--ink); text-decoration: none; font-weight: 650; }
 .button:hover { border-color: var(--ink-soft); }
 .button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
@@ -590,6 +667,9 @@ button { cursor: pointer; }
   .longitudinal-pilot-state > div:nth-child(2) { border-right: 0; }
   .longitudinal-pilot-state > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .longitudinal-method { grid-template-columns: 1fr; gap: 28px; }
+  .competition-overview-layout, .competition-boat-layout { grid-template-columns: 1fr; }
+  .competition-overview-aside, .competition-boat-aside { max-width: 680px; }
+  .competition-athlete-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 620px) {
@@ -721,6 +801,30 @@ button { cursor: pointer; }
   .longitudinal-case-grid dl div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .longitudinal-boundaries { padding: 22px 18px; grid-template-columns: 1fr; gap: 18px; }
   .saved-report-behavior { grid-column: 1; align-items: flex-start; flex-direction: column; gap: 4px; }
+  .competition-notice { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .competition-scoreboard { grid-template-columns: 1fr 1fr; }
+  .competition-scoreboard > div { min-height: 100px; padding: 15px 12px 14px 0; }
+  .competition-scoreboard > div:not(:first-child) { padding-left: 12px; }
+  .competition-scoreboard > div:nth-child(2n) { border-right: 0; }
+  .competition-scoreboard > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .competition-scoreboard > div:last-child { grid-column: 1 / -1; }
+  .competition-boat-stats { grid-template-columns: 1fr 1fr; }
+  .competition-boat-stats > div { min-height: 102px; padding: 15px 12px 14px 0; }
+  .competition-boat-stats > div:not(:first-child) { padding-left: 12px; }
+  .competition-boat-stats > div:nth-child(2) { border-right: 0; }
+  .competition-boat-stats > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .competition-entry-section .section-heading, .competition-athlete-section .section-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .competition-entry-section .section-heading p, .competition-athlete-section .section-heading p { text-align: left; }
+  .competition-entry-list article { padding: 14px 0; grid-template-columns: 45px minmax(0, 1fr); gap: 10px; }
+  .competition-entry-metrics { grid-column: 2; justify-items: start; }
+  .competition-entry-copy p { white-space: normal; }
+  .competition-athlete-grid { grid-template-columns: 1fr 1fr; }
+  .competition-context-card { padding: 20px; }
+  .competition-boundary-line { grid-template-columns: 1fr; gap: 5px; }
+  .competition-result-head { display: none; }
+  .competition-result-table article { padding: 12px 0; grid-template-columns: 35px 1fr 60px; gap: 9px; }
+  .competition-result-table article > span { display: none; }
+  .competition-result-table article > div small { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

@@ -84,6 +84,19 @@ verification status, absence of private chain-of-thought, exact isolated
 deviation identities, per-run usage/cost, authorization compliance, and summed
 totals. Neither verifier can invoke the model.
 
+Competition Review TDD begins at the relational boundary. Tests require
+category-derived distances with evidence references, composite event identities
+even when race numbers repeat, exact links from every internal entry to a crew
+snapshot and its athletes, full-field context, and all sixteen fictional
+athletes represented. Derived pace and winner gap are allowed only for
+classified finishers. Displayed-time ties must preserve official rank;
+non-completion must keep time, pace, and rank absent and route to a human
+question. Interface regression tests require a main-page entry point when
+compact navigation is hidden, synthetic-data and causal boundaries, both
+consolidated and boat reports, and scroll reset on screen and boat transitions.
+These tests establish deterministic fixture/report behavior, not race-result
+prediction or evidence that training caused an outcome.
+
 Source-batch tests begin RED on the missing batch boundary and require
 content-addressed idempotence, invalid-item isolation, sequential start-gate
 execution, resume without duplicate calls, one runner failure not blocking a

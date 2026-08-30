@@ -371,6 +371,19 @@ tools, strict schema, evidence verifier, persistence, and the US$0.80 full-run
 start gate. It remains unexecuted, incurred no new API cost, and supports no
 period-level model conclusion yet.
 
+The supplied regional regatta programme and separate result sheet now inform a
+deterministic Competition Review without entering the public fixture. The
+programme establishes a strong same-federation, same-season category pattern:
+500 m for Juvenile/Beginner, 1,000 m for Aspirant/Junior/Master/Para-rowing, and
+2,000 m for Senior. It does not directly prove the distance used at the other
+stage. The results also show repeated race numbers across categories,
+multi-entry clubs and athletes, official displayed-time ties, and N/C rows with
+no reason. WAKE therefore uses a composite event identity, retains official
+rank, and asks for missing context. The public competition fixture links all 16
+fictional club athletes and 10 crews to eight fictional fields with three
+fictional opponent clubs. No real athlete name is attached to fictional
+training, race, or performance history.
+
 A candidate five-minute narrative is:
 
 1. Show the coach's current inputs: plan image, disconnected CSV exports, and missing context.
