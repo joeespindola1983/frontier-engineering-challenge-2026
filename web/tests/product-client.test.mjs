@@ -184,6 +184,50 @@ test('HTTP client uploads typed evidence before source-based investigation', asy
   assert.equal(investigation.review, demoReview);
 });
 
+test('HTTP client requests historical weather only after explicit location consent', async () => {
+  const requests = [];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return {
+        ok: true,
+        status: 201,
+        json: async () => ({
+          source: { source_id: 'source-environment-123', kind: 'ENVIRONMENT' },
+          lookup: { provider: 'Open-Meteo', cache_hit: false },
+        }),
+      };
+    },
+  });
+
+  await assert.rejects(
+    client.enrichWeather({
+      speedcoachSourceId: 'source-speedcoach-123',
+      requestedByRole: 'ATHLETE',
+      authorizedLocationLookup: false,
+    }),
+    /location lookup authorization/i,
+  );
+  assert.equal(requests.length, 0);
+
+  const result = await client.enrichWeather({
+    speedcoachSourceId: 'source-speedcoach-123',
+    requestedByRole: 'ATHLETE',
+    authorizedLocationLookup: true,
+    sessionTimezone: 'America/Sao_Paulo',
+  });
+
+  assert.equal(result.source.kind, 'ENVIRONMENT');
+  assert.equal(requests[0].url, 'http://127.0.0.1:8788/api/environment-enrichments');
+  assert.deepEqual(JSON.parse(requests[0].init.body), {
+    speedcoach_source_id: 'source-speedcoach-123',
+    requested_by_role: 'ATHLETE',
+    authorized_location_lookup: true,
+    session_timezone: 'America/Sao_Paulo',
+  });
+});
+
 test('HTTP client prepares and explicitly executes a new source bundle', async () => {
   const requests = [];
   const responses = [

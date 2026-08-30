@@ -162,6 +162,18 @@ Run the task-level product service locally in no-cost replay mode:
 uv run python scripts/wake_product_service.py
 ```
 
+Historical weather can be enabled independently as an optional evidence
+enhancer:
+
+```bash
+uv run python scripts/wake_product_service.py --allow-weather
+```
+
+Each lookup still requires explicit per-request authorization, uses only an
+approximately rounded session location, and never blocks plan plus SpeedCoach
+analysis when unavailable. The current page does not yet expose this control.
+See [Historical weather enrichment](docs/WEATHER_ENRICHMENT.md).
+
 Then connect the web development server to it:
 
 ```bash

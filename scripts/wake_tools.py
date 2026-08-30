@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import csv
 import statistics
+from datetime import datetime
 from pathlib import Path
 
 
@@ -437,27 +438,85 @@ def analyze_environment(summary: dict) -> dict:
             "causal_conclusion": "NOT_ESTABLISHED",
             "evidence_refs": ["input/environment.json"],
         }
-    start = float(windows[0]["effective_headwind_m_s"])
-    end = float(windows[-1]["effective_headwind_m_s"])
+    source = environment.get("source") or {}
+    temporal_resolution = source.get("temporal_resolution_minutes")
+    session_window = environment.get("session_window") or {}
+    session_duration_s = None
+    if session_window.get("start_utc") and session_window.get("end_utc"):
+        session_start = datetime.fromisoformat(
+            session_window["start_utc"].replace("Z", "+00:00")
+        )
+        session_end = datetime.fromisoformat(
+            session_window["end_utc"].replace("Z", "+00:00")
+        )
+        session_duration_s = (session_end - session_start).total_seconds()
+    session_windows = (
+        [
+            window
+            for window in windows
+            if 0 <= float(window["elapsed_s"]) <= session_duration_s
+        ]
+        if session_duration_s is not None
+        else windows
+    )
+    analyzed_windows = session_windows or windows
+    start = float(analyzed_windows[0]["effective_headwind_m_s"])
+    end = float(analyzed_windows[-1]["effective_headwind_m_s"])
     sign_change = next(
         (
             float(window["elapsed_s"])
-            for window in windows
+            for window in analyzed_windows
             if float(window["effective_headwind_m_s"]) >= 0
         ),
         None,
+    )
+    temperatures = [
+        float(window["temperature_c"])
+        for window in analyzed_windows
+        if window.get("temperature_c") is not None
+    ]
+    humidities = [
+        float(window["relative_humidity_pct"])
+        for window in analyzed_windows
+        if window.get("relative_humidity_pct") is not None
+    ]
+    limitations = list(environment.get("limitations", []))
+    if temporal_resolution:
+        limitations.append(
+            f"Provider conditions have {temporal_resolution}-minute temporal resolution; "
+            "they cannot establish a specific on-boat gust or stroke-level effect."
+        )
+    resolution_limited = (
+        session_duration_s is not None
+        and temporal_resolution is not None
+        and (
+            temporal_resolution * 60 > session_duration_s
+            or len(session_windows) < 2
+        )
     )
     return {
         "status": "COMPLETED",
         "effective_headwind_start_m_s": start,
         "effective_headwind_end_m_s": end,
         "sign_change_offset_s": sign_change,
-        "condition_change": "TAILWIND_TO_HEADWIND" if start < 0 < end else "OTHER",
+        "condition_change": (
+            "INSUFFICIENT_TEMPORAL_RESOLUTION"
+            if resolution_limited
+            else "TAILWIND_TO_HEADWIND" if start < 0 < end else "OTHER"
+        ),
+        "session_environment_samples": len(session_windows),
+        "temperature_range_c": (
+            [min(temperatures), max(temperatures)] if temperatures else None
+        ),
+        "relative_humidity_range_pct": (
+            [min(humidities), max(humidities)] if humidities else None
+        ),
         "causal_conclusion": "NOT_ESTABLISHED",
         "interpretation": (
             "The time-aligned condition change supports an association with performance "
             "changes, but it does not establish causation or athlete regression."
         ),
+        "limitations": limitations,
         "evidence_refs": ["input/environment.json", "input/speedcoach.csv"],
     }
 

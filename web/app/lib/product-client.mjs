@@ -82,6 +82,26 @@ export class HttpWakeClient {
     });
   }
 
+  async enrichWeather({
+    speedcoachSourceId,
+    requestedByRole,
+    authorizedLocationLookup,
+    sessionTimezone,
+  }) {
+    if (authorizedLocationLookup !== true) {
+      throw new TypeError(
+        'Historical weather requires explicit location lookup authorization.',
+      );
+    }
+    const request = {
+      speedcoach_source_id: speedcoachSourceId,
+      requested_by_role: requestedByRole,
+      authorized_location_lookup: true,
+    };
+    if (sessionTimezone) request.session_timezone = sessionTimezone;
+    return this.request('/api/environment-enrichments', request);
+  }
+
   async analyzeSourceBundle({ sourceIds, mode, authorizedCostUsd }) {
     if (mode !== 'live') {
       throw new TypeError('New source bundle analysis requires explicit live mode.');

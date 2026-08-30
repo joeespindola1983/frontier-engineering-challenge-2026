@@ -28,6 +28,28 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def declared_schema_versions(schema: dict) -> set[str]:
+    """Return explicit schema_version constants from root or local oneOf refs."""
+    candidates = [schema]
+    for option in schema.get("oneOf", []):
+        reference = option.get("$ref") if isinstance(option, dict) else None
+        if isinstance(reference, str) and reference.startswith("#/$defs/"):
+            candidates.append(schema["$defs"][reference.removeprefix("#/$defs/")])
+        elif isinstance(option, dict):
+            candidates.append(option)
+    return {
+        version
+        for candidate in candidates
+        if isinstance(candidate, dict)
+        for version in [
+            candidate.get("properties", {})
+            .get("schema_version", {})
+            .get("const")
+        ]
+        if isinstance(version, str)
+    }
+
+
 def verify_hashes() -> None:
     manifest = read_json(FIXTURE / "fixture-manifest.json")
     assert manifest["fixture_id"] == CASE_ID
@@ -41,16 +63,19 @@ def verify_hashes() -> None:
 
 def verify_contract_files() -> None:
     schemas = {
-        "training-plan.schema.json": "wake.training_plan.v1",
-        "recorded-session.schema.json": "wake.recorded_session.v1",
-        "environment-timeline.schema.json": "wake.environment_timeline.v1",
-        "evidence-claim.schema.json": "wake.evidence_claim.v1",
-        "ground-truth.schema.json": "wake.evaluation_ground_truth.v1"
+        "training-plan.schema.json": {"wake.training_plan.v1"},
+        "recorded-session.schema.json": {"wake.recorded_session.v1"},
+        "environment-timeline.schema.json": {
+            "wake.environment_timeline.v1",
+            "wake.environment_timeline.v2",
+        },
+        "evidence-claim.schema.json": {"wake.evidence_claim.v1"},
+        "ground-truth.schema.json": {"wake.evaluation_ground_truth.v1"},
     }
-    for filename, version in schemas.items():
+    for filename, versions in schemas.items():
         schema = read_json(ROOT / "schemas" / filename)
         assert schema["$schema"] == "https://json-schema.org/draft/2020-12/schema"
-        assert schema["properties"]["schema_version"]["const"] == version
+        assert declared_schema_versions(schema) == versions
 
     registry = read_json(ROOT / "evaluation/cases.json")
     registered = {case["case_id"]: case for case in registry["cases"]}

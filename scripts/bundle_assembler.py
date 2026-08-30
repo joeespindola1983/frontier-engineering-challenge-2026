@@ -226,7 +226,10 @@ def _environment_summary(environment: dict | None, context: dict) -> dict | None
     samples = environment.get("samples", [])
     if not samples:
         return None
-    start = _parse_timestamp(samples[0].get("timestamp"))
+    session_window = environment.get("session_window") or {}
+    start = _parse_timestamp(session_window.get("start_utc")) or _parse_timestamp(
+        samples[0].get("timestamp")
+    )
     windows = []
     for index, sample in enumerate(samples):
         timestamp = _parse_timestamp(sample.get("timestamp"))
@@ -240,29 +243,43 @@ def _environment_summary(environment: dict | None, context: dict) -> dict | None
             "wind_speed_m_s": sample["wind_speed_m_s"],
             "wind_direction_from_deg": sample["wind_direction_deg"],
             "gust_speed_m_s": sample.get("gust_speed_m_s"),
+            "temperature_c": sample.get("temperature_c"),
         }
+        if "relative_humidity_pct" in sample:
+            window["relative_humidity_pct"] = sample.get(
+                "relative_humidity_pct"
+            )
         if heading is not None:
+            relative_direction = math.radians(
+                float(sample["wind_direction_deg"]) - float(heading)
+            )
             window["effective_headwind_m_s"] = round(
-                float(sample["wind_speed_m_s"])
-                * math.cos(
-                    math.radians(float(sample["wind_direction_deg"]) - float(heading))
-                ),
+                float(sample["wind_speed_m_s"]) * math.cos(relative_direction),
+                3,
+            )
+            window["effective_crosswind_m_s"] = round(
+                float(sample["wind_speed_m_s"]) * math.sin(relative_direction),
                 3,
             )
         windows.append(window)
     method = (
-        "Effective headwind projects meteorological wind-from direction onto the "
-        "known boat heading; time alignment supports association but does not establish causation."
+        "Effective headwind and signed crosswind project meteorological wind-from "
+        "direction onto the known boat heading; time alignment supports association "
+        "but does not establish causation."
         if heading is not None
         else "Wind is retained without boat-relative projection because route heading is unknown."
     )
     return {
+        "schema_version": environment.get("schema_version"),
         "timeline_id": environment["timeline_id"],
         "source": environment["source"],
         "direction_convention": environment["direction_convention"],
+        "units": environment.get("units"),
+        "session_window": environment.get("session_window"),
         "route_heading_deg": heading,
         "method": method,
         "time_series_windows": windows,
+        "limitations": list(environment.get("limitations", [])),
     }
 
 

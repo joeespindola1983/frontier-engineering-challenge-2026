@@ -27,6 +27,11 @@ import jsonschema
 from bundle_assembler import assemble_case_summary
 from run_baseline import current_git_commit, read_json, utc_now
 from source_adapters import normalize_source
+from weather_enrichment import (
+    OpenMeteoHistoricalForecastProvider,
+    build_weather_lookup,
+    normalize_open_meteo_response,
+)
 from wake_agent import (
     DEFAULT_INPUTS,
     DEFAULT_SCHEMA,
@@ -216,11 +221,15 @@ class WakeProductService:
         root: Path = ROOT,
         live_runner: Callable[[str], dict] | None = None,
         bundle_live_runner: Callable[[dict, dict[str, bytes]], dict] | None = None,
+        weather_provider: Callable[[dict], dict] | None = None,
+        weather_now: Callable[[], datetime] | None = None,
         required_cost_authorization_usd: float = DEFAULT_REQUIRED_COST_AUTHORIZATION_USD,
     ) -> None:
         self.root = root
         self.live_runner = live_runner
         self.bundle_live_runner = bundle_live_runner
+        self.weather_provider = weather_provider
+        self.weather_now = weather_now or (lambda: datetime.now(timezone.utc))
         self.required_cost_authorization_usd = validate_required_cost_authorization(
             required_cost_authorization_usd
         )
@@ -231,6 +240,7 @@ class WakeProductService:
         self.source_bundles: dict[str, dict] = {}
         self.bundle_results: dict[str, dict] = {}
         self.cost_executions: dict[str, dict] = {}
+        self.weather_enrichments: dict[str, str] = {}
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -340,6 +350,89 @@ class WakeProductService:
             key: value
             for key, value in self.sources[source_id].items()
             if not key.startswith("_")
+        }
+
+    def enrich_environment_from_speedcoach(
+        self,
+        speedcoach_source_id: str,
+        *,
+        requested_by_role: str,
+        authorized_location_lookup: bool,
+        session_timezone: str | None = None,
+    ) -> dict:
+        """Create one cached weather-API source from a SpeedCoach recording."""
+        if authorized_location_lookup is not True:
+            raise ValueError(
+                "Explicit external location lookup authorization is required."
+            )
+        requested_by_role = requested_by_role.upper()
+        if requested_by_role not in HUMAN_ROLES:
+            raise ValueError("Unsupported weather enrichment requester role.")
+        if self.weather_provider is None:
+            raise ValueError("Historical weather enrichment is disabled for this service.")
+        try:
+            speedcoach = self.sources[speedcoach_source_id]
+        except KeyError as error:
+            raise ValueError(f"Unknown source: {speedcoach_source_id}") from error
+        if speedcoach["kind"] != "SPEEDCOACH":
+            raise ValueError("Weather enrichment requires a SPEEDCOACH source.")
+
+        lookup = build_weather_lookup(
+            speedcoach["_normalized_content"],
+            assumed_timezone=session_timezone,
+        )
+        cache_identity = json.dumps(
+            {
+                "lookup_id": lookup["lookup_id"],
+                "requested_by_role": requested_by_role,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        cache_key = hashlib.sha256(cache_identity.encode("utf-8")).hexdigest()
+        safe_lookup = {
+            key: lookup[key]
+            for key in (
+                "lookup_id",
+                "provider",
+                "dataset",
+                "location_precision_decimals",
+                "session_start_utc",
+                "session_end_utc",
+                "query_start_utc",
+                "query_end_utc",
+                "time_zone_source",
+                "assumed_timezone",
+            )
+        }
+        if cache_key in self.weather_enrichments:
+            return {
+                "source": self.get_source(self.weather_enrichments[cache_key]),
+                "lookup": {**safe_lookup, "cache_hit": True},
+            }
+
+        provider_response = self.weather_provider(lookup)
+        timeline = normalize_open_meteo_response(
+            request=lookup,
+            response=provider_response,
+            retrieved_at=self.weather_now(),
+        )
+        content = json.dumps(
+            timeline,
+            sort_keys=True,
+            indent=2,
+        ).encode("utf-8")
+        source = self.upload_source(
+            kind="ENVIRONMENT",
+            name=f"environment-{lookup['lookup_id']}.json",
+            content=content,
+            uploaded_by_role=requested_by_role,
+            origin_role="SERVICE",
+        )
+        self.weather_enrichments[cache_key] = source["source_id"]
+        return {
+            "source": source,
+            "lookup": {**safe_lookup, "cache_hit": False},
         }
 
     def _source_group(
@@ -1040,6 +1133,19 @@ class WakeProductApi:
             )
         if method == "GET" and parts[:2] == ["api", "sources"] and len(parts) == 3:
             return 200, self.service.get_source(parts[2])
+        if method == "POST" and parts == ["api", "environment-enrichments"]:
+            return 201, self.service.enrich_environment_from_speedcoach(
+                str(body.get("speedcoach_source_id", "")),
+                requested_by_role=str(body.get("requested_by_role", "")),
+                authorized_location_lookup=(
+                    body.get("authorized_location_lookup") is True
+                ),
+                session_timezone=(
+                    str(body["session_timezone"])
+                    if body.get("session_timezone")
+                    else None
+                ),
+            )
         if method == "POST" and parts == ["api", "source-bundles", "prepare"]:
             source_ids = body.get("source_ids")
             if not isinstance(source_ids, list) or not all(
@@ -1238,6 +1344,7 @@ def main() -> None:
     parser.add_argument("--port", default=8788, type=int)
     parser.add_argument("--origin", default="http://localhost:3000")
     parser.add_argument("--allow-live", action="store_true")
+    parser.add_argument("--allow-weather", action="store_true")
     parser.add_argument(
         "--required-cost-authorization-usd",
         type=float,
@@ -1257,6 +1364,9 @@ def main() -> None:
         bundle_live_runner=(
             build_bundle_live_runner(ROOT) if args.allow_live else None
         ),
+        weather_provider=(
+            OpenMeteoHistoricalForecastProvider() if args.allow_weather else None
+        ),
         required_cost_authorization_usd=required_cost_authorization_usd,
     )
     api = WakeProductApi(service)
@@ -1266,6 +1376,10 @@ def main() -> None:
     )
     print(f"WAKE product service listening on http://{args.host}:{args.port}")
     print(f"Live agent execution: {'enabled' if args.allow_live else 'disabled'}")
+    print(
+        "Historical weather enrichment: "
+        f"{'enabled' if args.allow_weather else 'disabled'}"
+    )
     print(
         "Required live cost authorization: "
         f"US${required_cost_authorization_usd:.2f} (operational start gate)"

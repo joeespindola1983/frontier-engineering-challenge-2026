@@ -55,6 +55,7 @@ The local application service exposes:
 ```text
 POST /api/sources
 GET  /api/sources/:id
+POST /api/environment-enrichments
 POST /api/source-bundles/prepare
 POST /api/source-bundles/:id/execute
 GET  /api/runtime/costs
@@ -66,6 +67,8 @@ GET  /api/goals/:id
 ```
 
 `POST /api/sources` accepts one Base64-encoded typed file plus `uploaded_by_role` and `origin_role`. It returns metadata only: source id, kind, original name, detected format, SHA-256 hash, byte size, source provenance, and a versioned telemetry-normalization report when applicable. Either an athlete or coach may upload any source. Upload identity is kept separate from source authority: a plan defaults to coach origin, SpeedCoach and mobile telemetry remain device-origin evidence, environment defaults to service origin, and session context defaults to the contributor. Source-kind rules prevent device telemetry from being relabelled as human-origin evidence. The endpoint accepts at most 10 MiB per source, rejects path-bearing names, validates plan and environment schemas, validates minimum context fields, and normalizes canonical telemetry, SpeedCoach vendor, and WAKE mobile sensor CSV formats. `GET /api/sources/:id` returns the same safe metadata without raw or normalized rows.
+
+`POST /api/environment-enrichments` is available only when the local service starts with `--allow-weather`. It requires an athlete or coach requester role and literal authorization for an approximate-location lookup. Telemetry timestamps must include an offset; a raw SpeedCoach vendor clock instead requires an explicit IANA `session_timezone`, which is preserved as a user-supplied time assumption. The service derives a two-decimal median coordinate and bounded UTC query window, calls the configured historical-weather provider, normalizes the result as a service-origin environment source, and caches the result for the process lifetime. It sends no route rows, identity, plan, or device metadata. Provider failure does not alter the uploaded SpeedCoach evidence or prevent core bundle preparation. The browser client implements the request boundary, but the current page does not yet expose its controls. See [Historical weather enrichment](WEATHER_ENRICHMENT.md).
 
 `POST /api/source-bundles/prepare` requires exactly one plan and one SpeedCoach source and accepts at most one mobile, environment, and context source. It builds a deterministic, schema-validated compact summary; records source hashes, quality, and contribution provenance; computes cross-source findings only when the necessary optional evidence exists; preserves every unavailable capability as an evidence gap; retains the full summary in process memory; and returns safe preparation metadata including source coverage. Bundle identity includes the contribution identities, so byte-identical evidence submitted through different provenance paths does not overwrite the earlier contribution. It never calls the agent and explicitly returns `agent_called: false`.
 

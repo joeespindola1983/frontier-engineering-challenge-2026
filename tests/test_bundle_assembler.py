@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import sys
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 import jsonschema
@@ -14,6 +15,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import bundle_assembler  # noqa: E402
 import source_adapters  # noqa: E402
+import weather_enrichment  # noqa: E402
 import wake_tools  # noqa: E402
 
 
@@ -188,6 +190,52 @@ class BundleAssemblerTests(unittest.TestCase):
             0,
         )
         self.assertIn("does not establish causation", environment["method"])
+
+    def test_provider_environment_keeps_humidity_resolution_and_crosswind(self) -> None:
+        speedcoach = (CASE_INPUT / "speedcoach.csv").read_bytes()
+        lookup = weather_enrichment.build_weather_lookup(speedcoach)
+        provider_environment = weather_enrichment.normalize_open_meteo_response(
+            request=lookup,
+            response={
+                "latitude": 10.0,
+                "longitude": 10.0,
+                "utc_offset_seconds": 0,
+                "timezone": "GMT",
+                "hourly": {
+                    "time": ["2026-01-20T09:00", "2026-01-20T10:00"],
+                    "temperature_2m": [18.0, 20.0],
+                    "relative_humidity_2m": [90, 80],
+                    "wind_speed_10m": [2.0, 4.0],
+                    "wind_direction_10m": [90, 0],
+                    "wind_gusts_10m": [3.0, 6.0],
+                },
+            },
+            retrieved_at=datetime(2026, 8, 29, tzinfo=timezone.utc),
+        )
+        summary = build_public_summary(include_environment=False)
+        environment = bundle_assembler._environment_summary(
+            provider_environment,
+            summary["known_context"],
+        )
+
+        self.assertEqual(environment["source"]["temporal_resolution_minutes"], 60)
+        self.assertIn("modeled hourly", " ".join(environment["limitations"]))
+        first = environment["time_series_windows"][0]
+        self.assertEqual(first["temperature_c"], 18.0)
+        self.assertEqual(first["relative_humidity_pct"], 90.0)
+        self.assertAlmostEqual(first["effective_headwind_m_s"], 0.0, places=3)
+        self.assertAlmostEqual(first["effective_crosswind_m_s"], 2.0, places=3)
+
+        analysis = wake_tools.analyze_environment(
+            {**summary, "environment": environment}
+        )
+        self.assertEqual(analysis["temperature_range_c"], [18.0, 18.0])
+        self.assertEqual(analysis["relative_humidity_range_pct"], [90.0, 90.0])
+        self.assertEqual(
+            analysis["condition_change"],
+            "INSUFFICIENT_TEMPORAL_RESOLUTION",
+        )
+        self.assertIn("60-minute", " ".join(analysis["limitations"]))
 
     def test_human_only_observations_remain_explicit_evidence_gaps(self) -> None:
         summary = build_public_summary()

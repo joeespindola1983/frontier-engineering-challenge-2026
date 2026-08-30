@@ -7,6 +7,7 @@ import math
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -65,6 +66,34 @@ class FakeBundleRunner:
         }
 
 
+class FakeWeatherProvider:
+    def __init__(self) -> None:
+        self.calls: list[dict] = []
+
+    def __call__(self, lookup: dict) -> dict:
+        self.calls.append(copy.deepcopy(lookup))
+        first_hour = datetime.fromisoformat(
+            lookup["query_start_utc"].replace("Z", "+00:00")
+        ).replace(minute=0, second=0, microsecond=0)
+        return {
+            "latitude": lookup["latitude"],
+            "longitude": lookup["longitude"],
+            "utc_offset_seconds": 0,
+            "timezone": "GMT",
+            "hourly": {
+                "time": [
+                    (first_hour + timedelta(hours=index)).strftime("%Y-%m-%dT%H:%M")
+                    for index in range(3)
+                ],
+                "temperature_2m": [18.0, 19.0, 20.0],
+                "relative_humidity_2m": [90, 85, 80],
+                "wind_speed_10m": [1.0, 2.0, 4.0],
+                "wind_direction_10m": [180, 170, 20],
+                "wind_gusts_10m": [1.5, 3.0, 6.0],
+            },
+        }
+
+
 class WakeProductServiceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.live_runner = FakeLiveRunner()
@@ -92,6 +121,228 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(config["tool_contract_version"], "v2")
         self.assertIn("WAKE Investigation Agent Prompt v2", prompt)
         self.assertIn("boundary-derived from SPM classification", prompt)
+
+    def test_weather_enrichment_requires_explicit_location_authorization(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+        )
+        speedcoach = service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+            uploaded_by_role="ATHLETE",
+        )
+
+        with self.assertRaisesRegex(ValueError, "location lookup authorization"):
+            service.enrich_environment_from_speedcoach(
+                speedcoach["source_id"],
+                requested_by_role="ATHLETE",
+                authorized_location_lookup=False,
+            )
+
+        self.assertEqual(provider.calls, [])
+
+    def test_weather_enrichment_creates_one_cached_service_source(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+            weather_now=lambda: datetime(2026, 8, 29, tzinfo=timezone.utc),
+        )
+        speedcoach = service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+            uploaded_by_role="ATHLETE",
+        )
+
+        first = service.enrich_environment_from_speedcoach(
+            speedcoach["source_id"],
+            requested_by_role="ATHLETE",
+            authorized_location_lookup=True,
+        )
+        second = service.enrich_environment_from_speedcoach(
+            speedcoach["source_id"],
+            requested_by_role="ATHLETE",
+            authorized_location_lookup=True,
+        )
+
+        self.assertFalse(first["lookup"]["cache_hit"])
+        self.assertTrue(second["lookup"]["cache_hit"])
+        self.assertEqual(first["source"]["source_id"], second["source"]["source_id"])
+        self.assertEqual(first["source"]["kind"], "ENVIRONMENT")
+        self.assertEqual(first["source"]["provenance"]["origin_role"], "SERVICE")
+        self.assertEqual(first["source"]["provenance"]["uploaded_by_role"], "ATHLETE")
+        self.assertEqual(first["lookup"]["location_precision_decimals"], 2)
+        self.assertNotIn("content", json.dumps(first).lower())
+        self.assertEqual(len(provider.calls), 1)
+
+    def test_weather_enrichment_http_endpoint_returns_a_bundle_ready_source(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+            weather_now=lambda: datetime(2026, 8, 29, tzinfo=timezone.utc),
+        )
+        api = wake_product_service.WakeProductApi(service)
+        speedcoach = service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+        )
+
+        status, result = api.handle(
+            "POST",
+            "/api/environment-enrichments",
+            {
+                "speedcoach_source_id": speedcoach["source_id"],
+                "requested_by_role": "COACH",
+                "authorized_location_lookup": True,
+            },
+        )
+
+        self.assertEqual(status, 201)
+        self.assertEqual(result["source"]["kind"], "ENVIRONMENT")
+        self.assertEqual(result["source"]["status"], "READY")
+        self.assertEqual(result["lookup"]["provider"], "Open-Meteo")
+
+    def test_enriched_environment_can_join_the_prepared_agent_bundle(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+            weather_now=lambda: datetime(2026, 8, 29, tzinfo=timezone.utc),
+        )
+        selected = []
+        for kind, filename in (
+            ("PLAN", "plan.json"),
+            ("SPEEDCOACH", "speedcoach.csv"),
+            ("CONTEXT", "context.json"),
+        ):
+            source = service.upload_source(
+                kind=kind,
+                name=filename,
+                content=(CASE_INPUT / filename).read_bytes(),
+                uploaded_by_role="ATHLETE",
+            )
+            selected.append(source["source_id"])
+        environment = service.enrich_environment_from_speedcoach(
+            selected[1],
+            requested_by_role="ATHLETE",
+            authorized_location_lookup=True,
+        )
+        selected.append(environment["source"]["source_id"])
+
+        prepared = service.prepare_source_bundle(selected)
+        summary = service.source_bundles[prepared["bundle_id"]]["summary"]
+
+        coverage = {item["kind"]: item["status"] for item in prepared["source_coverage"]}
+        self.assertEqual(coverage["ENVIRONMENT"], "PRESENT")
+        self.assertEqual(summary["environment"]["schema_version"], "wake.environment_timeline.v2")
+        self.assertEqual(
+            summary["environment"]["time_series_windows"][1][
+                "relative_humidity_pct"
+            ],
+            85.0,
+        )
+        self.assertIn(
+            "does not establish causation",
+            summary["environment"]["method"],
+        )
+
+    def test_weather_enrichment_rejects_timezone_unknown_speedcoach(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+        )
+        speedcoach = service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach-vendor.csv",
+            content=(
+                ROOT
+                / "data/fixtures/case-001-misaligned-double-scull/input/sources/speedcoach.csv"
+            ).read_bytes(),
+        )
+
+        with self.assertRaisesRegex(ValueError, "timezone-aware"):
+            service.enrich_environment_from_speedcoach(
+                speedcoach["source_id"],
+                requested_by_role="COACH",
+                authorized_location_lookup=True,
+            )
+
+        self.assertEqual(provider.calls, [])
+
+    def test_weather_enrichment_uses_confirmed_timezone_for_vendor_speedcoach(self) -> None:
+        provider = FakeWeatherProvider()
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=provider,
+            weather_now=lambda: datetime(2026, 8, 29, tzinfo=timezone.utc),
+        )
+        speedcoach = service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach-vendor.csv",
+            content=(
+                ROOT
+                / "data/fixtures/case-001-misaligned-double-scull/input/sources/speedcoach.csv"
+            ).read_bytes(),
+        )
+
+        result = service.enrich_environment_from_speedcoach(
+            speedcoach["source_id"],
+            requested_by_role="COACH",
+            authorized_location_lookup=True,
+            session_timezone="America/Sao_Paulo",
+        )
+
+        self.assertEqual(result["lookup"]["time_zone_source"], "USER_SUPPLIED_IANA")
+        self.assertEqual(result["lookup"]["assumed_timezone"], "America/Sao_Paulo")
+        self.assertEqual(
+            result["lookup"]["session_start_utc"],
+            "2026-01-15T09:59:53.100000Z",
+        )
+        self.assertEqual(len(provider.calls), 1)
+
+    def test_weather_provider_failure_leaves_the_core_bundle_usable(self) -> None:
+        def failing_provider(_: dict) -> dict:
+            raise ValueError("Weather provider unavailable.")
+
+        service = wake_product_service.WakeProductService(
+            root=ROOT,
+            weather_provider=failing_provider,
+        )
+        selected = []
+        for kind, filename in (
+            ("PLAN", "plan.json"),
+            ("SPEEDCOACH", "speedcoach.csv"),
+        ):
+            source = service.upload_source(
+                kind=kind,
+                name=filename,
+                content=(CASE_INPUT / filename).read_bytes(),
+            )
+            selected.append(source["source_id"])
+
+        with self.assertRaisesRegex(ValueError, "provider unavailable"):
+            service.enrich_environment_from_speedcoach(
+                selected[1],
+                requested_by_role="COACH",
+                authorized_location_lookup=True,
+            )
+
+        prepared = service.prepare_source_bundle(selected)
+        coverage = {item["kind"]: item["status"] for item in prepared["source_coverage"]}
+        self.assertEqual(coverage["ENVIRONMENT"], "ABSENT")
+        self.assertTrue(
+            any(
+                gap.startswith("Environmental timeline is not supplied")
+                for gap in prepared["evidence_gaps"]
+            )
+        )
 
     def test_replay_investigation_uses_public_evidence_without_live_api(self) -> None:
         result = self.service.create_investigation(CASE_ID, mode="replay")

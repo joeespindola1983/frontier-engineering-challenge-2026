@@ -5,7 +5,7 @@ These JSON Schemas define the first normalized boundary between deterministic to
 - `training-plan.schema.json`: normalized coach prescription, including ranges and unresolved terms;
 - `recorded-session.schema.json`: matched sources, series references, and reconstructed segments;
 - `source-normalization-report.schema.json`: deterministic parser provenance, row counts, timing, coverage, and quality flags;
-- `environment-timeline.schema.json`: timestamped environmental evidence with an explicit wind-direction convention;
+- `environment-timeline.schema.json`: backward-compatible v1 synthetic and v2 provider-normalized environmental evidence, including provenance, session window, humidity, and an explicit wind-direction convention;
 - `evidence-claim.schema.json`: observed, derived, confirmed, inferred, conflicted, unknown, or unsupported claims;
 - `ground-truth.schema.json`: evaluator-only expected matches, segments, claims, abstentions, questions, and tolerances;
 - `case-summary.schema.json`: compact deterministic input shared by the baseline and WAKE;

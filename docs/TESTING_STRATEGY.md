@@ -40,6 +40,14 @@ latency.
 
 Role-aware product behavior is tested at three boundaries: the service rejects invalid uploader/origin combinations and unattributed confirmed answers; the client preserves uploader, answerer, recorder, and authority-basis fields; and the interface keeps the expected respondent visible without treating a coach or athlete statement as telemetry. These tests establish contract behavior only. Authentication and verified role identity remain outside the current process-local MVP.
 
+Historical-weather enrichment is tested at four deterministic boundaries: a
+timezone-aware telemetry stream or a local clock with an explicit IANA timezone produces a rounded, bounded lookup request; the
+provider adapter sends no raw route or identity data; a provider response
+normalizes to the versioned environment schema and is filtered to the query
+window; and provider absence or failure leaves the core plan plus SpeedCoach
+bundle usable. A live smoke test may verify provider compatibility only with a
+public synthetic coordinate and must not be described as an accuracy result.
+
 ## Commands
 
 Run the fast behavioral suite:

@@ -254,7 +254,14 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Allow an athlete or coach to upload any supported source while recording the uploader independently from the source origin and authority scope. Route each human checkpoint to an expected respondent and require confirmed answers to preserve the answerer, recorder, and authority basis. Treat athlete-direct answers, athlete reports recorded by coaches, and coach direct observations as distinct provenance paths; keep `UNKNOWN` valid.
 - **Rationale:** SpeedCoach files commonly remain with athletes while training plans originate with coaches, yet either person may forward either artifact. Restricting upload by role would block real club workflows, while assigning authority to the uploader would make forwarded evidence misleading. The same distinction is required for human answers: actual equipment use belongs primarily to the participant, while plan intent belongs to the coach.
 
+## 2026-08-29 - Keep historical weather opt-in, approximate, and noncausal
+
+- **Status:** accepted for the local product service; page controls and broader accuracy evaluation remain pending.
+- **Decision:** Use Open-Meteo Historical Forecast as the first historical-weather adapter. Require both the `--allow-weather` service flag and explicit per-request approximate-location authorization. Send only a two-decimal median coordinate and bounded date range, never route rows or identity. Require an observed timestamp offset or a user-confirmed IANA timezone for raw SpeedCoach local clocks, and preserve that time assumption in `wake.environment_timeline.v2`. Keep weather optional: lookup failure must not block a plan plus SpeedCoach bundle. Analyze values in SI units, restrict them to the session window, and return insufficient temporal resolution rather than infer an intra-session change from coarse hourly data.
+- **Rationale:** Historical wind, gust, temperature, and humidity can add material context without making the pre-existing mobile app mandatory. The provider data is modeled grid evidence rather than an on-boat measurement, so it can support time association and cross-session learning but cannot establish a causal performance effect or a local gust. Explicit consent, coordinate minimization, provenance, and abstention preserve that distinction.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
 - Schema revisions justified by parser and grader implementation evidence.
+- Historical-weather commercial plan, reanalysis fallback, and precedence for station or on-boat measurements.
