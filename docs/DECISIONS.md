@@ -398,6 +398,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Preserve all 102 activity records through deterministic storage, then send one compact combined-club scope to the bounded WAKE agent instead of calling GPT once per activity. Include the complete two-period coverage, the six deterministic comparison routes, the prior verified investigations, evidence references, and explicit causal and modality boundaries. Use `gpt-5.6-terra` at medium reasoning with `store: false`, strict structured output, four read-only tools, deterministic verification, and local artifact persistence. Require one new finite US$0.20 operational start authorization; this is not a provider billing cap.
 - **Rationale:** Raw records and supported numeric transformations should remain deterministic. GPT adds value by producing a coach-facing synthesis and priority memory across the period, while a single bounded call minimizes cost and prevents duplicated narratives from becoming the source of truth. The verified execution used all four tools, cost US$0.037384, and saved a 6,322-token report locally. Local persistence allows it to reopen without another paid request and avoids relying on provider-side application-state retention.
 
+## 2026-08-30 - Validate the combined memory with one same-input direct baseline
+
+- **Status:** accepted and frozen; direct baseline execution awaits a new finite authorization.
+- **Decision:** Compare the saved bounded WAKE memory with one direct call over the byte-equivalent semantic 102-activity summary, same model configuration, and same strict output schema. Give the baseline no tools. Freeze a seven-check non-scored capability contract before execution and preserve a neutral or unfavorable outcome without changing the contract. Keep per-athlete and per-crew mass generation outside the submission unless this comparison exposes a specific missing product capability.
+- **Rationale:** More generated prose does not itself validate club intelligence. One same-input comparison isolates whether tool-backed investigation changes supported-comparison coverage, abstention, environmental boundaries, priorities, questions, and deviation review. It adds stronger evidence at one paid start while retaining the selective-reasoning and deterministic-source-of-truth architecture.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

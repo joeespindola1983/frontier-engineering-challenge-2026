@@ -1,6 +1,6 @@
 # Interface review and visual evidence plan
 
-**Status:** final five-minute coach-path QA complete; video rehearsal remains
+**Status:** final five-minute coach-path QA and recording script complete; owner rehearsal remains
 
 The local browser rehearsal completed the full synthetic workflow: independent
 source selection, upload, replay-safe investigation, review, human checkpoint,
@@ -107,3 +107,6 @@ The next interface milestone should be accepted only when a coach or judge can
 identify the material deviation, the selected evidence, the unresolved human
 question, and the agentic work performed in under 30 seconds without reading the
 full briefing.
+
+The timed recording route, narration, and privacy checklist are frozen in
+[`VIDEO_DEMO_SCRIPT.md`](VIDEO_DEMO_SCRIPT.md).

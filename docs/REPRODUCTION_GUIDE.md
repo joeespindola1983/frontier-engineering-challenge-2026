@@ -88,6 +88,23 @@ set to `false`. The ten official direct-baseline answers and their costs are
 already preserved under
 `evaluation/runs/expanded-evaluation-v2/official-20260830/baseline/`.
 
+Freeze the additional direct baseline over the exact same 102-activity input as
+the saved combined-club WAKE memory:
+
+```bash
+uv run python scripts/post_regatta_baseline.py
+```
+
+This safe preflight costs US$0.00 and writes no model output. A new live result
+requires `--execute`, `OPENAI_API_KEY`, and a separate finite US$0.20 start
+authorization. The authorization is not a provider billing cap. Its non-scored
+capability contract was frozen before execution so an unfavorable or neutral
+result cannot be redesigned after the fact.
+
+When a verified baseline artifact exists, reproduce the non-scored audit with
+`scripts/score_post_regatta_comparison.py`; the exact command is documented in
+`evaluation/post-regatta-baseline/v1/README.md`.
+
 ## Reproduce the solution workflow
 
 Preview the bounded WAKE requests and four deterministic investigation tools

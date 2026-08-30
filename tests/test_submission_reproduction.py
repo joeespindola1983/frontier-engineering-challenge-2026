@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/reproduce_submission.sh"
 GUIDE = ROOT / "docs/REPRODUCTION_GUIDE.md"
+VIDEO_GUIDE = ROOT / "docs/VIDEO_DEMO_SCRIPT.md"
 
 
 class SubmissionReproductionTests(unittest.TestCase):
@@ -57,6 +58,24 @@ class SubmissionReproductionTests(unittest.TestCase):
         self.assertIn("scripts/start_dashboard.sh", guide)
         self.assertIn("83.76", guide)
         self.assertIn("49.00", guide)
+        self.assertIn("scripts/post_regatta_baseline.py", guide)
+        self.assertIn("US$0.20", guide)
+
+    def test_video_script_covers_the_required_five_minute_submission_story(self) -> None:
+        self.assertTrue(VIDEO_GUIDE.is_file())
+        script = VIDEO_GUIDE.read_text(encoding="utf-8")
+        for required in (
+            "00:00",
+            "04:50",
+            "simple baseline",
+            "102 activities",
+            "human checkpoint",
+            "83.76",
+            "49.00",
+            "removed experiment",
+            "US$0.00",
+        ):
+            self.assertIn(required, script)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+{
+  "api_called": false,
+  "authorization": {
+    "authorized": false,
+    "provider_cap": false,
+    "required_total_usd": 0.2
+  },
+  "boundary": "The preflight contains no model output. The direct baseline receives the same compact input and output schema as the saved WAKE memory, without tools. The capability contract was frozen before execution.",
+  "capability_contract": {
+    "evaluation_type": "NON_SCORED_CAPABILITY_AUDIT",
+    "path": "capability-contract.json",
+    "sha256": "f5d816f21d905302c6512285499b4e3d033f65e9eb41bba0d873513e0a14096a"
+  },
+  "created_at": "2026-08-30T20:43:06+00:00",
+  "input": {
+    "path": "inputs/club-post-regatta-memory.json",
+    "semantic_sha256": "af3bf12be09d207d83f3500d3a614d342ff40fe667b6453ba806ae4728336530",
+    "sha256": "91d9259cc651a781d312bc9f53755b7aab9827aba27e65b1e74cb9bdda9d9d5e"
+  },
+  "request": {
+    "path": "requests/club-post-regatta-memory.direct_baseline.json",
+    "sha256": "ae4d44e55a9e946bc92cc727bb7b635d5f337733f17790b95b1b28d7e13e44e8",
+    "workflow": "DIRECT_BASELINE"
+  },
+  "request_count": 1,
+  "saved_reports": {
+    "count": 0,
+    "reopen_cost_usd": 0
+  },
+  "schema_version": "wake.post_regatta_baseline_dry_run.v1"
+}

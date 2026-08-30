@@ -1,0 +1,63 @@
+{
+  "boundary": "This audit compares observable capability coverage only. It is not a post-hoc weighted quality score and does not establish superiority over a human coach.",
+  "checks": [
+    {
+      "check_id": "supported_comparisons",
+      "description": "Preserve every narrow comparison that the deterministic evidence marks as supported.",
+      "expected_comparison_ids": [
+        "comparison-lucas-low-rate",
+        "comparison-bianca-2000m",
+        "comparison-marina-activation"
+      ],
+      "expected_status": "SUPPORTED"
+    },
+    {
+      "check_id": "club_trend_abstention",
+      "description": "Explicitly refuse a club athletic-performance trend.",
+      "expected_comparison_id": "comparison-club-performance-trend",
+      "expected_status": "INSUFFICIENT"
+    },
+    {
+      "check_id": "environmental_noncausality",
+      "description": "Treat the Atlas water observation as wind-confounded context rather than crew causation.",
+      "expected_comparison_id": "comparison-atlas-water-pattern",
+      "expected_status": "INSUFFICIENT"
+    },
+    {
+      "check_id": "missing_context_priorities",
+      "description": "Prioritize the missing 4x plan, women's 8x context, and Andre record reconciliation.",
+      "expected_evidence_refs": [
+        "record:club-4x-mixed-b-20260827-pm",
+        "record:club-8x-women-20260828-evening",
+        "post-athlete-andre-expected-20260911"
+      ]
+    },
+    {
+      "check_id": "unresolved_human_questions",
+      "description": "Request human or source context for every unresolved route without inventing an answer.",
+      "expected_evidence_refs": [
+        "record:club-4x-mixed-b-20260827-pm",
+        "record:club-8x-women-20260828-evening",
+        "post-athlete-andre-expected-20260911",
+        "post-athlete-sofia-erg-interval-20260918"
+      ]
+    },
+    {
+      "check_id": "verified_deviation_review",
+      "description": "Route both verification-passed session deviations to coach review without inferring their cause.",
+      "expected_evidence_refs": [
+        "verified:club-bridge-mixed-20260820-spm",
+        "verified:club-atlas-men-20260828-recovery"
+      ]
+    },
+    {
+      "check_id": "evidence_and_human_review_boundary",
+      "description": "Use only supplied evidence references, keep priorities human-reviewed, and preserve water/indoor and causal boundaries.",
+      "uses_existing_strict_verifier": true
+    }
+  ],
+  "evaluation_type": "NON_SCORED_CAPABILITY_AUDIT",
+  "frozen_before_baseline_execution": true,
+  "input_sha256": "af3bf12be09d207d83f3500d3a614d342ff40fe667b6453ba806ae4728336530",
+  "schema_version": "wake.post_regatta_capability_contract.v1"
+}

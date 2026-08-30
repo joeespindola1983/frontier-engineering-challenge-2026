@@ -120,6 +120,23 @@ cost US$0.037384, and can be reopened at US$0.00. Any new live execution remains
 requires `--execute`, `OPENAI_API_KEY`, and a new finite US$0.20 start
 authorization. The authorization is not a provider billing cap.
 
+Freeze the direct baseline over that exact same combined-club input without a
+model call:
+
+```bash
+uv run python scripts/post_regatta_baseline.py
+```
+
+The baseline receives the same compact summary and strict output schema but no
+tools. A non-scored capability contract is frozen with the request. Live
+execution remains separate and requires one new finite US$0.20 start
+authorization.
+
+The frozen result comparison is implemented by
+`scripts/score_post_regatta_comparison.py`. It reports seven observable
+capabilities and preserves neutral, mixed, or adverse outcomes without
+manufacturing a post-hoc weighted score.
+
 Grade a complete directory of structured outputs without network access:
 
 ```bash

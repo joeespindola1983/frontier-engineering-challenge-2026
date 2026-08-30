@@ -1,0 +1,289 @@
+{
+  "input": "{\"activity_summaries\":[{\"activity_count\":52,\"evidence_refs\":[\"batch:manifest\"],\"period\":\"PRE_REGATTA\"},{\"activity_count\":50,\"evidence_refs\":[\"package:wake-demo-club-post-regatta-v1\"],\"period\":\"POST_REGATTA\"}],\"attention_signals\":[{\"date\":\"2026-08-20\",\"evidence_refs\":[\"record:club-bridge-mixed-20260820-spm\"],\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-bridge-mixed-20260820-spm\",\"statement\":\"A bounded session investigation is preserved.\"},{\"date\":\"2026-08-27\",\"evidence_refs\":[\"record:club-4x-mixed-b-20260827-pm\"],\"route\":\"SOURCE_REQUIRED\",\"session_id\":\"club-4x-mixed-b-20260827-pm\",\"statement\":\"A planned workout source is missing.\"},{\"date\":\"2026-08-28\",\"evidence_refs\":[\"record:club-atlas-men-20260828-recovery\"],\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-atlas-men-20260828-recovery\",\"statement\":\"A bounded session investigation is preserved.\"},{\"date\":\"2026-08-28\",\"evidence_refs\":[\"record:club-8x-women-20260828-evening\"],\"route\":\"HUMAN_CONTEXT_REQUIRED\",\"session_id\":\"club-8x-women-20260828-evening\",\"statement\":\"Athlete context is required before interpretation.\"},{\"date\":null,\"evidence_refs\":[\"record:activity-lucas-erg-20260818\",\"post-athlete-lucas-erg-1000m-20260917\"],\"route\":\"PERIOD_COMPARISON\",\"session_id\":\"lucas-low-rate-1000m\",\"statement\":\"Lucas completed the comparable 1,000 m low-rate Concept2 record 4 seconds faster than the pre-regatta synthetic reference at the same 12 SPM.\"},{\"date\":null,\"evidence_refs\":[\"record:activity-bianca-erg-20260824\",\"post-athlete-bianca-erg-2000m-20260916\"],\"route\":\"PERIOD_COMPARISON\",\"session_id\":\"bianca-2000m\",\"statement\":\"Bianca completed the comparable 2,000 m Concept2 record 12 seconds slower than the pre-regatta synthetic reference at the same 26 SPM average.\"},{\"date\":null,\"evidence_refs\":[\"record:activity-marina-erg-20260820\",\"post-athlete-marina-erg-1000m-20260915\"],\"route\":\"PERIOD_COMPARISON\",\"session_id\":\"marina-1000m-activation\",\"statement\":\"Marina's comparable 1,000 m activation was within 1 second of the pre-regatta synthetic reference.\"},{\"date\":null,\"evidence_refs\":[\"post-crew-4x-men-2026-09-16\"],\"route\":\"CONTEXT_REQUIRED\",\"session_id\":\"atlas-high-wind-water\",\"statement\":\"Atlas Men 4x recorded a different on-water pace pattern during a 7.8 m/s tail-cross wind session.\"},{\"date\":null,\"evidence_refs\":[\"post-athlete-andre-expected-20260911\"],\"route\":\"HUMAN_OR_SOURCE_REQUIRED\",\"session_id\":\"andre-participation-gap\",\"statement\":\"Andre has one expected post-regatta training day without an individual or linked crew record.\"},{\"date\":null,\"evidence_refs\":[\"post-athlete-sofia-erg-interval-20260918\"],\"route\":\"HUMAN_OR_SOURCE_REQUIRED\",\"session_id\":\"sofia-unmatched-interval\",\"statement\":\"Sofia's post-regatta interval has no equivalent pre-regatta workout shape in the package.\"}],\"boundaries\":[\"Water and indoor distance remain separate and must not be summed into one performance total.\",\"Observed faster, slower, or stable values do not establish fitness, strength, stamina, technique, or causation.\",\"Weather-confounded water evidence requires context rather than attribution to a crew.\",\"Missing activity creates a human question rather than a commitment or readiness conclusion.\",\"Every identity and activity in this public package is fictional and real-informed synthetic.\"],\"comparison_readiness\":{\"controlled_observations\":[{\"comparison_id\":\"lucas-low-rate-1000m\",\"evidence_refs\":[\"record:activity-lucas-erg-20260818\",\"post-athlete-lucas-erg-1000m-20260917\"],\"limitations\":[\"This is a within-workout observed difference; the evidence does not establish why the time changed.\"],\"statement\":\"Lucas completed the comparable 1,000 m low-rate Concept2 record 4 seconds faster than the pre-regatta synthetic reference at the same 12 SPM.\",\"status\":\"SUPPORTED\"},{\"comparison_id\":\"bianca-2000m\",\"evidence_refs\":[\"record:activity-bianca-erg-20260824\",\"post-athlete-bianca-erg-2000m-20260916\"],\"limitations\":[\"Fatigue, intent, resistance setting, recovery, and other human context remain unknown.\"],\"statement\":\"Bianca completed the comparable 2,000 m Concept2 record 12 seconds slower than the pre-regatta synthetic reference at the same 26 SPM average.\",\"status\":\"SUPPORTED\"},{\"comparison_id\":\"marina-1000m-activation\",\"evidence_refs\":[\"record:activity-marina-erg-20260820\",\"post-athlete-marina-erg-1000m-20260915\"],\"limitations\":[\"The observation is narrow to this workout shape and does not establish a broader trend.\"],\"statement\":\"Marina's comparable 1,000 m activation was within 1 second of the pre-regatta synthetic reference.\",\"status\":\"SUPPORTED\"}],\"performance_trend_supported\":false,\"reason\":\"Three narrow workout comparisons support observed numeric differences only. The package does not control intent, effort, recovery, equipment, environment, or physiology well enough for an athletic-performance or causal trend.\",\"repeated_context_groups\":[{\"evidence_refs\":[\"record:activity-camila-erg-20260819\",\"record:activity-marina-erg-20260820\"],\"session_ids\":[\"activity-camila-erg-20260819\",\"activity-marina-erg-20260820\"],\"signature\":\"ERG|FIXED_DISTANCE|1,000 m activation before water|NONE|NONE\"},{\"evidence_refs\":[\"record:activity-lucas-solo-20260824\",\"record:activity-camila-solo-20260827\"],\"session_ids\":[\"activity-lucas-solo-20260824\",\"activity-camila-solo-20260827\"],\"signature\":\"WATER_SOLO|NONE|Individual water session after crew cancellation|NONE|boat-1x-spare\"},{\"evidence_refs\":[\"record:activity-andre-erg-20260826\",\"record:activity-bruno-erg-20260826\",\"record:activity-caio-erg-20260826\",\"record:activity-diego-erg-20260826\",\"record:activity-lucas-erg-20260826\",\"record:activity-rafael-erg-20260826\"],\"session_ids\":[\"activity-andre-erg-20260826\",\"activity-bruno-erg-20260826\",\"activity-caio-erg-20260826\",\"activity-diego-erg-20260826\",\"activity-lucas-erg-20260826\",\"activity-rafael-erg-20260826\"],\"signature\":\"ERG|INTERVAL|6 \\u00d7 2 km indoor alternative after 8x cancellation|NONE|NONE\"},{\"evidence_refs\":[\"record:activity-helena-erg-20260827\",\"record:activity-marina-erg-20260827\"],\"session_ids\":[\"activity-helena-erg-20260827\",\"activity-marina-erg-20260827\"],\"signature\":\"ERG|FIXED_DISTANCE|10 km indoor alternative after 4x cancellation|NONE|NONE\"}]},\"coverage\":{\"active_days\":20,\"activity_count\":102,\"athlete_count\":16,\"club_activity_count\":102,\"crew_count\":10,\"indoor_activity_count\":34,\"period_count\":2,\"water_activity_count\":68},\"evidence_catalog\":{\"batch:manifest\":\"Content-addressed two-week public batch manifest.\",\"package:wake-demo-club-post-regatta-v1\":\"Content-addressed real-informed synthetic post-regatta package manifest.\",\"post-athlete-andre-expected-20260911\":\"Synthetic expected-training marker with no linked activity for Andre.\",\"post-athlete-bianca-erg-2000m-20260916\":\"Synthetic post-regatta 2,000 m Concept2 record for Bianca.\",\"post-athlete-lucas-erg-1000m-20260917\":\"Synthetic post-regatta 1,000 m Concept2 low-rate record for Lucas.\",\"post-athlete-marina-erg-1000m-20260915\":\"Synthetic post-regatta 1,000 m Concept2 activation record for Marina.\",\"post-athlete-sofia-erg-interval-20260918\":\"Synthetic post-regatta Concept2 interval record for Sofia without a matched pre-regatta workout.\",\"post-crew-4x-men-2026-09-16\":\"Synthetic Atlas Men 4x water record with 7.8 m/s tail-cross wind context.\",\"record:activity-andre-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-bianca-erg-20260824\":\"Deterministically normalized ERG activity on 2026-08-24.\",\"record:activity-bruno-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-caio-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-camila-erg-20260819\":\"Deterministically normalized ERG activity on 2026-08-19.\",\"record:activity-camila-solo-20260827\":\"Deterministically normalized WATER_SOLO activity on 2026-08-27.\",\"record:activity-diego-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-felipe-erg-20260825\":\"Deterministically normalized ERG activity on 2026-08-25.\",\"record:activity-felipe-solo-20260826\":\"Deterministically normalized WATER_SOLO activity on 2026-08-26.\",\"record:activity-helena-erg-20260827\":\"Deterministically normalized ERG activity on 2026-08-27.\",\"record:activity-lucas-erg-20260818\":\"Deterministically normalized ERG activity on 2026-08-18.\",\"record:activity-lucas-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-lucas-solo-20260824\":\"Deterministically normalized WATER_SOLO activity on 2026-08-24.\",\"record:activity-marina-erg-20260820\":\"Deterministically normalized ERG activity on 2026-08-20.\",\"record:activity-marina-erg-20260827\":\"Deterministically normalized ERG activity on 2026-08-27.\",\"record:activity-rafael-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-sofia-erg-20260824\":\"Deterministically normalized ERG activity on 2026-08-24.\",\"record:club-2x-men-20260817-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-2x-men-20260819-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-2x-men-20260827-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-27.\",\"record:club-2x-mixed-a-20260817-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-2x-mixed-a-20260824-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-24.\",\"record:club-2x-mixed-a-20260826-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-2x-mixed-b-20260818-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-2x-mixed-b-20260821-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-2x-mixed-b-20260825-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-2x-mixed-b-20260826-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-2x-women-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-2x-women-20260820-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-2x-women-20260825-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-2x-women-20260828-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-men-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-4x-men-20260821-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-4x-men-20260826-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-4x-mixed-a-20260819-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-4x-mixed-a-20260821-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-4x-mixed-a-20260825-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-4x-mixed-a-20260828-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-mixed-b-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-4x-mixed-b-20260820-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-4x-mixed-b-20260827-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-27.\",\"record:club-4x-mixed-b-20260828-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-women-20260817-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-4x-women-20260819-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-4x-women-20260824-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-24.\",\"record:club-8x-men-20260819-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-8x-men-20260821-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-8x-women-20260820-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-8x-women-20260825-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-8x-women-20260828-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-atlas-men-20260828-recovery\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-bridge-mixed-20260820-spm\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"verified:club-atlas-men-20260828-recovery\":\"Verified bounded-agent result for club-atlas-men-20260828-recovery.\",\"verified:club-bridge-mixed-20260820-spm\":\"Verified bounded-agent result for club-bridge-mixed-20260820-spm.\"},\"modality_totals\":{\"post_regatta\":{\"reason\":\"The second package preserves activity-level records and comparison evidence, but does not expose a cross-modality combined-distance total.\",\"status\":\"COUNT_COVERAGE_ONLY\"},\"pre_regatta\":{\"indoor_distance_m\":106050.0,\"water_distance_m\":366225.8}},\"model_called\":false,\"period\":{\"end\":\"2026-09-18\",\"start\":\"2026-08-17\"},\"period_comparisons\":[{\"comparison_id\":\"lucas-low-rate-1000m\",\"evidence_refs\":[\"record:activity-lucas-erg-20260818\",\"post-athlete-lucas-erg-1000m-20260917\"],\"limitations\":[\"This is a within-workout observed difference; the evidence does not establish why the time changed.\"],\"statement\":\"Lucas completed the comparable 1,000 m low-rate Concept2 record 4 seconds faster than the pre-regatta synthetic reference at the same 12 SPM.\",\"status\":\"SUPPORTED\"},{\"comparison_id\":\"bianca-2000m\",\"evidence_refs\":[\"record:activity-bianca-erg-20260824\",\"post-athlete-bianca-erg-2000m-20260916\"],\"limitations\":[\"Fatigue, intent, resistance setting, recovery, and other human context remain unknown.\"],\"statement\":\"Bianca completed the comparable 2,000 m Concept2 record 12 seconds slower than the pre-regatta synthetic reference at the same 26 SPM average.\",\"status\":\"SUPPORTED\"},{\"comparison_id\":\"marina-1000m-activation\",\"evidence_refs\":[\"record:activity-marina-erg-20260820\",\"post-athlete-marina-erg-1000m-20260915\"],\"limitations\":[\"The observation is narrow to this workout shape and does not establish a broader trend.\"],\"statement\":\"Marina's comparable 1,000 m activation was within 1 second of the pre-regatta synthetic reference.\",\"status\":\"SUPPORTED\"},{\"comparison_id\":\"atlas-high-wind-water\",\"evidence_refs\":[\"post-crew-4x-men-2026-09-16\"],\"limitations\":[\"Wind, current, lineup, equipment, course, and session intent prevent attribution to the crew.\"],\"statement\":\"Atlas Men 4x recorded a different on-water pace pattern during a 7.8 m/s tail-cross wind session.\",\"status\":\"CONFLICTED\"},{\"comparison_id\":\"andre-participation-gap\",\"evidence_refs\":[\"post-athlete-andre-expected-20260911\"],\"limitations\":[\"Rest, absence, unlinked evidence, and another modality remain possible explanations.\"],\"statement\":\"Andre has one expected post-regatta training day without an individual or linked crew record.\",\"status\":\"INSUFFICIENT\"},{\"comparison_id\":\"sofia-unmatched-interval\",\"evidence_refs\":[\"post-athlete-sofia-erg-interval-20260918\"],\"limitations\":[\"The record can be preserved, but a direction-of-change comparison is unsupported.\"],\"statement\":\"Sofia's post-regatta interval has no equivalent pre-regatta workout shape in the package.\",\"status\":\"INSUFFICIENT\"}],\"pilot_id\":\"club-post-regatta-memory\",\"provenance\":\"REAL_INFORMED_SYNTHETIC\",\"routing\":{\"AGENT_VERIFIED\":2,\"CONTEXT_REQUIRED\":1,\"HUMAN_CONTEXT_REQUIRED\":1,\"HUMAN_OR_SOURCE_REQUIRED\":2,\"PERIOD_COMPARISON\":3,\"POST_HUMAN_OR_SOURCE_REQUIRED\":2,\"RECONSTRUCTED_ALTERNATIVE\":17,\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\":31,\"SOURCE_REQUIRED\":1},\"schema_version\":\"wake.longitudinal_summary.v1\",\"scope\":{\"display_name\":\"WAKE Demo Club\",\"entity_id\":\"wake-demo-club\",\"type\":\"CLUB\"},\"verified_investigations\":[{\"case_id\":\"club-bridge-mixed-20260820-spm\",\"deviations\":[{\"segment_ref\":\"work-02\",\"type\":\"SPM_OUTSIDE_TARGET\"}],\"evidence_refs\":[\"verified:club-bridge-mixed-20260820-spm\"],\"scope_athlete_ids\":[\"athlete-bruno\",\"athlete-camila\"],\"verification_passed\":true},{\"case_id\":\"club-atlas-men-20260828-recovery\",\"deviations\":[{\"segment_ref\":\"recovery-02\",\"type\":\"RECOVERY_DURATION_OUTSIDE_TARGET\"}],\"evidence_refs\":[\"verified:club-atlas-men-20260828-recovery\"],\"scope_athlete_ids\":[\"athlete-lucas\",\"athlete-rafael\",\"athlete-bruno\",\"athlete-diego\"],\"verification_passed\":true}]}",
+  "instructions": "You are producing a coach-facing longitudinal rowing briefing from one compact, ground-truth-free WAKE summary.\n\nUse only supplied evidence. Separate observed facts from comparisons, priorities, questions, and recommendations. Cite every material item with an evidence reference from the summary. Never merge water and indoor distance. Do not infer visible technique, crew synchronization, injury, medical state, muscular strength, stamina, commitment, fitness, or athletic improvement. A repeated title alone does not establish a comparable performance test. Environmental association is not causation.\n\nRecommendations require human review and may request information or propose what the coach should inspect. Do not autonomously prescribe training, select a crew, or declare a performance trend when the summary marks trend support as false. Return only the required structured output.\n",
+  "max_output_tokens": 6000,
+  "model": "gpt-5.6-terra",
+  "reasoning": {
+    "effort": "medium"
+  },
+  "service_tier": "default",
+  "store": false,
+  "text": {
+    "format": {
+      "name": "wake_longitudinal_intelligence_v1",
+      "schema": {
+        "$defs": {
+          "comparison": {
+            "additionalProperties": false,
+            "properties": {
+              "comparison_id": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "SUPPORTED",
+                  "INSUFFICIENT",
+                  "CONFLICTED"
+                ]
+              }
+            },
+            "required": [
+              "comparison_id",
+              "status",
+              "statement",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          },
+          "evidence_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "fact": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "fact_id": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fact_id",
+              "statement",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "priority": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "priority_id": {
+                "type": "string"
+              },
+              "rank": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "requires_human_review": {
+                "const": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "priority_id",
+              "rank",
+              "action",
+              "reason",
+              "requires_human_review",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "question": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "expected_respondent": {
+                "enum": [
+                  "ATHLETE",
+                  "COACH",
+                  "ATHLETE_OR_COACH"
+                ]
+              },
+              "question": {
+                "type": "string"
+              },
+              "question_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question_id",
+              "expected_respondent",
+              "question",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "recommendation": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "recommendation_id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "REVIEW_REQUIRED",
+                  "INFORMATION_REQUEST"
+                ]
+              }
+            },
+            "required": [
+              "recommendation_id",
+              "status",
+              "action",
+              "rationale",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          }
+        },
+        "$id": "https://wake-rowing.dev/schemas/longitudinal-intelligence-output.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "boundaries": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "coach_briefing": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "comparisons": {
+            "items": {
+              "$ref": "#/$defs/comparison"
+            },
+            "type": "array"
+          },
+          "headline": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "observed_facts": {
+            "items": {
+              "$ref": "#/$defs/fact"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "pilot_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priorities": {
+            "items": {
+              "$ref": "#/$defs/priority"
+            },
+            "type": "array"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/$defs/recommendation"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "wake.longitudinal_intelligence_output.v1",
+            "type": "string"
+          },
+          "scope": {
+            "additionalProperties": false,
+            "properties": {
+              "entity_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "ATHLETE",
+                  "CLUB"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "entity_id"
+            ],
+            "type": "object"
+          },
+          "unresolved_questions": {
+            "items": {
+              "$ref": "#/$defs/question"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "pilot_id",
+          "scope",
+          "headline",
+          "observed_facts",
+          "comparisons",
+          "priorities",
+          "unresolved_questions",
+          "recommendations",
+          "boundaries",
+          "coach_briefing"
+        ],
+        "title": "WAKE Longitudinal Intelligence Output",
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    }
+  }
+}
