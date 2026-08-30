@@ -4,7 +4,7 @@ WAKE uses test-driven development for deterministic behavior and fixed-case eval
 
 ## Development loop
 
-For parsers, normalization, alignment, segmentation, metric trust, derived metrics, synthetic-data generation, schemas, and graders:
+For parsers, normalization, alignment, segmentation, metric trust, derived metrics, source and human-answer provenance, question routing, synthetic-data generation, schemas, and graders:
 
 1. **Red:** write the smallest test that describes the next behavior or reproduces a bug, then confirm it fails for the expected reason.
 2. **Green:** implement the smallest production change that makes the test pass.
@@ -37,6 +37,8 @@ latency.
 3. **Fixture tests:** public cases, deterministic generation, privacy invariants, and expected failure modes.
 4. **Evaluation tests:** baseline and WAKE outputs against fixed cases and the rubric.
 5. **End-to-end tests:** the complete investigation workflow, including tool traces and final structured output.
+
+Role-aware product behavior is tested at three boundaries: the service rejects invalid uploader/origin combinations and unattributed confirmed answers; the client preserves uploader, answerer, recorder, and authority-basis fields; and the interface keeps the expected respondent visible without treating a coach or athlete statement as telemetry. These tests establish contract behavior only. Authentication and verified role identity remain outside the current process-local MVP.
 
 ## Commands
 

@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 REPLAY_OUTPUTS = ROOT / "evaluation/runs/comparison-v1-20260829/agent/outputs"
 PUBLIC_REPLAY_CASE_ID = "case-002-wind-shift-plan-deviation"
 VALID_ANSWERS = {"YES", "NO", "UNKNOWN"}
+HUMAN_ROLES = {"ATHLETE", "COACH"}
+SOURCE_ORIGIN_ROLES = {"ATHLETE", "COACH", "DEVICE", "SERVICE"}
+AUTHORITY_BASES = {
+    "DIRECT_PARTICIPANT",
+    "DIRECT_OBSERVATION",
+    "RELAYED_REPORT",
+    "UNKNOWN",
+}
 SOURCE_ORDER = ("PLAN", "SPEEDCOACH", "MOBILE", "ENVIRONMENT", "CONTEXT")
 SOURCE_KINDS = set(SOURCE_ORDER)
 CORE_SOURCE_KINDS = {"PLAN", "SPEEDCOACH"}
@@ -51,6 +59,26 @@ SOURCE_FILENAMES = {
 }
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
 DEFAULT_REQUIRED_COST_AUTHORIZATION_USD = 0.20
+DEFAULT_SOURCE_ORIGIN = {
+    "PLAN": "COACH",
+    "SPEEDCOACH": "DEVICE",
+    "MOBILE": "DEVICE",
+    "ENVIRONMENT": "SERVICE",
+}
+SOURCE_AUTHORITY_SCOPE = {
+    "PLAN": "TRAINING_PRESCRIPTION",
+    "SPEEDCOACH": "MEASURED_TELEMETRY",
+    "MOBILE": "MEASURED_TELEMETRY",
+    "ENVIRONMENT": "ENVIRONMENT_OBSERVATION",
+    "CONTEXT": "HUMAN_CONTEXT",
+}
+ALLOWED_SOURCE_ORIGINS = {
+    "PLAN": {"ATHLETE", "COACH"},
+    "SPEEDCOACH": {"DEVICE"},
+    "MOBILE": {"DEVICE"},
+    "ENVIRONMENT": {"ATHLETE", "COACH", "SERVICE"},
+    "CONTEXT": {"ATHLETE", "COACH"},
+}
 
 
 def load_product_workflow_assets(root: Path = ROOT) -> tuple[dict, str]:
@@ -67,16 +95,102 @@ def validate_required_cost_authorization(value: float) -> float:
     return value
 
 
-def human_confirmation_from_answer(question: str, answer: str) -> dict:
+def checkpoint_authority(question: str) -> dict:
+    normalized = question.casefold()
+    athlete_signals = (
+        "was the resistance band used",
+        "equipment used",
+        "equipment malfunction",
+        "perceived effort",
+        "discomfort",
+        "what happened",
+    )
+    coach_signals = (
+        "official prescription",
+        "coach observation",
+        "training intent",
+        "was prescribed",
+    )
+    if any(signal in normalized for signal in athlete_signals):
+        expected_role = "ATHLETE"
+        scope = "SESSION_EXECUTION"
+    elif any(signal in normalized for signal in coach_signals):
+        expected_role = "COACH"
+        scope = "TRAINING_INTENT"
+    else:
+        expected_role = "ATHLETE_OR_COACH"
+        scope = "HUMAN_CONTEXT"
+    return {
+        "expected_respondent_role": expected_role,
+        "authority_scope": scope,
+    }
+
+
+def validate_answer_provenance(
+    *,
+    answer: str,
+    answered_by_role: str | None,
+    recorded_by_role: str | None,
+    authority_basis: str | None,
+) -> None:
+    if answer == "UNKNOWN":
+        return
+    if (
+        answered_by_role not in HUMAN_ROLES
+        or recorded_by_role not in HUMAN_ROLES
+        or authority_basis not in AUTHORITY_BASES - {"UNKNOWN"}
+    ):
+        raise ValueError(
+            "Confirmed checkpoint answers require answer provenance: valid "
+            "answerer, recorder, and authority basis."
+        )
+    if authority_basis == "DIRECT_PARTICIPANT" and answered_by_role != "ATHLETE":
+        raise ValueError("DIRECT_PARTICIPANT requires an athlete answerer.")
+    if authority_basis == "RELAYED_REPORT" and answered_by_role == recorded_by_role:
+        raise ValueError("RELAYED_REPORT requires different answerer and recorder roles.")
+    if authority_basis == "DIRECT_OBSERVATION" and answered_by_role != recorded_by_role:
+        raise ValueError("DIRECT_OBSERVATION must be recorded by the observer.")
+
+
+def human_confirmation_from_answer(
+    question: str,
+    answer: str,
+    *,
+    expected_respondent_role: str,
+    answered_by_role: str | None = None,
+    recorded_by_role: str | None = None,
+    authority_basis: str | None = None,
+) -> dict:
+    validate_answer_provenance(
+        answer=answer,
+        answered_by_role=answered_by_role,
+        recorded_by_role=recorded_by_role,
+        authority_basis=authority_basis,
+    )
     if answer in {"YES", "NO"}:
         label = "Yes" if answer == "YES" else "No"
+        source = {
+            ("ATHLETE", "ATHLETE", "DIRECT_PARTICIPANT"): "Athlete direct confirmation",
+            ("ATHLETE", "COACH", "RELAYED_REPORT"): "Athlete report recorded by coach",
+            ("COACH", "COACH", "DIRECT_OBSERVATION"): "Coach direct observation",
+        }.get(
+            (answered_by_role, recorded_by_role, authority_basis),
+            "Attributed human confirmation",
+        )
+        role_label = "Athlete" if answered_by_role == "ATHLETE" else "Coach"
         return {
             "status": "HUMAN_CONFIRMED",
             "answer": answer,
             "value": answer == "YES",
-            "source": "Coach confirmation",
+            "source": source,
             "question": question,
-            "statement": f'Coach answered "{label}" to: {question}',
+            "expectedRespondentRole": expected_respondent_role,
+            "answeredByRole": answered_by_role,
+            "recordedByRole": recorded_by_role,
+            "authorityBasis": authority_basis,
+            "matchesExpectedRespondent": expected_respondent_role
+            in {answered_by_role, "ATHLETE_OR_COACH"},
+            "statement": f'{role_label} answered "{label}" to: {question} ({source}).',
         }
     return {
         "status": "UNKNOWN",
@@ -84,6 +198,11 @@ def human_confirmation_from_answer(question: str, answer: str) -> dict:
         "value": None,
         "source": None,
         "question": question,
+        "expectedRespondentRole": expected_respondent_role,
+        "answeredByRole": None,
+        "recordedByRole": recorded_by_role,
+        "authorityBasis": "UNKNOWN",
+        "matchesExpectedRespondent": False,
         "statement": f"No human confirmation was supplied for: {question}",
     }
 
@@ -143,7 +262,15 @@ class WakeProductService:
             "CONTEXT": "WAKE_SESSION_CONTEXT_JSON",
         }[kind]
 
-    def upload_source(self, *, kind: str, name: str, content: bytes) -> dict:
+    def upload_source(
+        self,
+        *,
+        kind: str,
+        name: str,
+        content: bytes,
+        uploaded_by_role: str = "COACH",
+        origin_role: str | None = None,
+    ) -> dict:
         kind = kind.upper()
         if kind not in SOURCE_KINDS:
             raise ValueError(f"Unsupported source kind: {kind}")
@@ -159,6 +286,14 @@ class WakeProductService:
             raise ValueError("Source content is empty.")
         if len(content) > MAX_SOURCE_BYTES:
             raise ValueError("Source exceeds the 10 MiB prototype limit.")
+        uploaded_by_role = uploaded_by_role.upper()
+        if uploaded_by_role not in HUMAN_ROLES:
+            raise ValueError("Unsupported source uploader role.")
+        origin_role = (origin_role or DEFAULT_SOURCE_ORIGIN.get(kind) or uploaded_by_role).upper()
+        if origin_role not in SOURCE_ORIGIN_ROLES:
+            raise ValueError("Unsupported source origin role.")
+        if origin_role not in ALLOWED_SOURCE_ORIGINS[kind]:
+            raise ValueError(f"Unsupported source origin role for {kind}.")
 
         normalization = None
         normalized_content = None
@@ -174,7 +309,10 @@ class WakeProductService:
             normalization = normalized.report
             normalized_content = normalized.normalized_csv
         digest = hashlib.sha256(content).hexdigest()
-        source_id = f"source-{kind.lower()}-{digest[:12]}"
+        identity_digest = hashlib.sha256(
+            f"{digest}:{uploaded_by_role}:{origin_role}".encode("utf-8")
+        ).hexdigest()
+        source_id = f"source-{kind.lower()}-{identity_digest[:12]}"
         stored = {
             "source_id": source_id,
             "kind": kind,
@@ -183,6 +321,11 @@ class WakeProductService:
             "format": source_format,
             "sha256": digest,
             "size_bytes": len(content),
+            "provenance": {
+                "uploaded_by_role": uploaded_by_role,
+                "origin_role": origin_role,
+                "authority_scope": SOURCE_AUTHORITY_SCOPE[kind],
+            },
             **({"normalization": normalization} if normalization else {}),
             "_content": content,
             "_normalized_content": normalized_content,
@@ -269,7 +412,14 @@ class WakeProductService:
             separators=(",", ":"),
         ).encode("utf-8")
         summary_digest = hashlib.sha256(serialized_summary).hexdigest()
-        bundle_id = f"source-bundle-{summary_digest[:16]}"
+        contribution_identity = json.dumps(
+            [grouped[kind]["source_id"] for kind in SOURCE_ORDER if kind in grouped],
+            separators=(",", ":"),
+        ).encode("utf-8")
+        bundle_digest = hashlib.sha256(
+            serialized_summary + b"\0" + contribution_identity
+        ).hexdigest()
+        bundle_id = f"source-bundle-{bundle_digest[:16]}"
         response = {
             "bundle_id": bundle_id,
             "case_id": summary["case_id"],
@@ -294,6 +444,14 @@ class WakeProductService:
                     "row_count": grouped[source["kind"]]["normalization"]["row_count"],
                 }
                 for source in summary["sources"]
+            ],
+            "source_contributions": [
+                {
+                    "kind": kind,
+                    "provenance": grouped[kind]["provenance"],
+                }
+                for kind in SOURCE_ORDER
+                if kind in grouped
             ],
             "evidence_gaps": summary["evidence_gaps"],
             "cost_authorization": {
@@ -406,6 +564,7 @@ class WakeProductService:
                         "kind": source["kind"],
                         "evidence_refs": source["evidence_refs"],
                         "quality_flags": source["quality_flags"],
+                        "provenance": grouped[source["kind"]]["provenance"],
                     }
                     for source in summary["sources"]
                 ],
@@ -421,7 +580,7 @@ class WakeProductService:
             },
             "context": {
                 "input_notice": known_context.get(
-                    "input_notice", "Coach-uploaded local evidence."
+                    "input_notice", "Locally uploaded evidence."
                 ),
                 "session_candidate": known_context.get("session_candidate", {}),
             },
@@ -549,6 +708,12 @@ class WakeProductService:
         checkpoint_id = f"checkpoint-{identity}"
         goal_id = f"goal-{case_id}"
         questions = review["analysis"].get("follow_up_questions", [])
+        question = questions[0] if questions else "Is there any human context to add?"
+        review["checkpoint"] = {
+            "checkpoint_id": checkpoint_id,
+            "question": question,
+            **checkpoint_authority(question),
+        }
         result = {
             "investigation_id": investigation_id,
             "checkpoint_id": checkpoint_id,
@@ -567,7 +732,15 @@ class WakeProductService:
             raise KeyError(f"Unknown investigation: {investigation_id}")
         return self.investigations[investigation_id]
 
-    def answer_checkpoint(self, checkpoint_id: str, *, answer: str) -> dict:
+    def answer_checkpoint(
+        self,
+        checkpoint_id: str,
+        *,
+        answer: str,
+        answered_by_role: str | None = None,
+        recorded_by_role: str | None = None,
+        authority_basis: str | None = None,
+    ) -> dict:
         if answer not in VALID_ANSWERS:
             raise ValueError(f"Unsupported checkpoint answer: {answer}")
         investigation = next(
@@ -584,6 +757,9 @@ class WakeProductService:
             investigation["review"],
             answer,
             goal_id=investigation["goal_id"],
+            answered_by_role=answered_by_role,
+            recorded_by_role=recorded_by_role,
+            authority_basis=authority_basis,
         )
         self.briefings[briefing["briefingId"]] = briefing
         investigation["status"] = "VERIFIED"
@@ -682,11 +858,28 @@ class WakeProductService:
         boat_label = " ".join(part for part in (crew, boat) if part)
         return f"{len(targets)} x {distance_label} · {boat_label or 'rowing session'}"
 
-    def _build_briefing(self, review: dict, answer: str, *, goal_id: str) -> dict:
+    def _build_briefing(
+        self,
+        review: dict,
+        answer: str,
+        *,
+        goal_id: str,
+        answered_by_role: str | None = None,
+        recorded_by_role: str | None = None,
+        authority_basis: str | None = None,
+    ) -> dict:
         analysis = review["analysis"]
         questions = analysis.get("follow_up_questions", [])
-        question = questions[0] if questions else "Is there any coach context to add?"
-        confirmation = human_confirmation_from_answer(question, answer)
+        question = questions[0] if questions else "Is there any human context to add?"
+        checkpoint = review.get("checkpoint") or checkpoint_authority(question)
+        confirmation = human_confirmation_from_answer(
+            question,
+            answer,
+            expected_respondent_role=checkpoint["expected_respondent_role"],
+            answered_by_role=answered_by_role,
+            recorded_by_role=recorded_by_role,
+            authority_basis=authority_basis,
+        )
         environment = analysis.get("environment_assessment") or {}
         intervals = self._work_intervals(review)
         deviations = analysis.get("deviations", [])
@@ -731,9 +924,9 @@ class WakeProductService:
             {
                 "status": confirmation["status"],
                 "title": (
-                    "Coach context remains unknown."
+                    "Human context remains unknown."
                     if confirmation["status"] == "UNKNOWN"
-                    else "Coach context was human-confirmed."
+                    else "Attributed human context was confirmed."
                 ),
                 "explanation": confirmation["statement"],
                 "evidenceRefs": (
@@ -838,6 +1031,12 @@ class WakeProductApi:
                 kind=str(body.get("kind", "")),
                 name=str(body.get("name", "")),
                 content=content,
+                uploaded_by_role=str(body.get("uploaded_by_role", "COACH")),
+                origin_role=(
+                    str(body["origin_role"])
+                    if body.get("origin_role") is not None
+                    else None
+                ),
             )
         if method == "GET" and parts[:2] == ["api", "sources"] and len(parts) == 3:
             return 200, self.service.get_source(parts[2])
@@ -891,7 +1090,23 @@ class WakeProductApi:
             and parts[3:] == ["answers"]
         ):
             return 200, self.service.answer_checkpoint(
-                parts[2], answer=str(body.get("answer", ""))
+                parts[2],
+                answer=str(body.get("answer", "")),
+                answered_by_role=(
+                    str(body["answered_by_role"])
+                    if body.get("answered_by_role") is not None
+                    else None
+                ),
+                recorded_by_role=(
+                    str(body["recorded_by_role"])
+                    if body.get("recorded_by_role") is not None
+                    else None
+                ),
+                authority_basis=(
+                    str(body["authority_basis"])
+                    if body.get("authority_basis") is not None
+                    else None
+                ),
             )
         if (
             method == "POST"

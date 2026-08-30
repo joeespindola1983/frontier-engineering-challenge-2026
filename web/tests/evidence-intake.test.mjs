@@ -26,6 +26,16 @@ test('defines the complete evidence bundle in a stable investigation order', () 
       ['CONTEXT', 'context.json', false],
     ],
   );
+  assert.deepEqual(
+    evidenceSourceDefinitions.map(({ kind, originRole, authorityScope }) => [kind, originRole, authorityScope]),
+    [
+      ['PLAN', 'COACH', 'TRAINING_PRESCRIPTION'],
+      ['SPEEDCOACH', 'DEVICE', 'MEASURED_TELEMETRY'],
+      ['MOBILE', 'DEVICE', 'MEASURED_TELEMETRY'],
+      ['ENVIRONMENT', 'SERVICE', 'ENVIRONMENT_OBSERVATION'],
+      ['CONTEXT', null, 'HUMAN_CONTEXT'],
+    ],
+  );
 });
 
 test('uploads every selected source and returns source ids in contract order', async () => {
@@ -43,7 +53,9 @@ test('uploads every selected source and returns source ids in contract order', a
     ]),
   );
 
-  const sourceIds = await uploadEvidenceBundle(client, files);
+  const sourceIds = await uploadEvidenceBundle(client, files, {
+    uploadedByRole: 'ATHLETE',
+  });
 
   assert.deepEqual(sourceIds, [
     'source-plan',
@@ -54,6 +66,11 @@ test('uploads every selected source and returns source ids in contract order', a
   ]);
   assert.equal(calls[0].contentBase64, 'UExBTiBjb250ZW50');
   assert.equal(calls[0].name, 'plan.json');
+  assert.equal(calls[0].uploadedByRole, 'ATHLETE');
+  assert.equal(calls[0].originRole, 'COACH');
+  assert.equal(calls[1].uploadedByRole, 'ATHLETE');
+  assert.equal(calls[1].originRole, 'DEVICE');
+  assert.equal(calls[4].originRole, 'ATHLETE');
 });
 
 test('uploads the minimum plan and SpeedCoach bundle without optional evidence', async () => {

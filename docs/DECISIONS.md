@@ -248,6 +248,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Require an explicit positive finite `authorized_cost_usd` of at least US$0.20 before a new prepared-bundle execution may start. Treat it as an operational gate, not a provider-enforced cap. Return trajectory-derived token usage, runtime, approximate cost, and overrun status; show the result in the coach review; and aggregate each new execution once in a process-local ledger. Use US$0.15 only as a planning reference derived from the observed v2 conditions, not as a guarantee.
 - **Rationale:** Silent paid actions are unacceptable, but the Responses API does not provide a dollar cap for an individual request. Separating authorization from observed usage makes that limitation honest, prevents missing or invalid client values from reaching the runner, and gives the hackathon demonstration auditable scaling evidence without claiming durable billing controls.
 
+## 2026-08-29 - Separate contributors from evidence and answer authority
+
+- **Status:** accepted for the process-local demonstration runtime; verified identity remains pending.
+- **Decision:** Allow an athlete or coach to upload any supported source while recording the uploader independently from the source origin and authority scope. Route each human checkpoint to an expected respondent and require confirmed answers to preserve the answerer, recorder, and authority basis. Treat athlete-direct answers, athlete reports recorded by coaches, and coach direct observations as distinct provenance paths; keep `UNKNOWN` valid.
+- **Rationale:** SpeedCoach files commonly remain with athletes while training plans originate with coaches, yet either person may forward either artifact. Restricting upload by role would block real club workflows, while assigning authority to the uploader would make forwarded evidence misleading. The same distinction is required for human answers: actual equipment use belongs primarily to the participant, while plan intent belongs to the coach.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

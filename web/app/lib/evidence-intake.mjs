@@ -5,6 +5,8 @@ export const evidenceSourceDefinitions = [
     title: 'Training plan',
     defaultName: 'plan.json',
     description: 'Normalized prescription and recovery structure',
+    originRole: 'COACH',
+    authorityScope: 'TRAINING_PRESCRIPTION',
     accept: '.json,application/json',
   },
   {
@@ -13,6 +15,8 @@ export const evidenceSourceDefinitions = [
     title: 'SpeedCoach recording',
     defaultName: 'speedcoach.csv',
     description: 'Normalized or SpeedCoach vendor CSV',
+    originRole: 'DEVICE',
+    authorityScope: 'MEASURED_TELEMETRY',
     accept: '.csv,text/csv',
   },
   {
@@ -21,6 +25,8 @@ export const evidenceSourceDefinitions = [
     title: 'Mobile recording',
     defaultName: 'mobile.csv',
     description: 'Normalized or WAKE mobile sensor CSV',
+    originRole: 'DEVICE',
+    authorityScope: 'MEASURED_TELEMETRY',
     accept: '.csv,text/csv',
   },
   {
@@ -29,6 +35,8 @@ export const evidenceSourceDefinitions = [
     title: 'Environmental timeline',
     defaultName: 'environment.json',
     description: 'Normalized time-aligned observations',
+    originRole: 'SERVICE',
+    authorityScope: 'ENVIRONMENT_OBSERVATION',
     accept: '.json,application/json',
   },
   {
@@ -37,6 +45,8 @@ export const evidenceSourceDefinitions = [
     title: 'Session context',
     defaultName: 'context.json',
     description: 'Boat, crew, goal, and investigation request',
+    originRole: null,
+    authorityScope: 'HUMAN_CONTEXT',
     accept: '.json,application/json',
   },
 ];
@@ -54,7 +64,10 @@ async function fileToBase64(file) {
   return bytesToBase64(new Uint8Array(await file.arrayBuffer()));
 }
 
-export async function uploadEvidenceBundle(client, files) {
+export async function uploadEvidenceBundle(client, files, { uploadedByRole = 'COACH' } = {}) {
+  if (!['ATHLETE', 'COACH'].includes(uploadedByRole)) {
+    throw new TypeError('Evidence contributor must be ATHLETE or COACH.');
+  }
   const missing = evidenceSourceDefinitions.filter(({ kind, required }) => required && !files[kind]);
   if (missing.length) {
     throw new Error('Select the training plan and SpeedCoach recording before uploading this bundle.');
@@ -68,6 +81,8 @@ export async function uploadEvidenceBundle(client, files) {
       kind: definition.kind,
       name: file.name,
       contentBase64: await fileToBase64(file),
+      uploadedByRole,
+      originRole: definition.originRole ?? uploadedByRole,
     });
     sourceIds.push(source.source_id);
   }

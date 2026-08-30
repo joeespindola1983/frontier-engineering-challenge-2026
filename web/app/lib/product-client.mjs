@@ -72,11 +72,13 @@ export class HttpWakeClient {
     };
   }
 
-  uploadSource({ kind, name, contentBase64 }) {
+  uploadSource({ kind, name, contentBase64, uploadedByRole, originRole }) {
     return this.request('/api/sources', {
       kind,
       name,
       content_base64: contentBase64,
+      uploaded_by_role: uploadedByRole,
+      origin_role: originRole,
     });
   }
 
@@ -108,8 +110,21 @@ export class HttpWakeClient {
     };
   }
 
-  answerCheckpoint(checkpointId, answer) {
-    return this.request(`/api/checkpoints/${checkpointId}/answers`, { answer });
+  answerCheckpoint(checkpointId, response) {
+    const normalized = response === 'UNKNOWN'
+      ? {
+          answer: 'UNKNOWN',
+          answeredByRole: null,
+          recordedByRole: null,
+          authorityBasis: 'UNKNOWN',
+        }
+      : response;
+    return this.request(`/api/checkpoints/${checkpointId}/answers`, {
+      answer: normalized.answer,
+      answered_by_role: normalized.answeredByRole,
+      recorded_by_role: normalized.recordedByRole,
+      authority_basis: normalized.authorityBasis,
+    });
   }
 
   approveBriefing(briefingId) {

@@ -128,13 +128,16 @@ class WakeProductServiceTests(unittest.TestCase):
         briefing = self.service.answer_checkpoint(
             investigation["checkpoint_id"],
             answer="YES",
+            answered_by_role="ATHLETE",
+            recorded_by_role="ATHLETE",
+            authority_basis="DIRECT_PARTICIPANT",
         )
 
         self.assertEqual(
             briefing["humanConfirmation"]["status"], "HUMAN_CONFIRMED"
         )
         self.assertEqual(
-            briefing["humanConfirmation"]["source"], "Coach confirmation"
+            briefing["humanConfirmation"]["source"], "Athlete direct confirmation"
         )
         self.assertEqual(
             self.service.get_investigation(investigation["investigation_id"])[
@@ -142,6 +145,42 @@ class WakeProductServiceTests(unittest.TestCase):
             ]["analysis"],
             original_analysis,
         )
+
+    def test_checkpoint_routes_actual_equipment_use_to_the_athlete(self) -> None:
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+
+        checkpoint = investigation["review"]["checkpoint"]
+
+        self.assertEqual(checkpoint["expected_respondent_role"], "ATHLETE")
+        self.assertEqual(checkpoint["authority_scope"], "SESSION_EXECUTION")
+
+    def test_checkpoint_records_answerer_recorder_and_authority_basis(self) -> None:
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+
+        briefing = self.service.answer_checkpoint(
+            investigation["checkpoint_id"],
+            answer="YES",
+            answered_by_role="ATHLETE",
+            recorded_by_role="COACH",
+            authority_basis="RELAYED_REPORT",
+        )
+
+        confirmation = briefing["humanConfirmation"]
+        self.assertEqual(confirmation["expectedRespondentRole"], "ATHLETE")
+        self.assertEqual(confirmation["answeredByRole"], "ATHLETE")
+        self.assertEqual(confirmation["recordedByRole"], "COACH")
+        self.assertEqual(confirmation["authorityBasis"], "RELAYED_REPORT")
+        self.assertTrue(confirmation["matchesExpectedRespondent"])
+        self.assertEqual(confirmation["source"], "Athlete report recorded by coach")
+
+    def test_confirmed_checkpoint_rejects_missing_answer_provenance(self) -> None:
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+
+        with self.assertRaisesRegex(ValueError, "answer provenance"):
+            self.service.answer_checkpoint(
+                investigation["checkpoint_id"],
+                answer="YES",
+            )
 
     def test_unknown_checkpoint_remains_unknown(self) -> None:
         investigation = self.service.create_investigation(CASE_ID, mode="replay")
@@ -160,6 +199,9 @@ class WakeProductServiceTests(unittest.TestCase):
         briefing = self.service.answer_checkpoint(
             investigation["checkpoint_id"],
             answer="NO",
+            answered_by_role="ATHLETE",
+            recorded_by_role="ATHLETE",
+            authority_basis="DIRECT_PARTICIPANT",
         )
 
         self.assertEqual(empty_goal["approvedSessions"], [])
@@ -200,7 +242,12 @@ class WakeProductServiceTests(unittest.TestCase):
         checkpoint_status, briefing = api.handle(
             "POST",
             f"/api/checkpoints/{investigation['checkpoint_id']}/answers",
-            {"answer": "UNKNOWN"},
+            {
+                "answer": "YES",
+                "answered_by_role": "ATHLETE",
+                "recorded_by_role": "ATHLETE",
+                "authority_basis": "DIRECT_PARTICIPANT",
+            },
         )
         approval_status, goal = api.handle(
             "POST",
@@ -209,6 +256,10 @@ class WakeProductServiceTests(unittest.TestCase):
         )
 
         self.assertEqual(checkpoint_status, 200)
+        self.assertEqual(
+            briefing["humanConfirmation"]["source"],
+            "Athlete direct confirmation",
+        )
         self.assertEqual(approval_status, 200)
         self.assertEqual(len(goal["approvedSessions"]), 1)
 
@@ -314,6 +365,131 @@ class WakeProductServiceTests(unittest.TestCase):
         serialized = json.dumps(metadata)
         self.assertNotIn("normalized_csv", serialized)
         self.assertNotIn("_content", serialized)
+
+    def test_source_provenance_separates_uploader_from_source_authority(self) -> None:
+        plan = self.service.upload_source(
+            kind="PLAN",
+            name="plan.json",
+            content=(CASE_INPUT / "plan.json").read_bytes(),
+            uploaded_by_role="ATHLETE",
+        )
+        speedcoach = self.service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+            uploaded_by_role="COACH",
+        )
+
+        self.assertEqual(
+            plan["provenance"],
+            {
+                "uploaded_by_role": "ATHLETE",
+                "origin_role": "COACH",
+                "authority_scope": "TRAINING_PRESCRIPTION",
+            },
+        )
+        self.assertEqual(
+            speedcoach["provenance"],
+            {
+                "uploaded_by_role": "COACH",
+                "origin_role": "DEVICE",
+                "authority_scope": "MEASURED_TELEMETRY",
+            },
+        )
+
+    def test_same_source_uploaded_by_different_roles_keeps_both_contributions(self) -> None:
+        content = (CASE_INPUT / "plan.json").read_bytes()
+
+        athlete_upload = self.service.upload_source(
+            kind="PLAN",
+            name="plan.json",
+            content=content,
+            uploaded_by_role="ATHLETE",
+        )
+        coach_upload = self.service.upload_source(
+            kind="PLAN",
+            name="plan.json",
+            content=content,
+            uploaded_by_role="COACH",
+        )
+
+        self.assertNotEqual(athlete_upload["source_id"], coach_upload["source_id"])
+        self.assertEqual(
+            self.service.get_source(athlete_upload["source_id"])["provenance"][
+                "uploaded_by_role"
+            ],
+            "ATHLETE",
+        )
+        self.assertEqual(
+            self.service.get_source(coach_upload["source_id"])["provenance"][
+                "uploaded_by_role"
+            ],
+            "COACH",
+        )
+
+    def test_bundle_identity_preserves_who_contributed_the_same_plan(self) -> None:
+        plan_content = (CASE_INPUT / "plan.json").read_bytes()
+        speedcoach = self.service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+            uploaded_by_role="ATHLETE",
+        )
+        athlete_plan = self.service.upload_source(
+            kind="PLAN",
+            name="plan.json",
+            content=plan_content,
+            uploaded_by_role="ATHLETE",
+        )
+        coach_plan = self.service.upload_source(
+            kind="PLAN",
+            name="plan.json",
+            content=plan_content,
+            uploaded_by_role="COACH",
+        )
+
+        athlete_bundle = self.service.prepare_source_bundle(
+            [athlete_plan["source_id"], speedcoach["source_id"]]
+        )
+        coach_bundle = self.service.prepare_source_bundle(
+            [coach_plan["source_id"], speedcoach["source_id"]]
+        )
+
+        self.assertEqual(
+            athlete_bundle["summary_sha256"], coach_bundle["summary_sha256"]
+        )
+        self.assertNotEqual(athlete_bundle["bundle_id"], coach_bundle["bundle_id"])
+        self.assertEqual(
+            athlete_bundle["source_contributions"][0]["provenance"][
+                "uploaded_by_role"
+            ],
+            "ATHLETE",
+        )
+        self.assertEqual(
+            coach_bundle["source_contributions"][0]["provenance"][
+                "uploaded_by_role"
+            ],
+            "COACH",
+        )
+
+    def test_source_upload_rejects_an_unknown_contributor_role(self) -> None:
+        with self.assertRaisesRegex(ValueError, "uploader role"):
+            self.service.upload_source(
+                kind="PLAN",
+                name="plan.json",
+                content=(CASE_INPUT / "plan.json").read_bytes(),
+                uploaded_by_role="ADMIN",
+            )
+
+    def test_device_telemetry_cannot_be_relabelled_as_human_origin(self) -> None:
+        with self.assertRaisesRegex(ValueError, "origin role.*SPEEDCOACH"):
+            self.service.upload_source(
+                kind="SPEEDCOACH",
+                name="speedcoach.csv",
+                content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+                uploaded_by_role="COACH",
+                origin_role="COACH",
+            )
 
     def test_modified_bundle_cannot_inherit_the_committed_replay(self) -> None:
         source_ids = []
@@ -531,7 +707,11 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(result["analysis"]["case_id"], CASE_ID)
         self.assertEqual(
             set(result["review"]),
-            {"analysis", "summary", "context"},
+            {"analysis", "summary", "context", "checkpoint"},
+        )
+        self.assertEqual(
+            result["review"]["checkpoint"]["expected_respondent_role"],
+            "ATHLETE",
         )
         self.assertEqual(result["review"]["summary"]["case_id"], CASE_ID)
         serialized_review = json.dumps(result["review"])
@@ -742,7 +922,11 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertTrue(execution["investigation_id"].startswith("investigation-"))
         self.assertTrue(execution["checkpoint_id"].startswith("checkpoint-"))
         briefing = self.service.answer_checkpoint(
-            execution["checkpoint_id"], answer="YES"
+            execution["checkpoint_id"],
+            answer="YES",
+            answered_by_role="ATHLETE",
+            recorded_by_role="ATHLETE",
+            authority_basis="DIRECT_PARTICIPANT",
         )
         self.assertEqual(briefing["title"], "2 x 500 m · rowing session")
         self.assertEqual(len(briefing["workIntervals"]), 2)

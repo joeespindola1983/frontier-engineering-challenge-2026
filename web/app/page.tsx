@@ -13,6 +13,14 @@ type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
 type EvidenceKind = 'PLAN' | 'SPEEDCOACH' | 'MOBILE' | 'ENVIRONMENT' | 'CONTEXT';
 type EvidenceFiles = Partial<Record<EvidenceKind, File>>;
+type ContributorRole = 'ATHLETE' | 'COACH';
+type ConfirmationMode = 'ATHLETE_DIRECT' | 'ATHLETE_RELAYED_BY_COACH' | 'COACH_OBSERVED';
+type CheckpointResponse = {
+  answer: 'YES' | 'NO' | 'UNKNOWN';
+  answeredByRole: ContributorRole | null;
+  recordedByRole: ContributorRole | null;
+  authorityBasis: 'DIRECT_PARTICIPANT' | 'DIRECT_OBSERVATION' | 'RELAYED_REPORT' | 'UNKNOWN';
+};
 type ExecutionCost = {
   approximate_cost_usd: number;
   authorized_cost_usd: number;
@@ -37,6 +45,24 @@ function formatDate(value: string | null) {
 function formatDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
   return `${minutes}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
+}
+
+function formatRole(role: string) {
+  return {
+    ATHLETE: 'athlete',
+    COACH: 'coach',
+    DEVICE: 'device',
+    SERVICE: 'service',
+    ATHLETE_OR_COACH: 'athlete or coach',
+  }[role] ?? 'human contributor';
+}
+
+function checkpointResponse(answer: 'YES' | 'NO', mode: ConfirmationMode): CheckpointResponse {
+  return {
+    ATHLETE_DIRECT: { answer, answeredByRole: 'ATHLETE', recordedByRole: 'ATHLETE', authorityBasis: 'DIRECT_PARTICIPANT' },
+    ATHLETE_RELAYED_BY_COACH: { answer, answeredByRole: 'ATHLETE', recordedByRole: 'COACH', authorityBasis: 'RELAYED_REPORT' },
+    COACH_OBSERVED: { answer, answeredByRole: 'COACH', recordedByRole: 'COACH', authorityBasis: 'DIRECT_OBSERVATION' },
+  }[mode];
 }
 
 function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen: Screen) => void }) {
@@ -72,7 +98,7 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
         <div className="page-header-copy">
           <div className="kicker">Daily intelligence</div>
           <h1>Review the session,<br />not every chart.</h1>
-          <p className="lede">WAKE combines the plan, recordings, conditions, and coach confirmations into one evidence-backed session review.</p>
+          <p className="lede">WAKE combines the plan, recordings, conditions, and attributed human context into one evidence-backed session review.</p>
         </div>
         <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
       </header>
@@ -95,8 +121,9 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
   );
 }
 
-function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (files: EvidenceFiles) => void; processing: boolean; error: string }) {
+function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (files: EvidenceFiles, contributorRole: ContributorRole) => void; processing: boolean; error: string }) {
   const [files, setFiles] = useState<EvidenceFiles>({});
+  const [contributorRole, setContributorRole] = useState<ContributorRole>('ATHLETE');
   const hasSelectedFiles = Object.keys(files).length > 0;
   return (
     <main className="page page-narrow">
@@ -106,12 +133,13 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
       </header>
       <div className="intake-layout">
         <section>
+          <fieldset className="contributor-selector"><legend>Who is contributing these files?</legend><label><input checked={contributorRole === 'ATHLETE'} disabled={processing} name="contributor" onChange={() => setContributorRole('ATHLETE')} type="radio" /> Athlete</label><label><input checked={contributorRole === 'COACH'} disabled={processing} name="contributor" onChange={() => setContributorRole('COACH')} type="radio" /> Coach</label><small>Either role may upload any file. WAKE keeps the uploader separate from the source&apos;s authority.</small></fieldset>
           <div className="kicker">Evidence ready</div>
           <div className="upload-list">
             {evidenceSourceDefinitions.map((source, index) => {
               const selected = files[source.kind as EvidenceKind];
               return (
-                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title} · {source.required ? 'Core' : 'Optional'}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Choose'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
+                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title} · {source.required ? 'Core' : 'Optional'}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small><small className="authority-label">Origin: {formatRole(source.originRole ?? contributorRole)} · authority: {source.authorityScope.replaceAll('_', ' ').toLowerCase()} · uploader: {formatRole(contributorRole)}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Choose'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
               );
             })}
           </div>
@@ -119,7 +147,7 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
           <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>{files.CONTEXT ? 'Boat, crew, goal, and observations will be read from the selected context file.' : 'No context file selected. Boat, crew, goal, and human observations will remain unknown.'}</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
           {hasSelectedFiles && configuredRuntimeMode === 'live' ? <p className="upload-boundary"><strong>Operational authorization: US${configuredCostAuthorizationUsd.toFixed(2)}.</strong> This allows the run to start; it is not a provider billing cap. WAKE shows the token-based approximate cost after execution.</p> : null}
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
-          <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
+          <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files, contributorRole)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
         </section>
         <aside className="process-note"><div className="kicker">What WAKE will do</div><ol><li>Match and align recordings.</li><li>Reconstruct plan blocks.</li><li>Select trust per metric.</li><li>Preserve unsupported unknowns.</li><li>Ask one material question.</li></ol></aside>
       </div>
@@ -162,8 +190,9 @@ function SourcePolicy({ review }: { review: Review }) {
   );
 }
 
-function ReviewScreen({ review, executionCost, onComplete, processing, error }: { review: Review; executionCost: ExecutionCost | null; onComplete: (answer: string) => void; processing: boolean; error: string }) {
-  const [answer, setAnswer] = useState('UNKNOWN');
+function ReviewScreen({ review, executionCost, onComplete, processing, error }: { review: Review; executionCost: ExecutionCost | null; onComplete: (response: CheckpointResponse | 'UNKNOWN') => void; processing: boolean; error: string }) {
+  const [answer, setAnswer] = useState<'YES' | 'NO'>('YES');
+  const [confirmationMode, setConfirmationMode] = useState<ConfirmationMode>('ATHLETE_DIRECT');
   const questionRequired = review.status === 'QUESTION_REQUIRED';
   return (
     <main className="page">
@@ -172,9 +201,10 @@ function ReviewScreen({ review, executionCost, onComplete, processing, error }: 
       <div className="progress-line" aria-label="Session review progress"><span /></div>
       <div className="review-layout">
         <div><section><div className="kicker">Current reconstruction</div><p className="finding-intro">{review.currentReconstruction}</p></section><IntervalChart review={review} /><SourcePolicy review={review} /><section className="environment-note"><div><div className="kicker">Environmental boundary</div><h2>Condition context, not a causal verdict</h2></div><p>{review.environment.summary}</p></section></div>
-        <aside className="checkpoint"><div className="kicker">{questionRequired ? 'One material question' : 'Human review'}</div><h2>{review.checkpoint.question}</h2><p>A coach answer is stored as human context. It does not alter the device measurements or turn an unsupported claim into observed telemetry.</p>
-          <fieldset className="answer-list"><legend className="sr-only">Coach confirmation</legend>{[['YES', 'Yes / confirmed'], ['NO', 'No / not confirmed'], ['UNKNOWN', 'Unknown / cannot confirm']].map(([value, label]) => <label className="answer-option" key={value}><input checked={answer === value} name="confirmation" onChange={() => setAnswer(value)} type="radio" value={value} />{label}</label>)}</fieldset>
-          {error ? <div className="runtime-error" role="alert">{error}</div> : null}<div className="checkpoint-actions"><button className="button button-primary" disabled={processing} onClick={() => onComplete(answer)} type="button">{processing ? 'Verifying…' : 'Save answer and finish'}</button><button className="button button-quiet" disabled={processing} onClick={() => onComplete('UNKNOWN')} type="button">Keep unknown</button></div>
+        <aside className="checkpoint"><div className="kicker">Question for {formatRole(review.checkpoint.expectedRespondentRole)}</div><h2>{review.checkpoint.question}</h2><p>Who uploaded a file is not automatically the authority for this answer. WAKE stores who answered, who recorded it, and how they know.</p>
+          <fieldset className="answer-list"><legend>Answer</legend>{[['YES', 'Yes / confirmed'], ['NO', 'No / not confirmed']].map(([value, label]) => <label className="answer-option" key={value}><input checked={answer === value} name="confirmation" onChange={() => setAnswer(value as 'YES' | 'NO')} type="radio" value={value} />{label}</label>)}</fieldset>
+          <fieldset className="answer-list provenance-list"><legend>Answer provenance</legend>{[['ATHLETE_DIRECT', 'Athlete answered directly'], ['ATHLETE_RELAYED_BY_COACH', 'Athlete answer recorded by coach'], ['COACH_OBSERVED', 'Coach observed directly']].map(([value, label]) => <label className="answer-option" key={value}><input checked={confirmationMode === value} name="answer-source" onChange={() => setConfirmationMode(value as ConfirmationMode)} type="radio" value={value} />{label}</label>)}</fieldset>
+          {error ? <div className="runtime-error" role="alert">{error}</div> : null}<div className="checkpoint-actions"><button className="button button-primary" disabled={processing} onClick={() => onComplete(checkpointResponse(answer, confirmationMode))} type="button">{processing ? 'Verifying…' : 'Save attributed answer'}</button><button className="button button-quiet" disabled={processing} onClick={() => onComplete('UNKNOWN')} type="button">Keep unknown</button></div>
           <div className="evidence-note"><strong>Why this matters:</strong> {review.checkpoint.whyItMatters}</div><p className="checkpoint-status" aria-live="polite">{processing ? 'WAKE is rebuilding the verified briefing.' : 'No memory is updated until the coach approves the briefing.'}</p>
         </aside>
       </div>
@@ -190,7 +220,7 @@ function BriefingScreen({ briefing, onBack, onApprove, onLeave, processing, erro
       <div className="brief-grid"><div><section className="brief-lead"><p>{briefing.headline}</p><small>{briefing.summary}</small></section>
         <section><div className="kicker">Plan versus performed</div>{briefing.workIntervals.map((interval) => <div className={`metric-line${interval.status === 'DEVIATION' ? ' deviation' : ''}`} key={interval.segmentId}><span>{String(interval.index).padStart(2, '0')}</span><strong>{interval.plannedDistanceM.toLocaleString('en-US')} m</strong><code>{formatDuration(interval.durationS)} · {interval.averageSpm.toFixed(1)} SPM</code><span>{interval.status === 'DEVIATION' ? 'SPM deviation' : 'Within range'}</span></div>)}</section>
         <section className="findings"><div className="kicker">Verified findings</div>{briefing.findings.map((finding) => <article className={`finding-row ${finding.status === 'ATTENTION' || finding.status === 'UNKNOWN' ? 'warning' : ''}`} key={finding.title}><span>●</span><div><strong>{finding.title}</strong><p>{finding.explanation}</p>{finding.evidenceRefs.map((ref) => <code className="evidence-tag" key={ref}>{ref.replace('input/', '')}</code>)}</div></article>)}</section>
-      </div><aside className="brief-aside"><section><div className="kicker">Evidence status</div><h3>Verified with preserved boundaries</h3><p>Material claims retain sources. Technique and physiology were not inferred from ordinary telemetry.</p></section><section><div className="kicker">Human context</div><h3>{briefing.humanConfirmation.status === 'UNKNOWN' ? 'Coach context remains unknown' : 'Coach confirmation retained'}</h3><p>{briefing.humanConfirmation.statement}</p></section><section><div className="kicker">Memory proposal</div><h3>Save one reviewed session</h3><p>Approval stores this briefing and unresolved questions; it does not create a performance trend.</p></section><div className="aside-actions">{error ? <div className="runtime-error" role="alert">{error}</div> : null}<button className="button button-primary" disabled={processing} onClick={onApprove} type="button">{processing ? 'Approving…' : 'Approve memory update'}</button><button className="button" disabled={processing} onClick={onLeave} type="button">Leave session unchanged</button></div></aside></div>
+      </div><aside className="brief-aside"><section><div className="kicker">Evidence status</div><h3>Verified with preserved boundaries</h3><p>Material claims retain sources. Technique and physiology were not inferred from ordinary telemetry.</p></section><section><div className="kicker">Human context</div><h3>{briefing.humanConfirmation.status === 'UNKNOWN' ? 'Human context remains unknown' : briefing.humanConfirmation.source}</h3><p>{briefing.humanConfirmation.statement}</p></section><section><div className="kicker">Memory proposal</div><h3>Save one reviewed session</h3><p>Approval stores this briefing and unresolved questions; it does not create a performance trend.</p></section><div className="aside-actions">{error ? <div className="runtime-error" role="alert">{error}</div> : null}<button className="button button-primary" disabled={processing} onClick={onApprove} type="button">{processing ? 'Approving…' : 'Approve memory update'}</button><button className="button" disabled={processing} onClick={onLeave} type="button">Leave session unchanged</button></div></aside></div>
     </main>
   );
 }
@@ -219,8 +249,8 @@ export default function Home() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  async function investigate(files: EvidenceFiles = {}) { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files) : undefined; const result = sourceIds && configuredRuntimeMode === 'live' ? await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }) : await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
-  async function completeReview(answer: string) { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, answer); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
+  async function investigate(files: EvidenceFiles = {}, contributorRole: ContributorRole = 'COACH') { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files, { uploadedByRole: contributorRole }) : undefined; const result = sourceIds && configuredRuntimeMode === 'live' ? await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }) : await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
+  async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
   return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} processing={processing} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;

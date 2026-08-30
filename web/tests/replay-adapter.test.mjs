@@ -38,6 +38,8 @@ test('builds the coach review from committed public evidence', async () => {
   assert.equal(review.workIntervals[4].status, 'DEVIATION');
   assert.equal(review.workIntervals[4].averageSpm, 19.99);
   assert.equal(review.checkpoint.question, analysis.follow_up_questions[0]);
+  assert.equal(review.checkpoint.expectedRespondentRole, 'ATHLETE');
+  assert.equal(review.checkpoint.authorityScope, 'SESSION_EXECUTION');
   assert.equal(review.sourcePolicy.strokeRate.selectedSource, 'SpeedCoach');
   assert.equal(review.sourcePolicy.route.corroboratedBy, 'Mobile');
 });
@@ -170,18 +172,33 @@ test('preserves an unanswered checkpoint as explicit human-context unknown', () 
   assert.equal(briefing.pendingApproval, true);
 });
 
-test('records a coach answer as human confirmation without rewriting telemetry', () => {
-  const briefing = resolveCheckpoint(demoReview, 'YES');
+test('records an athlete answer with explicit provenance without rewriting telemetry', () => {
+  const briefing = resolveCheckpoint(demoReview, {
+    answer: 'YES',
+    answeredByRole: 'ATHLETE',
+    recordedByRole: 'ATHLETE',
+    authorityBasis: 'DIRECT_PARTICIPANT',
+  });
 
   assert.equal(briefing.humanConfirmation.status, 'HUMAN_CONFIRMED');
   assert.equal(briefing.humanConfirmation.value, true);
-  assert.equal(briefing.humanConfirmation.source, 'Coach confirmation');
+  assert.equal(briefing.humanConfirmation.source, 'Athlete direct confirmation');
+  assert.equal(briefing.humanConfirmation.expectedRespondentRole, 'ATHLETE');
+  assert.equal(briefing.humanConfirmation.answeredByRole, 'ATHLETE');
+  assert.equal(briefing.humanConfirmation.recordedByRole, 'ATHLETE');
+  assert.equal(briefing.humanConfirmation.authorityBasis, 'DIRECT_PARTICIPANT');
+  assert.equal(briefing.humanConfirmation.matchesExpectedRespondent, true);
   assert.deepEqual(briefing.workIntervals, demoReview.workIntervals);
   assert.deepEqual(briefing.environment, demoReview.environment);
 });
 
 test('adds memory only after explicit briefing approval', () => {
-  const briefing = resolveCheckpoint(demoReview, 'NO');
+  const briefing = resolveCheckpoint(demoReview, {
+    answer: 'NO',
+    answeredByRole: 'ATHLETE',
+    recordedByRole: 'ATHLETE',
+    authorityBasis: 'DIRECT_PARTICIPANT',
+  });
   const unchanged = approveBriefingMemory(briefing, false);
   const approved = approveBriefingMemory(briefing, true);
 
@@ -215,7 +232,12 @@ test('checkpoint and memory copy follow a different review instead of the demo c
     },
   };
 
-  const briefing = resolveCheckpoint(review, 'YES');
+  const briefing = resolveCheckpoint(review, {
+    answer: 'YES',
+    answeredByRole: 'ATHLETE',
+    recordedByRole: 'COACH',
+    authorityBasis: 'RELAYED_REPORT',
+  });
   const memory = approveBriefingMemory(briefing, true);
   const serialized = JSON.stringify({ briefing, memory }).toLowerCase();
 

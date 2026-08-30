@@ -1,15 +1,34 @@
-const ANSWERS = new Set(['YES', 'NO', 'UNKNOWN']);
+import { normalizeCheckpointAnswer } from './human-authority.mjs';
 
-function humanConfirmationFromAnswer(question, answer) {
+function humanConfirmationFromAnswer(checkpoint, response) {
+  const {
+    answer,
+    answeredByRole,
+    recordedByRole,
+    authorityBasis,
+  } = normalizeCheckpointAnswer(response);
   if (answer === 'YES' || answer === 'NO') {
     const label = answer === 'YES' ? 'Yes' : 'No';
+    const source = new Map([
+      ['ATHLETE:ATHLETE:DIRECT_PARTICIPANT', 'Athlete direct confirmation'],
+      ['ATHLETE:COACH:RELAYED_REPORT', 'Athlete report recorded by coach'],
+      ['COACH:COACH:DIRECT_OBSERVATION', 'Coach direct observation'],
+    ]).get(`${answeredByRole}:${recordedByRole}:${authorityBasis}`)
+      ?? 'Attributed human confirmation';
+    const roleLabel = answeredByRole === 'ATHLETE' ? 'Athlete' : 'Coach';
     return {
       status: 'HUMAN_CONFIRMED',
       answer,
       value: answer === 'YES',
-      source: 'Coach confirmation',
-      question,
-      statement: `Coach answered "${label}" to: ${question}`,
+      source,
+      question: checkpoint.question,
+      expectedRespondentRole: checkpoint.expectedRespondentRole,
+      answeredByRole,
+      recordedByRole,
+      authorityBasis,
+      matchesExpectedRespondent: [answeredByRole, 'ATHLETE_OR_COACH']
+        .includes(checkpoint.expectedRespondentRole),
+      statement: `${roleLabel} answered "${label}" to: ${checkpoint.question} (${source}).`,
     };
   }
   return {
@@ -17,8 +36,13 @@ function humanConfirmationFromAnswer(question, answer) {
     answer: 'UNKNOWN',
     value: null,
     source: null,
-    question,
-    statement: `No human confirmation was supplied for: ${question}`,
+    question: checkpoint.question,
+    expectedRespondentRole: checkpoint.expectedRespondentRole,
+    answeredByRole: null,
+    recordedByRole,
+    authorityBasis: 'UNKNOWN',
+    matchesExpectedRespondent: false,
+    statement: `No human confirmation was supplied for: ${checkpoint.question}`,
   };
 }
 
@@ -45,14 +69,8 @@ function deviationFindings(review) {
     }));
 }
 
-export function resolveCheckpoint(review, answer) {
-  if (!ANSWERS.has(answer)) {
-    throw new TypeError(`Unsupported checkpoint answer: ${answer}`);
-  }
-  const humanConfirmation = humanConfirmationFromAnswer(
-    review.checkpoint.question,
-    answer,
-  );
+export function resolveCheckpoint(review, response) {
+  const humanConfirmation = humanConfirmationFromAnswer(review.checkpoint, response);
   const deviations = deviationFindings(review);
   const findings = [reconstructedFinding(review), ...deviations];
   if (review.environment?.summary) {
@@ -66,8 +84,8 @@ export function resolveCheckpoint(review, answer) {
   findings.push({
     status: humanConfirmation.status,
     title: humanConfirmation.status === 'UNKNOWN'
-      ? 'Coach context remains unknown.'
-      : 'Coach context was human-confirmed.',
+      ? 'Human context remains unknown.'
+      : 'Attributed human context was confirmed.',
     explanation: humanConfirmation.statement,
     evidenceRefs: humanConfirmation.status === 'UNKNOWN'
       ? []

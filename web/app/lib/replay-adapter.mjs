@@ -1,3 +1,5 @@
+import { routeHumanQuestion } from './human-authority.mjs';
+
 const SOURCE_LABELS = {
   'speedcoach-synthetic': 'SpeedCoach',
   'mobile-synthetic': 'Mobile',
@@ -83,7 +85,7 @@ function boatLabel(context) {
   return crew ? `${crew} ${code}` : code;
 }
 
-export function buildSessionReview({ analysis, summary, context }) {
+export function buildSessionReview({ analysis, summary, context, checkpoint }) {
   const targets = prescribedTargets(summary.plan?.blocks ?? []);
   const deviationSegments = new Set(
     analysis.deviations.map((deviation) => deviation.segment_ref),
@@ -129,7 +131,7 @@ export function buildSessionReview({ analysis, summary, context }) {
     limitations: ['No boat-relative environmental interpretation is available.'],
     evidence_refs: [],
   };
-  const inputNotice = context.input_notice ?? 'Coach-uploaded local evidence.';
+  const inputNotice = context.input_notice ?? 'Locally uploaded evidence.';
   const isSynthetic = inputNotice.toLowerCase().includes('synthetic')
     || summary.plan?.source?.kind === 'SYNTHETIC';
   const clockFinding = summary.cross_source_findings?.find(
@@ -137,7 +139,13 @@ export function buildSessionReview({ analysis, summary, context }) {
       || finding.finding_id === 'mobile-clock-offset',
   );
   const followUpQuestion = analysis.follow_up_questions?.[0]
-    ?? 'No additional coach context was requested for this analysis.';
+    ?? 'No additional human context was requested for this analysis.';
+  const authority = checkpoint
+    ? {
+        expectedRespondentRole: checkpoint.expected_respondent_role,
+        authorityScope: checkpoint.authority_scope,
+      }
+    : routeHumanQuestion(followUpQuestion);
 
   return {
     sessionId: summary.case_id,
@@ -177,8 +185,9 @@ export function buildSessionReview({ analysis, summary, context }) {
     checkpoint: {
       checkpointId: `checkpoint-${summary.case_id}`,
       question: followUpQuestion,
+      ...authority,
       whyItMatters:
-        'A coach answer becomes human-confirmed context; it does not rewrite measured telemetry.',
+        'An attributed human answer becomes context; it does not rewrite measured telemetry.',
       options: ['YES', 'NO', 'UNKNOWN'],
       canSkip: true,
       affectedClaims: equipmentClaim ? [equipmentClaim.claim_id] : [],

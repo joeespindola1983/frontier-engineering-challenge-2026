@@ -65,7 +65,7 @@ also exposes a process-local aggregate at `GET /api/runtime/costs`.
 
 The product client calls only task-level endpoints; source trust and agent tools remain server-side.
 
-With the local service configured, the intake requires a plan and SpeedCoach file and accepts mobile, environment, and context files independently. Each selected file is validated and the browser receives metadata rather than stored bytes. SpeedCoach vendor and WAKE mobile sensor CSVs are normalized deterministically, with missing SPM preserved as missing. In explicit live mode, a selected bundle now continues through preparation, bounded-agent execution, its own human checkpoint, verified briefing, and approval-gated process-local memory. Only the exact five-file public case-002 bundle can reuse committed replay output.
+With the local service configured, the intake requires a plan and SpeedCoach file and accepts mobile, environment, and context files independently. An athlete or coach may contribute the files; the service records the uploader separately from the source origin and authority scope. Each selected file is validated and the browser receives metadata rather than stored bytes. SpeedCoach vendor and WAKE mobile sensor CSVs are normalized deterministically, with missing SPM preserved as missing. In explicit live mode, a selected bundle now continues through preparation, bounded-agent execution, a role-routed human checkpoint, verified briefing, and approval-gated process-local memory. Confirmed answers retain answerer, recorder, and authority basis. Only the exact five-file public case-002 bundle can reuse committed replay output.
 
 ## Safe browser rehearsal bundle
 

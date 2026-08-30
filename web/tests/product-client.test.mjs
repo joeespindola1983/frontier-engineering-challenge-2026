@@ -54,12 +54,18 @@ test('replay client follows the asynchronous product contract without API calls'
   const investigation = await client.createInvestigation();
   const briefing = await client.answerCheckpoint(
     investigation.checkpointId,
-    'UNKNOWN',
+    {
+      answer: 'YES',
+      answeredByRole: 'ATHLETE',
+      recordedByRole: 'COACH',
+      authorityBasis: 'RELAYED_REPORT',
+    },
   );
   const memory = await client.approveBriefing(briefing.briefingId);
 
   assert.equal(investigation.review, demoReview);
-  assert.equal(briefing.humanConfirmation.status, 'UNKNOWN');
+  assert.equal(briefing.humanConfirmation.status, 'HUMAN_CONFIRMED');
+  assert.equal(briefing.humanConfirmation.source, 'Athlete report recorded by coach');
   assert.equal(memory.approvedSessions.length, 1);
 });
 
@@ -90,7 +96,12 @@ test('HTTP client calls only task-level product endpoints', async () => {
   const investigation = await client.createInvestigation();
   const briefing = await client.answerCheckpoint(
     investigation.checkpointId,
-    'UNKNOWN',
+    {
+      answer: 'YES',
+      answeredByRole: 'ATHLETE',
+      recordedByRole: 'COACH',
+      authorityBasis: 'RELAYED_REPORT',
+    },
   );
   await client.approveBriefing(briefing.briefingId);
 
@@ -107,6 +118,12 @@ test('HTTP client calls only task-level product endpoints', async () => {
     JSON.parse(requests[0].init.body).mode,
     'replay',
   );
+  assert.deepEqual(JSON.parse(requests[1].init.body), {
+    answer: 'YES',
+    answered_by_role: 'ATHLETE',
+    recorded_by_role: 'COACH',
+    authority_basis: 'RELAYED_REPORT',
+  });
 });
 
 test('HTTP client uploads typed evidence before source-based investigation', async () => {
@@ -140,6 +157,8 @@ test('HTTP client uploads typed evidence before source-based investigation', asy
     kind: 'PLAN',
     name: 'plan.json',
     contentBase64: 'e30=',
+    uploadedByRole: 'ATHLETE',
+    originRole: 'COACH',
   });
   const investigation = await client.createInvestigation({
     sourceIds: [source.source_id],
@@ -156,6 +175,8 @@ test('HTTP client uploads typed evidence before source-based investigation', asy
     kind: 'PLAN',
     name: 'plan.json',
     content_base64: 'e30=',
+    uploaded_by_role: 'ATHLETE',
+    origin_role: 'COACH',
   });
   assert.deepEqual(JSON.parse(requests[1].init.body).source_ids, [
     'source-plan-abc123',

@@ -51,3 +51,36 @@ test('live review discloses approximate usage cost without calling it a hard cap
   assert.match(page, /not a provider billing cap/);
   assert.doesNotMatch(page, /Guaranteed cost cap/);
 });
+
+test('page asks the athlete checkpoint without describing every answer as coach context', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /Question for \{formatRole\(review\.checkpoint\.expectedRespondentRole\)\}/);
+  assert.match(page, /Athlete answered directly/);
+  assert.match(page, /Athlete answer recorded by coach/);
+  assert.match(page, /Coach observed directly/);
+  assert.doesNotMatch(page, /A coach answer is stored as human context/);
+});
+
+test('intake distinguishes source origin from the current uploader', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /Origin: \{formatRole\(source\.originRole \?\? contributorRole\)\}/);
+  assert.match(page, /uploader: \{formatRole\(contributorRole\)\}/);
+});
+
+test('review adapter has no coach-only fallback for unattributed uploads', async () => {
+  const adapter = await readFile(
+    new URL('../app/lib/replay-adapter.mjs', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(adapter, /Locally uploaded evidence/);
+  assert.doesNotMatch(adapter, /Coach-uploaded local evidence/);
+});
