@@ -47,6 +47,10 @@ normalizes to the versioned environment schema and is filtered to the query
 window; and provider absence or failure leaves the core plan plus SpeedCoach
 bundle usable. A live smoke test may verify provider compatibility only with a
 public synthetic coordinate and must not be described as an accuracy result.
+The web boundary additionally tests consent and timezone validation before
+upload side effects, generated-source ordering, uploaded/provider environment
+exclusivity, coordinate-free preview formatting, fallback preparation, and the
+no-agent-call replay path.
 
 ## Commands
 

@@ -102,6 +102,12 @@ export class HttpWakeClient {
     return this.request('/api/environment-enrichments', request);
   }
 
+  prepareSourceBundle(sourceIds) {
+    return this.request('/api/source-bundles/prepare', {
+      source_ids: sourceIds,
+    });
+  }
+
   async analyzeSourceBundle({ sourceIds, mode, authorizedCostUsd }) {
     if (mode !== 'live') {
       throw new TypeError('New source bundle analysis requires explicit live mode.');
@@ -109,9 +115,7 @@ export class HttpWakeClient {
     if (!Number.isFinite(authorizedCostUsd) || authorizedCostUsd <= 0) {
       throw new TypeError('Live source bundle analysis requires explicit cost authorization.');
     }
-    const prepared = await this.request('/api/source-bundles/prepare', {
-      source_ids: sourceIds,
-    });
+    const prepared = await this.prepareSourceBundle(sourceIds);
     const executed = await this.request(
       `/api/source-bundles/${prepared.bundle_id}/execute`,
       { mode: 'live', authorized_cost_usd: authorizedCostUsd },

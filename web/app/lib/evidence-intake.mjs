@@ -64,7 +64,7 @@ async function fileToBase64(file) {
   return bytesToBase64(new Uint8Array(await file.arrayBuffer()));
 }
 
-export async function uploadEvidenceBundle(client, files, { uploadedByRole = 'COACH' } = {}) {
+function validateUpload(files, uploadedByRole, weather) {
   if (!['ATHLETE', 'COACH'].includes(uploadedByRole)) {
     throw new TypeError('Evidence contributor must be ATHLETE or COACH.');
   }
@@ -72,19 +72,70 @@ export async function uploadEvidenceBundle(client, files, { uploadedByRole = 'CO
   if (missing.length) {
     throw new Error('Select the training plan and SpeedCoach recording before uploading this bundle.');
   }
+  if (weather?.enabled && files.ENVIRONMENT) {
+    throw new Error('Choose either an uploaded environment timeline or historical weather enrichment.');
+  }
+  if (weather?.enabled && weather.authorizedLocationLookup !== true) {
+    throw new Error('Authorize the approximate session location lookup before requesting historical weather.');
+  }
+  if (weather?.enabled && !weather.sessionTimezone?.trim()) {
+    throw new Error('Confirm the session timezone before requesting historical weather.');
+  }
+}
+
+export async function uploadEvidenceBundleWithWeather(
+  client,
+  files,
+  { uploadedByRole = 'COACH', weather = { enabled: false } } = {},
+) {
+  validateUpload(files, uploadedByRole, weather);
 
   const sourceIds = [];
+  const uploadedByKind = {};
+  let weatherResult = { status: 'NOT_REQUESTED' };
   for (const definition of evidenceSourceDefinitions) {
     const file = files[definition.kind];
-    if (!file) continue;
-    const source = await client.uploadSource({
-      kind: definition.kind,
-      name: file.name,
-      contentBase64: await fileToBase64(file),
-      uploadedByRole,
-      originRole: definition.originRole ?? uploadedByRole,
-    });
-    sourceIds.push(source.source_id);
+    if (file) {
+      const source = await client.uploadSource({
+        kind: definition.kind,
+        name: file.name,
+        contentBase64: await fileToBase64(file),
+        uploadedByRole,
+        originRole: definition.originRole ?? uploadedByRole,
+      });
+      uploadedByKind[definition.kind] = source.source_id;
+      sourceIds.push(source.source_id);
+      continue;
+    }
+    if (definition.kind === 'ENVIRONMENT' && weather.enabled) {
+      try {
+        const enrichment = await client.enrichWeather({
+          speedcoachSourceId: uploadedByKind.SPEEDCOACH,
+          requestedByRole: uploadedByRole,
+          authorizedLocationLookup: true,
+          sessionTimezone: weather.sessionTimezone.trim(),
+        });
+        sourceIds.push(enrichment.source.source_id);
+        weatherResult = {
+          status: 'ADDED',
+          sourceId: enrichment.source.source_id,
+          lookup: enrichment.lookup,
+          preview: enrichment.preview,
+        };
+      } catch (cause) {
+        weatherResult = {
+          status: 'UNAVAILABLE',
+          message: cause instanceof Error
+            ? cause.message
+            : 'Historical weather is unavailable.',
+        };
+      }
+    }
   }
-  return sourceIds;
+  return { sourceIds, weather: weatherResult };
+}
+
+export async function uploadEvidenceBundle(client, files, options = {}) {
+  const result = await uploadEvidenceBundleWithWeather(client, files, options);
+  return result.sourceIds;
 }

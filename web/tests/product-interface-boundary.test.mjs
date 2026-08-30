@@ -84,3 +84,20 @@ test('review adapter has no coach-only fallback for unattributed uploads', async
   assert.match(adapter, /Locally uploaded evidence/);
   assert.doesNotMatch(adapter, /Coach-uploaded local evidence/);
 });
+
+test('weather intake makes consent, timezone, provenance, and no-model preparation visible', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /Historical conditions/);
+  assert.match(page, /approximate session location/i);
+  assert.match(page, /authorizedLocationLookup/);
+  assert.match(page, /sessionTimezone/);
+  assert.match(page, /uploadEvidenceBundleWithWeather/);
+  assert.match(page, /prepareSourceBundle/);
+  assert.match(page, /No agent call/i);
+  assert.match(page, /mode: 'replay'/);
+  assert.doesNotMatch(page, /weather explains/i);
+});

@@ -301,3 +301,33 @@ def normalize_open_meteo_response(
             "Local gusts, chop, shoreline effects, and causal performance effects are not established.",
         ],
     }
+
+
+def build_weather_preview(timeline: dict) -> dict:
+    """Return browser-safe aggregate conditions without location coordinates."""
+    samples = timeline.get("samples") or []
+    if not samples:
+        raise ValueError("Weather preview requires timeline samples.")
+
+    def values(key: str) -> list[float]:
+        return [float(sample[key]) for sample in samples if sample.get(key) is not None]
+
+    def value_range(key: str) -> list[float] | None:
+        available = values(key)
+        return [min(available), max(available)] if available else None
+
+    gusts = values("gust_speed_m_s")
+    source = timeline["source"]
+    return {
+        "provider": source["provider"],
+        "dataset": source["dataset"],
+        "sample_count": len(samples),
+        "temporal_resolution_minutes": source["temporal_resolution_minutes"],
+        "session_window": timeline["session_window"],
+        "location_precision_decimals": timeline["location"]["precision_decimals"],
+        "wind_speed_range_m_s": value_range("wind_speed_m_s"),
+        "gust_max_m_s": max(gusts) if gusts else None,
+        "temperature_range_c": value_range("temperature_c"),
+        "relative_humidity_range_pct": value_range("relative_humidity_pct"),
+        "causal_conclusion": "NOT_ESTABLISHED",
+    }

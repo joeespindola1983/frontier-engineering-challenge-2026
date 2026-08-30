@@ -256,9 +256,15 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-29 - Keep historical weather opt-in, approximate, and noncausal
 
-- **Status:** accepted for the local product service; page controls and broader accuracy evaluation remain pending.
+- **Status:** accepted for the local product service and evidence intake; broader accuracy evaluation remains pending.
 - **Decision:** Use Open-Meteo Historical Forecast as the first historical-weather adapter. Require both the `--allow-weather` service flag and explicit per-request approximate-location authorization. Send only a two-decimal median coordinate and bounded date range, never route rows or identity. Require an observed timestamp offset or a user-confirmed IANA timezone for raw SpeedCoach local clocks, and preserve that time assumption in `wake.environment_timeline.v2`. Keep weather optional: lookup failure must not block a plan plus SpeedCoach bundle. Analyze values in SI units, restrict them to the session window, and return insufficient temporal resolution rather than infer an intra-session change from coarse hourly data.
 - **Rationale:** Historical wind, gust, temperature, and humidity can add material context without making the pre-existing mobile app mandatory. The provider data is modeled grid evidence rather than an on-boat measurement, so it can support time association and cross-session learning but cannot establish a causal performance effect or a local gust. Explicit consent, coordinate minimization, provenance, and abstention preserve that distinction.
+
+## 2026-08-30 - Separate weather preparation from paid agent execution
+
+- **Status:** accepted for local interface QA.
+- **Decision:** Let replay-mode users upload the core sources, retrieve authorized historical conditions, inspect a coordinate-free preview, and prepare the resulting bundle without invoking the agent. Preserve the exact five-source public replay separately. Require explicit live runtime configuration and the existing cost authorization before a changed prepared bundle can reach the bounded agent.
+- **Rationale:** Weather lookup and input validation can be tested without spending model budget. Conflating enrichment with paid investigation would make interface QA expensive, hide provider failures behind agent execution, and weaken the product's existing separation between deterministic preparation and agent analysis.
 
 ## Pending decisions
 

@@ -29,6 +29,7 @@ from run_baseline import current_git_commit, read_json, utc_now
 from source_adapters import normalize_source
 from weather_enrichment import (
     OpenMeteoHistoricalForecastProvider,
+    build_weather_preview,
     build_weather_lookup,
     normalize_open_meteo_response,
 )
@@ -240,7 +241,7 @@ class WakeProductService:
         self.source_bundles: dict[str, dict] = {}
         self.bundle_results: dict[str, dict] = {}
         self.cost_executions: dict[str, dict] = {}
-        self.weather_enrichments: dict[str, str] = {}
+        self.weather_enrichments: dict[str, dict] = {}
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -406,9 +407,11 @@ class WakeProductService:
             )
         }
         if cache_key in self.weather_enrichments:
+            cached = self.weather_enrichments[cache_key]
             return {
-                "source": self.get_source(self.weather_enrichments[cache_key]),
+                "source": self.get_source(cached["source_id"]),
                 "lookup": {**safe_lookup, "cache_hit": True},
+                "preview": cached["preview"],
             }
 
         provider_response = self.weather_provider(lookup)
@@ -417,6 +420,7 @@ class WakeProductService:
             response=provider_response,
             retrieved_at=self.weather_now(),
         )
+        preview = build_weather_preview(timeline)
         content = json.dumps(
             timeline,
             sort_keys=True,
@@ -429,10 +433,14 @@ class WakeProductService:
             uploaded_by_role=requested_by_role,
             origin_role="SERVICE",
         )
-        self.weather_enrichments[cache_key] = source["source_id"]
+        self.weather_enrichments[cache_key] = {
+            "source_id": source["source_id"],
+            "preview": preview,
+        }
         return {
             "source": source,
             "lookup": {**safe_lookup, "cache_hit": False},
+            "preview": preview,
         }
 
     def _source_group(

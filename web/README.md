@@ -59,6 +59,19 @@ uv run python scripts/wake_product_service.py \
   --required-cost-authorization-usd 0.20
 ```
 
+For no-model historical-weather QA, start the service in replay mode with the
+weather adapter enabled:
+
+```bash
+uv run python scripts/wake_product_service.py --allow-weather
+```
+
+Then select a plan and SpeedCoach file, enable **Historical conditions**, enter
+the session's IANA timezone, authorize the rounded approximate-location lookup,
+and choose **Validate and prepare · No agent call**. The interface shows a safe
+wind, gust, temperature, and humidity preview and a prepared source-coverage
+summary. A provider failure leaves the plan plus SpeedCoach bundle usable.
+
 The authorization is not a provider billing cap. The review shows the
 token-based approximate cost after execution and flags an overrun. The service
 also exposes a process-local aggregate at `GET /api/runtime/costs`.

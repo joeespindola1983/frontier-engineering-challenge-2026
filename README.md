@@ -171,7 +171,9 @@ uv run python scripts/wake_product_service.py --allow-weather
 
 Each lookup still requires explicit per-request authorization, uses only an
 approximately rounded session location, and never blocks plan plus SpeedCoach
-analysis when unavailable. The current page does not yet expose this control.
+analysis when unavailable. The local intake exposes the consent and timezone
+controls, a coordinate-free conditions preview, and a replay-mode preparation
+path that makes no agent call.
 See [Historical weather enrichment](docs/WEATHER_ENRICHMENT.md).
 
 Then connect the web development server to it:

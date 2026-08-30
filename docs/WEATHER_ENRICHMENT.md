@@ -1,6 +1,6 @@
 # Historical Weather Enrichment
 
-**Status:** implemented as an opt-in local-service capability; interface controls are pending.
+**Status:** implemented as an opt-in local-service and evidence-intake capability.
 
 ## Purpose
 
@@ -105,7 +105,16 @@ their request must include the confirmed session timezone:
 
 Send that body to `POST /api/environment-enrichments`. The response contains a
 normal source metadata object that can be selected as the optional environment
-input during bundle preparation.
+input during bundle preparation. It also contains a coordinate-free preview of
+wind range, peak gust, temperature range, humidity range, sample count, and
+temporal resolution for immediate interface review.
+
+In the interface, a user may choose historical conditions instead of uploading
+an environment JSON file. The controls require a session timezone and a separate
+approximate-location authorization. In replay mode, a changed bundle is
+validated and prepared without an agent call. In explicitly configured live
+mode, the same source set may continue to the bounded agent under the existing
+cost authorization.
 
 ## Evidence and limitations
 

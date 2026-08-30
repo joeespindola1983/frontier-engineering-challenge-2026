@@ -3,7 +3,8 @@
 import { useMemo, useState } from 'react';
 import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
 import { demoReview } from './lib/demo-review.mjs';
-import { evidenceSourceDefinitions, uploadEvidenceBundle } from './lib/evidence-intake.mjs';
+import { formatEvidenceKind, formatMeasurementRange } from './lib/display-format.mjs';
+import { evidenceSourceDefinitions, uploadEvidenceBundleWithWeather } from './lib/evidence-intake.mjs';
 import { createWakeClient } from './lib/product-client.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
@@ -27,6 +28,33 @@ type ExecutionCost = {
   status: 'WITHIN_AUTHORIZATION' | 'AUTHORIZATION_EXCEEDED';
   usage: { total_tokens: number };
   runtime_ms: number;
+};
+type WeatherRequest = {
+  enabled: boolean;
+  authorizedLocationLookup: boolean;
+  sessionTimezone: string;
+};
+type WeatherOutcome = {
+  status: 'NOT_REQUESTED' | 'ADDED' | 'UNAVAILABLE';
+  message?: string;
+  preview?: {
+    provider: string;
+    dataset: string;
+    sample_count: number;
+    temporal_resolution_minutes: number;
+    location_precision_decimals: number;
+    wind_speed_range_m_s: number[] | null;
+    gust_max_m_s: number | null;
+    temperature_range_c: number[] | null;
+    relative_humidity_range_pct: number[] | null;
+    causal_conclusion: 'NOT_ESTABLISHED';
+  };
+};
+type PreparedBundle = {
+  bundle_id: string;
+  status: string;
+  agent_called: boolean;
+  source_coverage: { kind: string; status: string }[];
 };
 
 const configuredRuntimeUrl = process.env.NEXT_PUBLIC_WAKE_API_URL ?? '';
@@ -121,10 +149,42 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
   );
 }
 
-function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (files: EvidenceFiles, contributorRole: ContributorRole) => void; processing: boolean; error: string }) {
+function WeatherPreview({ outcome }: { outcome: WeatherOutcome }) {
+  if (outcome.status === 'NOT_REQUESTED') return null;
+  if (outcome.status === 'UNAVAILABLE') {
+    return <div className="weather-result weather-result-warning" role="status"><strong>Conditions unavailable</strong><p>{outcome.message} The core plan and SpeedCoach bundle remains usable.</p></div>;
+  }
+  const preview = outcome.preview;
+  if (!preview) return null;
+  return (
+    <div className="weather-result" role="status">
+      <div className="weather-result-header"><div><span>Historical conditions added</span><strong>{preview.provider}</strong></div><small>{preview.temporal_resolution_minutes}-minute modeled data · {preview.sample_count} samples</small></div>
+      <div className="weather-metrics">
+        <div><span>Wind</span><strong>{formatMeasurementRange(preview.wind_speed_range_m_s, 'm/s')}</strong></div>
+        <div><span>Peak gust</span><strong>{preview.gust_max_m_s == null ? 'Not available' : `${preview.gust_max_m_s.toFixed(1)} m/s`}</strong></div>
+        <div><span>Temperature</span><strong>{formatMeasurementRange(preview.temperature_range_c, '°C')}</strong></div>
+        <div><span>Humidity</span><strong>{formatMeasurementRange(preview.relative_humidity_range_pct, '%')}</strong></div>
+      </div>
+      <p>Approximate location rounded to {preview.location_precision_decimals} decimals. Time alignment supports context, not a causal performance verdict.</p>
+    </div>
+  );
+}
+
+function IntakeScreen({ onInvestigate, processing, error, preparedBundle, weatherOutcome }: { onInvestigate: (files: EvidenceFiles, contributorRole: ContributorRole, weather: WeatherRequest) => void; processing: boolean; error: string; preparedBundle: PreparedBundle | null; weatherOutcome: WeatherOutcome }) {
   const [files, setFiles] = useState<EvidenceFiles>({});
   const [contributorRole, setContributorRole] = useState<ContributorRole>('ATHLETE');
+  const [weatherEnabled, setWeatherEnabled] = useState(false);
+  const [authorizedLocationLookup, setAuthorizedLocationLookup] = useState(false);
+  const [sessionTimezone, setSessionTimezone] = useState('');
   const hasSelectedFiles = Object.keys(files).length > 0;
+  const allReplayFilesSelected = evidenceSourceDefinitions.every(({ kind }) => files[kind as EvidenceKind]);
+  const buttonLabel = !hasSelectedFiles
+    ? 'Investigate sample session'
+    : configuredRuntimeMode === 'live'
+      ? 'Validate and investigate'
+      : allReplayFilesSelected
+        ? 'Validate and open replay'
+        : 'Validate and prepare · No agent call';
   return (
     <main className="page page-narrow">
       <PrototypeNotice />
@@ -139,17 +199,19 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
             {evidenceSourceDefinitions.map((source, index) => {
               const selected = files[source.kind as EvidenceKind];
               return (
-                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title} · {source.required ? 'Core' : 'Optional'}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small><small className="authority-label">Origin: {formatRole(source.originRole ?? contributorRole)} · authority: {source.authorityScope.replaceAll('_', ' ').toLowerCase()} · uploader: {formatRole(contributorRole)}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Choose'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) setFiles((current) => ({ ...current, [source.kind]: file })); }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
+                <div className="upload-row" key={source.kind}><span className="upload-index">0{index + 1}</span><div><strong>{source.title} · {source.required ? 'Core' : 'Optional'}</strong><code>{selected?.name ?? source.defaultName}</code><small>{source.description}</small><small className="authority-label">Origin: {formatRole(source.originRole ?? contributorRole)} · authority: {source.authorityScope.replaceAll('_', ' ').toLowerCase()} · uploader: {formatRole(contributorRole)}</small></div>{configuredRuntimeUrl ? <label className="upload-file-action">{selected ? 'Selected' : 'Choose'}<input accept={source.accept} className="sr-only" disabled={processing} onChange={(event) => { const file = event.target.files?.[0]; if (file) { setFiles((current) => ({ ...current, [source.kind]: file })); if (source.kind === 'ENVIRONMENT') { setWeatherEnabled(false); setAuthorizedLocationLookup(false); } } }} type="file" /></label> : <span className="ready-label">Ready sample</span>}</div>
               );
             })}
           </div>
+          {configuredRuntimeUrl ? <section className={`weather-enrichment${files.ENVIRONMENT ? ' weather-disabled' : ''}`} aria-labelledby="weather-title"><div className="weather-heading"><div><div className="kicker">Optional evidence enhancer</div><h2 id="weather-title">Historical conditions</h2><p>WAKE can retrieve modeled wind, gusts, temperature, and humidity for the session window.</p></div><label className="weather-switch"><input checked={weatherEnabled} disabled={processing || Boolean(files.ENVIRONMENT)} onChange={(event) => setWeatherEnabled(event.target.checked)} type="checkbox" /><span>{files.ENVIRONMENT ? 'Uploaded timeline selected' : 'Use historical weather'}</span></label></div>{weatherEnabled && !files.ENVIRONMENT ? <div className="weather-fields"><label><span>Session timezone</span><input disabled={processing} onChange={(event) => setSessionTimezone(event.target.value)} placeholder="America/Sao_Paulo" type="text" value={sessionTimezone} /><small>Required when the SpeedCoach stores local time without an offset.</small></label><label className="weather-consent"><input checked={authorizedLocationLookup} disabled={processing} onChange={(event) => setAuthorizedLocationLookup(event.target.checked)} type="checkbox" /><span>I authorize WAKE to send a rounded approximate session location and bounded date window to Open-Meteo.</span></label><p className="weather-privacy">No route rows, athlete identity, plan, or device identifier leave the local service.</p></div> : null}{files.ENVIRONMENT ? <p className="weather-uploaded-note">The uploaded environmental timeline remains the selected source. Remove it before requesting provider data.</p> : null}<WeatherPreview outcome={weatherOutcome} /></section> : null}
           {hasSelectedFiles ? <p className="upload-boundary">Plan and SpeedCoach enable the core review. Missing mobile, environment, or context will remain visible as evidence gaps. A different bundle cannot reuse the committed replay.</p> : null}
           <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>{files.CONTEXT ? 'Boat, crew, goal, and observations will be read from the selected context file.' : 'No context file selected. Boat, crew, goal, and human observations will remain unknown.'}</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
           {hasSelectedFiles && configuredRuntimeMode === 'live' ? <p className="upload-boundary"><strong>Operational authorization: US${configuredCostAuthorizationUsd.toFixed(2)}.</strong> This allows the run to start; it is not a provider billing cap. WAKE shows the token-based approximate cost after execution.</p> : null}
+          {preparedBundle ? <div className="prepared-bundle" role="status"><span>Bundle prepared</span><strong>{preparedBundle.source_coverage.filter((source) => source.status === 'PRESENT').map((source) => formatEvidenceKind(source.kind)).join(' + ')}</strong><p>No agent call was made. The validated process-local evidence is ready for an explicitly authorized live investigation.</p></div> : null}
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
-          <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files, contributorRole)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
+          <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files, contributorRole, { enabled: weatherEnabled, authorizedLocationLookup, sessionTimezone })} type="button">{processing ? configuredRuntimeMode === 'live' ? 'Investigating…' : 'Preparing…' : buttonLabel}</button>
         </section>
-        <aside className="process-note"><div className="kicker">What WAKE will do</div><ol><li>Match and align recordings.</li><li>Reconstruct plan blocks.</li><li>Select trust per metric.</li><li>Preserve unsupported unknowns.</li><li>Ask one material question.</li></ol></aside>
+        <aside className="process-note"><div className="kicker">What WAKE will do</div><ol><li>Validate every selected source.</li><li>Retrieve authorized historical conditions.</li><li>Match and align recordings.</li><li>Select trust per metric.</li><li>Preserve unsupported unknowns.</li></ol></aside>
       </div>
     </main>
   );
@@ -246,12 +308,14 @@ export default function Home() {
   const [briefing, setBriefing] = useState<Briefing>(() => resolveCheckpoint(demoReview, 'UNKNOWN'));
   const [memory, setMemory] = useState<GoalMemory>(() => approveBriefingMemory(briefing, false));
   const [executionCost, setExecutionCost] = useState<ExecutionCost | null>(null);
+  const [preparedBundle, setPreparedBundle] = useState<PreparedBundle | null>(null);
+  const [weatherOutcome, setWeatherOutcome] = useState<WeatherOutcome>({ status: 'NOT_REQUESTED' });
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  async function investigate(files: EvidenceFiles = {}, contributorRole: ContributorRole = 'COACH') { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files, { uploadedByRole: contributorRole }) : undefined; const result = sourceIds && configuredRuntimeMode === 'live' ? await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }) : await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
+  async function investigate(files: EvidenceFiles = {}, contributorRole: ContributorRole = 'COACH', weather: WeatherRequest = { enabled: false, authorizedLocationLookup: false, sessionTimezone: '' }) { setProcessing(true); setError(''); setPreparedBundle(null); try { if (!Object.keys(files).length) { const sample = await client.createInvestigation({ mode: 'replay' }); setReview(sample.review); setCheckpointId(sample.checkpointId); setExecutionCost(null); setWeatherOutcome({ status: 'NOT_REQUESTED' }); setScreen('review'); return; } const uploaded = await uploadEvidenceBundleWithWeather(client, files, { uploadedByRole: contributorRole, weather }); const sourceIds = uploaded.sourceIds; setWeatherOutcome(uploaded.weather); if (configuredRuntimeMode === 'live') { const result = await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); return; } const allReplayFilesSelected = evidenceSourceDefinitions.every(({ kind }) => files[kind as EvidenceKind]); if (allReplayFilesSelected && uploaded.weather.status !== 'ADDED') { const replay = await client.createInvestigation({ mode: 'replay', sourceIds }); setReview(replay.review); setCheckpointId(replay.checkpointId); setExecutionCost(null); setScreen('review'); return; } const prepared = await client.prepareSourceBundle(sourceIds); setPreparedBundle(prepared); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
   async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} processing={processing} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
 }

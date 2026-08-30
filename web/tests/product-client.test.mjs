@@ -228,6 +228,42 @@ test('HTTP client requests historical weather only after explicit location conse
   });
 });
 
+test('HTTP client prepares a source bundle without invoking the agent', async () => {
+  const requests = [];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return {
+        ok: true,
+        status: 201,
+        json: async () => ({
+          bundle_id: 'source-bundle-weather-123',
+          status: 'READY_FOR_LIVE',
+          agent_called: false,
+          source_coverage: [
+            { kind: 'PLAN', status: 'PRESENT' },
+            { kind: 'SPEEDCOACH', status: 'PRESENT' },
+            { kind: 'ENVIRONMENT', status: 'PRESENT' },
+          ],
+        }),
+      };
+    },
+  });
+
+  const result = await client.prepareSourceBundle([
+    'source-plan',
+    'source-speedcoach',
+    'source-environment',
+  ]);
+
+  assert.equal(result.agent_called, false);
+  assert.equal(requests[0].url, 'http://127.0.0.1:8788/api/source-bundles/prepare');
+  assert.deepEqual(JSON.parse(requests[0].init.body), {
+    source_ids: ['source-plan', 'source-speedcoach', 'source-environment'],
+  });
+});
+
 test('HTTP client prepares and explicitly executes a new source bundle', async () => {
   const requests = [];
   const responses = [
