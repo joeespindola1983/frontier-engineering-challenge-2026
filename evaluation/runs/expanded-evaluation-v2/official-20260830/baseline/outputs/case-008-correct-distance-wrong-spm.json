@@ -1,0 +1,269 @@
+{
+  "abstentions": [
+    "No environmental assessment is possible because no environmental evidence or timeline is supplied.",
+    "No conclusion is made about B2/B3 physiological-zone compliance.",
+    "No conclusion is made about technique, crew synchronization, medical state, perceived effort, or use of any equipment.",
+    "The active-light-rowing recovery mode is not directly verified; continued low-rate movement is observed."
+  ],
+  "case_id": "case-008-correct-distance-wrong-spm",
+  "claims": [
+    {
+      "claim_id": "four-work-intervals-observed",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "The first window begins after the recording offset, so the first interval start and its 500 m distance are reconstructed from the cumulative-distance pattern."
+      ],
+      "statement": "Four approximately 500 m work intervals were observed at offsets 0-150 s, 300-450 s, 600-750 s, and 900-1050 s.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-distance-compliance",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [],
+      "statement": "All four observed work intervals were approximately 500 m, consistent with the prescribed distance and repetition count.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery-duration-compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [
+        "Telemetry supports lower-speed, continued movement during these intervals but cannot verify the prescribed rowing mode beyond that pattern."
+      ],
+      "statement": "The three observed recoveries were approximately 150 s each, within the prescribed 120-180 s range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "stroke-rate-work-1-2-4",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [],
+      "statement": "Work intervals 1, 2, and 4 averaged approximately 21 SPM and were within the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "stroke-rate-work-3",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "limitations": [],
+      "statement": "Work interval 3 averaged approximately 19 SPM, below the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "zone-compliance",
+      "confidence": 0,
+      "evidence_refs": [
+        "plan.json",
+        "context.json"
+      ],
+      "limitations": [
+        "The supplied zone codes have no detailed physiological boundaries, and no heart rate, lactate, power, or effort evidence is supplied."
+      ],
+      "statement": "B2/B3 compliance is unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "technique-and-synchronization",
+      "confidence": 0,
+      "evidence_refs": [
+        "context.json"
+      ],
+      "limitations": [
+        "No coach observation or video is supplied."
+      ],
+      "statement": "Technique quality and crew synchronization cannot be assessed from the supplied telemetry.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The session structure matched 4 x 500 m with three 150 s moving recoveries. Intervals 1, 2, and 4 held about 21 SPM; interval 3 was about 19 SPM, the only supported prescription deviation. Zone and technique compliance cannot be assessed from this file.",
+  "deviations": [
+    {
+      "confidence": 0.96,
+      "description": "The third 500 m work interval averaged approximately 19 SPM, about 1 SPM below the prescribed 20 SPM minimum.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json"
+      ],
+      "segment_ref": "work-3",
+      "type": "STROKE_RATE_BELOW_TARGET"
+    }
+  ],
+  "environment_assessment": null,
+  "follow_up_questions": [
+    "Was the third interval intentionally rowed at 19 SPM, or was the 20-22 SPM target missed?",
+    "Can the crew identifier in the plan be confirmed as representing synthetic-athlete-c and synthetic-athlete-d?",
+    "Was B2/B3 intended to be monitored by a measure not included here (for example heart rate, power, lactate, or perceived effort)?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "plan.json"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK",
+      "20-22 SPM during WORK",
+      "120-180 s ACTIVE_LIGHT_ROWING recovery",
+      "Continuous work intervals",
+      "B2/B3 standardized rowing zones"
+    ],
+    "status": "PARSED",
+    "summary": "Water session prescribed as 4 x 500 m in B2/B3 at 20-22 SPM, with continuous work intervals and 2-3 minutes active light-rowing recovery."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21,
+      "confidence": 0.96,
+      "distance_m": 500,
+      "end_offset_s": 150,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.95,
+      "distance_m": 247.9,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 150
+    },
+    {
+      "average_spm": 20.98,
+      "confidence": 0.96,
+      "distance_m": 500,
+      "end_offset_s": 450,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 247.4,
+      "end_offset_s": 600,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 450
+    },
+    {
+      "average_spm": 19,
+      "confidence": 0.96,
+      "distance_m": 500,
+      "end_offset_s": 750,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 600
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.95,
+      "distance_m": 247.5,
+      "end_offset_s": 900,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 750
+    },
+    {
+      "average_spm": 21.01,
+      "confidence": 0.96,
+      "distance_m": 500,
+      "end_offset_s": 1050,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 900
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.9,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "plan.json",
+        "context.json"
+      ],
+      "reason": "The telemetry contains four consecutive approximately 500 m high-speed blocks, each separated by approximately 150 s of lower-speed rowing, matching the prescribed 4 x 500 m structure and 120-180 s active-recovery range. The plan crew identifier is not directly reconciled to the listed athlete identifiers.",
+      "source_ids": [
+        "speedcoach-case-008-correct-distance-wrong-spm",
+        "plan-case-008-correct-distance-wrong-spm"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "segment distance",
+      "reason": "This is the only supplied source with cumulative distance telemetry; its 150-second block boundaries show four 500 m work intervals.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke rate",
+      "reason": "This is the only supplied source with SPM telemetry, with repeated sampled values across every work and recovery block.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "recovery duration",
+      "reason": "The speed and SPM transitions identify three approximately 150-second lower-intensity intervals between work blocks.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0,
+      "evidence_refs": [
+        "plan.json",
+        "context.json"
+      ],
+      "metric": "training zone compliance",
+      "reason": "The plan specifies B2/B3, but physiological boundaries and corresponding session measures are not supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

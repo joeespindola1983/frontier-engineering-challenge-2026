@@ -1,0 +1,43 @@
+{
+  "approximate_total_cost_usd": 0.711516,
+  "case_runtime_ms_total": 234789,
+  "cases": [
+    "case-001-misaligned-double-scull",
+    "case-002-wind-shift-plan-deviation",
+    "case-003-calm-expert-compliant",
+    "case-004-steady-headwind-compliant",
+    "case-005-tailwind-fast-not-improvement",
+    "case-006-crosswind-gusts",
+    "case-007-incomplete-intervals",
+    "case-008-correct-distance-wrong-spm",
+    "case-009-excess-recovery",
+    "case-010-mobile-spm-zero"
+  ],
+  "config_sha256": "6bcb72994e3d3982396a0cf886df71c279d2b39ebca27911206f48d84657673a",
+  "created_at": "2026-08-30T12:09:58.009+00:00",
+  "finished_at": "2026-08-30T12:09:58.009+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "prompt_sha256": "b360d6313a40c2da8dde0a011379d58e2f26cde7fce555b6003b2d3af0250482",
+  "run_id": "agent",
+  "runtime_ms": 234812,
+  "schema_version": "wake.agent_run.v1",
+  "started_at": "2026-08-30T12:06:03.196+00:00",
+  "total_usage": {
+    "input_tokens": 169920,
+    "output_tokens": 30973,
+    "total_tokens": 200893
+  },
+  "trajectories": [
+    "trajectories/case-001-misaligned-double-scull.trajectory.json",
+    "trajectories/case-002-wind-shift-plan-deviation.trajectory.json",
+    "trajectories/case-003-calm-expert-compliant.trajectory.json",
+    "trajectories/case-004-steady-headwind-compliant.trajectory.json",
+    "trajectories/case-005-tailwind-fast-not-improvement.trajectory.json",
+    "trajectories/case-006-crosswind-gusts.trajectory.json",
+    "trajectories/case-007-incomplete-intervals.trajectory.json",
+    "trajectories/case-008-correct-distance-wrong-spm.trajectory.json",
+    "trajectories/case-009-excess-recovery.trajectory.json",
+    "trajectories/case-010-mobile-spm-zero.trajectory.json"
+  ],
+  "workflow": "wake-agent-v2-tool-loop"
+}

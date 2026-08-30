@@ -1,0 +1,47 @@
+{
+  "approximate_cost_usd": 0.079974,
+  "case_id": "case-002-wind-shift-plan-deviation",
+  "configuration": {
+    "api": "responses",
+    "config_sha256": "7dabf454a428675ca244003062ae896c5a381b9cbe0270c78ae410e82a509061",
+    "max_output_tokens": 12000,
+    "model_requested": "gpt-5.6-terra",
+    "provider": "openai",
+    "reasoning_effort": "medium",
+    "service_tier": "default",
+    "store": false,
+    "temperature": null
+  },
+  "finished_at": "2026-08-30T12:01:42.485+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "inputs": {
+    "output_schema_sha256": "d565760827fab528341c056aab019cd2cbe28ddaef0e8f9217e178b215bc51a0",
+    "prompt_sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50",
+    "summary_id": "baseline-input-v1-case-002",
+    "summary_request_sha256": "deda6c934ddaa33126b4363375bab299f7b6a26321ef9dc50cc90920f2cce8c4"
+  },
+  "pricing": {
+    "checked_on": "2026-08-29",
+    "currency": "USD",
+    "input_usd_per_million_tokens": 2.0,
+    "output_usd_per_million_tokens": 12.0,
+    "source": "https://developers.openai.com/api/docs/models"
+  },
+  "response": {
+    "id": "resp_03d90cab659db4df016a941b7d0fb487d19ad7b603c27ad99d",
+    "model": "gpt-5.6-terra",
+    "status": "completed"
+  },
+  "run_id": "baseline",
+  "runtime_ms": 41927,
+  "schema_version": "wake.evaluation_run_case.v1",
+  "started_at": "2026-08-30T12:01:00.557+00:00",
+  "usage": {
+    "cached_input_tokens": 1053,
+    "input_tokens": 12453,
+    "output_tokens": 4589,
+    "reasoning_output_tokens": 2252,
+    "total_tokens": 17042
+  },
+  "workflow": "baseline-v1-direct-call"
+}

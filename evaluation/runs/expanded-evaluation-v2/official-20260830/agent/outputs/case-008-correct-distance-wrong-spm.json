@@ -1,0 +1,267 @@
+{
+  "abstentions": [
+    "Do not conclude that the prescribed 500 m distance was completed or missed for any interval from the boundary-derived reconstructed distances.",
+    "Do not infer technique, crew synchronization, physiological effort, medical state, or resistance-equipment use from this telemetry.",
+    "Do not attribute the work-03 stroke-rate deviation to environmental conditions; no environmental timeline is supplied.",
+    "No independent recording supports route corroboration or a multi-recording session association."
+  ],
+  "case_id": "case-008-correct-distance-wrong-spm",
+  "claims": [
+    {
+      "claim_id": "plan_execution_count",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "This confirms reconstructed interval count, not prescribed-distance completion."
+      ],
+      "statement": "Four reconstructed work intervals were observed, matching the four prescribed repetitions.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work_rate_compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "Work intervals 01, 02, and 04 averaged 20.99, 20.98, and 21.01 SPM respectively, within the prescribed 20\u201322 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery_duration_compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "Each of the three reconstructed recoveries lasted 150 s, within the prescribed 120\u2013180 s range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "prescribed_distance_completion",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Reconstructed segment distances are boundary-derived from SPM classification, exclude transition samples, and must not be summed or compared with the prescribed total."
+      ],
+      "statement": "Completion or shortfall of the prescribed 4 \u00d7 500 m distance cannot be established from the reconstructed segment distances.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "equipment_use",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Telemetry cannot observe equipment use."
+      ],
+      "statement": "Use of any resistance equipment is unknown.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The reconstruction identifies all four planned work bouts and three 150 s active recoveries. Work bouts 1, 2, and 4 met the 20\u201322 SPM target; work bout 3 averaged 19.00 SPM and was 1 SPM below target. The interval count and recovery durations are supported, but the displayed reconstructed distances must not be used to judge 500 m completion.",
+  "deviations": [
+    {
+      "confidence": 0.95,
+      "description": "Average stroke rate was 19.00 SPM, below the prescribed 20\u201322 SPM range.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "segment_ref": "work-03",
+      "type": "SPM_OUTSIDE_TARGET"
+    }
+  ],
+  "environment_assessment": {
+    "association": "UNKNOWN",
+    "confidence": 0.0,
+    "evidence_refs": [
+      "input/context.json"
+    ],
+    "limitations": [
+      "Environmental evidence cannot support a causal conclusion in this case."
+    ],
+    "summary": "No environmental timeline was supplied; no environmental-performance association can be assessed."
+  },
+  "follow_up_questions": [
+    "Is there a lap/interval marker or other distance-boundary record that can independently verify completion of each prescribed 500 m interval?",
+    "Was any resistance equipment used during this session?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "input/plan.json"
+    ],
+    "prescribed_blocks": [
+      "4 \u00d7 500 m WORK at 20\u201322 SPM",
+      "120\u2013180 s ACTIVE_LIGHT_ROWING recovery after each work interval"
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: 4 \u00d7 500 m at 20\u201322 SPM (B2/B3), each followed by 120\u2013180 s active light-rowing recovery; work intervals were instructed to be continuous."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 20.99,
+      "confidence": 0.95,
+      "distance_m": 483.327,
+      "end_offset_s": 149.432,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-01",
+      "start_offset_s": 5.0
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.95,
+      "distance_m": 239.65,
+      "end_offset_s": 299.432,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-01",
+      "start_offset_s": 154.432
+    },
+    {
+      "average_spm": 20.98,
+      "confidence": 0.95,
+      "distance_m": 483.17,
+      "end_offset_s": 448.664,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-02",
+      "start_offset_s": 304.432
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 239.234,
+      "end_offset_s": 598.664,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-02",
+      "start_offset_s": 453.664
+    },
+    {
+      "average_spm": 19.0,
+      "confidence": 0.95,
+      "distance_m": 483.261,
+      "end_offset_s": 748.022,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-03",
+      "start_offset_s": 603.664
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.95,
+      "distance_m": 239.323,
+      "end_offset_s": 898.022,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-03",
+      "start_offset_s": 753.022
+    },
+    {
+      "average_spm": 21.01,
+      "confidence": 0.95,
+      "distance_m": 483.248,
+      "end_offset_s": 1047.077,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-04",
+      "start_offset_s": 903.022
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.2,
+      "decision": "INSUFFICIENT",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "reason": "Only one telemetry recording is supplied; no independent route or clock comparison is available to associate recordings.",
+      "source_ids": [
+        "speedcoach-case-008-correct-distance-wrong-spm",
+        "input/plan.json"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "The sole supplied Speedcoach recording reports SPM and has no supplied SPM conflict.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "The sole supplied Speedcoach recording reports distance and has no supplied distance conflict.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "speed",
+      "reason": "Speed is directly reported in the supplied Speedcoach time windows; no competing speed source is supplied.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.65,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "route",
+      "reason": "GPS route data are present, but route evidence is uncorroborated by an independent recording.",
+      "selected_source_id": "speedcoach-case-008-correct-distance-wrong-spm"
+    },
+    {
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/context.json"
+      ],
+      "metric": "environment",
+      "reason": "No environmental timeline or recording was supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

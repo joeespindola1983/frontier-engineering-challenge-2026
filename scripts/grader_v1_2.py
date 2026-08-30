@@ -373,13 +373,22 @@ def grade_case(output: dict, ground_truth: dict, summary: dict) -> dict:
     }
 
 
+def implemented_case_ids(root: Path = ROOT) -> list[str]:
+    registry = legacy.read_json(root / GRADER_CONFIG["case_registry"])
+    return sorted(
+        item["case_id"]
+        for item in registry["cases"]
+        if item["status"] == "IMPLEMENTED"
+    )
+
+
 def grade_output_directory(
     outputs_dir: Path,
     root: Path = ROOT,
     *,
     case_ids: list[str] | None = None,
 ) -> dict:
-    selected = sorted(case_ids or legacy.implemented_case_ids(root))
+    selected = sorted(case_ids or implemented_case_ids(root))
     missing = [
         case_id for case_id in selected
         if not (outputs_dir / f"{case_id}.json").is_file()
@@ -408,7 +417,7 @@ def grade_output_directory(
         "grader_version": GRADER_VERSION,
         "rubric_version": GRADER_CONFIG["rubric_version"],
         "grader_config_sha256": hashlib.sha256(GRADER_CONFIG_PATH.read_bytes()).hexdigest(),
-        "implemented_case_count": len(legacy.implemented_case_ids(root)),
+        "implemented_case_count": len(implemented_case_ids(root)),
         "graded_case_count": len(reports),
         "macro_average_score": (
             round(sum(report["score"] for report in reports) / len(reports), 2)

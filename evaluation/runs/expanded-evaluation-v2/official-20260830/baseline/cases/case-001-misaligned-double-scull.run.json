@@ -1,0 +1,47 @@
+{
+  "approximate_cost_usd": 0.036026,
+  "case_id": "case-001-misaligned-double-scull",
+  "configuration": {
+    "api": "responses",
+    "config_sha256": "7dabf454a428675ca244003062ae896c5a381b9cbe0270c78ae410e82a509061",
+    "max_output_tokens": 12000,
+    "model_requested": "gpt-5.6-terra",
+    "provider": "openai",
+    "reasoning_effort": "medium",
+    "service_tier": "default",
+    "store": false,
+    "temperature": null
+  },
+  "finished_at": "2026-08-30T12:01:00.489+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "inputs": {
+    "output_schema_sha256": "d565760827fab528341c056aab019cd2cbe28ddaef0e8f9217e178b215bc51a0",
+    "prompt_sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50",
+    "summary_id": "baseline-input-v1-case-001",
+    "summary_request_sha256": "81e5ac913ef7bba37661b5235c384e1ecc50f28de836fe644573e8475e38f379"
+  },
+  "pricing": {
+    "checked_on": "2026-08-29",
+    "currency": "USD",
+    "input_usd_per_million_tokens": 2.0,
+    "output_usd_per_million_tokens": 12.0,
+    "source": "https://developers.openai.com/api/docs/models"
+  },
+  "response": {
+    "id": "resp_0b6c7d957291f34c016a941b66cc9087d1a993c003e0ff357e",
+    "model": "gpt-5.6-terra",
+    "status": "completed"
+  },
+  "run_id": "baseline",
+  "runtime_ms": 23360,
+  "schema_version": "wake.evaluation_run_case.v1",
+  "started_at": "2026-08-30T12:00:37.129+00:00",
+  "usage": {
+    "cached_input_tokens": 0,
+    "input_tokens": 3835,
+    "output_tokens": 2363,
+    "reasoning_output_tokens": 497,
+    "total_tokens": 6198
+  },
+  "workflow": "baseline-v1-direct-call"
+}

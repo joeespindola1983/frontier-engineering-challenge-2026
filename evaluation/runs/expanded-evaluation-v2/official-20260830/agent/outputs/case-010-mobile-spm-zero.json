@@ -1,0 +1,291 @@
+{
+  "abstentions": [
+    "Do not treat the approximately 483 m reconstructed work-segment distances as a completed-distance shortfall; they are boundary-derived and omit transitions.",
+    "No conclusion on technique, crew synchronization, perceived effort, physiological intensity, medical state, or equipment use.",
+    "No environmental association or causal explanation is supported.",
+    "The 18 s clock offset is unresolved despite route-supported session matching."
+  ],
+  "case_id": "case-010-mobile-spm-zero",
+  "claims": [
+    {
+      "claim_id": "execution-count",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Interval reconstruction is based on approved SpeedCoach SPM telemetry."
+      ],
+      "statement": "Four work intervals were deterministically reconstructed, matching the four planned repetitions; no planned work interval was missing.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-rate-compliance",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "This supports average-SMP compliance only, not technique, effort, or physiological-zone compliance."
+      ],
+      "statement": "Each reconstructed work interval averaged 20.98\u201321.01 SPM, within the prescribed 20\u201322 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery-duration-compliance",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Recovery mode and visible rowing quality cannot be verified from these telemetry fields."
+      ],
+      "statement": "The three reconstructed recoveries each lasted 150 s, within the prescribed 120\u2013180 s range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "distance-completion",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Reconstructed segment distances are SPM-boundary-derived, exclude transition samples, and cannot be summed or compared with the prescribed distance target."
+      ],
+      "statement": "Completion or shortfall of the prescribed 4 \u00d7 500 m distance is not established.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "mobile-spm-validity",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/mobile.csv"
+      ],
+      "limitations": [],
+      "statement": "Mobile stroke-rate data are unsuitable for stroke-rate assessment because all mobile SPM samples are flagged zero.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "equipment-use",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Telemetry cannot observe resistance equipment."
+      ],
+      "statement": "Use of resistance equipment is not confirmed.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "technique-and-synchronization",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "limitations": [
+        "No coach observation is supplied; GPS, SPM, speed, and phone motion cannot establish visible technique or crew synchronization."
+      ],
+      "statement": "Technique and crew synchronization are not assessable from the supplied telemetry.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "SpeedCoach is the selected source for SPM, distance, speed, and route; mobile SPM is all-zero and mobile distance is biased. The recordings are a route-supported session match, while retaining an 18 s clock offset. Four work intervals were reconstructed at 20.98\u201321.01 SPM, with three 150 s recoveries, all compliant with the rate and recovery-duration prescription. Do not judge the 500 m distance target from the reconstructed segment distances; prescribed-distance completion remains unverified. [input/speedcoach.csv, input/mobile.csv, input/plan.json]",
+  "deviations": [],
+  "environment_assessment": {
+    "association": "UNKNOWN",
+    "confidence": 0,
+    "evidence_refs": [
+      "input/speedcoach.csv",
+      "input/mobile.csv"
+    ],
+    "limitations": [
+      "No environmental timeline is supplied.",
+      "Environmental evidence would support association only, not causation or athlete improvement/regression."
+    ],
+    "summary": "No environmental timeline is available; no performance-environment association or causal conclusion can be made."
+  },
+  "follow_up_questions": [
+    "Is there a device-based interval/lap record or independently measured distance record that can verify completion of each prescribed 500 m?",
+    "Was any resistance equipment used during the session?",
+    "Is an environmental timeline available for this outing if environmental context is needed?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "input/plan.json"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK at 20\u201322 SPM",
+      "120\u2013180 s ACTIVE_LIGHT_ROWING recovery after each work interval"
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: 4 \u00d7 500 m at 20\u201322 SPM, with 120\u2013180 s active/light-rowing recovery; continuous work intervals requested."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21.01,
+      "confidence": 0.93,
+      "distance_m": 483.262,
+      "end_offset_s": 149.185,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-01",
+      "start_offset_s": 5
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.92,
+      "distance_m": 239.68,
+      "end_offset_s": 299.185,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-01",
+      "start_offset_s": 154.185
+    },
+    {
+      "average_spm": 21,
+      "confidence": 0.93,
+      "distance_m": 483.235,
+      "end_offset_s": 448.342,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-02",
+      "start_offset_s": 304.185
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.92,
+      "distance_m": 239.399,
+      "end_offset_s": 598.342,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-02",
+      "start_offset_s": 453.342
+    },
+    {
+      "average_spm": 20.99,
+      "confidence": 0.93,
+      "distance_m": 483.255,
+      "end_offset_s": 747.749,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-03",
+      "start_offset_s": 603.342
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.92,
+      "distance_m": 239.246,
+      "end_offset_s": 897.749,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-03",
+      "start_offset_s": 752.749
+    },
+    {
+      "average_spm": 20.98,
+      "confidence": 0.93,
+      "distance_m": 483.363,
+      "end_offset_s": 1046.983,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-04",
+      "start_offset_s": 902.749
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.74,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "reason": "Route overlap supports a common outing despite the mobile recording starting 18 s after the SpeedCoach recording; the clock discrepancy is retained.",
+      "source_ids": [
+        "speedcoach-case-010-mobile-spm-zero",
+        "mobile-case-010-mobile-spm-zero"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "SpeedCoach reports SPM; mobile SPM is flagged all-zero and is rejected for stroke-rate assessment.",
+      "selected_source_id": "speedcoach-case-010-mobile-spm-zero"
+    },
+    {
+      "confidence": 0.92,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "Mobile cumulative distance is flagged biased and finishes 0.476% above SpeedCoach; sources are not averaged.",
+      "selected_source_id": "speedcoach-case-010-mobile-spm-zero"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "speed_m_s",
+      "reason": "SpeedCoach provides time-window speed; mobile has no usable time-series windows in the supplied evidence.",
+      "selected_source_id": "speedcoach-case-010-mobile-spm-zero"
+    },
+    {
+      "confidence": 0.92,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "route",
+      "reason": "SpeedCoach route is selected and independently corroborated by close bidirectional GPS route overlap from mobile.",
+      "selected_source_id": "speedcoach-case-010-mobile-spm-zero"
+    },
+    {
+      "confidence": 0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "environment",
+      "reason": "No environmental timeline is supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

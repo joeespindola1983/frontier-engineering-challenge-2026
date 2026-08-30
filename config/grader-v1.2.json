@@ -3,7 +3,7 @@
   "grader_version": "1.2",
   "rubric_version": "1.0",
   "analysis_output_schema": "schemas/analysis-output.schema.json",
-  "case_registry": "evaluation/cases.json",
+  "case_registry": "evaluation/cases-v2.json",
   "baseline_input_bundle": "evaluation/baseline-inputs/v2",
   "dimension_weights": {
     "plan_interpretation": 15,

@@ -1,0 +1,47 @@
+{
+  "approximate_cost_usd": 0.041672,
+  "case_id": "case-006-crosswind-gusts",
+  "configuration": {
+    "api": "responses",
+    "config_sha256": "7dabf454a428675ca244003062ae896c5a381b9cbe0270c78ae410e82a509061",
+    "max_output_tokens": 12000,
+    "model_requested": "gpt-5.6-terra",
+    "provider": "openai",
+    "reasoning_effort": "medium",
+    "service_tier": "default",
+    "store": false,
+    "temperature": null
+  },
+  "finished_at": "2026-08-30T12:02:57.841+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "inputs": {
+    "output_schema_sha256": "d565760827fab528341c056aab019cd2cbe28ddaef0e8f9217e178b215bc51a0",
+    "prompt_sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50",
+    "summary_id": "baseline-input-v2-case-006-crosswind-gusts",
+    "summary_request_sha256": "c29dc64fe7ea066601a9cc23385bc5bb63792c5bc4ac9f4183f0a5bd528a10f9"
+  },
+  "pricing": {
+    "checked_on": "2026-08-29",
+    "currency": "USD",
+    "input_usd_per_million_tokens": 2.0,
+    "output_usd_per_million_tokens": 12.0,
+    "source": "https://developers.openai.com/api/docs/models"
+  },
+  "response": {
+    "id": "resp_0a25bb2e9d7cc342016a941bdc170487d1a42120d38574e803",
+    "model": "gpt-5.6-terra",
+    "status": "completed"
+  },
+  "run_id": "baseline",
+  "runtime_ms": 22196,
+  "schema_version": "wake.evaluation_run_case.v1",
+  "started_at": "2026-08-30T12:02:35.644+00:00",
+  "usage": {
+    "cached_input_tokens": 1053,
+    "input_tokens": 5686,
+    "output_tokens": 2525,
+    "reasoning_output_tokens": 858,
+    "total_tokens": 8211
+  },
+  "workflow": "baseline-v1-direct-call"
+}

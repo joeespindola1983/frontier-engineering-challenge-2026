@@ -84,8 +84,10 @@ failures prove rejection of zero-only mobile SPM, wrong environmental category,
 causal wind language, and incorrect deviation segment identity. The historical
 v1.1 module and configuration remain unchanged.
 
-Until cases 003-010 move to `IMPLEMENTED`, grade an explicit calibration set by
-repeating `--case`:
+Grader v1.2 reads the separate `evaluation/cases-v2.json` registry, where cases
+001-010 are implemented. Grader v1.1 continues to read the historical
+`evaluation/cases.json` registry with only cases 001-002 implemented. To grade a
+subset for calibration, repeat `--case`:
 
 ```bash
 uv run python scripts/grade_outputs_v1_2.py \
@@ -94,5 +96,5 @@ uv run python scripts/grade_outputs_v1_2.py \
   --case case-003-calm-expert-compliant
 ```
 
-The v1.2 command is offline. Calibration proves deterministic scoring behavior,
-not the quality of a model output that has not yet been executed.
+The v1.2 command is offline. Regrading committed outputs does not call a model
+or incur API cost.

@@ -1,0 +1,38 @@
+{
+  "approximate_total_cost_usd": 0.428172,
+  "case_manifests": [
+    "cases/case-001-misaligned-double-scull.run.json",
+    "cases/case-002-wind-shift-plan-deviation.run.json",
+    "cases/case-003-calm-expert-compliant.run.json",
+    "cases/case-004-steady-headwind-compliant.run.json",
+    "cases/case-005-tailwind-fast-not-improvement.run.json",
+    "cases/case-006-crosswind-gusts.run.json",
+    "cases/case-007-incomplete-intervals.run.json",
+    "cases/case-008-correct-distance-wrong-spm.run.json",
+    "cases/case-009-excess-recovery.run.json",
+    "cases/case-010-mobile-spm-zero.run.json"
+  ],
+  "cases": [
+    "case-001-misaligned-double-scull",
+    "case-002-wind-shift-plan-deviation",
+    "case-003-calm-expert-compliant",
+    "case-004-steady-headwind-compliant",
+    "case-005-tailwind-fast-not-improvement",
+    "case-006-crosswind-gusts",
+    "case-007-incomplete-intervals",
+    "case-008-correct-distance-wrong-spm",
+    "case-009-excess-recovery",
+    "case-010-mobile-spm-zero"
+  ],
+  "created_at": "2026-08-30T12:04:39.259+00:00",
+  "run_id": "baseline",
+  "schema_version": "wake.evaluation_run.v1",
+  "total_usage": {
+    "cached_input_tokens": 9477,
+    "input_tokens": 54006,
+    "output_tokens": 26680,
+    "reasoning_output_tokens": 8921,
+    "total_tokens": 80686
+  },
+  "workflow": "baseline-v1-direct-call"
+}

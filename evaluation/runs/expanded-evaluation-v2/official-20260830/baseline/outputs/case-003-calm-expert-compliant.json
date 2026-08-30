@@ -1,0 +1,244 @@
+{
+  "abstentions": [
+    "No determination of B2/B3 physiological-zone compliance.",
+    "No assessment of visible rowing technique, crew synchronization, medical state, or perceived exertion.",
+    "No claim that wind caused the observed speed consistency."
+  ],
+  "case_id": "case-003-calm-expert-compliant",
+  "claims": [
+    {
+      "claim_id": "performed-structure",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Segment boundaries and averages are derived from 30-second telemetry windows rather than stroke-by-stroke interval markers."
+      ],
+      "statement": "The performed session contains four approximately 500 m work intervals, each approximately 150 s, separated by three approximately 150 s lower-rate rowing periods.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-rate-compliance",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "plan-case-003-calm-expert-compliant",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Compliance is assessed from interval-average SPM; individual stroke-rate excursions within windows are not supplied."
+      ],
+      "statement": "All four derived work intervals averaged approximately 21 SPM, within the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery-compliance",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "plan-case-003-calm-expert-compliant",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Telemetry supports continued lower-rate movement during recoveries but does not directly label recovery mode."
+      ],
+      "statement": "Each derived recovery lasted approximately 150 s and showed approximately 16 SPM rowing, consistent with the prescribed 120-180 s active light-rowing recovery.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "continuity",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "plan-case-003-calm-expert-compliant",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Thirty-second aggregate windows cannot exclude a brief interruption within a window."
+      ],
+      "statement": "The work intervals are consistent with continuous execution: each work phase has uninterrupted 30-second windows of similar work speed and SPM.",
+      "status": "INFERRED"
+    },
+    {
+      "claim_id": "zone-compliance",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "plan-case-003-calm-expert-compliant"
+      ],
+      "limitations": [
+        "The standardized zone code is defined, but its physiological boundaries and any heart-rate, lactate, power, or perceived-effort evidence are not supplied."
+      ],
+      "statement": "B2/B3 physiological-zone compliance cannot be determined from the supplied evidence.",
+      "status": "UNSUPPORTED"
+    },
+    {
+      "claim_id": "technique-and-synchronization",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "No coach observation, video, or crew-synchronization measurement is supplied; GPS and ordinary SPM telemetry cannot establish these qualities."
+      ],
+      "statement": "Technique quality and crew synchronization cannot be assessed.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "Strong structural compliance: four approximately 500 m work pieces at approximately 21 SPM, with three approximately 2:30 active, lower-rate recoveries. No supported execution deviation was identified. B2/B3 intensity compliance remains unverified because no physiological or perceived-effort evidence was supplied; technique and crew synchronization also remain unassessed.",
+  "deviations": [],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.96,
+    "evidence_refs": [
+      "scripts/generate_diagnostic_cases.py",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "The environmental source is synthetic.",
+      "Stable wind context cannot establish the cause of speed consistency, technique quality, fitness, or crew performance."
+    ],
+    "summary": "Wind was constant throughout the recorded timeline: 0.5 m/s crosswind, 0.0 m/s effective headwind, and 0.8 m/s gust speed. This stable, low-wind context is consistent with the highly stable work-interval speeds, but does not establish causation or athlete improvement."
+  },
+  "follow_up_questions": [],
+  "plan_summary": {
+    "evidence_refs": [
+      "plan-case-003-calm-expert-compliant"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK at 20-22 SPM, B2/B3",
+      "120-180 s ACTIVE_LIGHT_ROWING recovery between repetitions",
+      "Keep every work interval continuous"
+    ],
+    "status": "PARSED",
+    "summary": "4 x 500 m work at 20-22 SPM (voga), zone B2/B3, with 120-180 s active light-rowing recovery; work intervals were to remain continuous."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 20.99,
+      "confidence": 0.97,
+      "distance_m": 500,
+      "end_offset_s": 150,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.96,
+      "distance_m": 247.3,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 150
+    },
+    {
+      "average_spm": 21.02,
+      "confidence": 0.97,
+      "distance_m": 500.0,
+      "end_offset_s": 450,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.96,
+      "distance_m": 247.6,
+      "end_offset_s": 600,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 450
+    },
+    {
+      "average_spm": 21.02,
+      "confidence": 0.97,
+      "distance_m": 500.0,
+      "end_offset_s": 750,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 600
+    },
+    {
+      "average_spm": 15.98,
+      "confidence": 0.96,
+      "distance_m": 247.4,
+      "end_offset_s": 900,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 750
+    },
+    {
+      "average_spm": 20.98,
+      "confidence": 0.97,
+      "distance_m": 500.0,
+      "end_offset_s": 1050,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 900
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.98,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "plan-case-003-calm-expert-compliant",
+        "input/speedcoach.csv"
+      ],
+      "reason": "The SpeedCoach recording occurred on the scheduled date and contains four repeated approximately 500 m, approximately 150 s work blocks separated by approximately 150 s lighter-rowing periods, matching the prescribed 4 x 500 m structure with 2-3 minutes active recovery. The structural match, rather than timestamp proximity alone, supports association.",
+      "source_ids": [
+        "speedcoach-case-003-calm-expert-compliant",
+        "plan-case-003-calm-expert-compliant"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "elapsed time, interval timing, distance, and speed",
+      "reason": "This is the only supplied performance telemetry source and is GPS-present with a continuous time-series summary covering the session.",
+      "selected_source_id": "speedcoach-case-003-calm-expert-compliant"
+    },
+    {
+      "confidence": 0.98,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke rate (SPM)",
+      "reason": "This is the only supplied SPM telemetry source, is flagged SPM_PRESENT, and clearly distinguishes work-rate from recovery-rate windows.",
+      "selected_source_id": "speedcoach-case-003-calm-expert-compliant"
+    },
+    {
+      "confidence": 0.98,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "environmental wind context",
+      "reason": "The supplied high-quality synthetic environmental timeline is used as contextual evidence rather than athlete-performance telemetry.",
+      "selected_source_id": null
+    }
+  ]
+}

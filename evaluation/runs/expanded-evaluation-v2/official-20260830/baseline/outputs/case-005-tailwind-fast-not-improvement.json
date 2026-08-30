@@ -1,0 +1,261 @@
+{
+  "abstentions": [
+    "No conclusion is made about visible technique or crew synchronization because no observation is supplied.",
+    "No conclusion is made about medical state or perceived effort.",
+    "No conclusion is made about B2/B3 physiological-zone compliance.",
+    "No causal claim is made that wind produced the observed speeds.",
+    "No athlete-improvement or regression conclusion is made from this single tailwind-aided session."
+  ],
+  "case_id": "case-005-tailwind-fast-not-improvement",
+  "claims": [
+    {
+      "claim_id": "performed_structure",
+      "confidence": 0.83,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Segment boundaries and 500 m distances are inferred from 30-second aggregate windows rather than explicit interval-lap records."
+      ],
+      "statement": "The telemetry supports four approximately 500 m work intervals separated by three approximately 150 s lower-rate recovery periods.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "stroke_rate_compliance",
+      "confidence": 0.86,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "Window-average SPM cannot rule out brief within-window excursions outside the target range."
+      ],
+      "statement": "The four inferred work intervals averaged approximately 21 SPM, within the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery_compliance",
+      "confidence": 0.79,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "Active rowing is inferred from continued positive speed and SPM, not directly observed."
+      ],
+      "statement": "The inferred recoveries were approximately 150 s and at lower stroke rates of about 16 SPM, consistent with the prescribed 120-180 s active light-rowing recovery.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "zone_compliance",
+      "confidence": 0,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "No detailed B2/B3 boundaries or physiological, power, or perceived-effort data are supplied."
+      ],
+      "statement": "B2/B3 physiological-zone compliance cannot be determined.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "environmental_context",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "The environmental source is synthetic."
+      ],
+      "statement": "The synthetic environmental timeline specifies a steady 4.0 m/s tailwind relative to the confirmed northbound route throughout the session.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "performance_improvement",
+      "confidence": 0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "No comparable baseline session, physiological workload measure, or controlled environmental comparison is supplied; the session occurred with a steady tailwind."
+      ],
+      "statement": "Fast work-interval speed in this session does not establish athlete improvement or regression.",
+      "status": "UNSUPPORTED"
+    }
+  ],
+  "coach_briefing": "The session structurally matches 4 x ~500 m: work rate was consistently ~21 SPM, within the 20-22 target, with ~150 s lower-rate active recoveries. No supported execution deviation is evident. Treat the fast ~3.9 m/s work speed as tailwind-contextualized, not proof of performance improvement; B2/B3 compliance cannot be verified without workload data.",
+  "deviations": [],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.82,
+    "evidence_refs": [
+      "input/speedcoach.csv",
+      "scripts/generate_diagnostic_cases.py"
+    ],
+    "limitations": [
+      "The timeline supports contextual association only, not causation.",
+      "The environmental source is synthetic.",
+      "No baseline or matched-condition comparison is supplied."
+    ],
+    "summary": "A steady synthetic 4.0 m/s tailwind was present throughout the session on the confirmed northbound route. Work-window speeds near 3.9 m/s occurred under that condition, so those speeds should not be interpreted as evidence of improved athlete performance without a controlled comparison."
+  },
+  "follow_up_questions": [
+    "Is there a comparable 4 x 500 m session with known wind conditions and workload measures to assess performance change?",
+    "Were heart rate, power, lactate, or athlete perceived effort recorded to verify the intended B2/B3 workload?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "scripts/generate_diagnostic_cases.py"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK",
+      "20-22 SPM during work",
+      "120-180 s ACTIVE_LIGHT_ROWING recovery",
+      "Zone B2/B3",
+      "Keep every work interval continuous"
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: 4 x 500 m in B2/B3 at 20-22 SPM, with 120-180 s active light-rowing recovery and continuous work intervals."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21,
+      "confidence": 0.83,
+      "distance_m": 500,
+      "end_offset_s": 128,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16.47,
+      "confidence": 0.76,
+      "distance_m": null,
+      "end_offset_s": 278,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 128
+    },
+    {
+      "average_spm": 21.01,
+      "confidence": 0.83,
+      "distance_m": 500,
+      "end_offset_s": 406,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 278
+    },
+    {
+      "average_spm": 16.49,
+      "confidence": 0.76,
+      "distance_m": null,
+      "end_offset_s": 556,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 406
+    },
+    {
+      "average_spm": 20.99,
+      "confidence": 0.83,
+      "distance_m": 500,
+      "end_offset_s": 684,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 556
+    },
+    {
+      "average_spm": 16.3,
+      "confidence": 0.76,
+      "distance_m": null,
+      "end_offset_s": 834,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 684
+    },
+    {
+      "average_spm": 21.02,
+      "confidence": 0.83,
+      "distance_m": 500,
+      "end_offset_s": 962.01,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 834
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.9,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "reason": "The SpeedCoach session begins on the plan's scheduled date and its four repeated high-speed, approximately 21 SPM work periods with intervening light-rowing periods are consistent with the prescribed four-interval water session. Timestamp proximity alone was not used as the basis for this decision.",
+      "source_ids": [
+        "speedcoach-case-005-tailwind-fast-not-improvement",
+        "scripts/generate_diagnostic_cases.py"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "session duration, cumulative distance, and route telemetry",
+      "reason": "The sole telemetry source reports GPS presence, a 962.01 s duration, 2742.995 m cumulative distance, and 194 route points.",
+      "selected_source_id": "speedcoach-case-005-tailwind-fast-not-improvement"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke rate",
+      "reason": "The sole telemetry source reports SPM presence and repeated 30-second window average SPM values.",
+      "selected_source_id": "speedcoach-case-005-tailwind-fast-not-improvement"
+    },
+    {
+      "confidence": 0.85,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "wind relative to route heading",
+      "reason": "Wind is supplied as synthetic environmental context rather than athlete telemetry; it is usable for contextual association but not as a performance metric.",
+      "selected_source_id": null
+    },
+    {
+      "confidence": 0,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "physiological zone compliance",
+      "reason": "The plan's B2/B3 code is defined only as a standardized zone code; no physiological boundaries, heart rate, lactate, power, or effort measurement is supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

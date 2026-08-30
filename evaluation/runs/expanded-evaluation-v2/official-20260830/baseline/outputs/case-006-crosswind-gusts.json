@@ -1,0 +1,247 @@
+{
+  "abstentions": [
+    "No conclusion is made about B2/B3 physiological-zone attainment.",
+    "No conclusion is made about visible technique, crew synchronization, perceived exertion, or medical state.",
+    "No conclusion is made that the crosswind caused or did not cause the observed speeds."
+  ],
+  "case_id": "case-006-crosswind-gusts",
+  "claims": [
+    {
+      "claim_id": "performed-structure",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Segment boundaries are derived from 30-second telemetry windows rather than explicitly marked interval laps."
+      ],
+      "statement": "The recording supports four approximately 500 m work segments separated by three approximately 150 s lower-rate rowing recoveries.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-rate-compliance",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "plan-case-006-crosswind-gusts",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "This assesses average telemetry rate; it does not establish that every individual stroke was within range."
+      ],
+      "statement": "All four derived work segments averaged approximately 21 SPM, within the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery-duration-compliance",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "plan-case-006-crosswind-gusts",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Recovery boundaries are inferred from aggregated 30-second windows."
+      ],
+      "statement": "Each of the three observed inter-work recoveries was approximately 150 s, within the prescribed 120-180 s range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "active-recovery-evidence",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Telemetry cannot establish the subjective lightness or technical quality of the recovery rowing."
+      ],
+      "statement": "The recovery periods retained positive boat speed of approximately 1.65 m/s and stroke rate of approximately 16 SPM, consistent with continued rowing rather than stopping.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "zone-attainment",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "plan-case-006-crosswind-gusts"
+      ],
+      "limitations": [
+        "The supplied zone-code definition has no physiological boundaries, and no heart-rate, lactate, power, or perceived-effort evidence is supplied."
+      ],
+      "statement": "Whether the prescribed B2/B3 zone was achieved is unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "environment-exposure",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "Environmental data are synthetic and describe modeled exposure only."
+      ],
+      "statement": "The supplied environmental timeline indicates a steady modeled 6 m/s crosswind from 90 degrees, with 9 m/s gusts and no modeled headwind component, across the session route heading.",
+      "status": "OBSERVED"
+    }
+  ],
+  "coach_briefing": "Strong structural match to the planned 4 x 500 m: each work piece was approximately 500 m at about 21 SPM, and all three recoveries were about 150 s of continued low-rate rowing. No supported execution deviation is identified. Treat pace in the modeled 6 m/s crosswind (9 m/s gusts) as condition-specific; B2/B3 attainment cannot be verified without effort or physiological data.",
+  "deviations": [],
+  "environment_assessment": {
+    "association": "NOT_SUPPORTED",
+    "confidence": 0.88,
+    "evidence_refs": [
+      "scripts/generate_diagnostic_cases.py",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "The environmental timeline is constant rather than varying across bouts.",
+      "No still-air, alternate-route, or repeated-session comparison is supplied.",
+      "Environmental association cannot establish causation, technique, crew synchronization, or athlete improvement/regression."
+    ],
+    "summary": "A constant modeled crosswind exposure of 6 m/s, gusting to 9 m/s, was present throughout the supplied timeline. Work-bout speed remained tightly similar across repetitions (approximately 3.34-3.36 m/s), but the constant exposure and lack of a comparison condition do not support attributing any performance change to wind."
+  },
+  "follow_up_questions": [
+    "Was B2/B3 achieved by the intended physiological or perceived-effort criterion during each work interval?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "plan-case-006-crosswind-gusts"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK",
+      "Work stroke rate: 20-22 SPM",
+      "Recovery: 120-180 s active light rowing",
+      "Zone code: B2/B3"
+    ],
+    "status": "PARSED",
+    "summary": "Water session prescribed as 4 x 500 m at 20-22 SPM in B2/B3, with 120-180 s active light-rowing recovery and continuous work intervals."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21,
+      "confidence": 0.93,
+      "distance_m": 500,
+      "end_offset_s": 150,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.9,
+      "distance_m": 247.8,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 150
+    },
+    {
+      "average_spm": 21.01,
+      "confidence": 0.92,
+      "distance_m": 500,
+      "end_offset_s": 450,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 16.02,
+      "confidence": 0.9,
+      "distance_m": 247.8,
+      "end_offset_s": 600,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 450
+    },
+    {
+      "average_spm": 21,
+      "confidence": 0.92,
+      "distance_m": 500,
+      "end_offset_s": 750,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 600
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.9,
+      "distance_m": 247.7,
+      "end_offset_s": 900,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 750
+    },
+    {
+      "average_spm": 21,
+      "confidence": 0.92,
+      "distance_m": 500,
+      "end_offset_s": 1050,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 900
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.94,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "plan-case-006-crosswind-gusts",
+        "input/speedcoach.csv"
+      ],
+      "reason": "The SpeedCoach session occurred on the scheduled date and contains four approximately 500 m work bouts at approximately 21 SPM, separated by three 150 s low-rate rowing periods, matching the distinctive prescribed 4 x 500 m structure.",
+      "source_ids": [
+        "speedcoach-case-006-crosswind-gusts",
+        "plan-case-006-crosswind-gusts"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "Segment distance, duration, speed, and route progression",
+      "reason": "SpeedCoach is the only supplied telemetry source and includes GPS, duration, cumulative distance, and time-windowed speed data.",
+      "selected_source_id": "speedcoach-case-006-crosswind-gusts"
+    },
+    {
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "Stroke rate",
+      "reason": "SpeedCoach is the only supplied source with SPM telemetry, and it provides positive SPM rows throughout the session.",
+      "selected_source_id": "speedcoach-case-006-crosswind-gusts"
+    },
+    {
+      "confidence": 0.82,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "Wind exposure",
+      "reason": "The environmental timeline is synthetic but designated high quality; it is suitable for describing the supplied modeled wind exposure, not for proving performance causation.",
+      "selected_source_id": null
+    }
+  ]
+}

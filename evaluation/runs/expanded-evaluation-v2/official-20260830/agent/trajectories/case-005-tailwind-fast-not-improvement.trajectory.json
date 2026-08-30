@@ -1,0 +1,391 @@
+{
+  "approximate_cost_usd": 0.055066,
+  "case_id": "case-005-tailwind-fast-not-improvement",
+  "created_at": "2026-08-30T12:07:46.383+00:00",
+  "events": [
+    {
+      "model": "gpt-5.6-terra",
+      "output_types": [
+        "reasoning",
+        "function_call",
+        "function_call",
+        "function_call",
+        "function_call"
+      ],
+      "response_id": "resp_01667aead6ebc81c016a941cff8a6087d187934a85fdf4db6d",
+      "round": 1,
+      "sequence": 1,
+      "status": "completed",
+      "type": "MODEL_RESPONSE",
+      "usage": {
+        "input_tokens": 5962,
+        "output_tokens": 89,
+        "total_tokens": 6051
+      }
+    },
+    {
+      "arguments": {},
+      "call_id": "call_pZABGhy0bxRI8QoDhJqpvXBg",
+      "sequence": 2,
+      "tool": "assess_source_trust",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_pZABGhy0bxRI8QoDhJqpvXBg",
+      "result": {
+        "metrics": {
+          "distance_m": {
+            "confidence": "HIGH",
+            "evidence_refs": [
+              "input/speedcoach.csv"
+            ],
+            "reasons": [
+              "speedcoach-case-005-tailwind-fast-not-improvement: no supplied distance conflict flag"
+            ],
+            "rejected_source_ids": [],
+            "selected_source_id": "speedcoach-case-005-tailwind-fast-not-improvement"
+          },
+          "route": {
+            "confidence": "MEDIUM",
+            "corroborating_source_ids": [],
+            "evidence_refs": [
+              "input/speedcoach.csv"
+            ],
+            "reasons": [
+              "The route is observed by a single GPS source without independent corroboration."
+            ],
+            "selected_source_id": "speedcoach-case-005-tailwind-fast-not-improvement"
+          },
+          "stroke_rate_spm": {
+            "confidence": "HIGH",
+            "evidence_refs": [
+              "input/speedcoach.csv"
+            ],
+            "reasons": [
+              "speedcoach-case-005-tailwind-fast-not-improvement: SPM_PRESENT"
+            ],
+            "rejected_source_ids": [],
+            "selected_source_id": "speedcoach-case-005-tailwind-fast-not-improvement"
+          }
+        },
+        "status": "COMPLETED"
+      },
+      "sequence": 3,
+      "tool": "assess_source_trust",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_WsfWzMJjE5u1fuzekWPYTuCs",
+      "sequence": 4,
+      "tool": "assess_session_alignment",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_WsfWzMJjE5u1fuzekWPYTuCs",
+      "result": {
+        "confidence": "LOW",
+        "decision": "INSUFFICIENT",
+        "evidence_refs": [],
+        "largest_clock_offset_s": 0.0,
+        "largest_route_p95_m": null,
+        "limitations": [
+          "Clock disagreement is preserved and its cause is unknown; route evidence, not clock equality, supports the decision."
+        ],
+        "status": "COMPLETED"
+      },
+      "sequence": 5,
+      "tool": "assess_session_alignment",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_v62nGSdckKa4MeqyiH171hNc",
+      "sequence": 6,
+      "tool": "reconstruct_plan_execution",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_v62nGSdckKa4MeqyiH171hNc",
+      "result": {
+        "distance_assessment": {
+          "evidence_refs": [
+            "input/speedcoach.csv",
+            "input/plan.json"
+          ],
+          "reason": "Per-segment distances are boundary-derived from SPM classification. They exclude transition samples and cannot establish total completed distance or a prescribed-distance shortfall.",
+          "scope": "PRESCRIBED_DISTANCE_COMPLETION",
+          "status": "INSUFFICIENT"
+        },
+        "equipment_confirmation": "UNKNOWN",
+        "evidence_refs": [
+          "input/speedcoach.csv",
+          "input/plan.json"
+        ],
+        "execution_counts": {
+          "missing_work_interval_ids": [],
+          "observed_work_intervals": 4,
+          "planned_work_intervals": 4
+        },
+        "limitations": [
+          "Telemetry cannot observe resistance equipment or visible technique."
+        ],
+        "method": "SPM threshold derived from the lowest planned work range minus 2 SPM to keep a slightly under-target work interval contiguous.",
+        "plan_deviations": [],
+        "segments": [
+          {
+            "average_speed_m_s": 3.904,
+            "average_spm": 20.98,
+            "compliance": "COMPLIANT",
+            "distance_m": 480.359,
+            "end_offset_s": 128.062,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "WORK",
+            "segment_id": "work-01",
+            "start_offset_s": 5.0,
+            "target_spm": {
+              "max_spm": 22,
+              "min_spm": 20
+            }
+          },
+          {
+            "average_speed_m_s": 1.653,
+            "average_spm": 15.99,
+            "compliance": "COMPLIANT",
+            "distance_m": 239.605,
+            "duration_s": 150.0,
+            "end_offset_s": 278.062,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "RECOVERY",
+            "segment_id": "recovery-01",
+            "start_offset_s": 133.062,
+            "target_duration_s": {
+              "max_s": 180,
+              "min_s": 120
+            },
+            "target_spm": null
+          },
+          {
+            "average_speed_m_s": 3.907,
+            "average_spm": 21.01,
+            "compliance": "COMPLIANT",
+            "distance_m": 480.33,
+            "end_offset_s": 406.021,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "WORK",
+            "segment_id": "work-02",
+            "start_offset_s": 283.062,
+            "target_spm": {
+              "max_spm": 22,
+              "min_spm": 20
+            }
+          },
+          {
+            "average_speed_m_s": 1.649,
+            "average_spm": 16.01,
+            "compliance": "COMPLIANT",
+            "distance_m": 239.209,
+            "duration_s": 150.0,
+            "end_offset_s": 556.021,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "RECOVERY",
+            "segment_id": "recovery-02",
+            "start_offset_s": 411.021,
+            "target_duration_s": {
+              "max_s": 180,
+              "min_s": 120
+            },
+            "target_spm": null
+          },
+          {
+            "average_speed_m_s": 3.905,
+            "average_spm": 20.98,
+            "compliance": "COMPLIANT",
+            "distance_m": 480.481,
+            "end_offset_s": 684.065,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "WORK",
+            "segment_id": "work-03",
+            "start_offset_s": 561.021,
+            "target_spm": {
+              "max_spm": 22,
+              "min_spm": 20
+            }
+          },
+          {
+            "average_speed_m_s": 1.651,
+            "average_spm": 16.02,
+            "compliance": "COMPLIANT",
+            "distance_m": 239.464,
+            "duration_s": 150.0,
+            "end_offset_s": 834.065,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "RECOVERY",
+            "segment_id": "recovery-03",
+            "start_offset_s": 689.065,
+            "target_duration_s": {
+              "max_s": 180,
+              "min_s": 120
+            },
+            "target_spm": null
+          },
+          {
+            "average_speed_m_s": 3.908,
+            "average_spm": 21.0,
+            "compliance": "COMPLIANT",
+            "distance_m": 480.565,
+            "end_offset_s": 962.01,
+            "evidence_refs": [
+              "input/speedcoach.csv",
+              "input/plan.json"
+            ],
+            "kind": "WORK",
+            "segment_id": "work-04",
+            "start_offset_s": 839.065,
+            "target_spm": {
+              "max_spm": 22,
+              "min_spm": 20
+            }
+          }
+        ],
+        "status": "COMPLETED"
+      },
+      "sequence": 7,
+      "tool": "reconstruct_plan_execution",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "arguments": {},
+      "call_id": "call_2ZOah5R8PqURqITzMR77PG02",
+      "sequence": 8,
+      "tool": "analyze_environment",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_2ZOah5R8PqURqITzMR77PG02",
+      "result": {
+        "causal_conclusion": "NOT_ESTABLISHED",
+        "condition_change": "OTHER",
+        "condition_profile": "STEADY_TAILWIND",
+        "effective_crosswind_range_m_s": [
+          0.0,
+          0.0
+        ],
+        "effective_headwind_end_m_s": -4.0,
+        "effective_headwind_range_m_s": [
+          -4.0,
+          -4.0
+        ],
+        "effective_headwind_start_m_s": -4.0,
+        "evidence_refs": [
+          "input/environment.json",
+          "input/speedcoach.csv"
+        ],
+        "gust_speed_range_m_s": [
+          4.5,
+          4.5
+        ],
+        "interpretation": "The time-aligned condition change supports an association with performance changes, but it does not establish causation or athlete regression.",
+        "limitations": [],
+        "relative_humidity_range_pct": null,
+        "session_environment_samples": 34,
+        "sign_change_offset_s": null,
+        "status": "COMPLETED",
+        "temperature_range_c": null,
+        "wind_speed_range_m_s": [
+          4.0,
+          4.0
+        ]
+      },
+      "sequence": 9,
+      "tool": "analyze_environment",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "output_types": [
+        "reasoning",
+        "message"
+      ],
+      "response_id": "resp_01667aead6ebc81c016a941d011fd487d1b1bca599d4c2dd74",
+      "round": 2,
+      "sequence": 10,
+      "status": "completed",
+      "type": "MODEL_RESPONSE",
+      "usage": {
+        "input_tokens": 7645,
+        "output_tokens": 2232,
+        "total_tokens": 9877
+      }
+    },
+    {
+      "checks": [
+        "schema",
+        "case_identity",
+        "evidence_references",
+        "material_evidence_presence",
+        "derived_distance_scope",
+        "source_identity",
+        "unsupported_claim_boundaries",
+        "broken_spm_source"
+      ],
+      "errors": [],
+      "passed": true,
+      "sequence": 11,
+      "type": "VERIFICATION"
+    },
+    {
+      "case_id": "case-005-tailwind-fast-not-improvement",
+      "sequence": 12,
+      "type": "FINAL_OUTPUT"
+    }
+  ],
+  "finished_at": "2026-08-30T12:07:46.383+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "model": "gpt-5.6-terra",
+  "private_chain_of_thought_stored": false,
+  "prompt_sha256": "b360d6313a40c2da8dde0a011379d58e2f26cde7fce555b6003b2d3af0250482",
+  "run_id": "agent",
+  "runtime_ms": 19506,
+  "schema_version": "wake.agent_trajectory.v1",
+  "started_at": "2026-08-30T12:07:26.877+00:00",
+  "summary_request_sha256": "52406afce1a43557f657d8ed54617c6eea504aeb577c12d2ef6813c52de87930",
+  "usage": {
+    "input_tokens": 13607,
+    "output_tokens": 2321,
+    "total_tokens": 15928
+  },
+  "verification": {
+    "checks": [
+      "schema",
+      "case_identity",
+      "evidence_references",
+      "material_evidence_presence",
+      "derived_distance_scope",
+      "source_identity",
+      "unsupported_claim_boundaries",
+      "broken_spm_source"
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "wake-agent-v2-tool-loop"
+}

@@ -1,0 +1,244 @@
+{
+  "abstentions": [
+    "I cannot confirm that the SpeedCoach recording belongs to the planned crew because no explicit source-to-plan identity linkage or identity crosswalk is supplied.",
+    "I cannot conclude that the crew failed to perform a fourth interval; the recording may have ended before an unrecorded interval.",
+    "I cannot assess technique, crew synchronization, medical state, perceived effort, or use of any equipment from the supplied telemetry.",
+    "I cannot assess B2/B3 physiological-zone compliance from SPM, GPS, and speed telemetry alone."
+  ],
+  "case_id": "case-007-incomplete-intervals",
+  "claims": [
+    {
+      "claim_id": "recorded-duration-distance",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "This describes the supplied recording, not necessarily the entire on-water session."
+      ],
+      "statement": "The SpeedCoach recording lasted 747.706 s and ended at cumulative distance 1994.603 m.",
+      "status": "OBSERVED"
+    },
+    {
+      "claim_id": "three-work-bouts-detected",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Bouts are inferred from 30-second windowed speed, stroke-rate, and distance changes rather than from explicit interval lap markers."
+      ],
+      "statement": "The recording contains three high-speed, approximately 500 m work-like bouts: 0-150 s, 300-450 s, and 600-747.706 s.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work-rate-within-prescription",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "This comparison is conditional on the recording belonging to the planned crew/session. Window averages cannot exclude short stroke-rate excursions within a window."
+      ],
+      "statement": "Each of the three detected work-like bouts averaged approximately 21.0 SPM, within the planned 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery-duration-and-intensity",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "Active light rowing is not independently labeled; its characterization is based on nonzero speed and SPM."
+      ],
+      "statement": "The two detected between-bout recoveries each lasted 150 s and averaged about 16 SPM, consistent with the prescribed 120-180 s active-light-rowing recovery duration and with continued movement in the recording.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "zone-attainment",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "B2/B3 is human-confirmed as a standardized zone code, but its physiological boundaries and relevant heart-rate, lactate, power, or effort data are not supplied."
+      ],
+      "statement": "Attainment of the prescribed B2/B3 zone is unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "continuous-work-verification",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "The available telemetry is aggregated into 30-second windows and does not provide stroke-by-stroke continuity or explicit interval markers."
+      ],
+      "statement": "Whether every work interval was continuous at stroke level is unknown.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The supplied recording shows three ~500 m work bouts, each near 21 SPM, with two 150 s moving recoveries near 16 SPM. Rate and recorded recovery duration align with the prescription, but the capture ends after the third bout; verify whether a fourth 500 m was completed and confirm recording-to-plan crew attribution. Zone compliance and technique cannot be assessed.",
+  "deviations": [
+    {
+      "confidence": 0.93,
+      "description": "Only three approximately 500 m work-like bouts are present before the supplied recording ends, versus four planned repetitions. This supports a shortfall in the recording, but does not establish that a fourth interval was not completed outside the recording.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "segment_ref": null,
+      "type": "RECORDED_REPETITION_COUNT_SHORTFALL"
+    }
+  ],
+  "environment_assessment": {
+    "association": "UNKNOWN",
+    "confidence": 0,
+    "evidence_refs": [],
+    "limitations": [
+      "No environmental timeline is available.",
+      "No causal attribution of speed or performance to conditions can be made."
+    ],
+    "summary": "No environmental evidence was supplied."
+  },
+  "follow_up_questions": [
+    "Can you confirm that the SpeedCoach recording is from the crew covered by plan-case-007-incomplete-intervals, including the relationship between synthetic-crew-diagnostic and the two listed athlete IDs?",
+    "Did the recording stop after the third work interval, or was a fourth 500 m interval completed without being captured?",
+    "Are interval lap markers or stroke-by-stroke exports available to verify work-interval continuity and exact boundaries?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "scripts/generate_diagnostic_cases.py"
+    ],
+    "prescribed_blocks": [
+      "4 repetitions of 500 m WORK",
+      "20-22 SPM during WORK",
+      "B2/B3 standardized rowing zones",
+      "120-180 s ACTIVE_LIGHT_ROWING recovery",
+      "Keep every work interval continuous"
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: 4 x 500 m work at 20-22 SPM in B2/B3, with 120-180 s active light-rowing recovery and continuous work intervals."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21,
+      "confidence": 0.96,
+      "distance_m": 500,
+      "end_offset_s": 150,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.94,
+      "distance_m": 247.1,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 150
+    },
+    {
+      "average_spm": 21.03,
+      "confidence": 0.95,
+      "distance_m": 500,
+      "end_offset_s": 450,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.94,
+      "distance_m": 247.5,
+      "end_offset_s": 600,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 450
+    },
+    {
+      "average_spm": 21.02,
+      "confidence": 0.95,
+      "distance_m": 500,
+      "end_offset_s": 747.706,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 600
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.68,
+      "decision": "INSUFFICIENT",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "reason": "The recording date matches the scheduled date and its repeated 500 m-like work/recovery pattern resembles the prescription, but there is no explicit attribution linking the SpeedCoach recording to the planned crew identifier. The plan names synthetic-crew-diagnostic, whereas the session candidate lists two athlete IDs without a supplied identity crosswalk.",
+      "source_ids": [
+        "speedcoach-case-007-incomplete-intervals",
+        "plan-case-007-incomplete-intervals"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "SpeedCoach is the only supplied telemetry source and reports SPM in every summarized work and recovery window; no conflicting SPM source is supplied.",
+      "selected_source_id": "speedcoach-case-007-incomplete-intervals"
+    },
+    {
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "SpeedCoach is the only supplied source with cumulative distance and GPS-present quality flag; no independent route recording is available for corroboration.",
+      "selected_source_id": "speedcoach-case-007-incomplete-intervals"
+    },
+    {
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "speed_m_s",
+      "reason": "SpeedCoach is the sole supplied source reporting windowed speed. Its GPS-present flag supports use for segmentation, subject to lack of independent corroboration.",
+      "selected_source_id": "speedcoach-case-007-incomplete-intervals"
+    },
+    {
+      "confidence": 0,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "training_zone",
+      "reason": "No heart-rate, lactate, power, or supplied physiological boundaries for B2/B3 are available. Stroke rate alone cannot establish the prescribed zone.",
+      "selected_source_id": null
+    }
+  ]
+}

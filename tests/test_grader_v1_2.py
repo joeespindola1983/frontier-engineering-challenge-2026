@@ -173,6 +173,10 @@ def perfect_output(case_id: str) -> dict:
 
 
 class ExpandedGraderTests(unittest.TestCase):
+    def test_v1_2_registry_promotes_ten_cases_without_changing_v1(self) -> None:
+        self.assertEqual(len(grader_v1_2.implemented_case_ids(ROOT)), 10)
+        self.assertEqual(len(grader_v1_2.legacy.implemented_case_ids(ROOT)), 2)
+
     def dimension(self, report: dict, name: str) -> dict:
         return next(item for item in report["dimensions"] if item["dimension"] == name)
 

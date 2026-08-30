@@ -295,7 +295,7 @@ The supplied visual prototype was retained as a direction, but repository eviden
 
 The accepted primary metric is macro-average weighted rubric score from 0 to 100 across implemented fixed cases. Its dimensions are plan interpretation, session association/alignment, segment reconstruction, metric-level source trust, deviation detection, environmental interpretation, evidence/abstention, and follow-up questions. Unsupported-claim rate, required-abstention recall, boundary error, runtime, cost, and later coach-rated usefulness remain secondary metrics.
 
-The current 63.34 versus 38.86 comparison is an agent-versus-direct-model result, not a coach baseline and not proof of mobile value. The accepted next evaluation is a same-case evidence ablation: plan + SpeedCoach; plan + SpeedCoach + context/environment; and the full bundle with mobile. A separate small coach usability pilot may measure review time, omissions, corrections, usefulness, and confidence, but must not be described as broad human-superiority or athletic-performance evidence.
+The official expanded comparison is an agent-versus-direct-model result, not a coach baseline and not proof of mobile value. Across ten fixed cases, WAKE scored 83.76 versus 49.00 for the direct baseline, an absolute gain of 34.76 points, at US$0.283344 incremental API cost. Every case improved, but environmental interpretation regressed from 80% to 76%, and the one real anonymized case remains WAKE's weakest at 53.71. A separate small coach usability pilot may measure review time, omissions, corrections, usefulness, and confidence, but must not be described as broad human-superiority or athletic-performance evidence.
 
 The three ground-truth-free ablation inputs are deterministically generated and frozen under `evaluation/ablation-inputs/v1/`. They preserve one synthetic base session while changing only available evidence and record content hashes and capability labels. They have now been used by the preserved official v1 run and remain unchanged for the v2 comparison.
 
@@ -316,20 +316,20 @@ The expanded evaluation now has ten public fixture-ready cases. Cases 003-010 ar
 - an excessive recovery interval;
 - mobile SPM stuck at zero while SpeedCoach SPM remains usable.
 
-Their fixture manifests, ground truth, schemas, compact summaries, and public
-verification are committed. The frozen two-case v1 input bundle remains
-unchanged; the new ten-case summaries live in `evaluation/baseline-inputs/v2/`.
-The eight new registry entries remain `PLANNED` until a versioned grader can
-score them and the required model outputs exist. They therefore do not change
-the published two-case score yet.
+Their fixture manifests, ground truth, schemas, compact summaries, public
+verification, paid baseline outputs, paid WAKE outputs, and WAKE trajectories
+are committed. The frozen two-case v1 input bundle and registry remain
+unchanged; the ten-case summaries live in `evaluation/baseline-inputs/v2/`, and
+`evaluation/cases-v2.json` promotes cases 001-010 for grader v1.2 only.
 
-Grader v1.2 is now calibrated against perfect profiles for all ten cases while
+Grader v1.2 is calibrated against perfect profiles for all ten cases while
 preserving v1.1. Its dynamic checks cover each normalized plan, metric-level
 source expectation, calm/headwind/tailwind/crosswind/gust interpretation,
-required abstentions, and exact deviation segment identity. The baseline and
-agent CLIs accept explicit input bundles, and the committed expanded preflight
-contains 20 hashed requests with `api_called: false`. The missing step is real
-model execution and scoring; no expanded quality claim is currently supported.
+required abstentions, and exact deviation segment identity. The committed
+preflight contains 20 hashed requests with `api_called: false`. The official
+run then executed the exact ten inputs in each arm and scored saved outputs
+offline: baseline 49.00 and WAKE 83.76. Total comparison cost was US$1.139688;
+WAKE used 40 tool calls and five bounded verifier corrections.
 
 A no-cost deterministic tool audit then found that the original SPM threshold
 fragmented the intentionally low-SPM third work interval in case 008 into twelve
@@ -341,7 +341,7 @@ matches only `work-05`, missing `work-04`, low-SPM `work-03`, and excessive
 `recovery-02`; compliant cases remain clear. This is deterministic instrument
 validation, not a model-quality result.
 
-The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are generated, hashed, and checked for ground-truth leakage. Comparable baseline and bounded-agent runners use Python, `uv`, the OpenAI Responses API, strict Structured Outputs, and `gpt-5.6-terra` at medium reasoning. Their safe default is a no-cost dry-run; a real call requires both `--execute` and `OPENAI_API_KEY`. A paid single-case baseline preflight exposed an API schema issue and generic grader representation gaps; it is retained but excluded from the official comparison. With deterministic grader v1.1 frozen, the official two-case result is 63.34/100 for WAKE versus 38.86/100 for the baseline at US$0.062338 incremental API cost. This is evidence for the implemented cases, not broad generalization. Future agent trajectories now record monotonic per-case runtime and future run manifests separately record end-to-end runtime and the sum of case runtimes; the historical comparison remains unchanged.
+The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. Versioned prompts, compact summary contracts, and input bundles are generated, hashed, and checked for ground-truth leakage. Comparable baseline and bounded-agent runners use Python, `uv`, the OpenAI Responses API, strict Structured Outputs, and `gpt-5.6-terra` at medium reasoning. Their safe default is a no-cost dry-run; a real call requires both `--execute` and `OPENAI_API_KEY`. The historical grader v1.1 comparison remains 63.34/100 for WAKE versus 38.86/100 across two cases. The official grader v1.2 expansion is 83.76/100 versus 49.00/100 across ten cases. Both are fixed-case evidence, not broad generalization. Current trajectories record monotonic per-case runtime, run manifests record end-to-end runtime and cost, and saved outputs can be regraded without another model call.
 
 Deterministic development now follows red-green-refactor. Parsers, normalization, alignment, segmentation, metric trust, generators, schemas, and graders require behavioral or regression tests. Model output is evaluated with fixed cases, structured contracts, and the frozen rubric rather than exact prose snapshots.
 

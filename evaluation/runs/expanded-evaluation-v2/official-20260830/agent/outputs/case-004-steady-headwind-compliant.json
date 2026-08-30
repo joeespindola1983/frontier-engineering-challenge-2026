@@ -1,0 +1,258 @@
+{
+  "abstentions": [
+    "Prescribed 500 m distance completion or shortfall is insufficient: reconstructed segment distances are boundary-derived from SPM classification, exclude transition samples, and cannot be summed or compared with the prescription.",
+    "No conclusion is made about technique, crew synchronization, perceived effort, medical state, physiological zone attainment, or resistance-equipment use.",
+    "Independent confirmation that the supplied telemetry and environmental records describe the same outing is insufficient because no second outing recording is supplied."
+  ],
+  "case_id": "case-004-steady-headwind-compliant",
+  "claims": [
+    {
+      "claim_id": "plan_execution_count",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Reconstruction is based on the approved SPM-threshold method."
+      ],
+      "statement": "Four reconstructed work intervals were observed, matching the four planned work intervals; no work interval was identified as missing.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "work_rate_compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "This supports interval-average stroke-rate compliance, not visible technique or physiological intensity."
+      ],
+      "statement": "All four reconstructed work intervals averaged within the prescribed 20\u201322 SPM range (20.99\u201321.03 SPM).",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "recovery_compliance",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "All three reconstructed recoveries lasted 150 s, within the prescribed 120\u2013180 s range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "environment_profile",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "input/environment.json",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Environmental timing supports association only and does not establish effects on performance."
+      ],
+      "statement": "The time-aligned session environment was a steady 4.0 m/s headwind, with 4.5 m/s gusts and no effective crosswind in the supplied windows.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "equipment_use",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/plan.json",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Telemetry cannot observe resistance equipment."
+      ],
+      "statement": "Use of resistance equipment is not confirmed.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "Telemetry reconstruction supports a compliant 4-work-interval execution: work averages were 20.99\u201321.03 SPM against the 20\u201322 SPM target, and each recovery was 150 s within the 2\u20133 minute prescription. No supported plan deviations were identified. Do not interpret reconstructed work distances as proof that each 500 m target was completed. A steady 4.0 m/s headwind was time-aligned throughout, but no causal performance conclusion is supported.",
+  "deviations": [],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.8,
+    "evidence_refs": [
+      "input/environment.json",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "The environmental evidence is synthetic and time-aligned; it cannot establish that wind caused any performance outcome, athlete improvement, or regression."
+    ],
+    "summary": "A steady headwind was present throughout the supplied session timeline: effective headwind 4.0 m/s, gusts 4.5 m/s, and effective crosswind 0.0 m/s."
+  },
+  "follow_up_questions": [
+    "Was resistance equipment used during the session?",
+    "Can a coach or athlete provide a perceived-effort or technique observation for these intervals?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "input/plan.json"
+    ],
+    "prescribed_blocks": [
+      "4 \u00d7 500 m WORK at 20\u201322 SPM; 120\u2013180 s active-light-rowing recovery"
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: 4 \u00d7 500 m at 20\u201322 SPM (B2/B3), with 120\u2013180 s active light-rowing recovery; each work interval was to be continuous."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21.03,
+      "confidence": 0.95,
+      "distance_m": 486.054,
+      "end_offset_s": 179.412,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-01",
+      "start_offset_s": 5.0
+    },
+    {
+      "average_spm": 15.99,
+      "confidence": 0.95,
+      "distance_m": 239.699,
+      "end_offset_s": 329.412,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-01",
+      "start_offset_s": 184.412
+    },
+    {
+      "average_spm": 21.0,
+      "confidence": 0.95,
+      "distance_m": 486.048,
+      "end_offset_s": 508.697,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-02",
+      "start_offset_s": 334.412
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 239.307,
+      "end_offset_s": 658.697,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-02",
+      "start_offset_s": 513.697
+    },
+    {
+      "average_spm": 21.0,
+      "confidence": 0.95,
+      "distance_m": 486.123,
+      "end_offset_s": 837.717,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-03",
+      "start_offset_s": 663.697
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.95,
+      "distance_m": 239.052,
+      "end_offset_s": 987.717,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-03",
+      "start_offset_s": 842.717
+    },
+    {
+      "average_spm": 20.99,
+      "confidence": 0.95,
+      "distance_m": 486.153,
+      "end_offset_s": 1167.05,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-04",
+      "start_offset_s": 992.717
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.2,
+      "decision": "INSUFFICIENT",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/environment.json"
+      ],
+      "reason": "Only one outing telemetry source is supplied; no independent recording is available for route or clock corroboration. The environmental timeline is time-aligned but is not a second outing recording.",
+      "source_ids": [
+        "speedcoach-case-004-steady-headwind-compliant",
+        "environment-case-004-steady-headwind-compliant"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "Speedcoach reports SPM and no competing SPM source or conflict is supplied.",
+      "selected_source_id": "speedcoach-case-004-steady-headwind-compliant"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "No supplied distance conflict flag is present.",
+      "selected_source_id": "speedcoach-case-004-steady-headwind-compliant"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "speed",
+      "reason": "Speed values are supplied by the sole telemetry source; no competing speed source is available.",
+      "selected_source_id": "speedcoach-case-004-steady-headwind-compliant"
+    },
+    {
+      "confidence": 0.7,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "route",
+      "reason": "GPS route is observed by one source only and lacks independent corroboration.",
+      "selected_source_id": "speedcoach-case-004-steady-headwind-compliant"
+    },
+    {
+      "confidence": 0.8,
+      "evidence_refs": [
+        "input/environment.json",
+        "input/speedcoach.csv"
+      ],
+      "metric": "environment",
+      "reason": "The supplied synthetic environmental timeline is suitable for time-aligned condition association, not independent route/session corroboration or causal attribution.",
+      "selected_source_id": null
+    }
+  ]
+}

@@ -88,9 +88,15 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-30 - Calibrate a separate generalized grader v1.2
 
-- **Status:** accepted for the expanded preflight; paid result pending.
+- **Status:** accepted; official ten-case outputs and scores committed.
 - **Decision:** Preserve grader v1.1 for the published two-case comparison. Use grader v1.2 for the ten-case expansion, with case-derived plan, source-policy, environment, abstention, and deviation checks. Keep the same 100-point rubric weights and critical-zero rules.
 - **Rationale:** Grader v1.1 intentionally contained case-002-specific expectations. Reusing it would make new environmental conditions and source IDs fail for representation rather than behavior.
+
+## 2026-08-30 - Promote cases through a separate v2 registry
+
+- **Status:** accepted after official execution and offline scoring.
+- **Decision:** Preserve `evaluation/cases.json` as the historical v1 denominator with two implemented cases. Add `evaluation/cases-v2.json` for grader v1.2 and promote cases 001-010 only after both comparison arms produced complete saved outputs. Keep cases 011-016 planned.
+- **Rationale:** Updating the shared registry would silently change grader v1.1 and break reproduction of the published two-case comparison. A versioned registry makes implementation status honest without rewriting historical evaluation state.
 
 ## 2026-08-30 - Expose diagnostic plan and environment facts in tool contract v2
 

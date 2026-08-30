@@ -1,0 +1,223 @@
+{
+  "abstentions": [
+    "No conclusion is made about technique, crew synchronization, medical state, perceived effort, or use of any resistance equipment; none is evidenced.",
+    "No environmental effect, causal explanation for the longer recovery, or athlete improvement/regression is assessed because no environmental timeline or comparison session is supplied.",
+    "Continuity of each work interval cannot be verified beyond the available 30-second telemetry windows."
+  ],
+  "case_id": "case-009-excess-recovery",
+  "claims": [
+    {
+      "claim_id": "c1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Work-phase boundaries are inferred from 30-second telemetry windows rather than explicitly marked interval laps."
+      ],
+      "statement": "The first three inferred work phases each covered approximately 500 m at approximately 21 SPM.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "c2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "This assesses reported SPM only; it does not assess technique, synchronization, power, or physiological intensity."
+      ],
+      "statement": "The inferred work-phase stroke rates were within the prescribed 20-22 SPM range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "c3",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "Recovery boundaries are inferred from the sustained telemetry change."
+      ],
+      "statement": "The second inferred recovery lasted approximately 300 seconds at approximately 16 SPM and lower speed than the work phases.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "c4",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "limitations": [
+        "The supplied zone codes have no detailed physiological boundaries, and no heart-rate, lactate, power, or perceived-effort data are available."
+      ],
+      "statement": "Achievement of the prescribed B2/B3 training zone is unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "c5",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "The recording ends during the final high-rate phase, and only coarse 30-second windows are supplied."
+      ],
+      "statement": "The final work phase cannot be confirmed as a full 500 m interval from the supplied aggregate windows because its exact transition boundary and endpoint distance are not explicitly marked.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The telemetry closely matches four work phases at about 21 SPM, meeting the 20-22 SPM target where rate is observable. The supported deviation is the second active recovery: about 5:00, roughly 2:00 beyond the 3:00 cap. Confirm whether the final 500 m was completed after the recording ended; zone attainment and technique cannot be assessed.",
+  "deviations": [
+    {
+      "confidence": 0.94,
+      "description": "The second inferred active-recovery period was approximately 300 s, exceeding the prescribed 180 s maximum by approximately 120 s.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "segment_ref": "recovery-2",
+      "type": "RECOVERY_DURATION_EXCEEDED"
+    }
+  ],
+  "environment_assessment": null,
+  "follow_up_questions": [
+    "Was the SpeedCoach recording explicitly associated with this planned crew session, and did the crew intentionally extend the second recovery?",
+    "Did the fourth 500 m interval finish after recording stopped, or was the session ended before its completion?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "scripts/generate_diagnostic_cases.py"
+    ],
+    "prescribed_blocks": [
+      "4 x 500 m WORK at 20-22 SPM in B2/B3",
+      "120-180 s ACTIVE_LIGHT_ROWING recovery after each work interval",
+      "Keep every work interval continuous"
+    ],
+    "status": "PARSED",
+    "summary": "4 x 500 m WATER work intervals in B2/B3 at 20-22 SPM, with 120-180 s active light-rowing recovery; work intervals were to remain continuous."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 21,
+      "confidence": 0.93,
+      "distance_m": 500,
+      "end_offset_s": 150,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-1",
+      "start_offset_s": 0
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.89,
+      "distance_m": 247.7,
+      "end_offset_s": 300,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-1",
+      "start_offset_s": 150
+    },
+    {
+      "average_spm": 21,
+      "confidence": 0.93,
+      "distance_m": 500,
+      "end_offset_s": 450,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-2",
+      "start_offset_s": 300
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.94,
+      "distance_m": 494.5,
+      "end_offset_s": 750,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-2",
+      "start_offset_s": 450
+    },
+    {
+      "average_spm": 21,
+      "confidence": 0.93,
+      "distance_m": 500,
+      "end_offset_s": 900,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-3",
+      "start_offset_s": 750
+    },
+    {
+      "average_spm": 16,
+      "confidence": 0.89,
+      "distance_m": 247,
+      "end_offset_s": 1050,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-3",
+      "start_offset_s": 900
+    },
+    {
+      "average_spm": 21.02,
+      "confidence": 0.78,
+      "distance_m": null,
+      "end_offset_s": 1197.134,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-4",
+      "start_offset_s": 1050
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.9,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "reason": "The recording occurred on the scheduled date and contains four repeated higher-rate, approximately 500 m work phases near 21 SPM, separated by lower-rate rowing, closely matching the prescribed 4 x 500 m structure at 20-22 SPM. Athlete-to-plan roster mapping is not explicitly supplied.",
+      "source_ids": [
+        "speedcoach-case-009-excess-recovery",
+        "plan-case-009-excess-recovery"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.91,
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "metric": "elapsed time, distance, speed, and stroke rate",
+      "reason": "SpeedCoach is the only telemetry source and provides timestamped distance, speed, and SPM windows with GPS_PRESENT and SPM_PRESENT quality flags.",
+      "selected_source_id": "speedcoach-case-009-excess-recovery"
+    },
+    {
+      "confidence": 0.0,
+      "evidence_refs": [
+        "scripts/generate_diagnostic_cases.py"
+      ],
+      "metric": "training-zone interpretation",
+      "reason": "The plan supplies B2/B3 codes, but no physiological or power boundaries and no physiological telemetry are supplied to assess achieved zone.",
+      "selected_source_id": null
+    }
+  ]
+}

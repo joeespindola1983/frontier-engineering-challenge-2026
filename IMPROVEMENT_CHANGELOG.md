@@ -402,6 +402,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A fixed evaluation can diagnose the evaluator and tools before it diagnoses the model. Low-SPM deviation detection requires maintaining interval continuity, not simply applying a pointwise target threshold.
 - **Next step:** Run the complete regression suite, freeze the updated preflight, then request explicit owner authorization for the estimated paid comparison cost.
 
+### 38. Official ten-case comparison and versioned evaluation promotion
+
+- **Hypothesis:** The bounded WAKE workflow should generalize beyond the two hero cases and outperform one direct model call on isolated rowing failures involving environment, interval completion, SPM compliance, recovery duration, and broken mobile telemetry.
+- **Change:** Executed the exact committed `baseline-inputs/v2` bundle once through each comparison arm, preserved all outputs and observable WAKE trajectories, scored both arms offline with grader v1.2, and added a separate `cases-v2.json` registry. A RED test first required grader v1.2 to see ten implemented cases while grader v1.1 continued to see two; GREEN made v1.2 resolve its own versioned registry without changing the historical grader.
+- **Evaluation:** Both arms used `gpt-5.6-terra`, medium reasoning, the same ten summaries, strict output schema, and grader v1.2. Baseline scored 49.00/100 and WAKE scored 83.76/100: +34.76 absolute points and +70.94% relative. Every case improved. WAKE reached 100% deviation detection versus 55.56%, 88.41% segment reconstruction versus 0%, and 61.67% metric-source trust versus 15%. Environmental interpretation regressed from 80% to 76%; case 001 remained the weakest WAKE case at 53.71.
+- **Result:** Keep the bounded agent as the evaluated final workflow. Its largest gains were on missing intervals (+61.38), low-SPM work (+65.08), and excessive recovery (+54.47). Do not hide the environmental regression or the remaining real-case weakness. The outputs are saved and can be reopened or regraded with no model call.
+- **Cost/runtime:** Baseline cost US$0.428172, used 80,686 tokens, and accumulated 241.503 seconds across ten sequential calls. WAKE cost US$0.711516, used 200,893 tokens, and completed in 234.812 seconds. Incremental agent cost was US$0.283344; total paid comparison cost was US$1.139688. WAKE made 40 tool calls and five first candidates required one bounded verifier correction.
+- **Decision:** Promote cases 001-010 only in the v2 registry and publish the ten-case result as the primary hackathon comparison. Preserve the two-case v1 registry, inputs, grader, outputs, and score as historical evidence.
+- **Learning:** Deterministic tools produced large gains on structural deviations, but more orchestration does not guarantee every dimension improves. Environmental phrasing and human-context abstention remain specific targets for a future version; changing them after seeing official outputs would require a new prompt/grader version and a fresh comparison.
+- **Next step:** Expose the saved comparison in submission materials, review the environmental failures without rewriting v2, and conduct a small coach usability evaluation if time permits.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

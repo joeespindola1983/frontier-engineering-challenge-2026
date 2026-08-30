@@ -1,0 +1,47 @@
+{
+  "approximate_cost_usd": 0.037432,
+  "case_id": "case-003-calm-expert-compliant",
+  "configuration": {
+    "api": "responses",
+    "config_sha256": "7dabf454a428675ca244003062ae896c5a381b9cbe0270c78ae410e82a509061",
+    "max_output_tokens": 12000,
+    "model_requested": "gpt-5.6-terra",
+    "provider": "openai",
+    "reasoning_effort": "medium",
+    "service_tier": "default",
+    "store": false,
+    "temperature": null
+  },
+  "finished_at": "2026-08-30T12:02:01.955+00:00",
+  "git_commit": "003e2672beaad0052f2545caa0b0732e408f49fd",
+  "inputs": {
+    "output_schema_sha256": "d565760827fab528341c056aab019cd2cbe28ddaef0e8f9217e178b215bc51a0",
+    "prompt_sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50",
+    "summary_id": "baseline-input-v2-case-003-calm-expert-compliant",
+    "summary_request_sha256": "5d6fb835d86ebff5b3f619cfbd5ae50650e7a2b5fd0eb09b1ed53e8233dc1852"
+  },
+  "pricing": {
+    "checked_on": "2026-08-29",
+    "currency": "USD",
+    "input_usd_per_million_tokens": 2.0,
+    "output_usd_per_million_tokens": 12.0,
+    "source": "https://developers.openai.com/api/docs/models"
+  },
+  "response": {
+    "id": "resp_01b361008236f62a016a941ba703dc87d18f043d04e9c203d2",
+    "model": "gpt-5.6-terra",
+    "status": "completed"
+  },
+  "run_id": "baseline",
+  "runtime_ms": 19407,
+  "schema_version": "wake.evaluation_run_case.v1",
+  "started_at": "2026-08-30T12:01:42.548+00:00",
+  "usage": {
+    "cached_input_tokens": 1053,
+    "input_tokens": 5708,
+    "output_tokens": 2168,
+    "reasoning_output_tokens": 516,
+    "total_tokens": 7876
+  },
+  "workflow": "baseline-v1-direct-call"
+}
