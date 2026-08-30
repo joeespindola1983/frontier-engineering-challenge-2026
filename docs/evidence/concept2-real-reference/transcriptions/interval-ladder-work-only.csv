@@ -1,0 +1,5 @@
+transcription_provenance,workout_type,row_kind,row_index,display_time_s,display_distance_m,pace_500m_s,stroke_rate_spm,heart_rate_bpm,watts
+HUMAN_CONFIRMED,INTERVAL,WORK,1,240,838,143.1,16,,
+HUMAN_CONFIRMED,INTERVAL,WORK,2,180,643,139.9,18,,
+HUMAN_CONFIRMED,INTERVAL,WORK,3,120,435,137.9,20,,
+HUMAN_CONFIRMED,INTERVAL,WORK,4,60,220,136.3,22,,

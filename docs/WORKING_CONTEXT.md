@@ -350,12 +350,15 @@ Deterministic development now follows red-green-refactor. Parsers, normalization
 The two-week club history is now backed by a reproducible public batch rather
 than only relational frontend records. Forty independent real-informed
 synthetic activity directories preserve per-session source hashes. The no-cost
-verifier validates all 40 records, reconstructs 38 water sessions, compares 37
-against a plan, links the two preserved agent-verified exceptions, and keeps
-human approval at zero. Thirty-one sessions have no material signal in the
-available evidence, three are alternate solo sessions, one needs a plan, one
-needs athlete context, and two indoor records expose the missing Concept2
-adapter. Batch upload is therefore an outer envelope; model analysis, cost,
+verifier validates and reconstructs all 40 records, compares 39 against a plan,
+links the two preserved agent-verified exceptions, and keeps human approval at
+zero. Thirty-one water sessions have no material signal in the available
+evidence, five sessions are reconstructed alternatives, one needs a plan, and
+one needs athlete context. Two indoor records now pass a deterministic adapter
+for human-confirmed Concept2 PM5 transcriptions. The adapter was grounded by a
+public minimized real-reference packet covering fixed-distance, fixed-time, and
+interval displays; automatic photo OCR and native ErgData ingestion remain
+unimplemented. Batch upload is therefore an outer envelope; model analysis, cost,
 review, and history remain session-level. Longitudinal synthesis remains a
 separate unexecuted experiment.
 

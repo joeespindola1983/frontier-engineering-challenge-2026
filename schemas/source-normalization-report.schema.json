@@ -27,7 +27,8 @@
       "enum": [
         "SPEEDCOACH_VENDOR_CSV",
         "WAKE_MOBILE_SENSOR_CSV",
-        "WAKE_NORMALIZED_TELEMETRY_CSV"
+        "WAKE_NORMALIZED_TELEMETRY_CSV",
+        "CONCEPT2_PM5_TRANSCRIPTION_CSV"
       ]
     },
     "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},

@@ -1,7 +1,7 @@
 {
   "schema_version": "wake.demo_club_batch_manifest.v1",
   "generator": "scripts/generate_demo_club_batch.py",
-  "generator_version": "1.0",
+  "generator_version": "1.1",
   "period": {
     "start": "2026-08-17",
     "end": "2026-08-28"
@@ -656,9 +656,9 @@
       "crew_id": null,
       "boat_id": null,
       "provenance": "REAL_INFORMED_SYNTHETIC",
-      "expected_route": "SOURCE_ADAPTER_REQUIRED",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
       "source_sha256": {
-        "concept2.csv": "d7ae4e11f40b833111aa46513a1a5e35ee317d9b0aac73a6ad065f560983c189",
+        "concept2.csv": "46b3cdc37036fbb92ec48c4528b8bde21828dcdec5b386a35a5a0d2194c6fb9d",
         "context.json": "21fc1da6e99cc048f57677d6ad9010f9ab5f833830bfb5c7e3b0cea068f0054a",
         "plan.json": "2193d93f598a86b1a100a9cb4922bfee9773b1b2fdd80b739a219158f24312bb"
       },
@@ -739,9 +739,9 @@
       "crew_id": null,
       "boat_id": null,
       "provenance": "REAL_INFORMED_SYNTHETIC",
-      "expected_route": "SOURCE_ADAPTER_REQUIRED",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
       "source_sha256": {
-        "concept2.csv": "d7ae4e11f40b833111aa46513a1a5e35ee317d9b0aac73a6ad065f560983c189",
+        "concept2.csv": "800eec8c37e161ea26feba0d753da9c2b8a80219fccff237f4c3919637f2ab0e",
         "context.json": "70707913fe13dc7a524711cc8b40f3330081b2af6cc2e22af090ce5acfa5dbc0",
         "plan.json": "d6c6afbf19eb77d7f04ac88ad04cf578f3c1e10f029f287efcb8727e741a0ed9"
       },

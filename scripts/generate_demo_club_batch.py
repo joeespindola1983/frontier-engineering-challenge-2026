@@ -19,7 +19,7 @@ from generate_demo_club_evidence import (
 )
 
 
-GENERATOR_VERSION = "1.0"
+GENERATOR_VERSION = "1.1"
 
 ATHLETES = {
     "crew-2x-men": ["athlete-lucas", "athlete-rafael"],
@@ -218,17 +218,54 @@ def session_entry(
             "input_notice": "All identities and exact outcomes are synthetic.",
         }
         write_json(directory / "context.json", context)
-        rows = [
-            {
-                "interval": str(index + 1),
-                "distance_m": str(2_000),
-                "elapsed_s": str(480 + index * 5),
-                "pace_500m_s": str(120 + index),
-                "stroke_rate_spm": str(22 + index % 2),
-                "watts": str(195 - index * 3),
-            }
-            for index in range(5)
-        ]
+        target_distance_m = plan["blocks"][0]["distance_m"]
+        if target_distance_m == 10_000:
+            rows = [
+                {
+                    "transcription_provenance": "SYNTHETIC",
+                    "workout_type": "FIXED_DISTANCE",
+                    "row_kind": "SPLIT",
+                    "row_index": str(index + 1),
+                    "display_time_s": str(480 + index * 5),
+                    "display_distance_m": str((index + 1) * 2_000),
+                    "pace_500m_s": str(120 + index),
+                    "stroke_rate_spm": str(22 + index % 2),
+                    "heart_rate_bpm": "",
+                    "watts": str(195 - index * 3),
+                }
+                for index in range(5)
+            ]
+        else:
+            rows = []
+            row_index = 1
+            for work_index in range(6):
+                rows.append({
+                    "transcription_provenance": "SYNTHETIC",
+                    "workout_type": "INTERVAL",
+                    "row_kind": "WORK",
+                    "row_index": str(row_index),
+                    "display_time_s": str(485 + work_index * 4),
+                    "display_distance_m": "2000",
+                    "pace_500m_s": str(121 + work_index),
+                    "stroke_rate_spm": str(21 + work_index % 3),
+                    "heart_rate_bpm": "",
+                    "watts": str(192 - work_index * 2),
+                })
+                row_index += 1
+                if work_index < 5:
+                    rows.append({
+                        "transcription_provenance": "SYNTHETIC",
+                        "workout_type": "INTERVAL",
+                        "row_kind": "RECOVERY",
+                        "row_index": str(row_index),
+                        "display_time_s": "120",
+                        "display_distance_m": "0",
+                        "pace_500m_s": "",
+                        "stroke_rate_spm": "",
+                        "heart_rate_bpm": "",
+                        "watts": "",
+                    })
+                    row_index += 1
         directory.mkdir(parents=True, exist_ok=True)
         with (directory / "concept2.csv").open("w", newline="", encoding="utf-8") as handle:
             writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
@@ -340,11 +377,7 @@ def build_demo_club_batch(output_root: Path) -> dict:
             athlete_ids=athlete_ids,
             crew_id=None,
             boat_id=boat_id,
-            expected_route=(
-                "RECONSTRUCTED_ALTERNATIVE"
-                if modality == "WATER_SOLO"
-                else "SOURCE_ADAPTER_REQUIRED"
-            ),
+            expected_route="RECONSTRUCTED_ALTERNATIVE",
             case=case,
         ))
 
@@ -365,8 +398,11 @@ def build_demo_club_batch(output_root: Path) -> dict:
         "# Demo-club two-week batch\n\n"
         "Forty independent real-informed synthetic activity records. Water sessions "
         "carry plan, SpeedCoach-shaped telemetry, and context when available; two "
-        "indoor alternatives carry Concept2-shaped exports and remain explicitly "
-        "outside the current source adapter. Every source is hashed per session.\n\n"
+        "indoor alternatives carry synthetic Concept2 PM5 transcription-format records. "
+        "Every source is hashed per session.\n\n"
+        "The Concept2 adapter distinguishes fixed-distance, fixed-time, and interval "
+        "screen semantics. Automatic photo OCR and native ErgData ingestion are not "
+        "implemented or implied.\n\n"
         "The batch is designed for mass submission with per-session isolation. It "
         "does not place multiple sessions in one model prompt. Agent execution is "
         "preserved only for the two separately authorized candidates; longitudinal "

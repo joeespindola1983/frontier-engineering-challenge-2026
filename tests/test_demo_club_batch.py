@@ -43,18 +43,17 @@ class DemoClubBatchTests(unittest.TestCase):
         self.assertEqual(report["counts"], {
             "records_received": 40,
             "data_validated": 40,
-            "sessions_reconstructed": 38,
-            "plan_compared": 37,
+            "sessions_reconstructed": 40,
+            "plan_compared": 39,
             "agent_verified": 2,
             "human_approved": 0,
         })
         self.assertEqual(report["routing"], {
             "RECONSTRUCTED_NO_MATERIAL_SIGNAL": 31,
-            "RECONSTRUCTED_ALTERNATIVE": 3,
+            "RECONSTRUCTED_ALTERNATIVE": 5,
             "AGENT_VERIFIED": 2,
             "SOURCE_REQUIRED": 1,
             "HUMAN_CONTEXT_REQUIRED": 1,
-            "SOURCE_ADAPTER_REQUIRED": 2,
         })
         self.assertEqual(report["deviations"], {
             "SPM_OUTSIDE_TARGET": 1,

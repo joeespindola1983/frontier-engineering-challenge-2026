@@ -29,23 +29,6 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def validate_concept2(path: Path) -> None:
-    with path.open(newline="", encoding="utf-8") as handle:
-        reader = csv.DictReader(handle)
-        required = {
-            "interval",
-            "distance_m",
-            "elapsed_s",
-            "pace_500m_s",
-            "stroke_rate_spm",
-            "watts",
-        }
-        assert required.issubset(reader.fieldnames or []), "Concept2-shaped columns missing"
-        rows = list(reader)
-    assert rows, "Concept2-shaped export is empty"
-    assert all(float(row["distance_m"]) > 0 for row in rows)
-
-
 def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
     manifest = read_json(batch_root / "manifest.json")
     assert manifest["schema_version"] == "wake.demo_club_batch_manifest.v1"
@@ -74,9 +57,30 @@ def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
             assert context["case_id"] == item["session_id"]
 
         if item["modality"] == "ERG":
-            validate_concept2(session_dir / "concept2.csv")
-            assert item["expected_route"] == "SOURCE_ADAPTER_REQUIRED"
+            normalized = source_adapters.normalize_source(
+                kind="CONCEPT2",
+                content=(session_dir / "concept2.csv").read_bytes(),
+                source_ref="input/concept2.csv",
+            )
+            assert normalized.source_format == "CONCEPT2_PM5_TRANSCRIPTION_CSV"
+            assert "TRANSCRIPTION_SYNTHETIC" in normalized.report["quality_flags"]
+            assert item["expected_route"] == "RECONSTRUCTED_ALTERNATIVE"
+            plan = read_json(plan_path)
+            target = plan["blocks"][0]
+            assert normalized.report["max_distance_m"] == target["distance_m"]
+            normalized_rows = list(csv.DictReader(
+                normalized.normalized_csv.decode("utf-8").splitlines()
+            ))
+            positive_spm = [
+                float(row["stroke_rate_spm"])
+                for row in normalized_rows
+                if row["stroke_rate_spm"] and float(row["stroke_rate_spm"]) > 0
+            ]
+            average_spm = sum(positive_spm) / len(positive_spm)
+            assert target["stroke_rate"]["min_spm"] <= average_spm <= target["stroke_rate"]["max_spm"]
             data_validated += 1
+            reconstructed += 1
+            plan_compared += 1
             routes[item["expected_route"]] += 1
             continue
 
@@ -134,15 +138,14 @@ def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
         deviations.update(result["deviation_types"])
     assert routes == Counter({
         "RECONSTRUCTED_NO_MATERIAL_SIGNAL": 31,
-        "RECONSTRUCTED_ALTERNATIVE": 3,
+        "RECONSTRUCTED_ALTERNATIVE": 5,
         "AGENT_VERIFIED": 2,
         "SOURCE_REQUIRED": 1,
         "HUMAN_CONTEXT_REQUIRED": 1,
-        "SOURCE_ADAPTER_REQUIRED": 2,
     })
     assert data_validated == 40
-    assert reconstructed == 38
-    assert plan_compared == 37
+    assert reconstructed == 40
+    assert plan_compared == 39
     return {
         "status": "verified",
         "schema_version": "wake.demo_club_batch_report.v1",

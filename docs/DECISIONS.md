@@ -348,7 +348,13 @@ This log records product and engineering decisions as they are made. Accepted de
 
 - **Status:** accepted for the local prototype and public two-week demonstration.
 - **Decision:** Treat a batch as an upload, progress, and authorization envelope only. Keep every session content-addressed, prepared, executed, costed, reviewed, and persisted independently. Permit up to 100 prepared items; isolate invalid items and runner failures; execute paid candidates sequentially through whole per-execution start gates; resume pending work after restart; and never concatenate multiple sessions into one model prompt. Display data validation, reconstruction, plan comparison, agent verification, and human approval as separate levels.
-- **Rationale:** Manual one-by-one intake does not demonstrate club scale, while a single multi-session prompt would mix evidence, weaken provenance, complicate retries, and make cost or human approval impossible to audit. Bulk orchestration over independent units provides speed without sacrificing history. The forty-record public batch also makes current coverage honest: 40 validated, 38 water sessions reconstructed, 37 plan-compared, two agent-verified, and zero human-approved.
+- **Rationale:** Manual one-by-one intake does not demonstrate club scale, while a single multi-session prompt would mix evidence, weaken provenance, complicate retries, and make cost or human approval impossible to audit. Bulk orchestration over independent units provides speed without sacrificing history. After the separate Concept2 transcription experiment, the forty-record public batch makes current coverage honest: 40 validated and reconstructed, 39 plan-compared, two agent-verified, and zero human-approved.
+
+## 2026-08-30 - Normalize confirmed PM5 transcriptions without claiming photo OCR
+
+- **Status:** accepted for the deterministic public-batch path and judge evidence packet; operational photo upload and native export ingestion remain pending.
+- **Decision:** Normalize human-confirmed Concept2 PM5 screen transcriptions by declared workout type. Fixed-distance rows treat displayed meters as cumulative and displayed time as per-split; fixed-time rows treat displayed time as cumulative and meters as per-split; interval rows preserve work/recovery identity. Publish only minimized, metadata-stripped, identity-free screen crops and confirmed transcriptions under `ANONYMIZED_REAL_REFERENCE`. Keep heart-rate-bearing originals private. Do not call this automatic OCR, native ErgData support, per-stroke telemetry, or agent verification.
+- **Rationale:** Real PM5 material improves source credibility, but copying raw photographs would retain unnecessary environment, metadata, and potentially physiological values. Declared semantics plus human confirmation avoid silently mis-summing PM5 columns, while the sanitized evidence packet lets judges inspect the real source shapes that informed the synthetic demo.
 
 ## Pending decisions
 

@@ -27,6 +27,88 @@ def normalized_rows(content: bytes) -> list[dict[str, str]]:
 
 
 class SourceAdapterTests(unittest.TestCase):
+    def test_concept2_fixed_distance_transcription_uses_cumulative_distance(self) -> None:
+        content = (
+            b"transcription_provenance,workout_type,row_kind,row_index,display_time_s,display_distance_m,pace_500m_s,stroke_rate_spm,heart_rate_bpm,watts\n"
+            b"HUMAN_CONFIRMED,FIXED_DISTANCE,SPLIT,1,49.8,200,124.5,24,,\n"
+            b"HUMAN_CONFIRMED,FIXED_DISTANCE,SPLIT,2,49.0,400,122.5,24,,\n"
+            b"HUMAN_CONFIRMED,FIXED_DISTANCE,SPLIT,3,48.9,600,122.2,26,,\n"
+        )
+
+        result = source_adapters.normalize_source(
+            kind="CONCEPT2",
+            content=content,
+            source_ref="upload/concept2-confirmed.csv",
+        )
+        rows = normalized_rows(result.normalized_csv)
+
+        self.assertEqual(result.source_format, "CONCEPT2_PM5_TRANSCRIPTION_CSV")
+        self.assertEqual([float(row["elapsed_s"]) for row in rows], [0.0, 49.8, 98.8, 147.7])
+        self.assertEqual([float(row["distance_m"]) for row in rows], [0.0, 200.0, 400.0, 600.0])
+        self.assertEqual([row["segment_kind"] for row in rows], ["ORIGIN", "WORK", "WORK", "WORK"])
+        self.assertEqual(result.report["duration_s"], 147.7)
+        self.assertEqual(result.report["max_distance_m"], 600.0)
+        self.assertIn("CONCEPT2_SUMMARY_LEVEL", result.report["quality_flags"])
+        self.assertIn("TRANSCRIPTION_HUMAN_CONFIRMED", result.report["quality_flags"])
+
+        schema = json.loads(
+            (ROOT / "schemas/source-normalization-report.schema.json").read_text()
+        )
+        jsonschema.validate(instance=result.report, schema=schema)
+
+    def test_concept2_fixed_time_transcription_sums_split_distance(self) -> None:
+        content = (
+            b"transcription_provenance,workout_type,row_kind,row_index,display_time_s,display_distance_m,pace_500m_s,stroke_rate_spm,heart_rate_bpm,watts\n"
+            b"HUMAN_CONFIRMED,FIXED_TIME,SPLIT,1,300,1011,148.3,20,,\n"
+            b"HUMAN_CONFIRMED,FIXED_TIME,SPLIT,2,600,1005,149.2,20,,\n"
+            b"HUMAN_CONFIRMED,FIXED_TIME,SPLIT,3,900,993,151.0,20,,\n"
+        )
+
+        result = source_adapters.normalize_source(
+            kind="CONCEPT2",
+            content=content,
+            source_ref="upload/concept2-confirmed.csv",
+        )
+        rows = normalized_rows(result.normalized_csv)
+
+        self.assertEqual([float(row["elapsed_s"]) for row in rows], [0.0, 300.0, 600.0, 900.0])
+        self.assertEqual([float(row["distance_m"]) for row in rows], [0.0, 1011.0, 2016.0, 3009.0])
+        self.assertAlmostEqual(float(rows[-1]["speed_m_s"]), 500 / 151.0, places=3)
+
+    def test_concept2_interval_transcription_preserves_work_and_recovery(self) -> None:
+        content = (
+            b"transcription_provenance,workout_type,row_kind,row_index,display_time_s,display_distance_m,pace_500m_s,stroke_rate_spm,heart_rate_bpm,watts\n"
+            b"HUMAN_CONFIRMED,INTERVAL,WORK,1,240,838,143.1,16,,\n"
+            b"HUMAN_CONFIRMED,INTERVAL,RECOVERY,2,60,0,,,,\n"
+            b"HUMAN_CONFIRMED,INTERVAL,WORK,3,180,643,139.9,18,,\n"
+        )
+
+        result = source_adapters.normalize_source(
+            kind="CONCEPT2",
+            content=content,
+            source_ref="upload/concept2-confirmed.csv",
+        )
+        rows = normalized_rows(result.normalized_csv)
+
+        self.assertEqual([row["segment_kind"] for row in rows], ["ORIGIN", "WORK", "RECOVERY", "WORK"])
+        self.assertEqual(float(rows[-1]["elapsed_s"]), 480.0)
+        self.assertEqual(float(rows[-1]["distance_m"]), 1481.0)
+        self.assertIn("RECOVERY_ROWS_PRESENT", result.report["quality_flags"])
+
+    def test_concept2_rejects_non_increasing_fixed_distance_markers(self) -> None:
+        content = (
+            b"transcription_provenance,workout_type,row_kind,row_index,display_time_s,display_distance_m,pace_500m_s,stroke_rate_spm,heart_rate_bpm,watts\n"
+            b"HUMAN_CONFIRMED,FIXED_DISTANCE,SPLIT,1,60,200,150,20,,\n"
+            b"HUMAN_CONFIRMED,FIXED_DISTANCE,SPLIT,2,60,200,150,20,,\n"
+        )
+
+        with self.assertRaisesRegex(ValueError, "strictly increasing distance"):
+            source_adapters.normalize_source(
+                kind="CONCEPT2",
+                content=content,
+                source_ref="broken.csv",
+            )
+
     def test_speedcoach_vendor_export_becomes_canonical_telemetry(self) -> None:
         result = source_adapters.normalize_source(
             kind="SPEEDCOACH",

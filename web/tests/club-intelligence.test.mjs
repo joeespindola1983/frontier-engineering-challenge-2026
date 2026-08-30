@@ -24,12 +24,13 @@ test('screens every recorded activity without calling a model', () => {
   assert.deepEqual(analysis.batch_validation.counts, {
     records_received: 40,
     data_validated: 40,
-    sessions_reconstructed: 38,
-    plan_compared: 37,
+    sessions_reconstructed: 40,
+    plan_compared: 39,
     agent_verified: 2,
     human_approved: 0,
   });
-  assert.equal(analysis.batch_validation.routing.SOURCE_ADAPTER_REQUIRED, 2);
+  assert.equal(analysis.batch_validation.routing.RECONSTRUCTED_ALTERNATIVE, 5);
+  assert.equal(analysis.batch_validation.routing.SOURCE_ADAPTER_REQUIRED, undefined);
   assert.equal(analysis.batch_validation.longitudinal_synthesis_executed, false);
 });
 
@@ -126,8 +127,8 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
   assert.match(page, /Data validated/);
   assert.match(page, /Plan compared/);
   assert.match(page, /Human approved/);
-  assert.match(page, /38 water sessions reconstructed/);
-  assert.match(page, /2 indoor records need a Concept2 adapter/);
+  assert.match(page, /40 sessions reconstructed/);
+  assert.match(page, /2 synthetic Concept2 transcription records/);
   assert.match(page, /result\.briefing/);
   assert.doesNotMatch(page, /Executed as planned/);
 });

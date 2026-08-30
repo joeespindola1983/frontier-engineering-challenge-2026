@@ -59,18 +59,18 @@ in available telemetry is not proof that a session was executed as planned.
 activity records generated with fixed definitions:
 
 - 38 water records with SpeedCoach-shaped telemetry;
-- 37 water records with a comparable plan;
+- two indoor records using synthetic Concept2 PM5 transcription-format inputs;
+- 39 records with a comparable plan;
 - 31 reconstructed records with no material signal in available evidence;
-- three reconstructed alternate solo sessions;
+- five reconstructed alternate sessions, including three solo-water and two indoor records;
 - two separately authorized and preserved agent-verified exceptions;
 - one missing-plan route and one missing-athlete-context route;
-- two Concept2-shaped indoor records that deliberately remain
-  `SOURCE_ADAPTER_REQUIRED`.
 
 The public verifier recomputes the batch from source files, checks every hash,
-validates plans, normalizes and reconstructs water telemetry, verifies the two
-preserved paid artifacts, and reports 40 data-validated records, 38 reconstructed
-water sessions, 37 plan comparisons, two agent-verified sessions, and zero human
+validates plans, normalizes and reconstructs water telemetry and declared-provenance
+PM5 transcriptions, verifies the two preserved paid artifacts, and reports 40
+data-validated records, 40 reconstructed sessions, 39 plan comparisons, two
+agent-verified sessions, and zero human
 approvals. Longitudinal synthesis remains unexecuted.
 
 ```bash
@@ -84,8 +84,8 @@ uv run python scripts/verify_demo_club_batch.py
   authenticated, multi-tenant database.
 - The batch API groups previously uploaded sources; the browser does not yet
   provide folder or ZIP mapping.
-- Concept2-shaped data is preserved but is not normalized by the accepted
-  rowing telemetry adapter.
+- Concept2 PM5 screen transcription is normalized only after human confirmation.
+  Automatic photo OCR and native ErgData export ingestion remain unimplemented.
 - Batch execution is sequential and resumable, not a distributed queue.
 - Longitudinal synthesis requires a separate experiment, acceptance contract,
   and explicit authorization.

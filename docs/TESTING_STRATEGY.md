@@ -89,7 +89,7 @@ content-addressed idempotence, invalid-item isolation, sequential start-gate
 execution, resume without duplicate calls, one runner failure not blocking a
 later item, restart-safe state, and compact responses without telemetry rows.
 The forty-record public-batch verifier independently checks every source hash,
-plan schema, Concept2-shaped column contract, SpeedCoach normalization,
+plan schema, confirmed Concept2 PM5 semantics, SpeedCoach normalization,
 deterministic v2 water-session reconstruction, exact two paid-result links,
 routing totals, cost totals, and the zero-human-approval and no-synthesis
 boundaries. Generated files must rebuild byte-for-byte.
