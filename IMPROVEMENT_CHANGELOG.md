@@ -248,6 +248,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The strongest improvement was not more evidence or more agents; it was making a deterministic limitation explicit at the tool, prompt, and verifier boundaries, then testing that correction against the failure that exposed it.
 - **Next step:** Finish the generic checkpoint/briefing product path or prepare the submission narrative and video around the measured v1-to-v2 improvement, depending on remaining hackathon time.
 
+### 24. Generic live product completion path
+
+- **Hypothesis:** A custom live bundle is not a functional product path unless its verified analysis can continue through a bundle-specific human checkpoint, briefing, and approval-gated memory proposal without inheriting the demonstration story.
+- **Change:** Prepared execution now registers a process-local investigation and returns investigation, checkpoint, and goal identifiers with its compact review. The service derives planned targets, session title, work findings, deviations, environmental boundary, human confirmation, and memory proposal from the new bundle. The generic `humanConfirmation` contract replaces the resistance-band-specific `equipment` field. The web live-upload path now invokes prepare/execute, retains the returned checkpoint, completes the server-owned transition, and renders the approved session date and confirmation from that result. Hosted replay remains the default.
+- **Evaluation:** RED first failed because prepared execution returned no investigation identifiers and the service hard-coded six 1 km repetitions, the fifth interval, and resistance-band wording. A new behavioral case uses a two-by-500 m plan at 25–27 SPM with a different equipment-malfunction question and rejects every case-002 phrase. Diff review added another RED that caught a deviation numbered by list position instead of its real work interval. Separate web RED tests required the live page invocation, returned runtime identifiers, generic checkpoint copy, generic memory, and correct singular wording. GREEN passes 98 Python tests, three public verifiers, 21 web tests, ESLint, the Vinext production build, and an npm audit with zero vulnerabilities.
+- **Result:** A locally selected plan + SpeedCoach bundle, with optional enhancers, can now travel through the complete coach-facing live workflow after explicit authorization. The synthetic hosted replay still works. State, uploaded bytes, briefings, and memory remain process-local and disappear when the service or browser restarts.
+- **Cost/runtime:** No model call and no API cost. The live product transition was exercised with an injected deterministic agent result; no latency or quality claim is made for a real custom-bundle model run.
+- **Decision:** Keep generic human confirmation and enable the page path only under the existing local runtime plus live-mode opt-ins. Do not describe process-local approval state as durable club memory.
+- **Learning:** Agent correctness can be lost after model verification if downstream product state inserts fixture-specific meaning. Checkpoint and memory transformations therefore need the same evidence-driven tests as tools and prompts.
+- **Next step:** Define and document the per-session cost envelope and execution-budget observability, then prepare the submission narrative and demonstration using replay for reliability and one explicitly authorized live path only if needed.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

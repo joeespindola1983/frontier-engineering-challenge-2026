@@ -14,3 +14,14 @@ test('session review renders adapter findings without case-002-only narration', 
   assert.doesNotMatch(page, /interval\.index === 4/);
   assert.doesNotMatch(page, /selected case remains fully synthetic/);
 });
+
+test('selected evidence uses the prepared live bundle path before review', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /client\.analyzeSourceBundle\(\{\s*sourceIds,/);
+  assert.match(page, /configuredRuntimeMode === 'live'/);
+  assert.match(page, /setCheckpointId\(result\.checkpointId\)/);
+});

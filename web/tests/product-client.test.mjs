@@ -27,7 +27,7 @@ test('replay client follows the asynchronous product contract without API calls'
   const memory = await client.approveBriefing(briefing.briefingId);
 
   assert.equal(investigation.review, demoReview);
-  assert.equal(briefing.equipment.status, 'UNKNOWN');
+  assert.equal(briefing.humanConfirmation.status, 'UNKNOWN');
   assert.equal(memory.approvedSessions.length, 1);
 });
 
@@ -142,6 +142,10 @@ test('HTTP client prepares and explicitly executes a new source bundle', async (
     {
       execution_id: 'execution-source-bundle-abc123',
       bundle_id: 'source-bundle-abc123',
+      investigation_id: 'investigation-source-bundle-abc123',
+      checkpoint_id: 'checkpoint-source-bundle-abc123',
+      goal_id: 'goal-uploaded-session',
+      investigation_status: 'QUESTION_REQUIRED',
       status: 'AGENT_COMPLETED',
       agent_called: true,
       review: { analysis: {}, summary: {}, context: {} },
@@ -174,6 +178,10 @@ test('HTTP client prepares and explicitly executes a new source bundle', async (
   assert.deepEqual(JSON.parse(requests[1].init.body), { mode: 'live' });
   assert.equal(result.review, demoReview);
   assert.equal(result.agentCalled, true);
+  assert.equal(result.investigationId, 'investigation-source-bundle-abc123');
+  assert.equal(result.checkpointId, 'checkpoint-source-bundle-abc123');
+  assert.equal(result.goalId, 'goal-uploaded-session');
+  assert.equal(result.investigationStatus, 'QUESTION_REQUIRED');
 });
 
 test('HTTP client refuses implicit new-bundle execution before any request', async () => {

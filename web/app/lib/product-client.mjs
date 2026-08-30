@@ -94,6 +94,10 @@ export class HttpWakeClient {
     return {
       executionId: executed.execution_id,
       bundleId: executed.bundle_id,
+      investigationId: executed.investigation_id,
+      checkpointId: executed.checkpoint_id,
+      goalId: executed.goal_id,
+      investigationStatus: executed.investigation_status,
       status: executed.status,
       agentCalled: executed.agent_called,
       review: this.reviewAdapter(executed.review),

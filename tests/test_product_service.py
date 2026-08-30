@@ -40,10 +40,11 @@ class FakeLiveRunner:
 class FakeBundleRunner:
     def __init__(self) -> None:
         self.calls: list[tuple[dict, dict[str, bytes]]] = []
+        self.output_override: dict | None = None
 
     def __call__(self, summary: dict, evidence: dict[str, bytes]) -> dict:
         self.calls.append((copy.deepcopy(summary), copy.deepcopy(evidence)))
-        output = copy.deepcopy(read_json(COMMITTED_OUTPUT))
+        output = copy.deepcopy(self.output_override or read_json(COMMITTED_OUTPUT))
         output["case_id"] = summary["case_id"]
         return output
 
@@ -95,8 +96,12 @@ class WakeProductServiceTests(unittest.TestCase):
             answer="YES",
         )
 
-        self.assertEqual(briefing["equipment"]["status"], "HUMAN_CONFIRMED")
-        self.assertEqual(briefing["equipment"]["source"], "Coach confirmation")
+        self.assertEqual(
+            briefing["humanConfirmation"]["status"], "HUMAN_CONFIRMED"
+        )
+        self.assertEqual(
+            briefing["humanConfirmation"]["source"], "Coach confirmation"
+        )
         self.assertEqual(
             self.service.get_investigation(investigation["investigation_id"])[
                 "review"
@@ -112,8 +117,8 @@ class WakeProductServiceTests(unittest.TestCase):
             answer="UNKNOWN",
         )
 
-        self.assertEqual(briefing["equipment"]["status"], "UNKNOWN")
-        self.assertIsNone(briefing["equipment"]["value"])
+        self.assertEqual(briefing["humanConfirmation"]["status"], "UNKNOWN")
+        self.assertIsNone(briefing["humanConfirmation"]["value"])
 
     def test_goal_memory_changes_only_after_explicit_approval(self) -> None:
         investigation = self.service.create_investigation(CASE_ID, mode="replay")
@@ -127,7 +132,7 @@ class WakeProductServiceTests(unittest.TestCase):
         approved = self.service.approve_briefing(briefing["briefingId"])
         self.assertEqual(len(approved["approvedSessions"]), 1)
         self.assertEqual(
-            approved["approvedSessions"][0]["equipment"]["value"],
+            approved["approvedSessions"][0]["humanConfirmation"]["value"],
             False,
         )
         self.assertIn(
@@ -510,6 +515,109 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertEqual(repeated_status, 200)
         self.assertEqual(repeated, result)
         self.assertEqual(len(self.bundle_runner.calls), 1)
+
+    def test_new_bundle_continues_through_generic_checkpoint_and_memory(self) -> None:
+        plan = read_json(CASE_INPUT / "plan.json")
+        plan.update(
+            {
+                "plan_id": "synthetic-plan-short-rate",
+                "goal_id": "synthetic-goal-short-rate",
+                "coach_language": "2 x 500 m at 25-27 SPM.",
+                "blocks": [
+                    {
+                        "block_id": "short-rate",
+                        "kind": "WORK",
+                        "repetitions": 2,
+                        "distance_m": 500,
+                        "duration_s": None,
+                        "stroke_rate": {"min_spm": 25, "max_spm": 27},
+                        "zone": "B3",
+                        "zone_system": "STANDARD_ROWING_ZONES",
+                        "recovery": {
+                            "min_s": 120,
+                            "max_s": 180,
+                            "mode": "ACTIVE_LIGHT_ROWING",
+                        },
+                        "equipment": [],
+                        "instructions": [],
+                    }
+                ],
+            }
+        )
+        plan_source = self.service.upload_source(
+            kind="PLAN",
+            name="short-plan.json",
+            content=json.dumps(plan).encode("utf-8"),
+        )
+        speedcoach_source = self.service.upload_source(
+            kind="SPEEDCOACH",
+            name="speedcoach.csv",
+            content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+        )
+        prepared = self.service.prepare_source_bundle(
+            [plan_source["source_id"], speedcoach_source["source_id"]]
+        )
+
+        output = read_json(COMMITTED_OUTPUT)
+        output["segments"] = output["segments"][:3]
+        output["segments"][0]["average_spm"] = 26.0
+        output["segments"][2]["average_spm"] = 23.0
+        output["deviations"] = [
+            {
+                "confidence": 0.91,
+                "description": (
+                    "Work-02 averaged 23.0 SPM, below the prescribed 25-27 SPM range."
+                ),
+                "evidence_refs": ["input/plan.json", "input/speedcoach.csv"],
+                "segment_ref": "work-02",
+                "type": "STROKE_RATE_BELOW_PRESCRIPTION",
+            }
+        ]
+        output["follow_up_questions"] = [
+            "Did an equipment malfunction affect work interval two?"
+        ]
+        output["coach_briefing"] = (
+            "Two work intervals were reconstructed; the second was below target SPM."
+        )
+        self.bundle_runner.output_override = output
+
+        execution, _ = self.service.execute_source_bundle(
+            prepared["bundle_id"], mode="live"
+        )
+
+        self.assertEqual(execution["investigation_status"], "QUESTION_REQUIRED")
+        self.assertTrue(execution["investigation_id"].startswith("investigation-"))
+        self.assertTrue(execution["checkpoint_id"].startswith("checkpoint-"))
+        briefing = self.service.answer_checkpoint(
+            execution["checkpoint_id"], answer="YES"
+        )
+        self.assertEqual(briefing["title"], "2 x 500 m · rowing session")
+        self.assertEqual(len(briefing["workIntervals"]), 2)
+        self.assertEqual(briefing["workIntervals"][0]["targetMinSpm"], 25)
+        self.assertEqual(briefing["workIntervals"][0]["targetMaxSpm"], 27)
+        attention = next(
+            finding
+            for finding in briefing["findings"]
+            if finding["status"] == "ATTENTION"
+        )
+        self.assertEqual(attention["title"], "Work interval 2 needs attention.")
+        self.assertIn("1 plan deviation needs coach review", briefing["headline"])
+        self.assertEqual(
+            briefing["humanConfirmation"]["question"],
+            "Did an equipment malfunction affect work interval two?",
+        )
+        serialized_briefing = json.dumps(briefing).lower()
+        self.assertNotIn("resistance band", serialized_briefing)
+        self.assertNotIn("work interval five", serialized_briefing)
+        self.assertNotIn("all six", serialized_briefing)
+
+        goal = self.service.approve_briefing(briefing["briefingId"])
+        self.assertEqual(len(goal["approvedSessions"]), 1)
+        self.assertEqual(
+            goal["approvedSessions"][0]["humanConfirmation"]["answer"],
+            "YES",
+        )
+        self.assertIn("does not establish a longitudinal trend", goal["currentConclusion"])
 
 
 if __name__ == "__main__":

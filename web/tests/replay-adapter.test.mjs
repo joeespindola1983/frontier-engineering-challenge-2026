@@ -159,22 +159,23 @@ test('ships a compact replay that stays faithful to the committed run', async ()
   assert.equal(demoReview.checkpoint.question, committedReview.checkpoint.question);
 });
 
-test('preserves an unanswered equipment checkpoint as an explicit unknown', () => {
+test('preserves an unanswered checkpoint as explicit human-context unknown', () => {
   const briefing = resolveCheckpoint(demoReview, 'UNKNOWN');
 
   assert.equal(briefing.verificationStatus, 'VERIFIED');
-  assert.equal(briefing.equipment.status, 'UNKNOWN');
-  assert.equal(briefing.equipment.value, null);
-  assert.match(briefing.equipment.statement, /cannot be confirmed/i);
+  assert.equal(briefing.humanConfirmation.status, 'UNKNOWN');
+  assert.equal(briefing.humanConfirmation.value, null);
+  assert.equal(briefing.humanConfirmation.question, demoReview.checkpoint.question);
+  assert.match(briefing.humanConfirmation.statement, /no human confirmation/i);
   assert.equal(briefing.pendingApproval, true);
 });
 
 test('records a coach answer as human confirmation without rewriting telemetry', () => {
   const briefing = resolveCheckpoint(demoReview, 'YES');
 
-  assert.equal(briefing.equipment.status, 'HUMAN_CONFIRMED');
-  assert.equal(briefing.equipment.value, true);
-  assert.equal(briefing.equipment.source, 'Coach confirmation');
+  assert.equal(briefing.humanConfirmation.status, 'HUMAN_CONFIRMED');
+  assert.equal(briefing.humanConfirmation.value, true);
+  assert.equal(briefing.humanConfirmation.source, 'Coach confirmation');
   assert.deepEqual(briefing.workIntervals, demoReview.workIntervals);
   assert.deepEqual(briefing.environment, demoReview.environment);
 });
@@ -187,6 +188,39 @@ test('adds memory only after explicit briefing approval', () => {
   assert.equal(unchanged.approvedSessions.length, 0);
   assert.equal(approved.approvedSessions.length, 1);
   assert.equal(approved.approvedSessions[0].approval, 'COACH_APPROVED');
-  assert.equal(approved.approvedSessions[0].equipment.value, false);
+  assert.equal(approved.approvedSessions[0].humanConfirmation.value, false);
   assert.match(approved.currentConclusion, /does not establish a longitudinal trend/i);
+});
+
+test('checkpoint and memory copy follow a different review instead of the demo case', () => {
+  const review = {
+    ...demoReview,
+    sessionId: 'uploaded-short-rate',
+    title: "2 × 500 m · Women's 1x",
+    coachBriefing: 'Two intervals reconstructed; work two was below target.',
+    workIntervals: [
+      { ...demoReview.workIntervals[0], index: 1, averageSpm: 26, plannedDistanceM: 500, targetMinSpm: 25, targetMaxSpm: 27, status: 'WITHIN_RANGE' },
+      { ...demoReview.workIntervals[1], index: 2, averageSpm: 23, plannedDistanceM: 500, targetMinSpm: 25, targetMaxSpm: 27, status: 'DEVIATION' },
+    ],
+    environment: {
+      association: 'UNKNOWN',
+      summary: 'No environmental timeline was supplied.',
+      limitations: [],
+      evidenceRefs: [],
+    },
+    abstentions: ['No technique conclusion is made.'],
+    checkpoint: {
+      ...demoReview.checkpoint,
+      question: 'Did an equipment malfunction affect work interval two?',
+    },
+  };
+
+  const briefing = resolveCheckpoint(review, 'YES');
+  const memory = approveBriefingMemory(briefing, true);
+  const serialized = JSON.stringify({ briefing, memory }).toLowerCase();
+
+  assert.match(briefing.headline, /2 work intervals reconstructed/);
+  assert.match(briefing.headline, /1 plan deviation needs coach review/);
+  assert.equal(briefing.humanConfirmation.question, review.checkpoint.question);
+  assert.doesNotMatch(serialized, /resistance-band|work interval five|all six/);
 });

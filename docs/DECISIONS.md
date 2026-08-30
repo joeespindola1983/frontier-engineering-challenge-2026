@@ -236,6 +236,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Use the v2 distance boundary for the hackathon demonstration while preserving v1 as failure evidence. Report the official repeat as 8/8 core, 10/10 context/environment, 12/12 full, and stable execution across conditions at US$0.358676.
 - **Rationale:** With the same frozen inputs and capability checks, v2 removed the unsupported distance-shortfall deviation without losing environmental association, route/session corroboration, or broken-mobile-SPM rejection. One synthetic repeated case supports this workflow choice but not broad model reliability or athlete-performance claims.
 
+## 2026-08-29 - Complete custom live sessions with generic human confirmation
+
+- **Status:** accepted for the local demonstration runtime; persistence remains pending.
+- **Decision:** Register every successfully executed prepared bundle as a process-local investigation and derive its checkpoint, briefing, and memory proposal from that bundle's plan, verified analysis, and follow-up question. Use a generic `humanConfirmation` object rather than an equipment-specific field. Let the page invoke this path only when both a local service URL and explicit live mode are configured; keep hosted replay as the default.
+- **Rationale:** A generic review followed by a hard-coded six-by-one-kilometer briefing would turn a correct agent result into a false product claim. The complete transition is now tested with a different plan and question, while explicit live authorization preserves the existing paid-action boundary. Durable club memory still requires authentication, tenancy, and storage.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

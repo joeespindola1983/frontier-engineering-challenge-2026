@@ -53,35 +53,24 @@ SOURCE_FILENAMES = {
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
 
 
-def equipment_from_answer(answer: str) -> dict:
-    if answer == "YES":
+def human_confirmation_from_answer(question: str, answer: str) -> dict:
+    if answer in {"YES", "NO"}:
+        label = "Yes" if answer == "YES" else "No"
         return {
             "status": "HUMAN_CONFIRMED",
-            "value": True,
+            "answer": answer,
+            "value": answer == "YES",
             "source": "Coach confirmation",
-            "statement": (
-                "The coach confirmed that the resistance band was used for "
-                "repetitions 1–3 and removed before repetition 4."
-            ),
-        }
-    if answer == "NO":
-        return {
-            "status": "HUMAN_CONFIRMED",
-            "value": False,
-            "source": "Coach confirmation",
-            "statement": (
-                "The coach confirmed that the prescribed resistance-band "
-                "change was not completed as planned."
-            ),
+            "question": question,
+            "statement": f'Coach answered "{label}" to: {question}',
         }
     return {
         "status": "UNKNOWN",
+        "answer": "UNKNOWN",
         "value": None,
         "source": None,
-        "statement": (
-            "Resistance-band use and removal cannot be confirmed from the "
-            "supplied telemetry or human context."
-        ),
+        "question": question,
+        "statement": f"No human confirmation was supplied for: {question}",
     }
 
 
@@ -365,6 +354,11 @@ class WakeProductService:
                 "session_candidate": known_context.get("session_candidate", {}),
             },
         }
+        investigation = self._register_investigation(
+            review,
+            mode="live",
+            identity=bundle_id,
+        )
         result = {
             "execution_id": execution_id,
             "bundle_id": bundle_id,
@@ -372,6 +366,10 @@ class WakeProductService:
             "mode": "live",
             "status": "AGENT_COMPLETED",
             "agent_called": True,
+            "investigation_id": investigation["investigation_id"],
+            "checkpoint_id": investigation["checkpoint_id"],
+            "goal_id": investigation["goal_id"],
+            "investigation_status": investigation["status"],
             "analysis": analysis,
             "review": review,
         }
@@ -443,10 +441,20 @@ class WakeProductService:
             raise ValueError("Agent output does not match the requested case.")
 
         review = self._public_case_bundle(case_id, analysis)
-        investigation_id = f"investigation-{case_id}"
-        checkpoint_id = f"checkpoint-{case_id}"
+        return self._register_investigation(review, mode=mode, identity=case_id)
+
+    def _register_investigation(
+        self,
+        review: dict,
+        *,
+        mode: str,
+        identity: str,
+    ) -> dict:
+        case_id = review["analysis"]["case_id"]
+        investigation_id = f"investigation-{identity}"
+        checkpoint_id = f"checkpoint-{identity}"
         goal_id = f"goal-{case_id}"
-        questions = analysis.get("follow_up_questions", [])
+        questions = review["analysis"].get("follow_up_questions", [])
         result = {
             "investigation_id": investigation_id,
             "checkpoint_id": checkpoint_id,
@@ -478,7 +486,11 @@ class WakeProductService:
         )
         if investigation is None:
             raise KeyError(f"Unknown checkpoint: {checkpoint_id}")
-        briefing = self._build_briefing(investigation["review"], answer)
+        briefing = self._build_briefing(
+            investigation["review"],
+            answer,
+            goal_id=investigation["goal_id"],
+        )
         self.briefings[briefing["briefingId"]] = briefing
         investigation["status"] = "VERIFIED"
         investigation["briefing_id"] = briefing["briefingId"]
@@ -488,7 +500,7 @@ class WakeProductService:
         if briefing_id not in self.briefings:
             raise KeyError(f"Unknown briefing: {briefing_id}")
         briefing = self.briefings[briefing_id]
-        goal_id = f"goal-{briefing['sessionId']}"
+        goal_id = briefing["goalId"]
         goal = self._approved_goal(briefing)
         self.goals[goal_id] = goal
         briefing["pendingApproval"] = False
@@ -499,89 +511,167 @@ class WakeProductService:
             raise KeyError(f"Unknown goal: {goal_id}")
         return self.goals[goal_id]
 
+    def _planned_work_targets(self, review: dict) -> list[dict]:
+        targets = []
+        plan = review.get("summary", {}).get("plan") or {}
+        for block in plan.get("blocks", []):
+            if block.get("kind") != "WORK":
+                continue
+            stroke_rate = block.get("stroke_rate") or {}
+            for _ in range(int(block.get("repetitions", 1))):
+                targets.append(
+                    {
+                        "distance": block.get("distance_m"),
+                        "min_spm": stroke_rate.get("min_spm"),
+                        "max_spm": stroke_rate.get("max_spm"),
+                    }
+                )
+        return targets
+
     def _work_intervals(self, review: dict) -> list[dict]:
         intervals = []
         work_index = 0
+        targets = self._planned_work_targets(review)
+        deviations = {
+            deviation.get("segment_ref")
+            for deviation in review["analysis"].get("deviations", [])
+        }
         for segment in review["analysis"].get("segments", []):
             if segment.get("kind") != "WORK":
                 continue
             work_index += 1
-            target = {"min": 19, "max": 21} if work_index <= 3 else {"min": 22, "max": 24}
+            target = targets[work_index - 1] if work_index <= len(targets) else {}
             average_spm = float(segment["average_spm"])
+            target_min = target.get("min_spm")
+            target_max = target.get("max_spm")
             intervals.append(
                 {
                     "segmentId": segment["segment_id"],
                     "index": work_index,
-                    "plannedDistanceM": 1000,
+                    "plannedDistanceM": target.get("distance") or 0,
                     "durationS": round(
                         float(segment["end_offset_s"])
                         - float(segment["start_offset_s"]),
                         3,
                     ),
                     "averageSpm": average_spm,
-                    "targetMinSpm": target["min"],
-                    "targetMaxSpm": target["max"],
-                    "status": (
-                        "WITHIN_RANGE"
-                        if target["min"] <= average_spm <= target["max"]
-                        else "DEVIATION"
-                    ),
+                    "targetMinSpm": target_min or average_spm,
+                    "targetMaxSpm": target_max or average_spm,
+                    "status": "DEVIATION"
+                    if segment["segment_id"] in deviations
+                    else "WITHIN_RANGE",
                 }
             )
         return intervals
 
-    def _build_briefing(self, review: dict, answer: str) -> dict:
+    def _session_title(self, review: dict) -> str:
+        targets = self._planned_work_targets(review)
+        distances = {target["distance"] for target in targets if target["distance"]}
+        if len(distances) == 1:
+            distance = distances.pop()
+            distance_label = (
+                f"{distance / 1000:g} km"
+                if distance >= 1000 and distance % 1000 == 0
+                else f"{distance:g} m"
+            )
+        else:
+            distance_label = "work intervals"
+        candidate = review.get("context", {}).get("session_candidate") or {}
+        boat = {
+            "SINGLE_SCULL": "1x",
+            "DOUBLE_SCULL": "2x",
+            "QUADRUPLE_SCULL": "4x",
+        }.get(candidate.get("boat_class"), candidate.get("world_rowing_code"))
+        crew = {"MEN": "Men's", "WOMEN": "Women's", "MIXED": "Mixed"}.get(
+            candidate.get("crew_category")
+        )
+        boat_label = " ".join(part for part in (crew, boat) if part)
+        return f"{len(targets)} x {distance_label} · {boat_label or 'rowing session'}"
+
+    def _build_briefing(self, review: dict, answer: str, *, goal_id: str) -> dict:
         analysis = review["analysis"]
-        equipment = equipment_from_answer(answer)
+        questions = analysis.get("follow_up_questions", [])
+        question = questions[0] if questions else "Is there any coach context to add?"
+        confirmation = human_confirmation_from_answer(question, answer)
         environment = analysis.get("environment_assessment") or {}
+        intervals = self._work_intervals(review)
+        deviations = analysis.get("deviations", [])
+        deviation_count = len(deviations)
+        interval_indexes = {
+            interval["segmentId"]: interval["index"] for interval in intervals
+        }
+        findings = [
+            {
+                "status": "SUPPORTED",
+                "title": f"{len(intervals)} prescribed work intervals were reconstructed.",
+                "explanation": (
+                    "The reconstruction uses the supplied training plan and "
+                    "SpeedCoach evidence; it does not by itself establish technique."
+                ),
+                "evidenceRefs": ["input/plan.json", "input/speedcoach.csv"],
+            }
+        ]
+        findings.extend(
+            {
+                "status": "ATTENTION",
+                "title": (
+                    "Session-level deviation needs attention."
+                    if deviation.get("segment_ref") not in interval_indexes
+                    else f"Work interval {interval_indexes[deviation['segment_ref']]} needs attention."
+                ),
+                "explanation": deviation["description"],
+                "evidenceRefs": deviation.get("evidence_refs", []),
+            }
+            for deviation in deviations
+        )
+        if environment.get("summary"):
+            findings.append(
+                {
+                    "status": "SUPPORTED_WITH_LIMITATION",
+                    "title": "Environmental context retains a non-causal boundary.",
+                    "explanation": environment["summary"],
+                    "evidenceRefs": environment.get("evidence_refs", []),
+                }
+            )
+        findings.append(
+            {
+                "status": confirmation["status"],
+                "title": (
+                    "Coach context remains unknown."
+                    if confirmation["status"] == "UNKNOWN"
+                    else "Coach context was human-confirmed."
+                ),
+                "explanation": confirmation["statement"],
+                "evidenceRefs": (
+                    []
+                    if confirmation["status"] == "UNKNOWN"
+                    else ["human-confirmation/checkpoint"]
+                ),
+            }
+        )
+        deviation_label = (
+            "no plan deviations were reported"
+            if not deviation_count
+            else (
+                f"{deviation_count} plan deviation"
+                f"{'s need' if deviation_count != 1 else ' needs'} coach review"
+            )
+        )
         return {
             "briefingId": f"briefing-{analysis['case_id']}",
             "sessionId": analysis["case_id"],
-            "title": "6 × 1 km · Men's 2x",
-            "verificationStatus": "VERIFIED",
-            "headline": (
-                "Planned structure completed; one stroke-rate deviation needs "
-                "coach review."
+            "goalId": goal_id,
+            "scheduledDate": (review.get("summary", {}).get("plan") or {}).get(
+                "scheduled_date"
             ),
+            "title": self._session_title(review),
+            "verificationStatus": "VERIFIED",
+            "headline": f"{len(intervals)} work intervals reconstructed; {deviation_label}.",
             "summary": analysis["coach_briefing"],
-            "workIntervals": self._work_intervals(review),
+            "workIntervals": intervals,
             "environment": environment,
-            "equipment": equipment,
-            "findings": [
-                {
-                    "status": "SUPPORTED",
-                    "title": "All six prescribed work intervals were reconstructed.",
-                    "explanation": (
-                        "The work/recovery structure and order are supported by "
-                        "the plan and SpeedCoach evidence."
-                    ),
-                    "evidenceRefs": ["input/plan.json", "input/speedcoach.csv"],
-                },
-                {
-                    "status": "ATTENTION",
-                    "title": (
-                        "Work interval five missed its prescribed stroke-rate range."
-                    ),
-                    "explanation": (
-                        "It averaged 19.99 SPM against the prescribed 22–24 SPM range."
-                    ),
-                    "evidenceRefs": ["input/plan.json", "input/speedcoach.csv"],
-                },
-                {
-                    "status": equipment["status"],
-                    "title": (
-                        "Resistance-band use remains unknown."
-                        if equipment["status"] == "UNKNOWN"
-                        else "Resistance-band context was confirmed by the coach."
-                    ),
-                    "explanation": equipment["statement"],
-                    "evidenceRefs": (
-                        []
-                        if equipment["status"] == "UNKNOWN"
-                        else ["human-confirmation/resistance-band"]
-                    ),
-                },
-            ],
+            "humanConfirmation": confirmation,
+            "findings": findings,
             "limitations": analysis.get("abstentions", []),
             "pendingApproval": True,
         }
@@ -589,7 +679,7 @@ class WakeProductService:
     def _empty_goal(self, review: dict) -> dict:
         return {
             "goalId": f"goal-{review['analysis']['case_id']}",
-            "title": "Regatta preparation · Men's 2x",
+            "title": f"Session learning · {self._session_title(review)}",
             "currentConclusion": (
                 "No session evidence has been approved for this goal in the prototype."
             ),
@@ -599,33 +689,32 @@ class WakeProductService:
         }
 
     def _approved_goal(self, briefing: dict) -> dict:
+        deviations = [
+            finding["explanation"]
+            for finding in briefing["findings"]
+            if finding["status"] == "ATTENTION"
+        ]
+        confirmation = briefing["humanConfirmation"]
         return {
-            "goalId": f"goal-{briefing['sessionId']}",
-            "title": "Regatta preparation · Men's 2x",
+            "goalId": briefing["goalId"],
+            "title": f"Session learning · {briefing['title']}",
             "currentConclusion": (
-                "One approved session supports completion of the planned structure "
-                "and identifies a fifth-interval stroke-rate deviation; it does not "
-                "establish a longitudinal trend."
+                f"One approved session preserves this result: {briefing['headline']} "
+                "It does not establish a longitudinal trend."
             ),
             "approvedSessions": [
                 {
                     "sessionId": briefing["sessionId"],
+                    "scheduledDate": briefing["scheduledDate"],
                     "title": briefing["title"],
                     "approval": "COACH_APPROVED",
-                    "summary": (
-                        "Six work intervals reconstructed; work five below target SPM; "
-                        "environmental change limits pace interpretation."
-                    ),
-                    "equipment": briefing["equipment"],
+                    "summary": briefing["headline"],
+                    "humanConfirmation": confirmation,
                 }
             ],
             "unresolvedQuestions": [
-                "Why did work interval five fall below the prescribed stroke-rate range?",
-                *(
-                    ["Was the resistance-band change completed?"]
-                    if briefing["equipment"]["status"] == "UNKNOWN"
-                    else []
-                ),
+                *deviations,
+                *([confirmation["question"]] if confirmation["status"] == "UNKNOWN" else []),
             ],
             "nextUsefulEvidence": [
                 "A comparable session with the same plan and more stable conditions.",
