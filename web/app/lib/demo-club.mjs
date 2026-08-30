@@ -235,6 +235,29 @@ const investigationResults = [
   },
 ];
 
+const batchValidation = {
+  schema_version: 'wake.demo_club_batch_report.v1',
+  status: 'VERIFIED',
+  evidence_ref: 'data/demo-club-batch/manifest.json',
+  counts: {
+    records_received: 40,
+    data_validated: 40,
+    sessions_reconstructed: 38,
+    plan_compared: 37,
+    agent_verified: 2,
+    human_approved: 0,
+  },
+  routing: {
+    RECONSTRUCTED_NO_MATERIAL_SIGNAL: 31,
+    RECONSTRUCTED_ALTERNATIVE: 3,
+    AGENT_VERIFIED: 2,
+    SOURCE_REQUIRED: 1,
+    HUMAN_CONTEXT_REQUIRED: 1,
+    SOURCE_ADAPTER_REQUIRED: 2,
+  },
+  longitudinal_synthesis_executed: false,
+};
+
 export const demoClub = {
   schema_version: 'wake.demo_club.v1',
   synthetic: true,
@@ -262,6 +285,7 @@ export const demoClub = {
   activities: [...crewActivities, ...alternateActivities],
   participation_gaps: participationGaps,
   investigation_results: investigationResults,
+  batch_validation: batchValidation,
 };
 
 function maps(club) {

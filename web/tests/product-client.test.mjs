@@ -264,6 +264,65 @@ test('HTTP client prepares a source bundle without invoking the agent', async ()
   });
 });
 
+test('HTTP client prepares, restores, and explicitly executes a source batch', async () => {
+  const requests = [];
+  const responses = [
+    { batch_id: 'source-batch-123', status: 'READY_FOR_EXECUTION', counts: { total: 2 } },
+    { batch_id: 'source-batch-123', status: 'READY_FOR_EXECUTION', counts: { total: 2 } },
+    { batch_id: 'source-batch-123', status: 'COMPLETED', counts: { agent_completed: 2 } },
+  ];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return { ok: true, status: 200, json: async () => responses.shift() };
+    },
+  });
+  const items = [
+    { client_session_id: 'one', source_ids: ['plan-1', 'speedcoach-1'] },
+    { client_session_id: 'two', source_ids: ['plan-2', 'speedcoach-2'] },
+  ];
+
+  const prepared = await client.prepareSourceBatch(items);
+  const restored = await client.getSourceBatch(prepared.batch_id);
+  const executed = await client.executeSourceBatch({
+    batchId: prepared.batch_id,
+    mode: 'live',
+    authorizedBatchCostUsd: 0.40,
+  });
+
+  assert.equal(restored.batch_id, prepared.batch_id);
+  assert.equal(executed.status, 'COMPLETED');
+  assert.deepEqual(requests.map(({ url, init }) => [url, init.method]), [
+    ['http://127.0.0.1:8788/api/source-batches/prepare', 'POST'],
+    ['http://127.0.0.1:8788/api/source-batches/source-batch-123', 'GET'],
+    ['http://127.0.0.1:8788/api/source-batches/source-batch-123/execute', 'POST'],
+  ]);
+  assert.deepEqual(JSON.parse(requests[0].init.body), { items });
+  assert.deepEqual(JSON.parse(requests[2].init.body), {
+    mode: 'live',
+    authorized_batch_cost_usd: 0.40,
+  });
+});
+
+test('HTTP client refuses implicit source batch execution before any request', async () => {
+  let requests = 0;
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async () => { requests += 1; },
+  });
+
+  await assert.rejects(
+    client.executeSourceBatch({ batchId: 'batch', mode: 'replay', authorizedBatchCostUsd: 0.20 }),
+    /explicit live mode/,
+  );
+  await assert.rejects(
+    client.executeSourceBatch({ batchId: 'batch', mode: 'live' }),
+    /cost authorization/,
+  );
+  assert.equal(requests, 0);
+});
+
 test('HTTP client reads the durable session inbox and marks a review as viewed', async () => {
   const requests = [];
   const responses = [

@@ -1,0 +1,38 @@
+{
+  "schema_version": "wake.synthetic_case_context.v1",
+  "case_id": "club-4x-women-20260824-am",
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "provided_sources": [
+    {
+      "source_id": "speedcoach-club-4x-women-20260824-am",
+      "kind": "SPEEDCOACH",
+      "path": "speedcoach.csv"
+    },
+    {
+      "source_id": "plan-club-4x-women-20260824-am",
+      "kind": "TRAINING_PLAN",
+      "path": "plan.json"
+    }
+  ],
+  "session_candidate": {
+    "boat_id": "boat-4x-gaia",
+    "boat_class": "QUADRUPLE_SCULL",
+    "world_rowing_code": "4x",
+    "crew_id": "crew-4x-women",
+    "crew_category": "WOMEN",
+    "athlete_ids": [
+      "athlete-marina",
+      "athlete-helena",
+      "athlete-camila",
+      "athlete-julia"
+    ],
+    "experience": "CLUB_COMPETITIVE",
+    "route_heading_deg": 0.0
+  },
+  "human_confirmations": {
+    "coach_observed_technique": null,
+    "perceived_effort": null
+  },
+  "scenario_label": "Rate ladder · 18–24 SPM",
+  "input_notice": "All identities, dates, route coordinates, telemetry, and exact outcomes in this public demo-club bundle are synthetic. Formats and workout patterns are informed by supplied real rowing material."
+}

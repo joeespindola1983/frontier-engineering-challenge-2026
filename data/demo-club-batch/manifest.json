@@ -1,0 +1,911 @@
+{
+  "schema_version": "wake.demo_club_batch_manifest.v1",
+  "generator": "scripts/generate_demo_club_batch.py",
+  "generator_version": "1.0",
+  "period": {
+    "start": "2026-08-17",
+    "end": "2026-08-28"
+  },
+  "sessions": [
+    {
+      "session_id": "club-2x-men-20260817-am",
+      "date": "2026-08-17",
+      "slot": "AM",
+      "title": "B0/B2 technical row",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael"
+      ],
+      "crew_id": "crew-2x-men",
+      "boat_id": "boat-2x-aurora",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "b248f7f0155ca9ebffcda2d4c75965cb674f6d69606c15ec45c503cb4ba9bf1c",
+        "plan.json": "a31914fd1fa76a1ce3ef30fc3879425f4db9910afe76cbc1e62035c471a5b64f",
+        "speedcoach.csv": "519a20dc92f33fc4356c4c085a994552429fca1533b72a508ac44652ee0b1ac9"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-women-20260817-am",
+      "date": "2026-08-17",
+      "slot": "AM",
+      "title": "B2/B3 · 6 × 1 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-4x-women",
+      "boat_id": "boat-4x-gaia",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "5d77817a76d31aed198c905c225497d5ed08e327a9944575faa30f56714b2715",
+        "plan.json": "e93ab8c4ca71e6d9caec71354f7a373b17960dc60ce3acd3bbd57412adb67971",
+        "speedcoach.csv": "9b66030b188beb48ed9c2107cd168e6e88191e85b02b43e93e60c19a6e10cb2b"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-a-20260817-pm",
+      "date": "2026-08-17",
+      "slot": "PM",
+      "title": "B0/B2 technical row",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-bruno",
+        "athlete-camila"
+      ],
+      "crew_id": "crew-2x-mixed-a",
+      "boat_id": "boat-2x-horizon",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "97968576c94f0c402b442ca886fc49751a9c97a1845560603eca4fdc8ab9f913",
+        "plan.json": "1b48fc4393cd7842bb9c0a008fb7db9e0bebecfa5e54d31b4fd54165726bbdd7",
+        "speedcoach.csv": "30acebbad58d92bfac004260b8eef3d3cd1a15d61c84ee53e5704f831dce5d6f"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-women-20260818-am",
+      "date": "2026-08-18",
+      "slot": "AM",
+      "title": "B0/B2 technical row",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena"
+      ],
+      "crew_id": "crew-2x-women",
+      "boat_id": "boat-2x-iris",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "81988f0345cba7424a583a1fc24d7d0cd924aca750c91268bfa15d1576dc2c8b",
+        "plan.json": "6b6c5fa0b8e53ccf19948393e21a7a18254ba7917e927cb1360e51fbb7f526ef",
+        "speedcoach.csv": "141341ed75825552541d8ffd5d72f4e0b27338c06024624ace79375ade20b97d"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-men-20260818-am",
+      "date": "2026-08-18",
+      "slot": "AM",
+      "title": "B2/B3 · 6 × 1 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego"
+      ],
+      "crew_id": "crew-4x-men",
+      "boat_id": "boat-4x-atlas",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "20e1b3c9e35efc6ddb9bb0185f5c76d3a1543d8f9c7129c8785dffcdb31b252e",
+        "plan.json": "1d19e47e45638ebc91f93b6e172704f9d57c7318643b1653bb12f3720f2d6390",
+        "speedcoach.csv": "8551db867e4210accb7985afc5e004c4d66252d8bc43e6d7bd9b739b1903d786"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-b-20260818-am",
+      "date": "2026-08-18",
+      "slot": "AM",
+      "title": "B2/B3 · 6 × 1 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-felipe",
+        "athlete-renata",
+        "athlete-mateus",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-4x-mixed-b",
+      "boat_id": "boat-4x-dawn",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "fdbfd3b74ecd5a830bf589a9fafc2ad53bebd4e7eb4dc0f957f249b0feeec515",
+        "plan.json": "ebb05b16d04448b5288034ab0745ae8b7982992a167ab0d2681071512501b8f9",
+        "speedcoach.csv": "8551db867e4210accb7985afc5e004c4d66252d8bc43e6d7bd9b739b1903d786"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-b-20260818-pm",
+      "date": "2026-08-18",
+      "slot": "PM",
+      "title": "B0/B2 technical row",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-diego",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-2x-mixed-b",
+      "boat_id": "boat-2x-current",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "760fd5af78ab58f1bd96f3861a15b36a1d1c85cbd089bb6ebba635d157f9cb31",
+        "plan.json": "996b2d483b5e37d9b8af40029d840c34ce8e914c7b1af721b570d5994d71e0c0",
+        "speedcoach.csv": "ad338b9892d93a1c490e000f643aec83e4c19cf793992c03d8f8b0acf9d10705"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-men-20260819-am",
+      "date": "2026-08-19",
+      "slot": "AM",
+      "title": "2 × 4 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael"
+      ],
+      "crew_id": "crew-2x-men",
+      "boat_id": "boat-2x-aurora",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "8ab64a478e441527854d82aedbfd040c462de324000f7948a4b7b1845b7c37f9",
+        "plan.json": "8c5c2d95dd7b50ae7c705d96cfffb4483c9d83eafa02120e53818efd29bb21ab",
+        "speedcoach.csv": "dd0d1645fa4bf9fb57196d8591aeb71636a16b71d3115dfa01c8905c0f86e199"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-a-20260819-am",
+      "date": "2026-08-19",
+      "slot": "AM",
+      "title": "B2/B3 · 6 × 1 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-caio",
+        "athlete-bianca",
+        "athlete-andre",
+        "athlete-larissa"
+      ],
+      "crew_id": "crew-4x-mixed-a",
+      "boat_id": "boat-4x-mistral",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "1ee39a5aef4d1fabf75244b62ed5ccc465c2a8f1b42de1f63e49624547dceb69",
+        "plan.json": "6fabffafe8fa90bc2d7ae87579b52170dfa82173e8d6a0802eba1a9829fdb672",
+        "speedcoach.csv": "eb774ee90bd4b1ee366a0a1996674e5940a3deacadd80e14fefa7bacd864310c"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-8x-men-20260819-evening",
+      "date": "2026-08-19",
+      "slot": "EVENING",
+      "title": "Crew rhythm · B1",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego",
+        "athlete-caio",
+        "athlete-andre",
+        "athlete-felipe",
+        "athlete-mateus"
+      ],
+      "crew_id": "crew-8x-men",
+      "boat_id": "boat-8x-north",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "b879892cc02823f12c27920969a082c7bae8f8623fda954263f17834b763b69e",
+        "plan.json": "721618102c503a765235f8762d53dc3f561c7fa55fddffa66a61f6fa768c631e",
+        "speedcoach.csv": "da42529f5e47ff1707fbdf83afe9d9a6a260bd7767d7f06a5cb084f330712226"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-women-20260819-pm",
+      "date": "2026-08-19",
+      "slot": "PM",
+      "title": "B0/B2 technique · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-4x-women",
+      "boat_id": "boat-4x-gaia",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "dace7b53c9962b13449cd29672e9c1185a6c9f565a35ce091946545fe71d06b4",
+        "plan.json": "a429478afa1a5ca5bc159b58a45ca5e307351617a056bd223519bb46c5a4439d",
+        "speedcoach.csv": "5593eb9d29e21005c082093dd2b3526ef736794e36070461dfb50c5f62c77953"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-women-20260820-am",
+      "date": "2026-08-20",
+      "slot": "AM",
+      "title": "2 × 4 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena"
+      ],
+      "crew_id": "crew-2x-women",
+      "boat_id": "boat-2x-iris",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "a3621e11d38c298aeeec94dab3de9c0b9a0754b96c813599008cd62fee8f914b",
+        "plan.json": "393787228dd2f647ea81a52908dea43ae6871278731f3a98f253a7db3f889d8b",
+        "speedcoach.csv": "fe6cc0cd07db6a38eb6fd297a8262605e1495572978ab4a3d50bc796353b856b"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-b-20260820-am",
+      "date": "2026-08-20",
+      "slot": "AM",
+      "title": "B0/B2 technique · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-felipe",
+        "athlete-renata",
+        "athlete-mateus",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-4x-mixed-b",
+      "boat_id": "boat-4x-dawn",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "0872e662c353fbb4016c6e76c28a3f722a4dd860fd16381db031db914bc17bd3",
+        "plan.json": "8e0144a3a14207cc59e2f246fdd4b8e5def64715d6b36231fa81066654c06219",
+        "speedcoach.csv": "1e675837909bff7c57716189f06573dd3ca64513e61787af0129c9131b22c0a9"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-8x-women-20260820-evening",
+      "date": "2026-08-20",
+      "slot": "EVENING",
+      "title": "Crew rhythm · B1",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia",
+        "athlete-bianca",
+        "athlete-larissa",
+        "athlete-renata",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-8x-women",
+      "boat_id": "boat-8x-south",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "377804686ec5bc08359d09a85f80effe49dde40e577c0512b01f0e998f02bcc3",
+        "plan.json": "1a5f546c3006d1a3a9e865d12f30ded6052a5562287d95a695e1490da275efe6",
+        "speedcoach.csv": "55e1e01b52a8a051361f99493b14e000df215b4fd8c64f478d1583a708c67449"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-bridge-mixed-20260820-spm",
+      "date": "2026-08-20",
+      "slot": "PM",
+      "title": "2 × 4 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-bruno",
+        "athlete-camila"
+      ],
+      "crew_id": "crew-2x-mixed-a",
+      "boat_id": "boat-2x-horizon",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "AGENT_VERIFIED",
+      "source_sha256": {
+        "context.json": "d32858ff2f0db53b734d51c978e9824804575c61ae2a8dd7621b588fb035785b",
+        "plan.json": "34302a5f28f40f7e21dd40155bb7f56c7e3e4c2810038cb24e2e7ddf57e9be48",
+        "speedcoach.csv": "be6706518e60e678b10a9f195cfd0ac534566c9ad9f5cd09958ab53e5aae0c17"
+      },
+      "agent_result_ref": "evaluation/runs/demo-club-investigations-v1-20260830/run-manifest.json"
+    },
+    {
+      "session_id": "club-4x-men-20260821-am",
+      "date": "2026-08-21",
+      "slot": "AM",
+      "title": "B0/B2 technique · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego"
+      ],
+      "crew_id": "crew-4x-men",
+      "boat_id": "boat-4x-atlas",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "3c991f83fe1152cf7916ea81a5c6926e92c6d8b6c6c18623eb7cb17e3cf80ebe",
+        "plan.json": "27e7cb41a8863a74b5330c86405efefc0a832b4f225e71940594f6f844706f81",
+        "speedcoach.csv": "12249c859243cd2cf440ab3006c18a7881098a3f530119d8e8ae3e685dc0fc45"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-a-20260821-am",
+      "date": "2026-08-21",
+      "slot": "AM",
+      "title": "B0/B2 technique · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-caio",
+        "athlete-bianca",
+        "athlete-andre",
+        "athlete-larissa"
+      ],
+      "crew_id": "crew-4x-mixed-a",
+      "boat_id": "boat-4x-mistral",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "57ee910dc4ffa6369e7903f052ef4260730cc95a567747c8cfc8e29ce2ef19ce",
+        "plan.json": "50e320f57a7ef38c3e7d379cf09fc68c7bce0179a7f20a872691a77b4445d210",
+        "speedcoach.csv": "12249c859243cd2cf440ab3006c18a7881098a3f530119d8e8ae3e685dc0fc45"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-8x-men-20260821-evening",
+      "date": "2026-08-21",
+      "slot": "EVENING",
+      "title": "Race pieces · 4 × 2 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego",
+        "athlete-caio",
+        "athlete-andre",
+        "athlete-felipe",
+        "athlete-mateus"
+      ],
+      "crew_id": "crew-8x-men",
+      "boat_id": "boat-8x-north",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "238b80a6fb78b15c8d698de7381abdd1ce774e09618b2cade54ec4e20692a38f",
+        "plan.json": "e3078434b8bc0ebb652401a95c53b5d8d069bb2554f109c59283128580d94c6b",
+        "speedcoach.csv": "a7e495cf0f6807cf6c178d36f2d54425b1a6fc8b76dc7ac46471037d72203246"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-b-20260821-pm",
+      "date": "2026-08-21",
+      "slot": "PM",
+      "title": "2 × 4 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-diego",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-2x-mixed-b",
+      "boat_id": "boat-2x-current",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "8950c5f288fbc3e640aba5f2a1a131527895033efdb4032cbc76154d91b0e8cf",
+        "plan.json": "93bf1da52ee1130709035753fe7d3b57ceffa0719503f8b80d023e1edb352b0a",
+        "speedcoach.csv": "5e75975eb1fbac3eed6f3b96748d03045c39133e9f9e05db4135a5e537ed4aab"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-lucas-solo-20260824",
+      "date": "2026-08-24",
+      "slot": "AM",
+      "title": "Individual water session after crew cancellation",
+      "modality": "WATER_SOLO",
+      "athlete_ids": [
+        "athlete-lucas"
+      ],
+      "crew_id": null,
+      "boat_id": "boat-1x-spare",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "source_sha256": {
+        "context.json": "e4e62dcefbb43b7cbbdb5518a988ec64884cf3b393ed5bc5b5f57c10efcff7a1",
+        "plan.json": "0af64184eafeb700281cb47ef094c8e9573ba43d0e5c720536723d7fe322ba19",
+        "speedcoach.csv": "e9611a52314c3f9428c4aa9fbce62f33a1cfc019652c6c7d89529020338aa7a2"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-women-20260824-am",
+      "date": "2026-08-24",
+      "slot": "AM",
+      "title": "Rate ladder · 18–24 SPM",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-4x-women",
+      "boat_id": "boat-4x-gaia",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "4e1d44c3f8e2ad0db1f4a408fb1eac01f07ed75689e1f929dc4533b77afb6e4b",
+        "plan.json": "4ddb0d5dbe78d3e140c445fa957894e1ea7f221f68635c29d0448a55a19def69",
+        "speedcoach.csv": "68edd2f3a547d353ccd601c7c8e89701ff7f0acebc1bb7da7a9c9222a351cccc"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-a-20260824-pm",
+      "date": "2026-08-24",
+      "slot": "PM",
+      "title": "6 × 1 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-bruno",
+        "athlete-camila"
+      ],
+      "crew_id": "crew-2x-mixed-a",
+      "boat_id": "boat-2x-horizon",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "4332299bb80216f76f0b3d2bc926ae6bbe73fd7fc51f8ff7856a65c7afec7e83",
+        "plan.json": "818dc6ad939b42a393183b49047952fb9aeca952b328ca5151054147cded643e",
+        "speedcoach.csv": "a922cfd59405ea7ae39b71be8c6b5c3d0e2ddc7e57ad8a88e21b0219cfcdaa99"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-women-20260825-am",
+      "date": "2026-08-25",
+      "slot": "AM",
+      "title": "6 × 1 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena"
+      ],
+      "crew_id": "crew-2x-women",
+      "boat_id": "boat-2x-iris",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "ec58528be2b01392df9d460fff64dcf67807438e99c806b8be7beccce3144b2b",
+        "plan.json": "d5e7185b2cb090b356e7e49e4f4098431a03e9f61e208122aaedf0d67f1f44ed",
+        "speedcoach.csv": "7a44b2fd81ca41c07ec71a61f451693ef35e4f8fa2b87f141449f7117b0d6705"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-a-20260825-am",
+      "date": "2026-08-25",
+      "slot": "AM",
+      "title": "Rate ladder · 18–24 SPM",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-caio",
+        "athlete-bianca",
+        "athlete-andre",
+        "athlete-larissa"
+      ],
+      "crew_id": "crew-4x-mixed-a",
+      "boat_id": "boat-4x-mistral",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "6430bf9cfc6ba02f56e7e2a554eb81f34eefef6d4b8c42270664167f53932051",
+        "plan.json": "a780eaac06f1ec863b6c4996c71b992e5e33095dec2595690b91a4deeee8c00c",
+        "speedcoach.csv": "74bd715ca60651a7f63f9df0043df2017c3e7a1b49168baa1bdd064696ffabbc"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-8x-women-20260825-evening",
+      "date": "2026-08-25",
+      "slot": "EVENING",
+      "title": "Race pieces · 4 × 2 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia",
+        "athlete-bianca",
+        "athlete-larissa",
+        "athlete-renata",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-8x-women",
+      "boat_id": "boat-8x-south",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "2d08991188759bf008e06f65bd07a1dfbaf985e84f7221bbb99288810dbfd4d8",
+        "plan.json": "35570a6477d29e113ac33c3ad62ad025295aca2217a1efa28b409f2b1f25b90e",
+        "speedcoach.csv": "dd0f71a799303c5e0e92fb6c5779c9bbc485254d9fcb6d53260e6be71b3347d2"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-b-20260825-pm",
+      "date": "2026-08-25",
+      "slot": "PM",
+      "title": "6 × 1 km · rate 20",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-diego",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-2x-mixed-b",
+      "boat_id": "boat-2x-current",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "71a74be4cc71244585529207135d5e7d1699c1906ea2213f6a624fa49ca54fe4",
+        "plan.json": "102d168ddb1d8c55830e3da43f147770f139d550b300cbf2f3b4d27bea9bf3c2",
+        "speedcoach.csv": "d24bf7726bc2da12628e8b0d8a8f0164d118ad272f60e580a8c2e6fb7caa8281"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-men-20260826-am",
+      "date": "2026-08-26",
+      "slot": "AM",
+      "title": "Rate ladder · 18–24 SPM",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego"
+      ],
+      "crew_id": "crew-4x-men",
+      "boat_id": "boat-4x-atlas",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "3c590d7fe18e1005c806794254ca8dd822275a4a26b7401dc525ba587500a7b0",
+        "plan.json": "0937976bcd55e95e8731e7372031abe14c9032f530fa0648b4ff25cf4d69431a",
+        "speedcoach.csv": "5791ef3447e0acaddce0e49a2913928fb76489c87a908f4d00bae911e2968062"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-felipe-solo-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "Individual water session after 8x cancellation",
+      "modality": "WATER_SOLO",
+      "athlete_ids": [
+        "athlete-felipe"
+      ],
+      "crew_id": null,
+      "boat_id": "boat-1x-spare",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "source_sha256": {
+        "context.json": "3bbcb2563f96460622d817ae7c1007a5cb6c3156b5d4c07276c5910bd985d235",
+        "plan.json": "55ef84916f1db6b5188eca70df2082802f46aaf19e72c6ea3422021dc06b61ee",
+        "speedcoach.csv": "13693b3261496d778ff2535b15f973e6714a7d436db43ee4bb05d43ba44e039f"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-north-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "Squad ergometer alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego",
+        "athlete-caio",
+        "athlete-andre"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "SOURCE_ADAPTER_REQUIRED",
+      "source_sha256": {
+        "concept2.csv": "d7ae4e11f40b833111aa46513a1a5e35ee317d9b0aac73a6ad065f560983c189",
+        "context.json": "21fc1da6e99cc048f57677d6ad9010f9ab5f833830bfb5c7e3b0cea068f0054a",
+        "plan.json": "2193d93f598a86b1a100a9cb4922bfee9773b1b2fdd80b739a219158f24312bb"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-a-20260826-pm",
+      "date": "2026-08-26",
+      "slot": "PM",
+      "title": "B1 endurance · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-bruno",
+        "athlete-camila"
+      ],
+      "crew_id": "crew-2x-mixed-a",
+      "boat_id": "boat-2x-horizon",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "186d9c102748e2030761004e43b681d27ce58ff0786c1b59ea721ae1cfb2f657",
+        "plan.json": "bd998c0e185f0ba84e2b95d511c16e6adc51b424e450419b02d330ab1cff4beb",
+        "speedcoach.csv": "5fe359aa47de42176807dd4961e00570b512bb99f41c96215bc1d5cb709dc155"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-mixed-b-20260826-pm",
+      "date": "2026-08-26",
+      "slot": "PM",
+      "title": "B1 endurance · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-diego",
+        "athlete-julia"
+      ],
+      "crew_id": "crew-2x-mixed-b",
+      "boat_id": "boat-2x-current",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "fd0e70af176082244ad7b132d0c3518c4c2b6006067e86c69883450dd723f8d3",
+        "plan.json": "038eaff4d90fe5e5a7b1bd3ce7d46f6089a94b011c09785635a8dacaa560f603",
+        "speedcoach.csv": "5fe359aa47de42176807dd4961e00570b512bb99f41c96215bc1d5cb709dc155"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-camila-solo-20260827",
+      "date": "2026-08-27",
+      "slot": "AM",
+      "title": "Individual water session after crew cancellation",
+      "modality": "WATER_SOLO",
+      "athlete_ids": [
+        "athlete-camila"
+      ],
+      "crew_id": null,
+      "boat_id": "boat-1x-spare",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "source_sha256": {
+        "context.json": "2560298e7859701a83449d1e2cbba9010d2dc71cd182f05e11be19f0eda805f6",
+        "plan.json": "ab319ef0487210f7c355c45c0ddcbe63adb675f4beb1068b779748b2ea063b91",
+        "speedcoach.csv": "40c388d1fb6d8489c5a540d8b57f2fb34344ba00bc63c685d9bfe456f3dd993c"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-gaia-erg-20260827",
+      "date": "2026-08-27",
+      "slot": "AM",
+      "title": "Ergometer alternative after crew cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "SOURCE_ADAPTER_REQUIRED",
+      "source_sha256": {
+        "concept2.csv": "d7ae4e11f40b833111aa46513a1a5e35ee317d9b0aac73a6ad065f560983c189",
+        "context.json": "70707913fe13dc7a524711cc8b40f3330081b2af6cc2e22af090ce5acfa5dbc0",
+        "plan.json": "d6c6afbf19eb77d7f04ac88ad04cf578f3c1e10f029f287efcb8727e741a0ed9"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-men-20260827-pm",
+      "date": "2026-08-27",
+      "slot": "PM",
+      "title": "B1 endurance · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael"
+      ],
+      "crew_id": "crew-2x-men",
+      "boat_id": "boat-2x-aurora",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "8278a00e808c84ec925466551b2c4516034f9b82e49c6f5eca7fd6a6c5e99dc5",
+        "plan.json": "5d433bd77d30ff988c87f9a352bbb160ad6b265ed3d1a4c53846bc09093c4a99",
+        "speedcoach.csv": "19d76eff769cc353f282f2c4691cf709bde2cb6c485c2f4546ff2963d524db63"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-b-20260827-pm",
+      "date": "2026-08-27",
+      "slot": "PM",
+      "title": "Rate ladder · 18–24 SPM",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-felipe",
+        "athlete-renata",
+        "athlete-mateus",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-4x-mixed-b",
+      "boat_id": "boat-4x-dawn",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "SOURCE_REQUIRED",
+      "source_sha256": {
+        "context.json": "1c4f21d8cef71bccc5bb1470bca42e4c339c75c4b7b3e6dca30c53a0ad463438",
+        "speedcoach.csv": "ec3cb187d4c65044bfb157b40b836d8c210b9684a835a4214b89ab8582e2e2e8"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-a-20260828-am",
+      "date": "2026-08-28",
+      "slot": "AM",
+      "title": "Race pieces · 4 × 2 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-caio",
+        "athlete-bianca",
+        "athlete-andre",
+        "athlete-larissa"
+      ],
+      "crew_id": "crew-4x-mixed-a",
+      "boat_id": "boat-4x-mistral",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "a552fc2dc85453875a2db502ee4b320e37745afa19aaf358fe1bc36cd887c7d8",
+        "plan.json": "8b2686037615de17f01715ceb48621fc7d28c8e266a181646bb546adcd7d4c16",
+        "speedcoach.csv": "58b976792704cd10126f94f170bb77a868a380633b3f624b5e005cc28145ba8e"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-atlas-men-20260828-recovery",
+      "date": "2026-08-28",
+      "slot": "AM",
+      "title": "Race pieces · 4 × 2 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-lucas",
+        "athlete-rafael",
+        "athlete-bruno",
+        "athlete-diego"
+      ],
+      "crew_id": "crew-4x-men",
+      "boat_id": "boat-4x-atlas",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "AGENT_VERIFIED",
+      "source_sha256": {
+        "context.json": "658d08db8f6dd42913e61d93da01ec79ae444259a45bda0532e78e6921668266",
+        "plan.json": "3364a79fdb5406da6acee15c149545813c643bdfb938c62e829ee5d6e6ecbf29",
+        "speedcoach.csv": "885f15d03f8021ff371e7b7eedcda9f12983308dfb080d0f076fe08e1d729e40"
+      },
+      "agent_result_ref": "evaluation/runs/demo-club-investigations-v1-20260830/run-manifest.json"
+    },
+    {
+      "session_id": "club-8x-women-20260828-evening",
+      "date": "2026-08-28",
+      "slot": "EVENING",
+      "title": "B0/B2 technique · 14 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena",
+        "athlete-camila",
+        "athlete-julia",
+        "athlete-bianca",
+        "athlete-larissa",
+        "athlete-renata",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-8x-women",
+      "boat_id": "boat-8x-south",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "HUMAN_CONTEXT_REQUIRED",
+      "source_sha256": {
+        "plan.json": "51d6202cab28bb53689578e2c43beafde6ec4b8be43ea3a4e0a2e303becd90a3",
+        "speedcoach.csv": "b1843ae739ca7789e3075f9c9efd06f773b6810c60330976e859e1f69ff23806"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-2x-women-20260828-pm",
+      "date": "2026-08-28",
+      "slot": "PM",
+      "title": "B1 endurance · 12 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-marina",
+        "athlete-helena"
+      ],
+      "crew_id": "crew-2x-women",
+      "boat_id": "boat-2x-iris",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "29b2acfef603e07791d9072900b4c13acea0011384858a21de2d7c208ad75b5d",
+        "plan.json": "fb7f4abc5b3a993b5b68360808dc8942c5a943169fcbdaef2ee6186d38652350",
+        "speedcoach.csv": "e9f45374104354a15875fd78402d15e68a705b282bf193d5be4b7519dcc6459c"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "club-4x-mixed-b-20260828-pm",
+      "date": "2026-08-28",
+      "slot": "PM",
+      "title": "Race pieces · 4 × 2 km",
+      "modality": "WATER_CREW",
+      "athlete_ids": [
+        "athlete-felipe",
+        "athlete-renata",
+        "athlete-mateus",
+        "athlete-sofia"
+      ],
+      "crew_id": "crew-4x-mixed-b",
+      "boat_id": "boat-4x-dawn",
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "source_sha256": {
+        "context.json": "4a04591e25c589c6dbc3957067f2ac6531e7f20e89005a1b4941b331dcb40045",
+        "plan.json": "91136b7845fffef24f47f9f7511643fb91fceaeb78c1da424bca676fa602a80f",
+        "speedcoach.csv": "cadc965ea7c6e15113b216512d8288d52f873749e5c29fd0c0e78678622194b3"
+      },
+      "agent_result_ref": null
+    }
+  ],
+  "boundary": "All people, exact sessions, telemetry, and outcomes are synthetic. Formats, workout shapes, and operational failure modes are informed by supplied rowing material."
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-activity-north-erg-20260826",
+  "scheduled_date": "2026-08-26",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_demo_club_batch.py"
+  },
+  "modality": "INDOOR_ROWER",
+  "athlete_scope": {
+    "kind": "SQUAD",
+    "ids": [
+      "athlete-lucas",
+      "athlete-rafael",
+      "athlete-bruno",
+      "athlete-diego",
+      "athlete-caio",
+      "athlete-andre"
+    ]
+  },
+  "goal_id": "wake-demo-club-two-week-period",
+  "coach_language": "Squad ergometer alternative after 8x cancellation",
+  "blocks": [
+    {
+      "block_id": "erg-main",
+      "kind": "WORK",
+      "repetitions": 1,
+      "distance_m": 12000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 20,
+        "max_spm": 24
+      },
+      "zone": "B1/B2",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": null,
+      "equipment": [],
+      "instructions": [
+        "Record the individual Concept2 result."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Real-informed synthetic indoor alternative."
+}

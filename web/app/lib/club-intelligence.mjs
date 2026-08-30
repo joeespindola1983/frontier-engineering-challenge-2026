@@ -235,6 +235,7 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
       queue: deepQueue,
       results: completedResults,
     },
+    batch_validation: club.batch_validation,
     longitudinal_synthesis: {
       status: 'NOT_EXECUTED',
       prerequisite: 'Complete queued investigations and collect or explicitly mark missing human/source context.',

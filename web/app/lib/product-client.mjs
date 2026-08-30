@@ -182,6 +182,27 @@ export class HttpWakeClient {
     });
   }
 
+  prepareSourceBatch(items) {
+    return this.request('/api/source-batches/prepare', { items });
+  }
+
+  getSourceBatch(batchId) {
+    return this.get(`/api/source-batches/${batchId}`);
+  }
+
+  async executeSourceBatch({ batchId, mode, authorizedBatchCostUsd }) {
+    if (mode !== 'live') {
+      throw new TypeError('Source batch execution requires explicit live mode.');
+    }
+    if (!Number.isFinite(authorizedBatchCostUsd) || authorizedBatchCostUsd <= 0) {
+      throw new TypeError('Live source batch execution requires explicit cost authorization.');
+    }
+    return this.request(`/api/source-batches/${batchId}/execute`, {
+      mode: 'live',
+      authorized_batch_cost_usd: authorizedBatchCostUsd,
+    });
+  }
+
   async analyzeSourceBundle({ sourceIds, mode, authorizedCostUsd }) {
     if (mode !== 'live') {
       throw new TypeError('New source bundle analysis requires explicit live mode.');

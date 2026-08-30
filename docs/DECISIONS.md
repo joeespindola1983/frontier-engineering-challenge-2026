@@ -344,6 +344,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Run exactly the Bridge Mixed 2x and Atlas Men 4x source bundles with the accepted v2 bounded workflow and a US$0.20 start authorization for each. Preserve outputs, trajectories, hashes, verification status, token use, runtime, and cost in a dedicated versioned run manifest. Show `2/2` and the observed total in the club interface, but keep the eight human/source routes outside the paid queue and keep longitudinal synthesis `NOT_EXECUTED` until separately authorized.
 - **Rationale:** Candidate-level reasoning is now evidence rather than a forecast. Separating the still-optional synthesis prevents the earlier two-call authorization from silently expanding into a third paid action and prevents two synthetic sessions from being presented as a full-club conclusion.
 
+## 2026-08-30 - Submit in bulk while preserving session-level execution
+
+- **Status:** accepted for the local prototype and public two-week demonstration.
+- **Decision:** Treat a batch as an upload, progress, and authorization envelope only. Keep every session content-addressed, prepared, executed, costed, reviewed, and persisted independently. Permit up to 100 prepared items; isolate invalid items and runner failures; execute paid candidates sequentially through whole per-execution start gates; resume pending work after restart; and never concatenate multiple sessions into one model prompt. Display data validation, reconstruction, plan comparison, agent verification, and human approval as separate levels.
+- **Rationale:** Manual one-by-one intake does not demonstrate club scale, while a single multi-session prompt would mix evidence, weaken provenance, complicate retries, and make cost or human approval impossible to audit. Bulk orchestration over independent units provides speed without sacrificing history. The forty-record public batch also makes current coverage honest: 40 validated, 38 water sessions reconstructed, 37 plan-compared, two agent-verified, and zero human-approved.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

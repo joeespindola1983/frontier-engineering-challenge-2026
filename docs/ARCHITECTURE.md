@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Ten public fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic progressive-evidence compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are present. Only two fixtures have frozen baseline/agent outputs and enter the published score; eight diagnostic fixtures are ready for the next versioned evaluation. The replay demonstrates checkpoint and approval policy in memory; durable production storage remains a hypothesis.
+**Status:** hackathon MVP implemented. Ten public cases have frozen baseline and WAKE outputs in the official comparison. Normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile adapters, progressive-evidence assembly, explicit prepared-bundle and source-batch execution, generic coach-review adaptation, a bounded single-agent loop, a persistent local session inbox, and a coach-facing interface are present. Storage remains a local user-restricted prototype rather than an encrypted, authenticated, multi-tenant production system.
 
 ## Proposed flow
 
@@ -66,7 +66,7 @@ Select tools, ask focused questions, and assemble a result that clearly separate
 
 ### Verifier — evidence rules implemented for evaluation v1
 
-The current verifier rejects unsupported or uncited claims, nonexistent evidence and source IDs, and known broken SPM-source selection. The product replay implements one focused human checkpoint and requires explicit coach approval before an in-memory goal update. Persistence and backend confirmation remain future work.
+The current verifier rejects unsupported or uncited claims, nonexistent evidence and source IDs, and known broken SPM-source selection. The product workflow implements one focused human checkpoint and requires explicit coach approval before a local goal-memory update. Sources, prepared bundles, reviews, answers, approvals, costs, sessions, and batches survive a local service restart.
 
 ### Trajectory recorder — core events implemented for evaluation v1
 
@@ -76,7 +76,7 @@ The current runner captures structured events without private chain-of-thought: 
 
 The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. Its review adapter now also handles different work counts, planned distances, boat and crew categories, authenticated upload source IDs, missing clocks, and absent environment without inserting case-002 narration. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
 
-A separate `wake.club_period_analysis.v1` screen now sits between the relational demo club and any future paid longitudinal execution. It deterministically screens every recorded activity, derives attention from compact observations with evidence references, and routes human/source dependencies away from the model queue. The current club dataset has 35 compact evidence summaries and two complete public synthetic source bundles. After preflight and explicit owner authorization, both bundles ran through the v2 tool loop and verifier; their immutable outputs and trajectories are preserved with hashes and observed cost. The period layer reports `2/2` completed candidate investigations. This is still not a longitudinal model result: synthesis remains `NOT_EXECUTED` and requires separate authorization.
+A separate `wake.club_period_analysis.v1` screen now sits between the relational demo club and any future paid longitudinal execution. It deterministically screens every recorded activity, derives attention from compact observations with evidence references, and routes human/source dependencies away from the model queue. The public two-week batch gives all 40 activities independent hashed source records: 38 water sessions reconstruct, 37 have a comparable plan, and two indoor alternatives remain explicitly outside the current Concept2 adapter. After preflight and explicit owner authorization, two selected bundles ran through the v2 tool loop and verifier; their immutable outputs and trajectories are preserved with hashes and observed cost. The period layer reports `2/2` completed candidate investigations and zero human approvals. This is still not a longitudinal model result: synthesis remains `NOT_EXECUTED` and requires separate authorization.
 
 The adapter boundary now has a local task-level HTTP implementation. The browser creates an investigation, submits one checkpoint answer, and approves a briefing. The service returns a compact public evidence bundle and delegates live analysis to the existing bounded runner only after explicit opt-in. The browser does not choose trusted sources, compute compliance, infer causal environmental effects, or create memory without approval.
 
@@ -96,7 +96,7 @@ Committed public output      bounded WAKE runner
           compact coach view model
 ```
 
-The service binds to localhost by default and uses process memory for uploaded bytes, normalized telemetry, prepared summaries, bundle results, investigation, briefing, and goal state. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. Five source ids may prepare a hashed compact summary without an agent call. A separate explicit live endpoint can execute that prepared summary through the bounded runner using temporary normalized files; same-process retries are idempotent. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
+The service binds to localhost by default and persists uploaded bytes, normalized telemetry, prepared summaries, bundle and batch results, investigation, briefing, goal, and cost state in a Git-ignored user-restricted JSON file. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. A plan and SpeedCoach source plus optional enhancers may prepare a hashed compact summary without an agent call. Source-batch preparation groups up to 100 such sessions while retaining independent bundle identities and item-level failures. Paid batch execution remains sequential, resumable, idempotent, and start-gate authorized. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
 
 ## Baseline hypothesis
 
@@ -110,4 +110,4 @@ The evaluation protocol, deterministic input summarizer, compact summary schema,
 - Data store and memory representation.
 - Hosted historical-weather provider terms, station/on-boat precedence, and a reanalysis fallback policy.
 - Authentication, club tenancy, durable uploads, and durable checkpoint state.
-- Generic checkpoint, briefing, and memory transitions for an adapted prepared-bundle review.
+- Concept2 normalization and comparison for indoor alternatives.

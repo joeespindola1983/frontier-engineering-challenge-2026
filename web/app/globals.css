@@ -85,6 +85,14 @@ button { cursor: pointer; }
 .club-intelligence-status small { margin-top: 8px; color: var(--muted); font-size: 9px; }
 .club-intelligence-boundary { padding: 11px 13px; display: flex; gap: 14px; border-bottom: 1px solid var(--line-strong); background: #edf4f1; color: var(--ink-soft); font-size: 10px; }
 .club-intelligence-boundary strong { flex: 0 0 auto; color: var(--accent); }
+.club-batch-validation { padding: 28px 0; border-bottom: 1px solid var(--line-strong); }
+.club-batch-funnel { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--line); background: var(--line); gap: 1px; }
+.club-batch-funnel > div { min-height: 112px; padding: 16px; display: grid; align-content: start; background: var(--surface); }
+.club-batch-funnel span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; }
+.club-batch-funnel strong { margin-top: 8px; color: var(--accent); font-size: 27px; font-weight: 570; line-height: 1; }
+.club-batch-funnel small { margin-top: 9px; color: var(--muted); font-size: 9px; line-height: 1.35; }
+.club-batch-boundary { margin-top: 12px; padding: 13px 15px; display: grid; grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr); gap: 22px; background: #f3f1e8; color: var(--ink-soft); font-size: 10px; }
+.club-batch-boundary strong { color: var(--ink); }
 .club-investigation-results { padding: 24px 0; border-bottom: 1px solid var(--line-strong); }
 .club-investigation-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .club-investigation-result-grid article { min-height: 194px; padding: 20px; display: grid; align-content: space-between; gap: 18px; background: var(--surface); }
@@ -528,6 +536,9 @@ button { cursor: pointer; }
   .club-intelligence-status > div:nth-child(2) { border-right: 0; }
   .club-intelligence-status > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .club-intelligence-boundary { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .club-batch-funnel { grid-template-columns: 1fr 1fr; }
+  .club-batch-funnel > div { min-height: 96px; padding: 14px 12px; }
+  .club-batch-boundary { grid-template-columns: 1fr; gap: 5px; }
   .club-investigation-result-grid { grid-template-columns: 1fr; }
   .club-investigation-result-grid article { min-height: 176px; }
   .club-summary-grid, .club-detail-stats { grid-template-columns: 1fr 1fr; }

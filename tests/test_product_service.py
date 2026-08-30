@@ -45,6 +45,7 @@ class FakeBundleRunner:
     def __init__(self) -> None:
         self.calls: list[tuple[dict, dict[str, bytes]]] = []
         self.output_override: dict | None = None
+        self.fail_call_numbers: set[int] = set()
         self.approximate_cost_usd = 0.087826
         self.runtime_ms = 19_219
         self.usage = {
@@ -55,6 +56,8 @@ class FakeBundleRunner:
 
     def __call__(self, summary: dict, evidence: dict[str, bytes]) -> dict:
         self.calls.append((copy.deepcopy(summary), copy.deepcopy(evidence)))
+        if len(self.calls) in self.fail_call_numbers:
+            raise RuntimeError(f"Injected bundle failure on call {len(self.calls)}")
         output = copy.deepcopy(self.output_override or read_json(COMMITTED_OUTPUT))
         output["case_id"] = summary["case_id"]
         return {
@@ -1050,6 +1053,137 @@ class WakeProductServiceTests(unittest.TestCase):
         self.assertNotIn("ground-truth", serialized)
         self.assertNotIn("stroke_rate_spm", serialized)
         self.assertFalse(response["agent_called"])
+
+    def test_source_batch_preparation_is_idempotent_and_isolates_invalid_items(self) -> None:
+        first_sources = self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        items = [
+            {"client_session_id": "session-valid", "source_ids": first_sources},
+            {"client_session_id": "session-invalid", "source_ids": ["source-missing"]},
+        ]
+
+        first, created = self.service.prepare_source_batch(items)
+        repeated, repeated_created = self.service.prepare_source_batch(items)
+
+        self.assertTrue(created)
+        self.assertFalse(repeated_created)
+        self.assertEqual(repeated, first)
+        self.assertEqual(first["counts"], {
+            "total": 2,
+            "prepared": 1,
+            "failed_preparation": 1,
+            "pending_execution": 1,
+            "agent_completed": 0,
+            "execution_failed": 0,
+        })
+        self.assertEqual(first["items"][0]["status"], "READY_FOR_EXECUTION")
+        self.assertEqual(first["items"][1]["status"], "FAILED_PREPARATION")
+        self.assertNotIn("normalized_content", json.dumps(first).lower())
+        self.assertNotIn("time_series_windows", json.dumps(first).lower())
+
+    def test_source_batch_execution_uses_start_gates_and_resumes_without_duplicate_calls(self) -> None:
+        first_sources = self._upload_public_bundle(
+            context_suffix=" first batch item"
+        )
+        second_sources = self._upload_public_bundle(
+            context_suffix=" second batch item"
+        )
+        batch, _ = self.service.prepare_source_batch([
+            {"client_session_id": "session-one", "source_ids": first_sources},
+            {"client_session_id": "session-two", "source_ids": second_sources},
+        ])
+
+        first_run = self.service.execute_source_batch(
+            batch["batch_id"], mode="live", authorized_batch_cost_usd=0.20
+        )
+        resumed = self.service.execute_source_batch(
+            batch["batch_id"], mode="live", authorized_batch_cost_usd=0.20
+        )
+        repeated = self.service.execute_source_batch(
+            batch["batch_id"], mode="live", authorized_batch_cost_usd=0.20
+        )
+
+        self.assertEqual(first_run["status"], "PAUSED_AUTHORIZATION")
+        self.assertEqual(first_run["counts"]["agent_completed"], 1)
+        self.assertEqual(resumed["status"], "COMPLETED")
+        self.assertEqual(resumed["counts"]["agent_completed"], 2)
+        self.assertEqual(repeated, resumed)
+        self.assertEqual(len(self.bundle_runner.calls), 2)
+        self.assertEqual(resumed["observed_cost"]["execution_count"], 2)
+        self.assertEqual(resumed["observed_cost"]["approximate_total_cost_usd"], 0.175652)
+
+    def test_source_batch_execution_isolates_one_runner_failure_and_continues(self) -> None:
+        self.bundle_runner.fail_call_numbers = {1}
+        first_sources = self._upload_public_bundle(
+            context_suffix=" fail first"
+        )
+        second_sources = self._upload_public_bundle(
+            context_suffix=" continue second"
+        )
+        batch, _ = self.service.prepare_source_batch([
+            {"client_session_id": "session-fails", "source_ids": first_sources},
+            {"client_session_id": "session-continues", "source_ids": second_sources},
+        ])
+
+        result = self.service.execute_source_batch(
+            batch["batch_id"], mode="live", authorized_batch_cost_usd=0.40
+        )
+
+        self.assertEqual(result["status"], "COMPLETED_WITH_FAILURES")
+        self.assertEqual(result["counts"]["agent_completed"], 1)
+        self.assertEqual(result["counts"]["execution_failed"], 1)
+        self.assertEqual(len(self.bundle_runner.calls), 2)
+        failed = next(item for item in result["items"] if item["status"] == "EXECUTION_FAILED")
+        self.assertIn("Injected bundle failure", failed["error"])
+
+    def test_source_batch_survives_service_restart_without_raw_rows_in_response(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_path = Path(temporary) / "wake-product-state.json"
+            first_service = wake_product_service.WakeProductService(
+                root=ROOT,
+                bundle_live_runner=self.bundle_runner,
+                state_store_path=state_path,
+            )
+            source_ids = []
+            for kind, filename in (("PLAN", "plan.json"), ("SPEEDCOACH", "speedcoach.csv")):
+                source_ids.append(first_service.upload_source(
+                    kind=kind,
+                    name=filename,
+                    content=(CASE_INPUT / filename).read_bytes(),
+                )["source_id"])
+            prepared, _ = first_service.prepare_source_batch([
+                {"client_session_id": "persistent-session", "source_ids": source_ids}
+            ])
+
+            restored_service = wake_product_service.WakeProductService(
+                root=ROOT,
+                bundle_live_runner=self.bundle_runner,
+                state_store_path=state_path,
+            )
+            restored = restored_service.get_source_batch(prepared["batch_id"])
+
+        self.assertEqual(restored, prepared)
+        self.assertNotIn("stroke_rate_spm", json.dumps(restored))
+
+    def test_source_batch_api_exposes_prepare_get_and_explicit_execute(self) -> None:
+        api = wake_product_service.WakeProductApi(self.service)
+        source_ids = self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        status, prepared = api.handle("POST", "/api/source-batches/prepare", {
+            "items": [{"client_session_id": "api-session", "source_ids": source_ids}],
+        })
+        get_status, restored = api.handle(
+            "GET", f"/api/source-batches/{prepared['batch_id']}"
+        )
+        execute_status, executed = api.handle(
+            "POST",
+            f"/api/source-batches/{prepared['batch_id']}/execute",
+            {"mode": "live", "authorized_batch_cost_usd": 0.20},
+        )
+
+        self.assertEqual(status, 201)
+        self.assertEqual(get_status, 200)
+        self.assertEqual(restored, prepared)
+        self.assertEqual(execute_status, 200)
+        self.assertEqual(executed["status"], "COMPLETED")
 
     def test_prepared_bundle_execution_is_explicit_and_uses_normalized_evidence(self) -> None:
         prepared = self.service.prepare_source_bundle(

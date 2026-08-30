@@ -108,6 +108,13 @@ With the local service configured, the intake requires a plan and SpeedCoach fil
 
 The local service stores its prototype state at `private-data/wake-product/product-state.json` by default. The Sessions page reloads this safe index, distinguishes whether analysis, coach view, human response, and coach approval happened, and can reopen the appropriate review, briefing, or memory screen. The ignored state file also retains raw evidence so a prepared bundle survives a service restart. It is restricted to the current OS user, but it is not encrypted, authenticated, backed up, or multi-tenant; do not treat it as production club storage.
 
+The HTTP client also supports source batches through prepare, restore, and
+explicit execute calls. A batch groups previously uploaded per-session source
+ids; it never uploads one combined telemetry document or creates one
+multi-session model prompt. Paid execution remains sequential, resumable, and
+cost-authorized. The current page visualizes the committed forty-record public
+batch but does not yet expose folder or ZIP mapping controls.
+
 ## Safe browser rehearsal bundle
 
 Use the five public synthetic files under:

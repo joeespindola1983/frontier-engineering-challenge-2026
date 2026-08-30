@@ -1,0 +1,36 @@
+{
+  "schema_version": "wake.synthetic_case_context.v1",
+  "case_id": "club-2x-men-20260817-am",
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "provided_sources": [
+    {
+      "source_id": "speedcoach-club-2x-men-20260817-am",
+      "kind": "SPEEDCOACH",
+      "path": "speedcoach.csv"
+    },
+    {
+      "source_id": "plan-club-2x-men-20260817-am",
+      "kind": "TRAINING_PLAN",
+      "path": "plan.json"
+    }
+  ],
+  "session_candidate": {
+    "boat_id": "boat-2x-aurora",
+    "boat_class": "DOUBLE_SCULL",
+    "world_rowing_code": "2x",
+    "crew_id": "crew-2x-men",
+    "crew_category": "MEN",
+    "athlete_ids": [
+      "athlete-lucas",
+      "athlete-rafael"
+    ],
+    "experience": "CLUB_COMPETITIVE",
+    "route_heading_deg": 0.0
+  },
+  "human_confirmations": {
+    "coach_observed_technique": null,
+    "perceived_effort": null
+  },
+  "scenario_label": "B0/B2 technical row",
+  "input_notice": "All identities, dates, route coordinates, telemetry, and exact outcomes in this public demo-club bundle are synthetic. Formats and workout patterns are informed by supplied real rowing material."
+}

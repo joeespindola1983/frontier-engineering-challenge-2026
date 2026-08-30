@@ -60,6 +60,13 @@ At the accepted planning reference it projects to US$0.15 and requires a new
 US$0.20 operational start authorization. Neither value is an observed synthesis
 charge, and the synthesis has not been authorized or executed.
 
+The complete public batch validates 40 activity records and reconstructs 38
+water sessions without a model call. It does not multiply the two observed
+agent calls across every record. At the observed two-candidate average of
+US$0.097059, calling the agent on all 40 records would project to US$3.882360;
+that is a counterfactual linear estimate, not a performed run. Selective routing
+is both the product behavior and the cost-control mechanism.
+
 ## Runtime contract
 
 `POST /api/source-bundles/:id/execute` requires both `mode: live` and
@@ -81,13 +88,20 @@ NEXT_PUBLIC_WAKE_COST_AUTHORIZATION_USD=0.20 \
 npm run dev
 ```
 
+`POST /api/source-batches/:id/execute` applies the same gate sequentially. An
+explicit batch authorization is divided into a whole number of start slots: a
+US$0.40 authorization at the default threshold permits at most two new starts
+in that request. Completed bundles are idempotent; item failures are isolated;
+pending items may resume with a later authorization. The batch authorization is
+still not a provider cap.
+
 After execution, the response and coach review expose input, output, and total
 tokens; monotonic runtime; approximate cost; authorized amount; and whether the
 observed cost exceeded that authorization. An exceedance is visible but cannot
 retroactively stop a provider request. `GET /api/runtime/costs` aggregates each
-new execution once for the lifetime of the service process. Restarting the
-service clears the ledger, so this is demonstration observability rather than
-durable accounting or exactly-once billing.
+new execution once and the local prototype state restores that ledger after a
+service restart. This is still not production billing control: the JSON store is
+not transactional across processes, externally reconciled, or provider-enforced.
 
 ## Optimization policy
 

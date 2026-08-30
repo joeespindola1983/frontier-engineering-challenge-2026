@@ -84,6 +84,16 @@ verification status, absence of private chain-of-thought, exact isolated
 deviation identities, per-run usage/cost, authorization compliance, and summed
 totals. Neither verifier can invoke the model.
 
+Source-batch tests begin RED on the missing batch boundary and require
+content-addressed idempotence, invalid-item isolation, sequential start-gate
+execution, resume without duplicate calls, one runner failure not blocking a
+later item, restart-safe state, and compact responses without telemetry rows.
+The forty-record public-batch verifier independently checks every source hash,
+plan schema, Concept2-shaped column contract, SpeedCoach normalization,
+deterministic v2 water-session reconstruction, exact two paid-result links,
+routing totals, cost totals, and the zero-human-approval and no-synthesis
+boundaries. Generated files must rebuild byte-for-byte.
+
 ## Commands
 
 Run the fast behavioral suite:

@@ -1,0 +1,46 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-activity-lucas-solo-20260824",
+  "scheduled_date": "2026-08-24",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_demo_club_batch.py"
+  },
+  "modality": "WATER",
+  "athlete_scope": {
+    "kind": "INDIVIDUAL",
+    "ids": [
+      "athlete-lucas"
+    ]
+  },
+  "goal_id": "wake-demo-club-two-week-period",
+  "coach_language": "Individual water session after crew cancellation",
+  "blocks": [
+    {
+      "block_id": "work-main",
+      "kind": "WORK",
+      "repetitions": 1,
+      "distance_m": 8000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 18,
+        "max_spm": 22
+      },
+      "zone": "B1/B3",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": {
+        "min_s": 120,
+        "max_s": 240,
+        "mode": "ACTIVE_LIGHT_ROWING"
+      },
+      "equipment": [],
+      "instructions": [
+        "Keep each work interval continuous."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Real-informed synthetic prescription. It models a supplied rowing-plan pattern and does not describe a real athlete session."
+}

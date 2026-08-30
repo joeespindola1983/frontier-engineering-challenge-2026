@@ -245,6 +245,7 @@ class WakeProductService:
         self.goals: dict[str, dict] = {}
         self.sources: dict[str, dict] = {}
         self.source_bundles: dict[str, dict] = {}
+        self.source_batches: dict[str, dict] = {}
         self.bundle_results: dict[str, dict] = {}
         self.cost_executions: dict[str, dict] = {}
         self.weather_enrichments: dict[str, dict] = {}
@@ -278,6 +279,7 @@ class WakeProductService:
             "schema_version": "wake.product_state.v1",
             "sources": sources,
             "source_bundles": self.source_bundles,
+            "source_batches": self.source_batches,
             "bundle_results": self.bundle_results,
             "investigations": self.investigations,
             "briefings": self.briefings,
@@ -324,6 +326,7 @@ class WakeProductService:
         self.sources = sources
         for name in (
             "source_bundles",
+            "source_batches",
             "bundle_results",
             "investigations",
             "briefings",
@@ -771,6 +774,227 @@ class WakeProductService:
         }
         self._persist_state()
         return response
+
+    @staticmethod
+    def _source_batch_counts(items: list[dict]) -> dict:
+        statuses = [item["status"] for item in items]
+        return {
+            "total": len(items),
+            "prepared": sum(status != "FAILED_PREPARATION" for status in statuses),
+            "failed_preparation": statuses.count("FAILED_PREPARATION"),
+            "pending_execution": statuses.count("READY_FOR_EXECUTION"),
+            "agent_completed": statuses.count("AGENT_COMPLETED"),
+            "execution_failed": statuses.count("EXECUTION_FAILED"),
+        }
+
+    def _source_batch_response(self, batch: dict) -> dict:
+        items = copy.deepcopy(batch["items"])
+        completed_costs = [
+            item["cost"] for item in items if item.get("cost") is not None
+        ]
+        return {
+            "schema_version": "wake.source_batch.v1",
+            "batch_id": batch["batch_id"],
+            "status": batch["status"],
+            "counts": self._source_batch_counts(items),
+            "items": items,
+            "observed_cost": {
+                "currency": "USD",
+                "execution_count": len(completed_costs),
+                "approximate_total_cost_usd": round(
+                    sum(item["approximate_cost_usd"] for item in completed_costs),
+                    6,
+                ),
+                "total_tokens": sum(
+                    item["usage"]["total_tokens"] for item in completed_costs
+                ),
+                "hard_provider_cap": False,
+            },
+            "authorization_policy": {
+                "required_start_gate_per_execution_usd": (
+                    self.required_cost_authorization_usd
+                ),
+                "batch_authorization_is_provider_cap": False,
+                "execution_order": "SEQUENTIAL",
+            },
+            "attempts": copy.deepcopy(batch["attempts"]),
+        }
+
+    def prepare_source_batch(self, items: list[dict]) -> tuple[dict, bool]:
+        """Prepare multiple independent sessions while isolating item failures."""
+        if not isinstance(items, list) or not items:
+            raise ValueError("A source batch requires at least one item.")
+        if len(items) > 100:
+            raise ValueError("A source batch accepts at most 100 items.")
+
+        normalized_items = []
+        client_ids = set()
+        for index, item in enumerate(items):
+            if not isinstance(item, dict):
+                raise ValueError("Every source batch item must be an object.")
+            client_session_id = item.get("client_session_id")
+            source_ids = item.get("source_ids")
+            if not isinstance(client_session_id, str) or not client_session_id.strip():
+                raise ValueError("Every source batch item requires client_session_id.")
+            if client_session_id in client_ids:
+                raise ValueError("A source batch cannot repeat client_session_id.")
+            if not isinstance(source_ids, list) or not source_ids or not all(
+                isinstance(source_id, str) for source_id in source_ids
+            ):
+                raise ValueError("Every source batch item requires source_ids.")
+            client_ids.add(client_session_id)
+            normalized_items.append(
+                {
+                    "position": index,
+                    "client_session_id": client_session_id,
+                    "source_ids": list(source_ids),
+                }
+            )
+
+        identity = json.dumps(
+            normalized_items,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        batch_id = f"source-batch-{hashlib.sha256(identity).hexdigest()[:16]}"
+        if batch_id in self.source_batches:
+            return self.get_source_batch(batch_id), False
+
+        prepared_items = []
+        for item in normalized_items:
+            safe_item = {
+                "position": item["position"],
+                "client_session_id": item["client_session_id"],
+                "status": "READY_FOR_EXECUTION",
+                "bundle_id": None,
+                "case_id": None,
+                "error": None,
+                "cost": None,
+            }
+            try:
+                prepared = self.prepare_source_bundle(item["source_ids"])
+                safe_item.update(
+                    {
+                        "bundle_id": prepared["bundle_id"],
+                        "case_id": prepared["case_id"],
+                        "source_count": prepared["source_count"],
+                        "source_coverage": prepared["source_coverage"],
+                        "evidence_gaps": prepared["evidence_gaps"],
+                    }
+                )
+            except (KeyError, TypeError, ValueError, jsonschema.ValidationError) as error:
+                safe_item.update(
+                    {
+                        "status": "FAILED_PREPARATION",
+                        "error": str(error),
+                    }
+                )
+            prepared_items.append(safe_item)
+
+        batch = {
+            "batch_id": batch_id,
+            "status": (
+                "READY_FOR_EXECUTION"
+                if any(item["status"] == "READY_FOR_EXECUTION" for item in prepared_items)
+                else "COMPLETED_WITH_FAILURES"
+            ),
+            "items": prepared_items,
+            "attempts": [],
+        }
+        self.source_batches[batch_id] = batch
+        self._persist_state()
+        return self._source_batch_response(batch), True
+
+    def get_source_batch(self, batch_id: str) -> dict:
+        if batch_id not in self.source_batches:
+            raise KeyError(f"Unknown source batch: {batch_id}")
+        return self._source_batch_response(self.source_batches[batch_id])
+
+    def execute_source_batch(
+        self,
+        batch_id: str,
+        *,
+        mode: str,
+        authorized_batch_cost_usd: float | None,
+    ) -> dict:
+        """Sequentially execute prepared items within explicit start-gate slots."""
+        if mode != "live":
+            raise ValueError("Source batch execution requires explicit live mode.")
+        if batch_id not in self.source_batches:
+            raise ValueError(f"Unknown source batch: {batch_id}")
+        batch = self.source_batches[batch_id]
+        pending = [
+            item for item in batch["items"] if item["status"] == "READY_FOR_EXECUTION"
+        ]
+        if not pending:
+            return self._source_batch_response(batch)
+        if (
+            authorized_batch_cost_usd is None
+            or not math.isfinite(authorized_batch_cost_usd)
+            or authorized_batch_cost_usd < self.required_cost_authorization_usd
+        ):
+            raise ValueError(
+                "Explicit batch cost authorization must fund at least one "
+                f"US${self.required_cost_authorization_usd:.2f} start gate."
+            )
+        start_slots = int(
+            math.floor(
+                (authorized_batch_cost_usd + 1e-12)
+                / self.required_cost_authorization_usd
+            )
+        )
+        attempted = 0
+        completed = 0
+        failed = 0
+        for item in pending[:start_slots]:
+            attempted += 1
+            try:
+                result, _ = self.execute_source_bundle(
+                    item["bundle_id"],
+                    mode="live",
+                    authorized_cost_usd=self.required_cost_authorization_usd,
+                )
+                item.update(
+                    {
+                        "status": "AGENT_COMPLETED",
+                        "execution_id": result["execution_id"],
+                        "investigation_id": result["investigation_id"],
+                        "investigation_status": result["investigation_status"],
+                        "cost": copy.deepcopy(result["cost"]),
+                        "error": None,
+                    }
+                )
+                completed += 1
+            except Exception as error:  # item-level isolation is the batch contract
+                item.update(
+                    {
+                        "status": "EXECUTION_FAILED",
+                        "error": f"{type(error).__name__}: {error}",
+                    }
+                )
+                failed += 1
+
+        remaining = any(
+            item["status"] == "READY_FOR_EXECUTION" for item in batch["items"]
+        )
+        if remaining:
+            batch["status"] = "PAUSED_AUTHORIZATION"
+        elif any(item["status"].endswith("FAILED") or item["status"] == "FAILED_PREPARATION" for item in batch["items"]):
+            batch["status"] = "COMPLETED_WITH_FAILURES"
+        else:
+            batch["status"] = "COMPLETED"
+        batch["attempts"].append(
+            {
+                "authorized_batch_cost_usd": float(authorized_batch_cost_usd),
+                "start_slots": start_slots,
+                "attempted": attempted,
+                "completed": completed,
+                "failed": failed,
+                "timestamp": self._timestamp(),
+            }
+        )
+        self._persist_state()
+        return self._source_batch_response(batch)
 
     def execute_source_bundle(
         self,
@@ -1454,6 +1678,34 @@ class WakeProductApi:
             ):
                 raise ValueError("source_ids must be a list of strings.")
             return 201, self.service.prepare_source_bundle(source_ids)
+        if method == "POST" and parts == ["api", "source-batches", "prepare"]:
+            items = body.get("items")
+            if not isinstance(items, list):
+                raise ValueError("items must be a list of source batch items.")
+            result, created = self.service.prepare_source_batch(items)
+            return (201 if created else 200), result
+        if (
+            method == "GET"
+            and len(parts) == 3
+            and parts[:2] == ["api", "source-batches"]
+        ):
+            return 200, self.service.get_source_batch(parts[2])
+        if (
+            method == "POST"
+            and len(parts) == 4
+            and parts[:2] == ["api", "source-batches"]
+            and parts[3] == "execute"
+        ):
+            authorized_cost = body.get("authorized_batch_cost_usd")
+            if not isinstance(authorized_cost, (int, float)) or isinstance(
+                authorized_cost, bool
+            ):
+                authorized_cost = None
+            return 200, self.service.execute_source_batch(
+                parts[2],
+                mode=str(body.get("mode", "")),
+                authorized_batch_cost_usd=authorized_cost,
+            )
         if (
             method == "POST"
             and len(parts) == 4
