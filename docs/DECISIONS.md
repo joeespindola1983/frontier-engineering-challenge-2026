@@ -394,9 +394,9 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-30 - Save one bounded GPT memory over the combined club periods
 
-- **Status:** frozen and ready for a separate paid authorization; not executed.
+- **Status:** accepted and executed once after explicit US$0.20 authorization.
 - **Decision:** Preserve all 102 activity records through deterministic storage, then send one compact combined-club scope to the bounded WAKE agent instead of calling GPT once per activity. Include the complete two-period coverage, the six deterministic comparison routes, the prior verified investigations, evidence references, and explicit causal and modality boundaries. Use `gpt-5.6-terra` at medium reasoning with `store: false`, strict structured output, four read-only tools, deterministic verification, and local artifact persistence. Require one new finite US$0.20 operational start authorization; this is not a provider billing cap.
-- **Rationale:** Raw records and supported numeric transformations should remain deterministic. GPT adds value by producing a coach-facing synthesis and priority memory across the period, while a single bounded call minimizes cost and prevents duplicated narratives from becoming the source of truth. Local verified persistence allows the report to reopen without another paid request and avoids relying on provider-side application-state retention.
+- **Rationale:** Raw records and supported numeric transformations should remain deterministic. GPT adds value by producing a coach-facing synthesis and priority memory across the period, while a single bounded call minimizes cost and prevents duplicated narratives from becoming the source of truth. The verified execution used all four tools, cost US$0.037384, and saved a 6,322-token report locally. Local persistence allows it to reopen without another paid request and avoids relying on provider-side application-state retention.
 
 ## Pending decisions
 

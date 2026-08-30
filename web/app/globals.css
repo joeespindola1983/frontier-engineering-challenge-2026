@@ -855,6 +855,19 @@ button { cursor: pointer; }
 .post-regatta-status small { margin-top: 4px; color: var(--muted); font-size: 8px; }
 .post-regatta-boundary { margin-top: 22px; padding: 14px 16px; display: flex; align-items: baseline; gap: 13px; border-left: 2px solid var(--accent); background: var(--accent-soft); font-size: 10px; }
 .post-regatta-boundary strong { flex: 0 0 auto; color: var(--accent); }
+.post-regatta-memory { margin-top: 54px; padding: 30px; border: 1px solid var(--line-strong); background: linear-gradient(145deg, rgba(232, 241, 237, 0.78), rgba(255, 255, 255, 0.52)); }
+.post-regatta-memory .post-regatta-status { margin-top: 28px; }
+.post-regatta-memory-briefing { margin-top: 24px; padding: 20px 22px; display: grid; grid-template-columns: 220px 1fr; gap: 28px; border-left: 2px solid var(--accent); background: rgba(255, 255, 255, 0.56); }
+.post-regatta-memory-briefing span { color: var(--accent); font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; }
+.post-regatta-memory-briefing p { color: var(--ink-soft); font-size: 11px; line-height: 1.7; }
+.post-regatta-memory-grid { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+.post-regatta-memory-grid ol, .post-regatta-memory-grid ul { margin-top: 14px; display: grid; border-top: 1px solid var(--line); }
+.post-regatta-memory-grid li { padding: 14px 0; display: flex; gap: 14px; border-bottom: 1px solid var(--line); }
+.post-regatta-memory-grid ol > li > strong { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); font-family: var(--mono); font-size: 9px; }
+.post-regatta-memory-grid li div, .post-regatta-memory-grid ul li { display: grid; }
+.post-regatta-memory-grid li b, .post-regatta-memory-grid li > strong { font-size: 10px; line-height: 1.5; }
+.post-regatta-memory-grid li span, .post-regatta-memory-grid li small { margin-top: 5px; color: var(--muted); font-size: 8px; line-height: 1.5; }
+.post-regatta-memory-grid ul li > span { margin: 0 0 6px; color: var(--accent); font-family: var(--mono); text-transform: uppercase; }
 .post-regatta-signals { padding-top: 56px; }
 .post-regatta-signal-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
 .post-regatta-signal { min-height: 292px; padding: 22px; display: grid; grid-template-rows: auto 1fr auto auto; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.35); }
@@ -888,6 +901,8 @@ button { cursor: pointer; }
   .post-regatta-status > div:nth-child(2) { border-right: 0; }
   .post-regatta-status > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .post-regatta-boundary { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .post-regatta-memory { padding: 22px 18px; }
+  .post-regatta-memory-briefing, .post-regatta-memory-grid { grid-template-columns: 1fr; }
   .post-regatta-signal-grid { grid-template-columns: 1fr; }
   .post-regatta-signal { min-height: 0; }
   .post-regatta-method { padding: 22px 18px; }

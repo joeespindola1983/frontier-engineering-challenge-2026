@@ -73,6 +73,34 @@ class PostRegattaMemoryTests(unittest.TestCase):
                 for error in post_regatta_memory.verify_memory_directory(output_dir)
             ))
 
+    def test_committed_paid_memory_matches_the_frozen_input_and_reopens_free(self) -> None:
+        run_dir = ROOT / "evaluation" / "runs" / "post-regatta-memory-v1-20260830"
+        manifest = json.loads((run_dir / "run-manifest.json").read_text(encoding="utf-8"))
+        artifact = json.loads((run_dir / manifest["report"]).read_text(encoding="utf-8"))
+        summary = post_regatta_memory.build_memory_summary()
+        schema = json.loads(
+            (ROOT / "schemas" / "longitudinal-intelligence-output.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertTrue(manifest["api_called"])
+        self.assertFalse(manifest["store"])
+        self.assertEqual(manifest["authorized_cost_usd"], 0.2)
+        self.assertEqual(manifest["reopen_cost_usd"], 0)
+        self.assertEqual(manifest["execution_count"], 1)
+        self.assertEqual(manifest["total_approximate_cost_usd"], 0.037384)
+        self.assertTrue(artifact["verification"]["passed"])
+        self.assertEqual(artifact["input_sha256"], post_regatta_memory.sha256_json(summary))
+        self.assertEqual(
+            post_regatta_memory.longitudinal_pilot.verify_longitudinal_output(
+                output=artifact["output"], output_schema=schema, summary=summary
+            ),
+            [],
+        )
+        self.assertEqual(len(artifact["response_ids"]), 2)
+        self.assertEqual(len(artifact["tool_events"]), 8)
+
 
 if __name__ == "__main__":
     unittest.main()

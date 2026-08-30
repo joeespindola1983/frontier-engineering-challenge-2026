@@ -4,6 +4,7 @@ import test from 'node:test';
 
 import { demoClub } from '../app/lib/demo-club.mjs';
 import { buildPostRegattaComparison, postRegattaPackage } from '../app/lib/post-regatta.mjs';
+import { postRegattaMemory } from '../app/lib/post-regatta-memory.mjs';
 
 const expectedScenarios = new Set([
   'OBSERVED_FASTER_COMPARABLE',
@@ -82,4 +83,29 @@ test('interface loads the package explicitly and preserves the no-spend boundary
   assert.ok(labels.includes('Observed faster'));
   assert.ok(labels.includes('Observed slower'));
   assert.doesNotMatch(page, /fitness improved|fitness declined/i);
+});
+
+test('publishes the verified saved club memory without another model call', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const artifact = JSON.parse(await readFile(
+    new URL('../../evaluation/runs/post-regatta-memory-v1-20260830/reports/club-post-regatta-memory.wake_bounded_agent.json', import.meta.url),
+    'utf8',
+  ));
+
+  assert.equal(postRegattaMemory.schema_version, 'wake.post_regatta_memory_view.v1');
+  assert.equal(postRegattaMemory.status, 'VERIFIED');
+  assert.equal(postRegattaMemory.model_called, true);
+  assert.equal(postRegattaMemory.store, false);
+  assert.equal(postRegattaMemory.reopen_cost_usd, 0);
+  assert.equal(postRegattaMemory.approximate_cost_usd, 0.037384);
+  assert.equal(postRegattaMemory.total_tokens, 6322);
+  assert.equal(postRegattaMemory.headline, artifact.output.headline);
+  assert.equal(postRegattaMemory.coach_briefing, artifact.output.coach_briefing);
+  assert.deepEqual(postRegattaMemory.priorities, artifact.output.priorities);
+  assert.deepEqual(postRegattaMemory.unresolved_questions, artifact.output.unresolved_questions);
+  assert.match(page, /Saved WAKE club memory/);
+  assert.match(page, /postRegattaMemory\.approximate_cost_usd/);
+  assert.match(page, /Reopen cost/);
+  assert.match(page, /US\$0\.00/);
+  assert.match(page, /Narrow comparable observations only/);
 });
