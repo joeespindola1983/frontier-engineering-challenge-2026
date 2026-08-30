@@ -168,7 +168,10 @@ function SessionsScreen({ onNavigate, onReview, onOpenSession, sessions, process
           <h1>Review the session,<br />not every chart.</h1>
           <p className="lede">WAKE combines the plan, recordings, conditions, and attributed human context into one evidence-backed session review.</p>
         </div>
-        <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
+        <div className="page-header-actions">
+          <button className="button" onClick={() => onNavigate('evaluation')} type="button">View evaluation results</button>
+          <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
+        </div>
       </header>
       <section className="summary-strip" aria-label="Session summary">
         <div><span>Needs action</span><strong>{summary.needsAction}</strong><small>Answer or coach approval</small></div>
@@ -353,7 +356,7 @@ function EvaluationScreen({ onBack }: { onBack: () => void }) {
     <main className="page evaluation-page">
       <div className="evaluation-notice" role="note"><span>Saved result · No model call</span>This view renders committed evaluation artifacts. Opening it never runs the agent or spends API budget.</div>
       <header className="page-header evaluation-header">
-        <div className="page-header-copy"><div className="kicker">Hackathon evidence</div><h1>Measured against the same ten sessions.</h1><p className="lede">Same model, same ten case summaries, same output schema. The difference is WAKE&apos;s bounded investigation tools and deterministic verification.</p></div>
+        <div className="page-header-copy"><div className="kicker">Consolidated official evaluation</div><h1>Measured against the same ten sessions.</h1><p className="lede">Same model, same ten case summaries, same output schema. The difference is WAKE&apos;s bounded investigation tools and deterministic verification.</p></div>
         <button className="button" onClick={onBack} type="button">Back to sessions</button>
       </header>
 
@@ -375,14 +378,25 @@ function EvaluationScreen({ onBack }: { onBack: () => void }) {
           <div className="section-heading"><div><div className="kicker">Case-by-case result</div><h2 id="case-comparison-title">No gain is hidden inside the average.</h2></div><div className="comparison-legend"><span className="legend-baseline">Direct baseline</span><span className="legend-wake">WAKE</span></div></div>
           <div className="case-score-list">
             {cases.map((item) => (
-              <article className="case-score-row" key={item.case_id}>
-                <div className="case-identity"><span>{item.short_id}</span><div><strong>{item.label}</strong><small>{formatProvenance(item.provenance)}</small></div></div>
-                <div className="paired-score-bars" aria-label={`${item.label}: baseline ${item.baseline_score}, WAKE ${item.wake_score}`}>
-                  <div><span style={{ width: `${item.baseline_score}%` }} /><small>{item.baseline_score.toFixed(2)}</small></div>
-                  <div className="wake-case-bar"><span style={{ width: `${item.wake_score}%` }} /><small>{item.wake_score.toFixed(2)}</small></div>
+              <details className="case-report" key={item.case_id}>
+                <summary className="case-score-row">
+                  <div className="case-identity"><span>{item.short_id}</span><div><strong>{item.label}</strong><small>{formatProvenance(item.provenance)}</small></div></div>
+                  <div className="paired-score-bars" aria-label={`${item.label}: baseline ${item.baseline_score}, WAKE ${item.wake_score}`}>
+                    <div><span style={{ width: `${item.baseline_score}%` }} /><small>{item.baseline_score.toFixed(2)}</small></div>
+                    <div className="wake-case-bar"><span style={{ width: `${item.wake_score}%` }} /><small>{item.wake_score.toFixed(2)}</small></div>
+                  </div>
+                  <div className="case-result-actions"><strong className="case-delta">+{item.delta.toFixed(2)}</strong><small>Open individual report</small></div>
+                </summary>
+                <div className="case-report-detail">
+                  <div className="case-report-intro"><div><span>Scenario</span><p>{item.scenario}</p></div><small>{formatProvenance(item.provenance)} evaluation fixture · saved result</small></div>
+                  <div className="case-dimension-table" role="table" aria-label={`${item.label} dimension scores`}>
+                    <div className="case-dimension-header" role="row"><span role="columnheader">Rubric dimension</span><span role="columnheader">Baseline</span><span role="columnheader">WAKE</span><span role="columnheader">Change</span></div>
+                    {item.dimensions.map((dimension) => (
+                      <div className="case-dimension-row" role="row" key={dimension.dimension}><strong role="cell">{dimension.label}</strong><span role="cell">{dimension.baseline_score.toFixed(2)}</span><span role="cell">{dimension.wake_score.toFixed(2)}</span><span className={dimension.delta < 0 ? 'negative-delta' : ''} role="cell">{dimension.delta > 0 ? '+' : ''}{dimension.delta.toFixed(2)}</span></div>
+                    ))}
+                  </div>
                 </div>
-                <strong className="case-delta">+{item.delta.toFixed(2)}</strong>
-              </article>
+              </details>
             ))}
           </div>
         </section>

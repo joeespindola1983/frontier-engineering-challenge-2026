@@ -23,6 +23,19 @@ DIMENSION_LABELS = {
     "follow_up_questions": "Follow-up questions",
 }
 
+CASE_SCENARIOS = {
+    "case-001-misaligned-double-scull": "Tests whether route agreement can associate recordings despite conflicting device clocks.",
+    "case-002-wind-shift-plan-deviation": "Tests plan reconstruction, a wind shift, a low-SPM deviation, and unusable mobile SPM.",
+    "case-003-calm-expert-compliant": "Tests a calm, compliant session without inventing a deviation.",
+    "case-004-steady-headwind-compliant": "Tests compliant execution under steady headwind without penalizing the athlete.",
+    "case-005-tailwind-fast-not-improvement": "Tests whether tailwind-assisted speed is kept separate from athlete improvement.",
+    "case-006-crosswind-gusts": "Tests crosswind and gust context without unsupported causal claims.",
+    "case-007-incomplete-intervals": "Tests detection of one missing planned work interval.",
+    "case-008-correct-distance-wrong-spm": "Tests a low-SPM work interval despite correct total distance.",
+    "case-009-excess-recovery": "Tests detection of recovery that exceeded the plan.",
+    "case-010-mobile-spm-zero": "Tests rejection of mobile SPM stuck at zero while SpeedCoach remains usable.",
+}
+
 
 def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -53,15 +66,36 @@ def build_evaluation_results(root: Path = ROOT) -> dict:
     for case_id in case_ids:
         baseline_score = baseline_cases[case_id]["score"]
         wake_score = agent_cases[case_id]["score"]
+        baseline_dimensions = {
+            item["dimension"]: item
+            for item in baseline_cases[case_id]["dimensions"]
+        }
+        case_dimensions = []
+        for wake_dimension in agent_cases[case_id]["dimensions"]:
+            dimension = wake_dimension["dimension"]
+            baseline_dimension = baseline_dimensions[dimension]
+            dimension_baseline_score = round(100 * baseline_dimension["score_ratio"], 2)
+            dimension_wake_score = round(100 * wake_dimension["score_ratio"], 2)
+            case_dimensions.append(
+                {
+                    "dimension": dimension,
+                    "label": DIMENSION_LABELS[dimension],
+                    "baseline_score": dimension_baseline_score,
+                    "wake_score": dimension_wake_score,
+                    "delta": round(dimension_wake_score - dimension_baseline_score, 2),
+                }
+            )
         cases.append(
             {
                 "case_id": case_id,
                 "short_id": case_id.split("-", 2)[1],
                 "label": case_label(case_id),
+                "scenario": CASE_SCENARIOS[case_id],
                 "provenance": provenance[case_id],
                 "baseline_score": baseline_score,
                 "wake_score": wake_score,
                 "delta": round(wake_score - baseline_score, 2),
+                "dimensions": case_dimensions,
             }
         )
 

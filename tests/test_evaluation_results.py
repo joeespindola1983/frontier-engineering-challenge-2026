@@ -30,6 +30,14 @@ class EvaluationResultsTests(unittest.TestCase):
         self.assertEqual(result["agent_observability"]["verifier_retries"], 5)
         self.assertEqual(len(result["cases"]), 10)
         self.assertTrue(all(case["wake_score"] > case["baseline_score"] for case in result["cases"]))
+        self.assertTrue(all(case["scenario"] for case in result["cases"]))
+        self.assertTrue(all(case["dimensions"] for case in result["cases"]))
+        for case in result["cases"]:
+            for dimension in case["dimensions"]:
+                self.assertEqual(
+                    set(dimension),
+                    {"dimension", "label", "baseline_score", "wake_score", "delta"},
+                )
 
         environment = next(
             dimension for dimension in result["dimensions"]
@@ -42,6 +50,8 @@ class EvaluationResultsTests(unittest.TestCase):
         self.assertNotIn("ground_truth", serialized)
         self.assertNotIn("coach_briefing", serialized)
         self.assertNotIn("input/", serialized)
+        self.assertNotIn("evidence_refs", serialized)
+        self.assertNotIn("reasons", serialized)
 
     def test_generated_module_is_byte_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

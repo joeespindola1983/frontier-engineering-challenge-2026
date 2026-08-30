@@ -15,7 +15,10 @@ test('committed evaluation summary exposes official scores without private evide
   assert.equal(evaluationResults.agent_observability.tool_calls, 40);
   assert.equal(evaluationResults.agent_observability.verifier_retries, 5);
   assert.ok(evaluationResults.cases.every((item) => item.wake_score > item.baseline_score));
+  assert.ok(evaluationResults.cases.every((item) => item.scenario.length > 0));
+  assert.ok(evaluationResults.cases.every((item) => item.dimensions.length > 0));
   assert.doesNotMatch(JSON.stringify(evaluationResults), /ground_truth|coach_briefing|input\//);
+  assert.doesNotMatch(JSON.stringify(evaluationResults), /evidence_refs|reasons/);
 });
 
 
@@ -30,4 +33,9 @@ test('evaluation is a separate read-only submission evidence view', async () => 
   assert.match(page, /Environmental interpretation/);
   assert.match(page, /comparison\.wake_score/);
   assert.match(page, /comparison\.baseline_score/);
+  assert.match(page, /View evaluation results/);
+  assert.match(page, /Consolidated official evaluation/);
+  assert.match(page, /<details className="case-report"/);
+  assert.match(page, /Open individual report/);
+  assert.match(page, /item\.dimensions\.map/);
 });

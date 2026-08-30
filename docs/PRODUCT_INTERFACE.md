@@ -27,7 +27,7 @@ The `web/` application currently implements:
 6. a coach-facing briefing with findings and evidence references;
 7. an explicit approval action before an in-memory goal update.
 8. an optional historical-weather intake with explicit approximate-location consent, session-timezone confirmation, coordinate-free condition preview, and a no-model preparation path in replay mode.
-9. a read-only Evaluation view generated from the committed official comparison, with case and dimension diagnostics, cost and trajectory observability, preserved limitations, and no agent invocation path.
+9. a read-only Evaluation view generated from the committed official comparison, with one consolidated result, ten expandable individual case reports, case and dimension diagnostics, cost and trajectory observability, preserved limitations, and no agent invocation path. A visible Sessions-page action keeps this evidence reachable when the compact header navigation is hidden.
 
 The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload the core plan and SpeedCoach sources plus any optional mobile, environment, or context evidence, receive validation/normalization metadata, and prepare a compact agent input. When live mode is explicitly enabled, the page executes the prepared bundle, adapts the verified result, completes its server-owned human checkpoint, produces a bundle-specific briefing, and proposes an approval-gated memory update. Uploaded files with different bytes are never allowed to inherit the committed answer. Titles, intervals, targets, deviations, source labels, clocks, environmental absence, checkpoint copy, and memory copy come from the selected bundle rather than case-002 constants.
 
@@ -48,7 +48,7 @@ The current implementation therefore keeps work interval five as the material SP
 
 ## Product and evaluation separation
 
-Sessions and Goal memory remain the operational coach workflow. The hackathon build exposes one additional Evaluation destination, explicitly labelled `Saved result · No model call`. It renders a compact public summary generated from committed manifests and grade reports; it cannot execute an investigation, access evaluator ground truth, expose raw evidence, or change saved workflow state. Full fixtures, structured outputs, grader controls, and trajectories remain repository artifacts rather than browser controls. A production club build may omit this submission-only destination.
+Sessions and Goal memory remain the operational coach workflow. The hackathon build exposes one additional Evaluation destination, explicitly labelled `Saved result · No model call`. It renders a consolidated public summary and expandable per-case score reports generated from committed manifests and grade reports; it cannot execute an investigation, access evaluator ground truth, expose raw evidence, or change saved workflow state. Evaluation fixtures do not appear in the coach inbox because they are benchmark scenarios, not club sessions. Full fixtures, structured outputs, grader controls, and trajectories remain repository artifacts rather than browser controls. A production club build may omit this submission-only destination.
 
 ## Task-level API
 

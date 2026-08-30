@@ -34,91 +34,478 @@ export const evaluationResults = {
       "case_id": "case-001-misaligned-double-scull",
       "short_id": "001",
       "label": "Misaligned double scull",
+      "scenario": "Tests whether route agreement can associate recordings despite conflicting device clocks.",
       "provenance": "REAL_ANONYMIZED",
       "baseline_score": 48.89,
       "wake_score": 53.71,
-      "delta": 4.82
+      "delta": 4.82,
+      "dimensions": [
+        {
+          "dimension": "session_association_and_alignment",
+          "label": "Session association and alignment",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "metric_level_source_trust",
+          "label": "Metric-level source trust",
+          "baseline_score": 0.0,
+          "wake_score": 50.0,
+          "delta": 50.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 70.0,
+          "wake_score": 0.0,
+          "delta": -70.0
+        },
+        {
+          "dimension": "follow_up_questions",
+          "label": "Follow-up questions",
+          "baseline_score": 0.0,
+          "wake_score": 33.33,
+          "delta": 33.33
+        }
+      ]
     },
     {
       "case_id": "case-002-wind-shift-plan-deviation",
       "short_id": "002",
       "label": "Wind shift plan deviation",
+      "scenario": "Tests plan reconstruction, a wind shift, a low-SPM deviation, and unusable mobile SPM.",
       "provenance": "DERIVED_SYNTHETIC",
       "baseline_score": 47.5,
       "wake_score": 82.14,
-      "delta": 34.64
+      "delta": 34.64,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "session_association_and_alignment",
+          "label": "Session association and alignment",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 90.91,
+          "delta": 90.91
+        },
+        {
+          "dimension": "metric_level_source_trust",
+          "label": "Metric-level source trust",
+          "baseline_score": 20.0,
+          "wake_score": 60.0,
+          "delta": 40.0
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 0.0,
+          "wake_score": 100.0,
+          "delta": 100.0
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "label": "Environmental interpretation",
+          "baseline_score": 45.0,
+          "wake_score": 70.0,
+          "delta": 25.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 75.0,
+          "wake_score": 50.0,
+          "delta": -25.0
+        },
+        {
+          "dimension": "follow_up_questions",
+          "label": "Follow-up questions",
+          "baseline_score": 50.0,
+          "wake_score": 50.0,
+          "delta": 0.0
+        }
+      ]
     },
     {
       "case_id": "case-003-calm-expert-compliant",
       "short_id": "003",
       "label": "Calm expert compliant",
+      "scenario": "Tests a calm, compliant session without inventing a deviation.",
       "provenance": "DERIVED_SYNTHETIC",
       "baseline_score": 57.69,
       "wake_score": 89.68,
-      "delta": 31.99
+      "delta": 31.99,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 0.0,
+          "wake_score": 50.0,
+          "delta": 50.0
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "label": "Environmental interpretation",
+          "baseline_score": 75.0,
+          "wake_score": 100.0,
+          "delta": 25.0
+        }
+      ]
     },
     {
       "case_id": "case-004-steady-headwind-compliant",
       "short_id": "004",
       "label": "Steady headwind compliant",
+      "scenario": "Tests compliant execution under steady headwind without penalizing the athlete.",
       "provenance": "SYNTHETIC",
       "baseline_score": 65.38,
       "wake_score": 87.69,
-      "delta": 22.31
+      "delta": 22.31,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 100.0,
+          "delta": 100.0
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 25.0,
+          "wake_score": 50.0,
+          "delta": 25.0
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "label": "Environmental interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 70.0,
+          "delta": -30.0
+        }
+      ]
     },
     {
       "case_id": "case-005-tailwind-fast-not-improvement",
       "short_id": "005",
       "label": "Tailwind fast not improvement",
+      "scenario": "Tests whether tailwind-assisted speed is kept separate from athlete improvement.",
       "provenance": "SYNTHETIC",
       "baseline_score": 63.46,
       "wake_score": 85.06,
-      "delta": 21.6
+      "delta": 21.6,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 12.5,
+          "wake_score": 50.0,
+          "delta": 37.5
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "label": "Environmental interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 70.0,
+          "delta": -30.0
+        }
+      ]
     },
     {
       "case_id": "case-006-crosswind-gusts",
       "short_id": "006",
       "label": "Crosswind gusts",
+      "scenario": "Tests crosswind and gust context without unsupported causal claims.",
       "provenance": "SYNTHETIC",
       "baseline_score": 64.11,
       "wake_score": 85.06,
-      "delta": 20.95
+      "delta": 20.95,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 36.67,
+          "wake_score": 50.0,
+          "delta": 13.33
+        },
+        {
+          "dimension": "environmental_interpretation",
+          "label": "Environmental interpretation",
+          "baseline_score": 80.0,
+          "wake_score": 70.0,
+          "delta": -10.0
+        }
+      ]
     },
     {
       "case_id": "case-007-incomplete-intervals",
       "short_id": "007",
       "label": "Incomplete intervals",
+      "scenario": "Tests detection of one missing planned work interval.",
       "provenance": "DERIVED_SYNTHETIC",
       "baseline_score": 25.0,
       "wake_score": 86.38,
-      "delta": 61.38
+      "delta": 61.38,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 73.33,
+          "delta": 73.33
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 0.0,
+          "wake_score": 100.0,
+          "delta": 100.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 0.0,
+          "wake_score": 75.0,
+          "delta": 75.0
+        },
+        {
+          "dimension": "follow_up_questions",
+          "label": "Follow-up questions",
+          "baseline_score": 0.0,
+          "wake_score": 66.67,
+          "delta": 66.67
+        }
+      ]
     },
     {
       "case_id": "case-008-correct-distance-wrong-spm",
       "short_id": "008",
       "label": "Correct distance wrong spm",
+      "scenario": "Tests a low-SPM work interval despite correct total distance.",
       "provenance": "DERIVED_SYNTHETIC",
       "baseline_score": 27.27,
       "wake_score": 92.35,
-      "delta": 65.08
+      "delta": 65.08,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 0.0,
+          "wake_score": 100.0,
+          "delta": 100.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 0.0,
+          "wake_score": 75.0,
+          "delta": 75.0
+        }
+      ]
     },
     {
       "case_id": "case-009-excess-recovery",
       "short_id": "009",
       "label": "Excess recovery",
+      "scenario": "Tests detection of recovery that exceeded the plan.",
       "provenance": "DERIVED_SYNTHETIC",
       "baseline_score": 33.33,
       "wake_score": 87.8,
-      "delta": 54.47
+      "delta": 54.47,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 0.0,
+          "wake_score": 100.0,
+          "delta": 100.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 33.33,
+          "wake_score": 50.0,
+          "delta": 16.67
+        }
+      ]
     },
     {
       "case_id": "case-010-mobile-spm-zero",
       "short_id": "010",
       "label": "Mobile spm zero",
+      "scenario": "Tests rejection of mobile SPM stuck at zero while SpeedCoach remains usable.",
       "provenance": "SYNTHETIC",
       "baseline_score": 57.35,
       "wake_score": 87.69,
-      "delta": 30.34
+      "delta": 30.34,
+      "dimensions": [
+        {
+          "dimension": "plan_interpretation",
+          "label": "Plan interpretation",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "segment_reconstruction",
+          "label": "Segment reconstruction",
+          "baseline_score": 0.0,
+          "wake_score": 88.57,
+          "delta": 88.57
+        },
+        {
+          "dimension": "deviation_detection",
+          "label": "Deviation detection",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "evidence_and_abstention",
+          "label": "Evidence and abstention",
+          "baseline_score": 0.0,
+          "wake_score": 50.0,
+          "delta": 50.0
+        },
+        {
+          "dimension": "session_association_and_alignment",
+          "label": "Session association and alignment",
+          "baseline_score": 100.0,
+          "wake_score": 100.0,
+          "delta": 0.0
+        },
+        {
+          "dimension": "metric_level_source_trust",
+          "label": "Metric-level source trust",
+          "baseline_score": 25.0,
+          "wake_score": 75.0,
+          "delta": 50.0
+        }
+      ]
     }
   ],
   "dimensions": [

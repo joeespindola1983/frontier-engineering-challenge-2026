@@ -424,6 +424,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Visual proof is strongest when it includes the failure beside the headline gain. Showing the environmental regression and real-case limitation makes the 83.76 score more credible than a celebratory aggregate alone.
 - **Next step:** Use this page in the final five-minute video, then decide whether the remaining time is better spent on the submission narrative or on a small coach usability rehearsal.
 
+### 40. Discoverable consolidated and individual evaluation reports
+
+- **Hypothesis:** The saved evaluation cannot support the demonstration if compact layouts hide its only navigation entry or if the ten case rows look like non-interactive bars. A visible Sessions-page action plus expandable reports should make both the aggregate claim and its case-level evidence discoverable without mixing benchmarks into club operations.
+- **Change:** Added a persistent `View evaluation results` action to the Sessions header, labelled the destination `Consolidated official evaluation`, and converted every case row into a native expandable report. A deterministic generator now adds a public scenario description and baseline-versus-WAKE rubric scores for each applicable dimension. It intentionally excludes grader reasons, evidence references, ground truth, raw output, and execution controls. Evaluation fixtures remain outside the coach inbox.
+- **Evaluation:** RED first failed because generated cases had no `scenario` or `dimensions` and the interface had no required main-page action, consolidated label, or expandable report. GREEN passes 163 Python tests, four public fixture/artifact verifiers, 46 web tests, ESLint, and the Vinext production build. The privacy regression now also rejects `evidence_refs` and grader `reasons` in the browser module. Browser QA followed the home action into the consolidated report, opened case 001, verified its scenario and four dimension rows, and confirmed all ten case identifiers at both the default layout and 390 × 844.
+- **Result:** Keep the new navigation and report hierarchy. The home now reaches the evaluation at compact widths; the evaluation opens with the official consolidated score and lets a judge inspect all ten cases individually.
+- **Cost/runtime:** No model call and no API cost. The change reads only frozen official grade artifacts and regenerates a deterministic JavaScript module.
+- **Decision:** Keep synthetic evaluation evidence separate from real session state and operational counts. Per-case reports belong under Evaluation, not Sessions.
+- **Learning:** A report can exist technically and still be absent from the user journey. Discoverability and truthful data classification are both part of evaluation evidence quality.
+- **Next step:** Use the consolidated-to-individual drill-down in the final demo recording.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

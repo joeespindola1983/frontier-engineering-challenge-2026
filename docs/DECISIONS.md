@@ -308,6 +308,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Start the Python product service and Vinext dashboard through `scripts/start_dashboard.sh`. Keep replay with no model call as the default, enable the optional weather adapter, wait for both readiness endpoints, restore the existing ignored state store, and terminate both child processes from one `Ctrl+C`. Require `--live` plus `OPENAI_API_KEY` for paid execution, preserve the explicit US$0.20 start authorization, and never print the key. Allow separate manual commands to remain available for process-level debugging.
 - **Rationale:** The product depends on matching API origin, browser runtime mode, service capabilities, ports, Node version, and paid-execution gates. Re-entering those independently makes demo startup error-prone and can accidentally create a mismatch between a live browser and replay-only service. A tested launcher improves reproducibility without weakening the cost boundary.
 
+## 2026-08-30 - Keep evaluation fixtures outside the coach inbox
+
+- **Status:** accepted for the hackathon interface.
+- **Decision:** Expose the saved official evaluation through a visible Sessions-page action and a separate read-only destination. Present one consolidated comparison plus ten expandable individual case reports. Do not register benchmark fixtures as operational club sessions.
+- **Rationale:** The compact header hides primary navigation at narrower widths, so a submission-critical report needs an in-content entry point. At the same time, placing synthetic and derived-synthetic fixtures in the coach inbox would misrepresent them as athlete sessions and distort operational counts. Separate per-case reports provide the requested depth without compromising product truthfulness.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
