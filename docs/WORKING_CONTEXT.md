@@ -331,6 +331,16 @@ agent CLIs accept explicit input bundles, and the committed expanded preflight
 contains 20 hashed requests with `api_called: false`. The missing step is real
 model execution and scoring; no expanded quality claim is currently supported.
 
+A no-cost deterministic tool audit then found that the original SPM threshold
+fragmented the intentionally low-SPM third work interval in case 008 into twelve
+false work groups. A v2-only regression lowered the classification boundary by
+one additional SPM, preserving the historical v1 behavior. The same iteration
+made missing work counts, excessive recovery duration, crosswind, and gusts
+explicit tool outputs. Across cases 002-010, the reconstructed deviation set now
+matches only `work-05`, missing `work-04`, low-SPM `work-03`, and excessive
+`recovery-02`; compliant cases remain clear. This is deterministic instrument
+validation, not a model-quality result.
+
 The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are generated, hashed, and checked for ground-truth leakage. Comparable baseline and bounded-agent runners use Python, `uv`, the OpenAI Responses API, strict Structured Outputs, and `gpt-5.6-terra` at medium reasoning. Their safe default is a no-cost dry-run; a real call requires both `--execute` and `OPENAI_API_KEY`. A paid single-case baseline preflight exposed an API schema issue and generic grader representation gaps; it is retained but excluded from the official comparison. With deterministic grader v1.1 frozen, the official two-case result is 63.34/100 for WAKE versus 38.86/100 for the baseline at US$0.062338 incremental API cost. This is evidence for the implemented cases, not broad generalization. Future agent trajectories now record monotonic per-case runtime and future run manifests separately record end-to-end runtime and the sum of case runtimes; the historical comparison remains unchanged.
 
 Deterministic development now follows red-green-refactor. Parsers, normalization, alignment, segmentation, metric trust, generators, schemas, and graders require behavioral or regression tests. Model output is evaluated with fixed cases, structured contracts, and the frozen rubric rather than exact prose snapshots.

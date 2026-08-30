@@ -437,7 +437,7 @@
       "type": "function"
     },
     {
-      "description": "When a plan exists, reconstruct work and recovery intervals from the approved input telemetry, compare work SPM with prescribed ranges, and state whether equipment use is confirmed. Per-segment distances are boundary-derived from SPM classification and cannot establish total completed distance or a prescribed-distance shortfall. Returns INSUFFICIENT when a plan or compatible telemetry is unavailable.",
+      "description": "When a plan exists, reconstruct work and recovery intervals from the approved input telemetry, compare work SPM and recovery duration with prescribed ranges, expose missing planned work intervals, and state whether equipment use is confirmed. Per-segment distances are boundary-derived from SPM classification and cannot establish total completed distance or a prescribed-distance shortfall. Returns INSUFFICIENT when a plan or compatible telemetry is unavailable.",
       "name": "reconstruct_plan_execution",
       "parameters": {
         "additionalProperties": false,
@@ -449,7 +449,7 @@
       "type": "function"
     },
     {
-      "description": "Summarize time-aligned effective headwind evidence and whether conditions changed. Reports association only and explicitly does not establish causation or athlete improvement.",
+      "description": "Summarize time-aligned headwind, tailwind, crosswind, wind-speed, and gust evidence. Classify the observed condition profile while reporting association only; environmental evidence cannot establish causation or athlete improvement.",
       "name": "analyze_environment",
       "parameters": {
         "additionalProperties": false,

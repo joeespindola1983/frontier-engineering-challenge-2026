@@ -391,6 +391,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A generalized grader should encode invariants from case data, not prose unique to the first demonstration. A passing request preflight proves reproducibility and safety boundaries, not agent quality.
 - **Next step:** Review estimated cost for 20 paid calls, execute baseline and WAKE once on the exact committed preflight inputs with explicit authorization, preserve any failures, then score with grader v1.2.
 
+### 37. No-cost tool audit before expanded paid execution
+
+- **Hypothesis:** The deterministic tools should expose each diagnostic fault cleanly before model quality is measured; otherwise a paid failure could be caused by the instrument rather than the agent.
+- **Change:** Added v2-only planned/observed work counts, missing interval identities, recovery-duration targets and compliance, structured plan deviations, and calm/headwind/tailwind/crosswind/gust profiles. Added a v2-only work classification boundary two SPM below the lowest work target while preserving v1's one-SPM boundary. Regenerated the ten WAKE preflight requests with the revised tool descriptions; the new agent request total is 297,066 bytes and still declares `api_called: false`.
+- **Evaluation:** RED showed case 007 had no explicit missing-work result, case 009 marked every recovery compliant, and the environment tool did not expose crosswind or gusts. After the first GREEN, a direct all-case audit revealed a second failure: case 008's noisy 19-SPM work interval crossed the 19-SPM threshold repeatedly and became 12 work fragments. A regression test required exactly four work intervals and only `work-03` as the deviation. The final deterministic audit reconstructs the expected deviation identities for cases 002-010 and produces no deviations for compliant cases.
+- **Result:** The tools now present the new fault classes directly and preserve the central distance-abstention boundary. No model was called, so this does not show that the agent will use those facts correctly.
+- **Cost/runtime:** No API call and no model cost.
+- **Decision:** Keep the v2-only enhancement and preserve the original v1 tool behavior. Do not start the expanded paid run from the earlier preflight revision.
+- **Learning:** A fixed evaluation can diagnose the evaluator and tools before it diagnoses the model. Low-SPM deviation detection requires maintaining interval continuity, not simply applying a pointwise target threshold.
+- **Next step:** Run the complete regression suite, freeze the updated preflight, then request explicit owner authorization for the estimated paid comparison cost.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

@@ -1,57 +1,57 @@
 {
   "api_called": false,
   "config_sha256": "6bcb72994e3d3982396a0cf886df71c279d2b39ebca27911206f48d84657673a",
-  "created_at": "2026-08-30T11:49:14.751+00:00",
+  "created_at": "2026-08-30T11:55:00.359+00:00",
   "requests": {
     "case-001-misaligned-double-scull": {
-      "bytes": 24715,
+      "bytes": 24833,
       "path": "requests/case-001-misaligned-double-scull.json",
-      "sha256": "4e2ee0ea8aad900a6b8d0fc315efdd15c17f64abd03cd246537c0c173de91b57"
+      "sha256": "aff6a971c8ed0de87e235567deb7fd8811f7611b6eac093ae1c364cd83aa219f"
     },
     "case-002-wind-shift-plan-deviation": {
-      "bytes": 51383,
+      "bytes": 51501,
       "path": "requests/case-002-wind-shift-plan-deviation.json",
-      "sha256": "b38b65f358d6ed087c4030ad890fdc772d75359ae5956427b9403ff05b469a9b"
+      "sha256": "b77d546007b812ae10630373e036783c33a890b5b369235262c37d86f2e29167"
     },
     "case-003-calm-expert-compliant": {
-      "bytes": 30515,
+      "bytes": 30633,
       "path": "requests/case-003-calm-expert-compliant.json",
-      "sha256": "69ac02669e2f238531afcd95e5c0335407fb1f2b341e0d2ae69d1022efc7d635"
+      "sha256": "1b629658befa84267d22ec256a8d4edefc6c6a5bbe23dbfdb30dde5a2da0150e"
     },
     "case-004-steady-headwind-compliant": {
-      "bytes": 31805,
+      "bytes": 31923,
       "path": "requests/case-004-steady-headwind-compliant.json",
-      "sha256": "32c22b5b36396db426f36968672ef2d195a51151b11d7f7b27e8fe45701fa06c"
+      "sha256": "19be463ffeae416e68819aad241f7ba6cc47c13fd091e2edab807b000a19595c"
     },
     "case-005-tailwind-fast-not-improvement": {
-      "bytes": 29960,
+      "bytes": 30078,
       "path": "requests/case-005-tailwind-fast-not-improvement.json",
-      "sha256": "e1c408fed026fc43a5f84617bae6a98d91aa9620aeb323f34c8794e1da3fe51d"
+      "sha256": "ff51372fa0e566b24a92be8290dcf7e58a777bec8f57e421eb1f43b5e1a73009"
     },
     "case-006-crosswind-gusts": {
-      "bytes": 30479,
+      "bytes": 30597,
       "path": "requests/case-006-crosswind-gusts.json",
-      "sha256": "c0533239b7f40367ee15bce541378adb6db3df5c1630a6def75ecf3ef25d1616"
+      "sha256": "8062d7152ce2d2a9aa15fd63755da07c4325e7d05effdfae866f82ddd7f5d0fd"
     },
     "case-007-incomplete-intervals": {
-      "bytes": 22501,
+      "bytes": 22619,
       "path": "requests/case-007-incomplete-intervals.json",
-      "sha256": "afaf2764f5d3f0d599525096b365323c76e08159892ab695500a0ac4edd2bd6c"
+      "sha256": "25d0ae93b62fec3b240b1de60432d194d976843682e10e39a5668abed3b5bde8"
     },
     "case-008-correct-distance-wrong-spm": {
-      "bytes": 24157,
+      "bytes": 24275,
       "path": "requests/case-008-correct-distance-wrong-spm.json",
-      "sha256": "09df08d1866cc36a172208d4de32ee0245d65d00889069e590020c838225dbe3"
+      "sha256": "19c84edb52606fea5abda35247b6d52166029cd2cccb9bc2f492a7d5282fb511"
     },
     "case-009-excess-recovery": {
-      "bytes": 24950,
+      "bytes": 25068,
       "path": "requests/case-009-excess-recovery.json",
-      "sha256": "fc4a505d771bf5165ba2f3b8e71c399281d6770ca687cf84be13b15519d5e041"
+      "sha256": "171d2a73ea7f52a8e850beeba7f5b71bb693bdc063c7008dc0e7f6c90e690b90"
     },
     "case-010-mobile-spm-zero": {
-      "bytes": 25421,
+      "bytes": 25539,
       "path": "requests/case-010-mobile-spm-zero.json",
-      "sha256": "2384f016795bb7eb2258673a5b3724404684b58a90566b9320586e136e497c3e"
+      "sha256": "6afd2413c6139741df49fc6aa40d882e11c4cf3cd6b3b2726883ddf165fd0565"
     }
   },
   "run_id": "agent",

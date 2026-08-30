@@ -92,6 +92,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Preserve grader v1.1 for the published two-case comparison. Use grader v1.2 for the ten-case expansion, with case-derived plan, source-policy, environment, abstention, and deviation checks. Keep the same 100-point rubric weights and critical-zero rules.
 - **Rationale:** Grader v1.1 intentionally contained case-002-specific expectations. Reusing it would make new environmental conditions and source IDs fail for representation rather than behavior.
 
+## 2026-08-30 - Expose diagnostic plan and environment facts in tool contract v2
+
+- **Status:** accepted after deterministic preflight; paid result pending.
+- **Decision:** Keep tool contract v1 unchanged. In v2, expose planned-versus-observed work counts, missing work IDs, recovery-duration compliance, and wind/crosswind/gust profiles. Use a v2 work threshold two SPM below the lowest prescribed work target so a slightly under-target interval remains contiguous rather than becoming alternating false work/recovery groups.
+- **Rationale:** The no-cost audit showed that asking the model to infer these facts from fragmented segments would confound agent quality with a deterministic tool failure. The two-SPM gap still separates the synthetic 19-SPM work interval from 16-SPM recovery while preserving the deviation itself.
+
 ## 2026-08-29 - Use derived-synthetic plans without fabricating real history
 
 - **Status:** accepted.

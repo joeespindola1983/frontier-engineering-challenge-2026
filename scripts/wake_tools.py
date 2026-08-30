@@ -84,11 +84,19 @@ for definition in TOOL_DEFINITIONS_V2:
     if definition["name"] == "reconstruct_plan_execution":
         definition["description"] = (
             "When a plan exists, reconstruct work and recovery intervals from the "
-            "approved input telemetry, compare work SPM with prescribed ranges, and "
-            "state whether equipment use is confirmed. Per-segment distances are "
+            "approved input telemetry, compare work SPM and recovery duration with "
+            "prescribed ranges, expose missing planned work intervals, and state "
+            "whether equipment use is confirmed. Per-segment distances are "
             "boundary-derived from SPM classification and cannot establish total "
             "completed distance or a prescribed-distance shortfall. Returns "
             "INSUFFICIENT when a plan or compatible telemetry is unavailable."
+        )
+    if definition["name"] == "analyze_environment":
+        definition["description"] = (
+            "Summarize time-aligned headwind, tailwind, crosswind, wind-speed, and "
+            "gust evidence. Classify the observed condition profile while reporting "
+            "association only; environmental evidence cannot establish causation or "
+            "athlete improvement."
         )
 
 
@@ -307,6 +315,16 @@ def expanded_spm_targets(plan: dict) -> list[dict]:
     return targets
 
 
+def expanded_recovery_targets(plan: dict) -> list[dict]:
+    work_blocks = [
+        block
+        for block in plan["blocks"]
+        if block["kind"] == "WORK"
+        for _ in range(block["repetitions"])
+    ]
+    return [block.get("recovery") or {} for block in work_blocks[:-1]]
+
+
 def reconstruct_plan_execution(
     summary: dict,
     input_dir: Path,
@@ -333,8 +351,9 @@ def reconstruct_plan_execution(
         }
     rows = read_normalized_telemetry(telemetry_path)
     targets = expanded_spm_targets(plan)
+    recovery_targets = expanded_recovery_targets(plan)
     minimum_target = min(target["min_spm"] for target in targets)
-    work_threshold = minimum_target - 1
+    work_threshold = minimum_target - (2 if contract_version == "v2" else 1)
 
     groups: list[tuple[str, list[dict[str, str]]]] = []
     for row in rows:
@@ -349,9 +368,13 @@ def reconstruct_plan_execution(
     segments = []
     work_index = 0
     recovery_index = 0
+    plan_deviations = []
+    previous_group_end_s = None
     for kind, group_rows in groups:
         spm_values = [float(row["stroke_rate_spm"]) for row in group_rows]
         speed_values = [float(row["speed_m_s"]) for row in group_rows]
+        group_start_s = float(group_rows[0]["elapsed_s"])
+        group_end_s = float(group_rows[-1]["elapsed_s"])
         if kind == "WORK":
             work_index += 1
             segment_id = f"work-{work_index:02d}"
@@ -368,13 +391,30 @@ def reconstruct_plan_execution(
             segment_id = f"recovery-{recovery_index:02d}"
             target = None
             average_spm = statistics.mean(spm_values)
-            compliance = "COMPLIANT"
-        segments.append(
-            {
+            recovery_target = (
+                recovery_targets[recovery_index - 1]
+                if recovery_index <= len(recovery_targets)
+                else {}
+            )
+            duration_s = group_end_s - (
+                previous_group_end_s
+                if previous_group_end_s is not None
+                else group_start_s
+            )
+            minimum_s = recovery_target.get("min_s")
+            maximum_s = recovery_target.get("max_s")
+            compliance = (
+                "COMPLIANT"
+                if minimum_s is not None
+                and maximum_s is not None
+                and float(minimum_s) <= duration_s <= float(maximum_s)
+                else "DEVIATION"
+            )
+        segment = {
                 "segment_id": segment_id,
                 "kind": kind,
-                "start_offset_s": round(float(group_rows[0]["elapsed_s"]), 3),
-                "end_offset_s": round(float(group_rows[-1]["elapsed_s"]), 3),
+                "start_offset_s": round(group_start_s, 3),
+                "end_offset_s": round(group_end_s, 3),
                 "distance_m": round(
                     float(group_rows[-1]["distance_m"])
                     - float(group_rows[0]["distance_m"]),
@@ -386,7 +426,48 @@ def reconstruct_plan_execution(
                 "compliance": compliance,
                 "evidence_refs": ["input/speedcoach.csv", "input/plan.json"],
             }
-        )
+        if kind == "RECOVERY":
+            segment["duration_s"] = round(duration_s, 3)
+            segment["target_duration_s"] = {
+                "min_s": minimum_s,
+                "max_s": maximum_s,
+            }
+        segments.append(segment)
+        if compliance == "DEVIATION":
+            plan_deviations.append(
+                {
+                    "segment_ref": segment_id,
+                    "type": (
+                        "SPM_OUTSIDE_TARGET"
+                        if kind == "WORK"
+                        else "RECOVERY_DURATION_OUTSIDE_TARGET"
+                    ),
+                    "reason": (
+                        f"Average SPM {average_spm:.2f} is outside the planned range."
+                        if kind == "WORK"
+                        else (
+                            f"Recovery duration {duration_s:.3f} seconds is outside "
+                            f"the planned {minimum_s}-{maximum_s} second range."
+                        )
+                    ),
+                    "evidence_refs": ["input/speedcoach.csv", "input/plan.json"],
+                }
+            )
+        previous_group_end_s = group_end_s
+
+    missing_work_ids = [
+        f"work-{index:02d}"
+        for index in range(work_index + 1, len(targets) + 1)
+    ]
+    plan_deviations.extend(
+        {
+            "segment_ref": segment_id,
+            "type": "PLANNED_WORK_INTERVAL_NOT_OBSERVED",
+            "reason": "No compatible work segment was reconstructed for this planned interval.",
+            "evidence_refs": ["input/speedcoach.csv", "input/plan.json"],
+        }
+        for segment_id in missing_work_ids
+    )
 
     confirmations = summary.get("known_context", {}).get("human_confirmations", {})
     equipment_value = confirmations.get("resistance_band_used")
@@ -397,8 +478,19 @@ def reconstruct_plan_execution(
     )
     result = {
         "status": "COMPLETED",
-        "method": "SPM threshold derived from the lowest planned work range minus 1 SPM.",
+        "method": (
+            "SPM threshold derived from the lowest planned work range minus 2 SPM "
+            "to keep a slightly under-target work interval contiguous."
+            if contract_version == "v2"
+            else "SPM threshold derived from the lowest planned work range minus 1 SPM."
+        ),
         "segments": segments,
+        "execution_counts": {
+            "planned_work_intervals": len(targets),
+            "observed_work_intervals": work_index,
+            "missing_work_interval_ids": missing_work_ids,
+        },
+        "plan_deviations": plan_deviations,
         "equipment_confirmation": equipment_confirmation,
         "limitations": [
             "Telemetry cannot observe resistance equipment or visible technique."
@@ -419,7 +511,7 @@ def reconstruct_plan_execution(
     return result
 
 
-def analyze_environment(summary: dict) -> dict:
+def analyze_environment(summary: dict, *, contract_version: str = "v1") -> dict:
     environment = summary.get("environment")
     if not environment or not environment.get("time_series_windows"):
         return {
@@ -494,7 +586,7 @@ def analyze_environment(summary: dict) -> dict:
             or len(session_windows) < 2
         )
     )
-    return {
+    result = {
         "status": "COMPLETED",
         "effective_headwind_start_m_s": start,
         "effective_headwind_end_m_s": end,
@@ -519,6 +611,63 @@ def analyze_environment(summary: dict) -> dict:
         "limitations": limitations,
         "evidence_refs": ["input/environment.json", "input/speedcoach.csv"],
     }
+    if contract_version == "v2":
+        headwinds = [
+            float(window["effective_headwind_m_s"])
+            for window in analyzed_windows
+        ]
+        crosswinds = [
+            float(window.get("effective_crosswind_m_s", 0.0))
+            for window in analyzed_windows
+        ]
+        wind_speeds = [
+            float(window["wind_speed_m_s"])
+            for window in analyzed_windows
+            if window.get("wind_speed_m_s") is not None
+        ]
+        gust_speeds = [
+            float(window["gust_speed_m_s"])
+            for window in analyzed_windows
+            if window.get("gust_speed_m_s") is not None
+        ]
+        mean_headwind = statistics.mean(headwinds)
+        maximum_crosswind = max((abs(value) for value in crosswinds), default=0.0)
+        gust_excess = (
+            max(gust_speeds) - max(wind_speeds)
+            if gust_speeds and wind_speeds
+            else 0.0
+        )
+        if min(headwinds) < -1.0 < max(headwinds):
+            profile = "TAILWIND_TO_HEADWIND"
+        elif wind_speeds and max(wind_speeds) <= 1.0:
+            profile = "CALM"
+        elif mean_headwind > 1.0:
+            profile = "STEADY_HEADWIND"
+        elif mean_headwind < -1.0:
+            profile = "STEADY_TAILWIND"
+        elif maximum_crosswind > 2.0 and gust_excess >= 2.0:
+            profile = "CROSSWIND_GUSTS"
+        elif maximum_crosswind > 2.0:
+            profile = "CROSSWIND"
+        else:
+            profile = "MIXED_OR_LIGHT"
+        result.update(
+            {
+                "condition_profile": profile,
+                "effective_headwind_range_m_s": [min(headwinds), max(headwinds)],
+                "effective_crosswind_range_m_s": [
+                    min(crosswinds),
+                    max(crosswinds),
+                ],
+                "wind_speed_range_m_s": (
+                    [min(wind_speeds), max(wind_speeds)] if wind_speeds else None
+                ),
+                "gust_speed_range_m_s": (
+                    [min(gust_speeds), max(gust_speeds)] if gust_speeds else None
+                ),
+            }
+        )
+    return result
 
 
 def execute_tool(
@@ -539,7 +688,9 @@ def execute_tool(
             input_dir,
             contract_version=contract_version,
         ),
-        "analyze_environment": lambda: analyze_environment(summary),
+        "analyze_environment": lambda: analyze_environment(
+            summary, contract_version=contract_version
+        ),
     }
     if name not in handlers:
         raise ValueError(f"Unknown WAKE tool: {name}")

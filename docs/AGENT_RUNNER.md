@@ -92,6 +92,10 @@ failure boundary discovered by the official v1 run:
 
 - `reconstruct_plan_execution` emits a structured `distance_assessment` with
   `INSUFFICIENT` status for prescribed-distance completion;
+- v2 also reports planned-versus-observed work counts, missing work interval
+  identities, and recovery-duration deviations;
+- v2 environment results classify calm, steady headwind, steady tailwind,
+  crosswind, and crosswind-with-gust profiles while retaining the causal boundary;
 - the tool description and prompt identify segment distances as boundary-derived
   from SPM classification and exclude them from total-distance conclusions;
 - the v2 verifier rejects prescribed-distance deviations built from those

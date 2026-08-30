@@ -21,8 +21,21 @@ class WakeToolTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         bundle = ROOT / "evaluation/baseline-inputs/v1"
+        expanded = ROOT / "evaluation/baseline-inputs/v2"
         cls.case_001 = read_json(bundle / "case-001-misaligned-double-scull.json")
         cls.case_002 = read_json(bundle / "case-002-wind-shift-plan-deviation.json")
+        cls.diagnostic = {
+            case_id: read_json(expanded / f"{case_id}.json")
+            for case_id in (
+                "case-003-calm-expert-compliant",
+                "case-004-steady-headwind-compliant",
+                "case-005-tailwind-fast-not-improvement",
+                "case-006-crosswind-gusts",
+                "case-007-incomplete-intervals",
+                "case-008-correct-distance-wrong-spm",
+                "case-009-excess-recovery",
+            )
+        }
 
     def test_source_trust_rejects_broken_mobile_spm_per_metric(self) -> None:
         result = wake_tools.assess_source_trust(self.case_002)
@@ -96,6 +109,56 @@ class WakeToolTests(unittest.TestCase):
             ["input/speedcoach.csv", "input/plan.json"],
         )
 
+    def test_plan_analysis_v2_exposes_missing_work_and_excess_recovery(self) -> None:
+        missing_id = "case-007-incomplete-intervals"
+        missing = wake_tools.reconstruct_plan_execution(
+            self.diagnostic[missing_id],
+            ROOT / "data/fixtures" / missing_id / "input",
+            contract_version="v2",
+        )
+        recovery_id = "case-009-excess-recovery"
+        recovery = wake_tools.reconstruct_plan_execution(
+            self.diagnostic[recovery_id],
+            ROOT / "data/fixtures" / recovery_id / "input",
+            contract_version="v2",
+        )
+
+        self.assertEqual(missing["execution_counts"]["planned_work_intervals"], 4)
+        self.assertEqual(missing["execution_counts"]["observed_work_intervals"], 3)
+        self.assertEqual(
+            missing["execution_counts"]["missing_work_interval_ids"],
+            ["work-04"],
+        )
+        self.assertIn(
+            "work-04",
+            [item["segment_ref"] for item in missing["plan_deviations"]],
+        )
+        recovery_segment = next(
+            item for item in recovery["segments"]
+            if item["segment_id"] == "recovery-02"
+        )
+        self.assertEqual(recovery_segment["compliance"], "DEVIATION")
+        self.assertGreater(recovery_segment["duration_s"], 180)
+        self.assertIn(
+            "recovery-02",
+            [item["segment_ref"] for item in recovery["plan_deviations"]],
+        )
+
+    def test_plan_analysis_v2_keeps_low_spm_work_as_one_interval(self) -> None:
+        case_id = "case-008-correct-distance-wrong-spm"
+        result = wake_tools.reconstruct_plan_execution(
+            self.diagnostic[case_id],
+            ROOT / "data/fixtures" / case_id / "input",
+            contract_version="v2",
+        )
+
+        work = [item for item in result["segments"] if item["kind"] == "WORK"]
+        deviations = [
+            item["segment_ref"] for item in result["plan_deviations"]
+        ]
+        self.assertEqual(len(work), 4)
+        self.assertEqual(deviations, ["work-03"])
+
     def test_environment_tool_reports_association_not_causation(self) -> None:
         result = wake_tools.analyze_environment(self.case_002)
 
@@ -103,6 +166,22 @@ class WakeToolTests(unittest.TestCase):
         self.assertGreater(result["effective_headwind_end_m_s"], 0)
         self.assertEqual(result["causal_conclusion"], "NOT_ESTABLISHED")
         self.assertIn("association", result["interpretation"].lower())
+
+    def test_environment_v2_classifies_calm_head_tail_and_crosswind_gusts(self) -> None:
+        expected = {
+            "case-003-calm-expert-compliant": "CALM",
+            "case-004-steady-headwind-compliant": "STEADY_HEADWIND",
+            "case-005-tailwind-fast-not-improvement": "STEADY_TAILWIND",
+            "case-006-crosswind-gusts": "CROSSWIND_GUSTS",
+        }
+        for case_id, profile in expected.items():
+            with self.subTest(case_id=case_id):
+                result = wake_tools.analyze_environment(
+                    self.diagnostic[case_id], contract_version="v2"
+                )
+                self.assertEqual(result["condition_profile"], profile)
+                self.assertEqual(result["causal_conclusion"], "NOT_ESTABLISHED")
+                self.assertIn("effective_crosswind_range_m_s", result)
 
 
 if __name__ == "__main__":
