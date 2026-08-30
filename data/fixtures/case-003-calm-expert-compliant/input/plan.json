@@ -1,0 +1,46 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-case-003-calm-expert-compliant",
+  "scheduled_date": "2026-02-03",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_diagnostic_cases.py"
+  },
+  "modality": "WATER",
+  "athlete_scope": {
+    "kind": "CREW",
+    "ids": [
+      "synthetic-crew-diagnostic"
+    ]
+  },
+  "goal_id": "synthetic-goal-diagnostic",
+  "coach_language": "4 x 500 m at 20-22 SPM with 2-3 minutes active recovery.",
+  "blocks": [
+    {
+      "block_id": "work-500m",
+      "kind": "WORK",
+      "repetitions": 4,
+      "distance_m": 500.0,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 20,
+        "max_spm": 22
+      },
+      "zone": "B2/B3",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": {
+        "min_s": 120,
+        "max_s": 180,
+        "mode": "ACTIVE_LIGHT_ROWING"
+      },
+      "equipment": [],
+      "instructions": [
+        "Keep every work interval continuous."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Entirely synthetic diagnostic prescription."
+}

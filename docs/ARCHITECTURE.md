@@ -1,6 +1,6 @@
 # Architecture Hypothesis
 
-**Status:** partially implemented. Two fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic progressive-evidence compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are implemented. The replay demonstrates checkpoint and approval policy in memory; generic new-bundle checkpoint/briefing transitions and durable storage remain hypotheses until evaluated.
+**Status:** partially implemented. Ten public fixtures, normalized contracts, public verifiers, raw SpeedCoach/WAKE-mobile telemetry adapters, deterministic progressive-evidence compact-summary assembly, explicit prepared-bundle execution, generic coach-review adaptation, the direct-call baseline, the bounded single-agent evaluation loop, a coach-facing product replay, and process-local typed source intake are present. Only two fixtures have frozen baseline/agent outputs and enter the published score; eight diagnostic fixtures are ready for the next versioned evaluation. The replay demonstrates checkpoint and approval policy in memory; durable production storage remains a hypothesis.
 
 ## Proposed flow
 

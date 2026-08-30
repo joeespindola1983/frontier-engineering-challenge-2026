@@ -1,0 +1,438 @@
+{
+  "case_id": "case-008-correct-distance-wrong-spm",
+  "cross_source_findings": [],
+  "domain_knowledge": [
+    {
+      "limitations": [],
+      "meaning": "Target stroke rate in strokes per minute (SPM).",
+      "status": "HUMAN_CONFIRMED",
+      "term": "voga"
+    },
+    {
+      "limitations": [
+        "Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied."
+      ],
+      "meaning": "Standardized rowing training-zone codes.",
+      "status": "HUMAN_CONFIRMED",
+      "term": "B0-B7 and E1-E7"
+    }
+  ],
+  "environment": null,
+  "evidence_gaps": [
+    "No coach technique or crew-synchronization observation is supplied.",
+    "No perceived-effort report is supplied.",
+    "No environmental timeline is supplied.",
+    "No independent mobile recording is supplied for route corroboration."
+  ],
+  "generated_by": "scripts/build_baseline_inputs.py@1.1",
+  "input_hashes": {
+    "context.json": "057d4a9a16e1af7048e49af54b03b48c245e27d2004e3c2f4bb9d8756cede759",
+    "plan.json": "313c76f65e5492c171b0ba35568b86909a3b38f01fcadcd17ac4a00e946fb311",
+    "speedcoach.csv": "4e7e7ed7a7a2b24ca2274141492997290556f8c6b6846a82969b14c38bf8bae0"
+  },
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "known_context": {
+    "human_confirmations": {
+      "coach_observed_technique": null,
+      "perceived_effort": null
+    },
+    "input_notice": "All people, dates, route coordinates, telemetry, and conditions in this diagnostic case are synthetic.",
+    "session_candidate": {
+      "athlete_ids": [
+        "synthetic-athlete-c",
+        "synthetic-athlete-d"
+      ],
+      "boat_class": "DOUBLE_SCULL",
+      "crew_category": "OPEN",
+      "experience": "EXPERIENCED",
+      "route_heading_deg": 0.0,
+      "world_rowing_code": "2x"
+    }
+  },
+  "plan": {
+    "athlete_scope": {
+      "ids": [
+        "synthetic-crew-diagnostic"
+      ],
+      "kind": "CREW"
+    },
+    "blocks": [
+      {
+        "block_id": "work-500m",
+        "distance_m": 500.0,
+        "duration_s": null,
+        "equipment": [],
+        "instructions": [
+          "Keep every work interval continuous."
+        ],
+        "kind": "WORK",
+        "recovery": {
+          "max_s": 180,
+          "min_s": 120,
+          "mode": "ACTIVE_LIGHT_ROWING"
+        },
+        "repetitions": 4,
+        "stroke_rate": {
+          "max_spm": 22,
+          "min_spm": 20
+        },
+        "zone": "B2/B3",
+        "zone_system": "STANDARD_ROWING_ZONES"
+      }
+    ],
+    "coach_language": "4 x 500 m at 20-22 SPM with 2-3 minutes active recovery.",
+    "goal_id": "synthetic-goal-diagnostic",
+    "modality": "WATER",
+    "notes": "Entirely synthetic diagnostic prescription.",
+    "plan_id": "plan-case-008-correct-distance-wrong-spm",
+    "scheduled_date": "2026-02-03",
+    "schema_version": "wake.training_plan.v1",
+    "source": {
+      "kind": "SYNTHETIC",
+      "provenance": "SYNTHETIC",
+      "source_ref": "scripts/generate_diagnostic_cases.py"
+    },
+    "timezone": "America/Sao_Paulo",
+    "unresolved_terms": []
+  },
+  "schema_version": "wake.case_summary.v1",
+  "sources": [
+    {
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "SPEEDCOACH",
+      "metrics": {
+        "average_positive_spm": 18.57,
+        "duration_s": 1047.077,
+        "end_distance_m": 2742.847,
+        "positive_spm_rows": 210,
+        "route_points": 210,
+        "start_time": "2026-02-03T06:00:05.000-03:00"
+      },
+      "quality_flags": [
+        "GPS_PRESENT",
+        "SPM_PRESENT"
+      ],
+      "source_id": "speedcoach-case-008-correct-distance-wrong-spm",
+      "time_series_windows": [
+        {
+          "average_speed_m_s": 3.344,
+          "average_spm": 21.02,
+          "distance_end_m": 83.6,
+          "distance_start_m": 16.7,
+          "end_offset_s": 30,
+          "samples": 5,
+          "start_offset_s": 0
+        },
+        {
+          "average_speed_m_s": 3.346,
+          "average_spm": 21.0,
+          "distance_end_m": 184.0,
+          "distance_start_m": 100.4,
+          "end_offset_s": 60,
+          "samples": 6,
+          "start_offset_s": 30
+        },
+        {
+          "average_speed_m_s": 3.341,
+          "average_spm": 21.0,
+          "distance_end_m": 284.2,
+          "distance_start_m": 200.9,
+          "end_offset_s": 90,
+          "samples": 6,
+          "start_offset_s": 60
+        },
+        {
+          "average_speed_m_s": 3.344,
+          "average_spm": 20.96,
+          "distance_end_m": 384.5,
+          "distance_start_m": 300.8,
+          "end_offset_s": 120,
+          "samples": 6,
+          "start_offset_s": 90
+        },
+        {
+          "average_speed_m_s": 3.354,
+          "average_spm": 20.99,
+          "distance_end_m": 500.0,
+          "distance_start_m": 401.3,
+          "end_offset_s": 150,
+          "samples": 7,
+          "start_offset_s": 120
+        },
+        {
+          "average_speed_m_s": 1.65,
+          "average_spm": 16.01,
+          "distance_end_m": 549.5,
+          "distance_start_m": 508.2,
+          "end_offset_s": 180,
+          "samples": 6,
+          "start_offset_s": 150
+        },
+        {
+          "average_speed_m_s": 1.648,
+          "average_spm": 16.0,
+          "distance_end_m": 598.9,
+          "distance_start_m": 557.8,
+          "end_offset_s": 210,
+          "samples": 6,
+          "start_offset_s": 180
+        },
+        {
+          "average_speed_m_s": 1.656,
+          "average_spm": 15.96,
+          "distance_end_m": 648.6,
+          "distance_start_m": 607.3,
+          "end_offset_s": 240,
+          "samples": 6,
+          "start_offset_s": 210
+        },
+        {
+          "average_speed_m_s": 1.65,
+          "average_spm": 16.02,
+          "distance_end_m": 698.1,
+          "distance_start_m": 656.9,
+          "end_offset_s": 270,
+          "samples": 6,
+          "start_offset_s": 240
+        },
+        {
+          "average_speed_m_s": 1.658,
+          "average_spm": 15.98,
+          "distance_end_m": 747.9,
+          "distance_start_m": 706.4,
+          "end_offset_s": 300,
+          "samples": 6,
+          "start_offset_s": 270
+        },
+        {
+          "average_speed_m_s": 3.358,
+          "average_spm": 21.0,
+          "distance_end_m": 848.6,
+          "distance_start_m": 764.7,
+          "end_offset_s": 330,
+          "samples": 6,
+          "start_offset_s": 300
+        },
+        {
+          "average_speed_m_s": 3.349,
+          "average_spm": 20.98,
+          "distance_end_m": 949.1,
+          "distance_start_m": 865.4,
+          "end_offset_s": 360,
+          "samples": 6,
+          "start_offset_s": 330
+        },
+        {
+          "average_speed_m_s": 3.353,
+          "average_spm": 20.98,
+          "distance_end_m": 1049.6,
+          "distance_start_m": 965.7,
+          "end_offset_s": 390,
+          "samples": 6,
+          "start_offset_s": 360
+        },
+        {
+          "average_speed_m_s": 3.348,
+          "average_spm": 20.99,
+          "distance_end_m": 1150.1,
+          "distance_start_m": 1066.3,
+          "end_offset_s": 420,
+          "samples": 6,
+          "start_offset_s": 390
+        },
+        {
+          "average_speed_m_s": 3.346,
+          "average_spm": 20.94,
+          "distance_end_m": 1247.9,
+          "distance_start_m": 1166.8,
+          "end_offset_s": 450,
+          "samples": 6,
+          "start_offset_s": 420
+        },
+        {
+          "average_speed_m_s": 1.64,
+          "average_spm": 15.99,
+          "distance_end_m": 1297.1,
+          "distance_start_m": 1256.0,
+          "end_offset_s": 480,
+          "samples": 6,
+          "start_offset_s": 450
+        },
+        {
+          "average_speed_m_s": 1.656,
+          "average_spm": 16.0,
+          "distance_end_m": 1346.8,
+          "distance_start_m": 1305.3,
+          "end_offset_s": 510,
+          "samples": 6,
+          "start_offset_s": 480
+        },
+        {
+          "average_speed_m_s": 1.647,
+          "average_spm": 16.02,
+          "distance_end_m": 1396.2,
+          "distance_start_m": 1355.0,
+          "end_offset_s": 540,
+          "samples": 6,
+          "start_offset_s": 510
+        },
+        {
+          "average_speed_m_s": 1.651,
+          "average_spm": 16.03,
+          "distance_end_m": 1445.7,
+          "distance_start_m": 1404.4,
+          "end_offset_s": 570,
+          "samples": 6,
+          "start_offset_s": 540
+        },
+        {
+          "average_speed_m_s": 1.652,
+          "average_spm": 16.01,
+          "distance_end_m": 1495.3,
+          "distance_start_m": 1453.9,
+          "end_offset_s": 600,
+          "samples": 6,
+          "start_offset_s": 570
+        },
+        {
+          "average_speed_m_s": 3.334,
+          "average_spm": 18.98,
+          "distance_end_m": 1595.3,
+          "distance_start_m": 1512.0,
+          "end_offset_s": 630,
+          "samples": 6,
+          "start_offset_s": 600
+        },
+        {
+          "average_speed_m_s": 3.349,
+          "average_spm": 19.03,
+          "distance_end_m": 1695.8,
+          "distance_start_m": 1612.0,
+          "end_offset_s": 660,
+          "samples": 6,
+          "start_offset_s": 630
+        },
+        {
+          "average_speed_m_s": 3.351,
+          "average_spm": 18.98,
+          "distance_end_m": 1796.3,
+          "distance_start_m": 1712.4,
+          "end_offset_s": 690,
+          "samples": 6,
+          "start_offset_s": 660
+        },
+        {
+          "average_speed_m_s": 3.353,
+          "average_spm": 18.98,
+          "distance_end_m": 1896.9,
+          "distance_start_m": 1813.2,
+          "end_offset_s": 720,
+          "samples": 6,
+          "start_offset_s": 690
+        },
+        {
+          "average_speed_m_s": 3.35,
+          "average_spm": 19.02,
+          "distance_end_m": 1995.3,
+          "distance_start_m": 1913.7,
+          "end_offset_s": 750,
+          "samples": 6,
+          "start_offset_s": 720
+        },
+        {
+          "average_speed_m_s": 1.646,
+          "average_spm": 15.98,
+          "distance_end_m": 2044.6,
+          "distance_start_m": 2003.5,
+          "end_offset_s": 780,
+          "samples": 6,
+          "start_offset_s": 750
+        },
+        {
+          "average_speed_m_s": 1.66,
+          "average_spm": 16.0,
+          "distance_end_m": 2094.4,
+          "distance_start_m": 2053.0,
+          "end_offset_s": 810,
+          "samples": 6,
+          "start_offset_s": 780
+        },
+        {
+          "average_speed_m_s": 1.654,
+          "average_spm": 16.0,
+          "distance_end_m": 2144.1,
+          "distance_start_m": 2102.7,
+          "end_offset_s": 840,
+          "samples": 6,
+          "start_offset_s": 810
+        },
+        {
+          "average_speed_m_s": 1.652,
+          "average_spm": 15.98,
+          "distance_end_m": 2193.6,
+          "distance_start_m": 2152.3,
+          "end_offset_s": 870,
+          "samples": 6,
+          "start_offset_s": 840
+        },
+        {
+          "average_speed_m_s": 1.64,
+          "average_spm": 15.98,
+          "distance_end_m": 2242.8,
+          "distance_start_m": 2201.9,
+          "end_offset_s": 900,
+          "samples": 6,
+          "start_offset_s": 870
+        },
+        {
+          "average_speed_m_s": 3.36,
+          "average_spm": 21.04,
+          "distance_end_m": 2343.6,
+          "distance_start_m": 2259.6,
+          "end_offset_s": 930,
+          "samples": 6,
+          "start_offset_s": 900
+        },
+        {
+          "average_speed_m_s": 3.351,
+          "average_spm": 20.97,
+          "distance_end_m": 2444.2,
+          "distance_start_m": 2360.3,
+          "end_offset_s": 960,
+          "samples": 6,
+          "start_offset_s": 930
+        },
+        {
+          "average_speed_m_s": 3.362,
+          "average_spm": 21.0,
+          "distance_end_m": 2545.0,
+          "distance_start_m": 2460.9,
+          "end_offset_s": 990,
+          "samples": 6,
+          "start_offset_s": 960
+        },
+        {
+          "average_speed_m_s": 3.352,
+          "average_spm": 21.01,
+          "distance_end_m": 2645.6,
+          "distance_start_m": 2561.7,
+          "end_offset_s": 1020,
+          "samples": 6,
+          "start_offset_s": 990
+        },
+        {
+          "average_speed_m_s": 3.348,
+          "average_spm": 21.03,
+          "distance_end_m": 2742.8,
+          "distance_start_m": 2662.4,
+          "end_offset_s": 1050,
+          "samples": 6,
+          "start_offset_s": 1020
+        }
+      ]
+    }
+  ],
+  "summary_id": "baseline-input-v2-case-008-correct-distance-wrong-spm"
+}

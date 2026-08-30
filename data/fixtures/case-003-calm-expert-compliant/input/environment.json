@@ -1,0 +1,264 @@
+{
+  "schema_version": "wake.environment_timeline.v1",
+  "timeline_id": "environment-case-003-calm-expert-compliant",
+  "source": {
+    "kind": "SYNTHETIC",
+    "source_ref": "scripts/generate_diagnostic_cases.py",
+    "quality": "HIGH"
+  },
+  "direction_convention": "METEOROLOGICAL_FROM_DEGREES_TRUE_NORTH",
+  "samples": [
+    {
+      "timestamp": "2026-02-03T06:00:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:00:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:01:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:01:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:02:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:02:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:03:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:03:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:04:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:04:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:05:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:05:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:06:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:06:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:07:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:07:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:08:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:08:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:09:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:09:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:10:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:10:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:11:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:11:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:12:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:12:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:13:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:13:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:14:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:14:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:15:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:15:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:16:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:16:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:17:00.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    },
+    {
+      "timestamp": "2026-02-03T06:17:30.000-03:00",
+      "wind_speed_m_s": 0.5,
+      "wind_direction_deg": 90.0,
+      "gust_speed_m_s": 0.8,
+      "temperature_c": 19.0
+    }
+  ]
+}

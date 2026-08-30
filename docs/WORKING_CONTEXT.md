@@ -305,18 +305,23 @@ The first official evidence-ablation run is now preserved. It used commit `d8aa3
 
 The v2 correction was developed with RED-GREEN cycles after preserving v1. It adds a structured `INSUFFICIENT` distance assessment to the versioned reconstruction result, exposes the same limitation in the tool description and prompt, and makes the v2 verifier reject prescribed-distance deviations based on boundary-derived segment values. The ablation runner and scorer select the workflow version explicitly. After the no-cost preflight, the official v2 repeat passed core 8/8, context/environment 10/10, full 12/12, and cross-condition consistency. It cost US$0.358676, consumed 114,338 tokens, and completed in 92.202 seconds. Every condition reported only the work-05 SPM deviation. Core and context/environment each used one bounded retry for unrelated evidence-less insufficient/unavailable items; full required no retry. The local product live runners now explicitly load the accepted v2 config and prompt rather than inheriting the historical v1 CLI defaults. This remains a one-case synthetic workflow result.
 
-A likely evaluation will use ten or more fixed cases, including scenarios such as:
+The expanded evaluation now has ten public fixture-ready cases. Cases 003-010 are deterministic, entirely synthetic, and isolate:
 
-- clean paired recordings;
-- delayed start or forgotten stop;
-- partial overlap;
-- mobile SPM stuck at zero;
-- missing GPS;
-- conflicting distance or pace;
-- missing boat or crew context;
-- environmental conditions affecting interpretation;
-- a plan that was not followed;
-- a request to infer technique that the evidence cannot support.
+- a calm, compliant expert session;
+- a compliant session under steady headwind;
+- tailwind-assisted speed that must not be called athlete improvement;
+- strong crosswind and gusts without unsupported causation;
+- one missing planned work interval;
+- correct distance with one low-SPM interval;
+- an excessive recovery interval;
+- mobile SPM stuck at zero while SpeedCoach SPM remains usable.
+
+Their fixture manifests, ground truth, schemas, compact summaries, and public
+verification are committed. The frozen two-case v1 input bundle remains
+unchanged; the new ten-case summaries live in `evaluation/baseline-inputs/v2/`.
+The eight new registry entries remain `PLANNED` until a versioned grader can
+score them and the required model outputs exist. They therefore do not change
+the published two-case score yet.
 
 The baseline protocol is a direct model prompt over the same compact session summary without iterative tools, memory, or verification. The version 1 prompt, compact summary contract, and two-case input bundle are generated, hashed, and checked for ground-truth leakage. Comparable baseline and bounded-agent runners use Python, `uv`, the OpenAI Responses API, strict Structured Outputs, and `gpt-5.6-terra` at medium reasoning. Their safe default is a no-cost dry-run; a real call requires both `--execute` and `OPENAI_API_KEY`. A paid single-case baseline preflight exposed an API schema issue and generic grader representation gaps; it is retained but excluded from the official comparison. With deterministic grader v1.1 frozen, the official two-case result is 63.34/100 for WAKE versus 38.86/100 for the baseline at US$0.062338 incremental API cost. This is evidence for the implemented cases, not broad generalization. Future agent trajectories now record monotonic per-case runtime and future run manifests separately record end-to-end runtime and the sum of case runtimes; the historical comparison remains unchanged.
 

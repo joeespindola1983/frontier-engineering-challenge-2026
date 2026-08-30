@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERIFIERS = [
     ROOT / "scripts/verify_hero_fixture.py",
     ROOT / "scripts/verify_synthetic_case.py",
+    ROOT / "scripts/verify_diagnostic_cases.py",
     ROOT / "scripts/verify_baseline_inputs.py"
 ]
 

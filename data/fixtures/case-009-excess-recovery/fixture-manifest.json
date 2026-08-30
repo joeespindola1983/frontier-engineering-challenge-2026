@@ -1,0 +1,30 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-009-excess-recovery",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830009,
+  "files": {
+    "README.md": {
+      "sha256": "eee4b54449383f1ac746b139adaf2c6d272918c1a237053f71e48753fe12891e",
+      "bytes": 241
+    },
+    "ground-truth.json": {
+      "sha256": "89a09685ad49a73fa1b56ec6ffaae1a5d9774c13432f36965ad0fe5f952796ed",
+      "bytes": 3163
+    },
+    "input/context.json": {
+      "sha256": "1a249db3142456799cbc96bc11af194fed373bddf7a66b68e71a819a07c8f53a",
+      "bytes": 1105
+    },
+    "input/plan.json": {
+      "sha256": "bb988f97658664e13152b207439c9909d6a771e604586889691177134a4a14ac",
+      "bytes": 1143
+    },
+    "input/speedcoach.csv": {
+      "sha256": "ab4fe33e90a0525ac5377625872cd563f4c13176ee7e1b02f94a0ba0086f0001",
+      "bytes": 20428
+    }
+  }
+}

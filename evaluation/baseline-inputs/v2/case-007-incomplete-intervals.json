@@ -1,0 +1,348 @@
+{
+  "case_id": "case-007-incomplete-intervals",
+  "cross_source_findings": [],
+  "domain_knowledge": [
+    {
+      "limitations": [],
+      "meaning": "Target stroke rate in strokes per minute (SPM).",
+      "status": "HUMAN_CONFIRMED",
+      "term": "voga"
+    },
+    {
+      "limitations": [
+        "Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied."
+      ],
+      "meaning": "Standardized rowing training-zone codes.",
+      "status": "HUMAN_CONFIRMED",
+      "term": "B0-B7 and E1-E7"
+    }
+  ],
+  "environment": null,
+  "evidence_gaps": [
+    "No coach technique or crew-synchronization observation is supplied.",
+    "No perceived-effort report is supplied.",
+    "No environmental timeline is supplied.",
+    "No independent mobile recording is supplied for route corroboration."
+  ],
+  "generated_by": "scripts/build_baseline_inputs.py@1.1",
+  "input_hashes": {
+    "context.json": "06e41f79b6ad35f44528c2dbb35a35d155523431c8aeee60c8591e5d7d8ac0d4",
+    "plan.json": "8ff59efcf85e9d7204278bf65971e775f33f07dabb0545ad8a16545fe4a847a7",
+    "speedcoach.csv": "441f804bcaca7f712dae30b5922e370c9c5d0a4e5591c84c41dbe7be4e0c1ee8"
+  },
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "known_context": {
+    "human_confirmations": {
+      "coach_observed_technique": null,
+      "perceived_effort": null
+    },
+    "input_notice": "All people, dates, route coordinates, telemetry, and conditions in this diagnostic case are synthetic.",
+    "session_candidate": {
+      "athlete_ids": [
+        "synthetic-athlete-c",
+        "synthetic-athlete-d"
+      ],
+      "boat_class": "DOUBLE_SCULL",
+      "crew_category": "OPEN",
+      "experience": "EXPERIENCED",
+      "route_heading_deg": 0.0,
+      "world_rowing_code": "2x"
+    }
+  },
+  "plan": {
+    "athlete_scope": {
+      "ids": [
+        "synthetic-crew-diagnostic"
+      ],
+      "kind": "CREW"
+    },
+    "blocks": [
+      {
+        "block_id": "work-500m",
+        "distance_m": 500.0,
+        "duration_s": null,
+        "equipment": [],
+        "instructions": [
+          "Keep every work interval continuous."
+        ],
+        "kind": "WORK",
+        "recovery": {
+          "max_s": 180,
+          "min_s": 120,
+          "mode": "ACTIVE_LIGHT_ROWING"
+        },
+        "repetitions": 4,
+        "stroke_rate": {
+          "max_spm": 22,
+          "min_spm": 20
+        },
+        "zone": "B2/B3",
+        "zone_system": "STANDARD_ROWING_ZONES"
+      }
+    ],
+    "coach_language": "4 x 500 m at 20-22 SPM with 2-3 minutes active recovery.",
+    "goal_id": "synthetic-goal-diagnostic",
+    "modality": "WATER",
+    "notes": "Entirely synthetic diagnostic prescription.",
+    "plan_id": "plan-case-007-incomplete-intervals",
+    "scheduled_date": "2026-02-03",
+    "schema_version": "wake.training_plan.v1",
+    "source": {
+      "kind": "SYNTHETIC",
+      "provenance": "SYNTHETIC",
+      "source_ref": "scripts/generate_diagnostic_cases.py"
+    },
+    "timezone": "America/Sao_Paulo",
+    "unresolved_terms": []
+  },
+  "schema_version": "wake.case_summary.v1",
+  "sources": [
+    {
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "SPEEDCOACH",
+      "metrics": {
+        "average_positive_spm": 19.01,
+        "duration_s": 747.706,
+        "end_distance_m": 1994.603,
+        "positive_spm_rows": 150,
+        "route_points": 150,
+        "start_time": "2026-02-03T06:00:05.000-03:00"
+      },
+      "quality_flags": [
+        "GPS_PRESENT",
+        "SPM_PRESENT"
+      ],
+      "source_id": "speedcoach-case-007-incomplete-intervals",
+      "time_series_windows": [
+        {
+          "average_speed_m_s": 3.348,
+          "average_spm": 20.97,
+          "distance_end_m": 83.7,
+          "distance_start_m": 16.7,
+          "end_offset_s": 30,
+          "samples": 5,
+          "start_offset_s": 0
+        },
+        {
+          "average_speed_m_s": 3.357,
+          "average_spm": 20.97,
+          "distance_end_m": 184.4,
+          "distance_start_m": 100.4,
+          "end_offset_s": 60,
+          "samples": 6,
+          "start_offset_s": 30
+        },
+        {
+          "average_speed_m_s": 3.351,
+          "average_spm": 20.99,
+          "distance_end_m": 284.9,
+          "distance_start_m": 201.1,
+          "end_offset_s": 90,
+          "samples": 6,
+          "start_offset_s": 60
+        },
+        {
+          "average_speed_m_s": 3.34,
+          "average_spm": 21.02,
+          "distance_end_m": 385.1,
+          "distance_start_m": 301.6,
+          "end_offset_s": 120,
+          "samples": 6,
+          "start_offset_s": 90
+        },
+        {
+          "average_speed_m_s": 3.341,
+          "average_spm": 21.01,
+          "distance_end_m": 500.0,
+          "distance_start_m": 401.9,
+          "end_offset_s": 150,
+          "samples": 7,
+          "start_offset_s": 120
+        },
+        {
+          "average_speed_m_s": 1.645,
+          "average_spm": 16.02,
+          "distance_end_m": 549.4,
+          "distance_start_m": 508.2,
+          "end_offset_s": 180,
+          "samples": 6,
+          "start_offset_s": 150
+        },
+        {
+          "average_speed_m_s": 1.645,
+          "average_spm": 16.01,
+          "distance_end_m": 598.7,
+          "distance_start_m": 557.5,
+          "end_offset_s": 210,
+          "samples": 6,
+          "start_offset_s": 180
+        },
+        {
+          "average_speed_m_s": 1.653,
+          "average_spm": 15.99,
+          "distance_end_m": 648.3,
+          "distance_start_m": 606.9,
+          "end_offset_s": 240,
+          "samples": 6,
+          "start_offset_s": 210
+        },
+        {
+          "average_speed_m_s": 1.644,
+          "average_spm": 16.0,
+          "distance_end_m": 697.7,
+          "distance_start_m": 656.5,
+          "end_offset_s": 270,
+          "samples": 6,
+          "start_offset_s": 240
+        },
+        {
+          "average_speed_m_s": 1.647,
+          "average_spm": 15.98,
+          "distance_end_m": 747.1,
+          "distance_start_m": 705.8,
+          "end_offset_s": 300,
+          "samples": 6,
+          "start_offset_s": 270
+        },
+        {
+          "average_speed_m_s": 3.353,
+          "average_spm": 21.06,
+          "distance_end_m": 847.7,
+          "distance_start_m": 763.8,
+          "end_offset_s": 330,
+          "samples": 6,
+          "start_offset_s": 300
+        },
+        {
+          "average_speed_m_s": 3.351,
+          "average_spm": 21.02,
+          "distance_end_m": 948.2,
+          "distance_start_m": 864.4,
+          "end_offset_s": 360,
+          "samples": 6,
+          "start_offset_s": 330
+        },
+        {
+          "average_speed_m_s": 3.349,
+          "average_spm": 21.04,
+          "distance_end_m": 1048.6,
+          "distance_start_m": 964.8,
+          "end_offset_s": 390,
+          "samples": 6,
+          "start_offset_s": 360
+        },
+        {
+          "average_speed_m_s": 3.355,
+          "average_spm": 21.01,
+          "distance_end_m": 1149.3,
+          "distance_start_m": 1065.5,
+          "end_offset_s": 420,
+          "samples": 6,
+          "start_offset_s": 390
+        },
+        {
+          "average_speed_m_s": 3.367,
+          "average_spm": 21.0,
+          "distance_end_m": 1247.1,
+          "distance_start_m": 1166.1,
+          "end_offset_s": 450,
+          "samples": 6,
+          "start_offset_s": 420
+        },
+        {
+          "average_speed_m_s": 1.649,
+          "average_spm": 16.02,
+          "distance_end_m": 1296.5,
+          "distance_start_m": 1255.3,
+          "end_offset_s": 480,
+          "samples": 6,
+          "start_offset_s": 450
+        },
+        {
+          "average_speed_m_s": 1.656,
+          "average_spm": 15.97,
+          "distance_end_m": 1346.2,
+          "distance_start_m": 1304.8,
+          "end_offset_s": 510,
+          "samples": 6,
+          "start_offset_s": 480
+        },
+        {
+          "average_speed_m_s": 1.657,
+          "average_spm": 15.99,
+          "distance_end_m": 1395.9,
+          "distance_start_m": 1354.5,
+          "end_offset_s": 540,
+          "samples": 6,
+          "start_offset_s": 510
+        },
+        {
+          "average_speed_m_s": 1.647,
+          "average_spm": 15.98,
+          "distance_end_m": 1445.4,
+          "distance_start_m": 1404.2,
+          "end_offset_s": 570,
+          "samples": 6,
+          "start_offset_s": 540
+        },
+        {
+          "average_speed_m_s": 1.641,
+          "average_spm": 16.01,
+          "distance_end_m": 1494.6,
+          "distance_start_m": 1453.6,
+          "end_offset_s": 600,
+          "samples": 6,
+          "start_offset_s": 570
+        },
+        {
+          "average_speed_m_s": 3.345,
+          "average_spm": 21.02,
+          "distance_end_m": 1595.0,
+          "distance_start_m": 1511.4,
+          "end_offset_s": 630,
+          "samples": 6,
+          "start_offset_s": 600
+        },
+        {
+          "average_speed_m_s": 3.341,
+          "average_spm": 21.05,
+          "distance_end_m": 1695.2,
+          "distance_start_m": 1611.7,
+          "end_offset_s": 660,
+          "samples": 6,
+          "start_offset_s": 630
+        },
+        {
+          "average_speed_m_s": 3.353,
+          "average_spm": 21.02,
+          "distance_end_m": 1795.8,
+          "distance_start_m": 1711.9,
+          "end_offset_s": 690,
+          "samples": 6,
+          "start_offset_s": 660
+        },
+        {
+          "average_speed_m_s": 3.354,
+          "average_spm": 20.99,
+          "distance_end_m": 1896.4,
+          "distance_start_m": 1812.6,
+          "end_offset_s": 720,
+          "samples": 6,
+          "start_offset_s": 690
+        },
+        {
+          "average_speed_m_s": 3.353,
+          "average_spm": 21.01,
+          "distance_end_m": 1994.6,
+          "distance_start_m": 1913.2,
+          "end_offset_s": 750,
+          "samples": 6,
+          "start_offset_s": 720
+        }
+      ]
+    }
+  ],
+  "summary_id": "baseline-input-v2-case-007-incomplete-intervals"
+}

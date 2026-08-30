@@ -1,0 +1,39 @@
+{
+  "schema_version": "wake.synthetic_case_context.v1",
+  "case_id": "case-004-steady-headwind-compliant",
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "provided_sources": [
+    {
+      "source_id": "speedcoach-case-004-steady-headwind-compliant",
+      "kind": "SPEEDCOACH",
+      "path": "speedcoach.csv"
+    },
+    {
+      "source_id": "plan-case-004-steady-headwind-compliant",
+      "kind": "TRAINING_PLAN",
+      "path": "plan.json"
+    },
+    {
+      "source_id": "environment-case-004-steady-headwind-compliant",
+      "kind": "ENVIRONMENT",
+      "path": "environment.json"
+    }
+  ],
+  "session_candidate": {
+    "boat_class": "DOUBLE_SCULL",
+    "world_rowing_code": "2x",
+    "crew_category": "OPEN",
+    "athlete_ids": [
+      "synthetic-athlete-c",
+      "synthetic-athlete-d"
+    ],
+    "experience": "EXPERIENCED",
+    "route_heading_deg": 0.0
+  },
+  "human_confirmations": {
+    "coach_observed_technique": null,
+    "perceived_effort": null
+  },
+  "scenario_label": "Steady headwind, compliant execution",
+  "input_notice": "All people, dates, route coordinates, telemetry, and conditions in this diagnostic case are synthetic."
+}

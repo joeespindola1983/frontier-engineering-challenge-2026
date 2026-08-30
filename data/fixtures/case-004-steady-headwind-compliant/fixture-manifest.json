@@ -1,0 +1,34 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-004-steady-headwind-compliant",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830004,
+  "files": {
+    "README.md": {
+      "sha256": "9e82db3c01c7ec5f2421ab4423dae9e8fb6caa3762b5b188db3c142699b2fdb7",
+      "bytes": 231
+    },
+    "ground-truth.json": {
+      "sha256": "3ac8bdf179f3fc2b5c8561ab1d8c9f53b79772668de001bc346ef0b7070dfb38",
+      "bytes": 3199
+    },
+    "input/context.json": {
+      "sha256": "7d3d28e98b6bd9631847fab807e137b50c258b658fd3cf47cb003e7bf8b3b41e",
+      "bytes": 1269
+    },
+    "input/environment.json": {
+      "sha256": "c6c8e7e617446dc1ca388bb8de8961f86cb7f34c2aa0d5bbbe1b52319472f138",
+      "bytes": 7693
+    },
+    "input/plan.json": {
+      "sha256": "474760bccac6c795713e677e89f72709b171e968ce23b88a94a24cffda526d2a",
+      "bytes": 1153
+    },
+    "input/speedcoach.csv": {
+      "sha256": "15ef42f0a48224a87c6a14be3ac1ea0cc1478be7f5e40caeef0cdf8a25d5910a",
+      "bytes": 19901
+    }
+  }
+}

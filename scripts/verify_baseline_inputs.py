@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BUNDLE = ROOT / "evaluation/baseline-inputs/v1"
+EXPANDED_BUNDLE = ROOT / "evaluation/baseline-inputs/v2"
 
 
 def sha256(path: Path) -> str:
@@ -79,8 +80,15 @@ def verify(bundle: Path = DEFAULT_BUNDLE) -> dict:
     }
 
 
+def verify_all_versions() -> dict:
+    return {
+        "status": "verified",
+        "bundles": [verify(DEFAULT_BUNDLE), verify(EXPANDED_BUNDLE)],
+    }
+
+
 def main() -> None:
-    print(json.dumps(verify(), indent=2))
+    print(json.dumps(verify_all_versions(), indent=2))
 
 
 if __name__ == "__main__":

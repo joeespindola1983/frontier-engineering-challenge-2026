@@ -1,0 +1,34 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-006-crosswind-gusts",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830006,
+  "files": {
+    "README.md": {
+      "sha256": "0dfb8e074e7bdb8ca14e07e3aaf997464c28a7b85eed7cbb8f44cdc42c0c265b",
+      "bytes": 236
+    },
+    "ground-truth.json": {
+      "sha256": "1d34e04ac1047daab5195ed0ac0d28107c1d66b24c96874f830b9c8ea5ac91d8",
+      "bytes": 3149
+    },
+    "input/context.json": {
+      "sha256": "b4649ce01e04c67124567099189b5856ebf85fe79a3b6ede3dc74538ffdfafaa",
+      "bytes": 1234
+    },
+    "input/environment.json": {
+      "sha256": "9764124835806db297b64f5043680cd79978eab1d6240812df4bacb9bf735220",
+      "bytes": 6983
+    },
+    "input/plan.json": {
+      "sha256": "8a795c885c6cde13cfbc06ff84892e6fabf98120134121176e307ad717fd8943",
+      "bytes": 1143
+    },
+    "input/speedcoach.csv": {
+      "sha256": "068da46916674986bed92be342f1e6c180551443bb3ebe79b51760349a9c8683",
+      "bytes": 17848
+    }
+  }
+}

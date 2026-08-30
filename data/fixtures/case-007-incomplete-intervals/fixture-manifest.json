@@ -1,0 +1,30 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-007-incomplete-intervals",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830007,
+  "files": {
+    "README.md": {
+      "sha256": "ac4a5bbc5e2f284f6ced9d51749dd927ccd0e2896254fa7b6628c0bd6e243e17",
+      "bytes": 240
+    },
+    "ground-truth.json": {
+      "sha256": "36d87def26ae7e00edd16d0ac3d981dcff02319f8c6a6f734a40e44e5c3e0acd",
+      "bytes": 2841
+    },
+    "input/context.json": {
+      "sha256": "06e41f79b6ad35f44528c2dbb35a35d155523431c8aeee60c8591e5d7d8ac0d4",
+      "bytes": 1119
+    },
+    "input/plan.json": {
+      "sha256": "8ff59efcf85e9d7204278bf65971e775f33f07dabb0545ad8a16545fe4a847a7",
+      "bytes": 1148
+    },
+    "input/speedcoach.csv": {
+      "sha256": "441f804bcaca7f712dae30b5922e370c9c5d0a4e5591c84c41dbe7be4e0c1ee8",
+      "bytes": 12738
+    }
+  }
+}

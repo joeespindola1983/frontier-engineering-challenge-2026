@@ -1,0 +1,704 @@
+{
+  "case_id": "case-005-tailwind-fast-not-improvement",
+  "cross_source_findings": [],
+  "domain_knowledge": [
+    {
+      "limitations": [],
+      "meaning": "Target stroke rate in strokes per minute (SPM).",
+      "status": "HUMAN_CONFIRMED",
+      "term": "voga"
+    },
+    {
+      "limitations": [
+        "Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied."
+      ],
+      "meaning": "Standardized rowing training-zone codes.",
+      "status": "HUMAN_CONFIRMED",
+      "term": "B0-B7 and E1-E7"
+    }
+  ],
+  "environment": {
+    "direction_convention": "METEOROLOGICAL_FROM_DEGREES_TRUE_NORTH",
+    "method": "Wind is projected against the confirmed synthetic route heading; the timeline supports association, not causation.",
+    "route_heading_deg": 0.0,
+    "source": {
+      "kind": "SYNTHETIC",
+      "quality": "HIGH",
+      "source_ref": "scripts/generate_diagnostic_cases.py"
+    },
+    "time_series_windows": [
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 0.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 30.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 60.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 90.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 120.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 150.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 180.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 210.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 240.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 270.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 300.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 330.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 360.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 390.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 420.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 450.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 480.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 510.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 540.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 570.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 600.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 630.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 660.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 690.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 720.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 750.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 780.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 810.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 840.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 870.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 900.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 930.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 960.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      },
+      {
+        "effective_crosswind_m_s": 0.0,
+        "effective_headwind_m_s": -4.0,
+        "elapsed_s": 990.0,
+        "gust_speed_m_s": 4.5,
+        "wind_direction_from_deg": 180.0,
+        "wind_speed_m_s": 4.0
+      }
+    ],
+    "timeline_id": "environment-case-005-tailwind-fast-not-improvement"
+  },
+  "evidence_gaps": [
+    "No coach technique or crew-synchronization observation is supplied.",
+    "No perceived-effort report is supplied.",
+    "No independent mobile recording is supplied for route corroboration."
+  ],
+  "generated_by": "scripts/build_baseline_inputs.py@1.1",
+  "input_hashes": {
+    "context.json": "24671b3b9aceb96e6b5e670232882fbaa5baf8665cc79e6d4d11b5ccfcaf1a54",
+    "environment.json": "d618168a16687d3bd8f2e5776a45690fade9ec84fd0903a3ec72b15c06d811b1",
+    "plan.json": "60dfff98ac3f8d6dc5f5ea02d9335d3751364941353420f9d36c8b8f34c9740c",
+    "speedcoach.csv": "18b35306e43e8c35c6f6afbe32e775d94b088c2e0b2e0b00631cea198abf5d14"
+  },
+  "investigation_request": "Compare the planned and performed session, identify only supported deviations, select trustworthy metrics, and preserve uncertainty.",
+  "known_context": {
+    "human_confirmations": {
+      "coach_observed_technique": null,
+      "perceived_effort": null
+    },
+    "input_notice": "All people, dates, route coordinates, telemetry, and conditions in this diagnostic case are synthetic.",
+    "session_candidate": {
+      "athlete_ids": [
+        "synthetic-athlete-c",
+        "synthetic-athlete-d"
+      ],
+      "boat_class": "DOUBLE_SCULL",
+      "crew_category": "OPEN",
+      "experience": "EXPERIENCED",
+      "route_heading_deg": 0.0,
+      "world_rowing_code": "2x"
+    }
+  },
+  "plan": {
+    "athlete_scope": {
+      "ids": [
+        "synthetic-crew-diagnostic"
+      ],
+      "kind": "CREW"
+    },
+    "blocks": [
+      {
+        "block_id": "work-500m",
+        "distance_m": 500.0,
+        "duration_s": null,
+        "equipment": [],
+        "instructions": [
+          "Keep every work interval continuous."
+        ],
+        "kind": "WORK",
+        "recovery": {
+          "max_s": 180,
+          "min_s": 120,
+          "mode": "ACTIVE_LIGHT_ROWING"
+        },
+        "repetitions": 4,
+        "stroke_rate": {
+          "max_spm": 22,
+          "min_spm": 20
+        },
+        "zone": "B2/B3",
+        "zone_system": "STANDARD_ROWING_ZONES"
+      }
+    ],
+    "coach_language": "4 x 500 m at 20-22 SPM with 2-3 minutes active recovery.",
+    "goal_id": "synthetic-goal-diagnostic",
+    "modality": "WATER",
+    "notes": "Entirely synthetic diagnostic prescription.",
+    "plan_id": "plan-case-005-tailwind-fast-not-improvement",
+    "scheduled_date": "2026-02-03",
+    "schema_version": "wake.training_plan.v1",
+    "source": {
+      "kind": "SYNTHETIC",
+      "provenance": "SYNTHETIC",
+      "source_ref": "scripts/generate_diagnostic_cases.py"
+    },
+    "timezone": "America/Sao_Paulo",
+    "unresolved_terms": []
+  },
+  "schema_version": "wake.case_summary.v1",
+  "sources": [
+    {
+      "evidence_refs": [
+        "input/speedcoach.csv"
+      ],
+      "kind": "SPEEDCOACH",
+      "metrics": {
+        "average_positive_spm": 18.68,
+        "duration_s": 962.01,
+        "end_distance_m": 2742.995,
+        "positive_spm_rows": 194,
+        "route_points": 194,
+        "start_time": "2026-02-03T06:00:05.000-03:00"
+      },
+      "quality_flags": [
+        "GPS_PRESENT",
+        "SPM_PRESENT"
+      ],
+      "source_id": "speedcoach-case-005-tailwind-fast-not-improvement",
+      "time_series_windows": [
+        {
+          "average_speed_m_s": 3.907,
+          "average_spm": 20.94,
+          "distance_end_m": 97.7,
+          "distance_start_m": 19.6,
+          "end_offset_s": 30,
+          "samples": 5,
+          "start_offset_s": 0
+        },
+        {
+          "average_speed_m_s": 3.911,
+          "average_spm": 21.0,
+          "distance_end_m": 215.0,
+          "distance_start_m": 117.3,
+          "end_offset_s": 60,
+          "samples": 6,
+          "start_offset_s": 30
+        },
+        {
+          "average_speed_m_s": 3.903,
+          "average_spm": 20.97,
+          "distance_end_m": 332.1,
+          "distance_start_m": 234.4,
+          "end_offset_s": 90,
+          "samples": 6,
+          "start_offset_s": 60
+        },
+        {
+          "average_speed_m_s": 3.895,
+          "average_spm": 21.01,
+          "distance_end_m": 449.0,
+          "distance_start_m": 351.6,
+          "end_offset_s": 120,
+          "samples": 6,
+          "start_offset_s": 90
+        },
+        {
+          "average_speed_m_s": 2.621,
+          "average_spm": 18.14,
+          "distance_end_m": 533.1,
+          "distance_start_m": 468.4,
+          "end_offset_s": 150,
+          "samples": 7,
+          "start_offset_s": 120
+        },
+        {
+          "average_speed_m_s": 1.655,
+          "average_spm": 15.99,
+          "distance_end_m": 582.8,
+          "distance_start_m": 541.5,
+          "end_offset_s": 180,
+          "samples": 6,
+          "start_offset_s": 150
+        },
+        {
+          "average_speed_m_s": 1.65,
+          "average_spm": 15.97,
+          "distance_end_m": 632.3,
+          "distance_start_m": 591.0,
+          "end_offset_s": 210,
+          "samples": 6,
+          "start_offset_s": 180
+        },
+        {
+          "average_speed_m_s": 1.65,
+          "average_spm": 15.98,
+          "distance_end_m": 681.8,
+          "distance_start_m": 640.6,
+          "end_offset_s": 240,
+          "samples": 6,
+          "start_offset_s": 210
+        },
+        {
+          "average_speed_m_s": 1.654,
+          "average_spm": 15.98,
+          "distance_end_m": 731.4,
+          "distance_start_m": 690.1,
+          "end_offset_s": 270,
+          "samples": 6,
+          "start_offset_s": 240
+        },
+        {
+          "average_speed_m_s": 3.157,
+          "average_spm": 19.38,
+          "distance_end_m": 826.1,
+          "distance_start_m": 739.6,
+          "end_offset_s": 300,
+          "samples": 6,
+          "start_offset_s": 270
+        },
+        {
+          "average_speed_m_s": 3.9,
+          "average_spm": 21.02,
+          "distance_end_m": 943.1,
+          "distance_start_m": 845.7,
+          "end_offset_s": 330,
+          "samples": 6,
+          "start_offset_s": 300
+        },
+        {
+          "average_speed_m_s": 3.902,
+          "average_spm": 21.01,
+          "distance_end_m": 1060.2,
+          "distance_start_m": 962.7,
+          "end_offset_s": 360,
+          "samples": 6,
+          "start_offset_s": 330
+        },
+        {
+          "average_speed_m_s": 3.911,
+          "average_spm": 21.03,
+          "distance_end_m": 1177.5,
+          "distance_start_m": 1079.7,
+          "end_offset_s": 390,
+          "samples": 6,
+          "start_offset_s": 360
+        },
+        {
+          "average_speed_m_s": 3.159,
+          "average_spm": 19.32,
+          "distance_end_m": 1264.3,
+          "distance_start_m": 1197.2,
+          "end_offset_s": 420,
+          "samples": 6,
+          "start_offset_s": 390
+        },
+        {
+          "average_speed_m_s": 1.651,
+          "average_spm": 16.02,
+          "distance_end_m": 1313.9,
+          "distance_start_m": 1272.5,
+          "end_offset_s": 450,
+          "samples": 6,
+          "start_offset_s": 420
+        },
+        {
+          "average_speed_m_s": 1.648,
+          "average_spm": 15.98,
+          "distance_end_m": 1363.3,
+          "distance_start_m": 1322.2,
+          "end_offset_s": 480,
+          "samples": 6,
+          "start_offset_s": 450
+        },
+        {
+          "average_speed_m_s": 1.65,
+          "average_spm": 15.98,
+          "distance_end_m": 1412.8,
+          "distance_start_m": 1371.6,
+          "end_offset_s": 510,
+          "samples": 6,
+          "start_offset_s": 480
+        },
+        {
+          "average_speed_m_s": 1.654,
+          "average_spm": 15.99,
+          "distance_end_m": 1462.4,
+          "distance_start_m": 1421.1,
+          "end_offset_s": 540,
+          "samples": 6,
+          "start_offset_s": 510
+        },
+        {
+          "average_speed_m_s": 2.398,
+          "average_spm": 17.7,
+          "distance_end_m": 1534.4,
+          "distance_start_m": 1470.7,
+          "end_offset_s": 570,
+          "samples": 6,
+          "start_offset_s": 540
+        },
+        {
+          "average_speed_m_s": 3.903,
+          "average_spm": 21.04,
+          "distance_end_m": 1651.5,
+          "distance_start_m": 1553.9,
+          "end_offset_s": 600,
+          "samples": 6,
+          "start_offset_s": 570
+        },
+        {
+          "average_speed_m_s": 3.903,
+          "average_spm": 20.96,
+          "distance_end_m": 1768.6,
+          "distance_start_m": 1670.9,
+          "end_offset_s": 630,
+          "samples": 6,
+          "start_offset_s": 600
+        },
+        {
+          "average_speed_m_s": 3.915,
+          "average_spm": 20.95,
+          "distance_end_m": 1886.0,
+          "distance_start_m": 1788.2,
+          "end_offset_s": 660,
+          "samples": 6,
+          "start_offset_s": 630
+        },
+        {
+          "average_speed_m_s": 3.574,
+          "average_spm": 20.22,
+          "distance_end_m": 2003.5,
+          "distance_start_m": 1905.5,
+          "end_offset_s": 690,
+          "samples": 7,
+          "start_offset_s": 660
+        },
+        {
+          "average_speed_m_s": 1.651,
+          "average_spm": 16.01,
+          "distance_end_m": 2053.0,
+          "distance_start_m": 2011.8,
+          "end_offset_s": 720,
+          "samples": 6,
+          "start_offset_s": 690
+        },
+        {
+          "average_speed_m_s": 1.656,
+          "average_spm": 16.01,
+          "distance_end_m": 2102.7,
+          "distance_start_m": 2061.3,
+          "end_offset_s": 750,
+          "samples": 6,
+          "start_offset_s": 720
+        },
+        {
+          "average_speed_m_s": 1.644,
+          "average_spm": 16.02,
+          "distance_end_m": 2152.1,
+          "distance_start_m": 2110.9,
+          "end_offset_s": 780,
+          "samples": 6,
+          "start_offset_s": 750
+        },
+        {
+          "average_speed_m_s": 1.649,
+          "average_spm": 16.06,
+          "distance_end_m": 2201.5,
+          "distance_start_m": 2160.3,
+          "end_offset_s": 810,
+          "samples": 6,
+          "start_offset_s": 780
+        },
+        {
+          "average_speed_m_s": 2.029,
+          "average_spm": 16.82,
+          "distance_end_m": 2262.4,
+          "distance_start_m": 2209.9,
+          "end_offset_s": 840,
+          "samples": 6,
+          "start_offset_s": 810
+        },
+        {
+          "average_speed_m_s": 3.905,
+          "average_spm": 21.05,
+          "distance_end_m": 2379.6,
+          "distance_start_m": 2282.1,
+          "end_offset_s": 870,
+          "samples": 6,
+          "start_offset_s": 840
+        },
+        {
+          "average_speed_m_s": 3.909,
+          "average_spm": 21.0,
+          "distance_end_m": 2496.9,
+          "distance_start_m": 2399.2,
+          "end_offset_s": 900,
+          "samples": 6,
+          "start_offset_s": 870
+        },
+        {
+          "average_speed_m_s": 3.91,
+          "average_spm": 20.98,
+          "distance_end_m": 2614.2,
+          "distance_start_m": 2516.5,
+          "end_offset_s": 930,
+          "samples": 6,
+          "start_offset_s": 900
+        },
+        {
+          "average_speed_m_s": 3.91,
+          "average_spm": 20.96,
+          "distance_end_m": 2731.5,
+          "distance_start_m": 2633.8,
+          "end_offset_s": 960,
+          "samples": 6,
+          "start_offset_s": 930
+        },
+        {
+          "average_speed_m_s": 3.907,
+          "average_spm": 21.12,
+          "distance_end_m": 2743.0,
+          "distance_start_m": 2743.0,
+          "end_offset_s": 990,
+          "samples": 1,
+          "start_offset_s": 960
+        }
+      ]
+    }
+  ],
+  "summary_id": "baseline-input-v2-case-005-tailwind-fast-not-improvement"
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": "wake.evaluation_ground_truth.v1",
+  "fixture_id": "case-009-excess-recovery",
+  "fixture_version": "1.0",
+  "applicable_dimensions": [
+    "plan_interpretation",
+    "segment_reconstruction",
+    "deviation_detection",
+    "evidence_and_abstention"
+  ],
+  "expected_session_matches": [],
+  "expected_segments": [
+    {
+      "segment_id": "work-01",
+      "kind": "WORK",
+      "start_offset_s": 0.0,
+      "end_offset_s": 149.179,
+      "distance_m": 500.0,
+      "average_speed_m_s": 3.352,
+      "average_spm": 21.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-01",
+      "kind": "RECOVERY",
+      "start_offset_s": 149.179,
+      "end_offset_s": 299.179,
+      "distance_m": 247.663,
+      "average_speed_m_s": 1.651,
+      "average_spm": 16.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-02",
+      "kind": "WORK",
+      "start_offset_s": 299.179,
+      "end_offset_s": 448.447,
+      "distance_m": 500.0,
+      "average_speed_m_s": 3.35,
+      "average_spm": 20.99,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-02",
+      "kind": "RECOVERY",
+      "start_offset_s": 448.447,
+      "end_offset_s": 748.447,
+      "distance_m": 494.53,
+      "average_speed_m_s": 1.648,
+      "average_spm": 16.0,
+      "compliance": "DEVIATION"
+    },
+    {
+      "segment_id": "work-03",
+      "kind": "WORK",
+      "start_offset_s": 748.447,
+      "end_offset_s": 897.901,
+      "distance_m": 500.0,
+      "average_speed_m_s": 3.346,
+      "average_spm": 21.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-03",
+      "kind": "RECOVERY",
+      "start_offset_s": 897.901,
+      "end_offset_s": 1047.901,
+      "distance_m": 247.044,
+      "average_speed_m_s": 1.647,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-04",
+      "kind": "WORK",
+      "start_offset_s": 1047.901,
+      "end_offset_s": 1197.134,
+      "distance_m": 500.0,
+      "average_speed_m_s": 3.35,
+      "average_spm": 21.02,
+      "compliance": "COMPLIANT"
+    }
+  ],
+  "expected_source_policy": {
+    "stroke_rate_spm": "speedcoach-case-009-excess-recovery",
+    "distance_m": "speedcoach-case-009-excess-recovery",
+    "route": "speedcoach-case-009-excess-recovery"
+  },
+  "expected_claims": [
+    {
+      "claim_id": "observed-work-count",
+      "expectation": "Telemetry contains 4 observed work intervals against 4 planned intervals.",
+      "evidence_refs": [
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    },
+    {
+      "claim_id": "recovery-02-excess",
+      "expectation": "Recovery interval two exceeds the prescribed maximum.",
+      "evidence_refs": [
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    }
+  ],
+  "required_abstentions": [
+    "Do not infer visible technique or crew synchronization from numeric telemetry.",
+    "Do not present synthetic people, places, dates, or conditions as real observations."
+  ],
+  "required_questions": [],
+  "tolerances": {
+    "segment_boundary_s": 10.0,
+    "distance_m": 15.0,
+    "stroke_rate_spm": 1.0,
+    "clock_offset_s": 0.1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-003-calm-expert-compliant",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830003,
+  "files": {
+    "README.md": {
+      "sha256": "aade20f5bd95b03f9b4671ab71586b48d32c6c651b426958506f5776a3481409",
+      "bytes": 231
+    },
+    "ground-truth.json": {
+      "sha256": "972d9d6e62dd889be1335541428b092ac13ed38be0e45b299e5b9d1e4b6e7416",
+      "bytes": 3183
+    },
+    "input/context.json": {
+      "sha256": "14e2c7648118f8b70d2f6304516e6fb6500afcf89b9fc38057e271b86f21fc14",
+      "bytes": 1253
+    },
+    "input/environment.json": {
+      "sha256": "e74cf3faf19a8253a002583e0a419e6a44bb48800f1cfaeaece4b531b360ef23",
+      "bytes": 6989
+    },
+    "input/plan.json": {
+      "sha256": "c888f84d151043de66c3525fb9a23277bae8b1ae1e875544a2ade4295c18ea0f",
+      "bytes": 1149
+    },
+    "input/speedcoach.csv": {
+      "sha256": "c08dfcae9e50767f954ab8bf0cc5944396bddfc6810794758768c2204b0ddd2b",
+      "bytes": 17848
+    }
+  }
+}

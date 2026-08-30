@@ -1,0 +1,34 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-010-mobile-spm-zero",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830010,
+  "files": {
+    "README.md": {
+      "sha256": "332ff28c998b12a9c3e54f948a6dd2d082ecc99082e3d24d5187e6f8d09f0ac1",
+      "bytes": 251
+    },
+    "ground-truth.json": {
+      "sha256": "98e95d925c4d759680fdb29897ba31b208f28fd2e0e68739c83f80b93af3b721",
+      "bytes": 3498
+    },
+    "input/context.json": {
+      "sha256": "5177da84c0235bcf4986fab9072848456e89b43388e28ae95cbae8f016304f8c",
+      "bytes": 1233
+    },
+    "input/mobile.csv": {
+      "sha256": "a865a2d900cf6470ffe4a67d1004f7515843c719d17d1f928a45f084de971dc2",
+      "bytes": 8970
+    },
+    "input/plan.json": {
+      "sha256": "ffd73bfc0f3443c8f95a8a741a4ff9676e7aef4c4d422f5483eaea882f3771f8",
+      "bytes": 1143
+    },
+    "input/speedcoach.csv": {
+      "sha256": "6d19fdc96498314f8c89d39046f2e0aba87e53363b6b4e44708d0e0ddd94672f",
+      "bytes": 17848
+    }
+  }
+}

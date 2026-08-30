@@ -76,9 +76,15 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-29 - Register sixteen cases and separate demonstration from diagnosis
 
-- **Status:** accepted; two cases implemented and fourteen planned.
-- **Decision:** Keep complex cases for the product demonstration and add isolated synthetic cases for individual failure modes. Planned cases do not enter the evaluation denominator until their fixtures and ground truth are committed.
+- **Status:** accepted; two cases scored, eight more fixture-ready, and six still fixture-planned.
+- **Decision:** Keep complex cases for the product demonstration and add isolated synthetic cases for individual failure modes. A planned case does not enter the evaluation denominator until its fixtures, ground truth, public verification, compatible grader behavior, and required model outputs are committed.
 - **Rationale:** Three examples can tell the story but cannot characterize the full workflow. Isolated cases make regressions attributable, while a complex hero case demonstrates why the components matter together.
+
+## 2026-08-30 - Version expanded evaluation inputs without rewriting v1
+
+- **Status:** accepted; v2 inputs are fixture-ready and unscored.
+- **Decision:** Preserve `evaluation/baseline-inputs/v1/` byte-for-byte for the published two-case comparison. Put the ten-case expansion in `evaluation/baseline-inputs/v2/`, retaining the exact v1 entries for cases 001-002 and adding cases 003-010. Keep new registry entries `PLANNED` until evaluation execution is complete.
+- **Rationale:** Adding inputs to a directory already used by an official run would make its manifest non-reproducible and could silently change runner defaults or grader denominators.
 
 ## 2026-08-29 - Use derived-synthetic plans without fabricating real history
 

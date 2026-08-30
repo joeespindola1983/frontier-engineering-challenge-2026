@@ -1,0 +1,113 @@
+{
+  "schema_version": "wake.evaluation_ground_truth.v1",
+  "fixture_id": "case-004-steady-headwind-compliant",
+  "fixture_version": "1.0",
+  "applicable_dimensions": [
+    "plan_interpretation",
+    "segment_reconstruction",
+    "deviation_detection",
+    "evidence_and_abstention",
+    "environmental_interpretation"
+  ],
+  "expected_session_matches": [],
+  "expected_segments": [
+    {
+      "segment_id": "work-01",
+      "kind": "WORK",
+      "start_offset_s": 0.0,
+      "end_offset_s": 179.412,
+      "distance_m": 500.0,
+      "average_speed_m_s": 2.787,
+      "average_spm": 21.03,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-01",
+      "kind": "RECOVERY",
+      "start_offset_s": 179.412,
+      "end_offset_s": 329.412,
+      "distance_m": 247.903,
+      "average_speed_m_s": 1.653,
+      "average_spm": 15.99,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-02",
+      "kind": "WORK",
+      "start_offset_s": 329.412,
+      "end_offset_s": 508.697,
+      "distance_m": 500.0,
+      "average_speed_m_s": 2.789,
+      "average_spm": 21.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-02",
+      "kind": "RECOVERY",
+      "start_offset_s": 508.697,
+      "end_offset_s": 658.697,
+      "distance_m": 247.507,
+      "average_speed_m_s": 1.65,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-03",
+      "kind": "WORK",
+      "start_offset_s": 658.697,
+      "end_offset_s": 837.717,
+      "distance_m": 500.0,
+      "average_speed_m_s": 2.793,
+      "average_spm": 21.0,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "recovery-03",
+      "kind": "RECOVERY",
+      "start_offset_s": 837.717,
+      "end_offset_s": 987.717,
+      "distance_m": 247.35,
+      "average_speed_m_s": 1.649,
+      "average_spm": 16.01,
+      "compliance": "COMPLIANT"
+    },
+    {
+      "segment_id": "work-04",
+      "kind": "WORK",
+      "start_offset_s": 987.717,
+      "end_offset_s": 1167.05,
+      "distance_m": 500.0,
+      "average_speed_m_s": 2.788,
+      "average_spm": 20.99,
+      "compliance": "COMPLIANT"
+    }
+  ],
+  "expected_source_policy": {
+    "stroke_rate_spm": "speedcoach-case-004-steady-headwind-compliant",
+    "distance_m": "speedcoach-case-004-steady-headwind-compliant",
+    "route": "speedcoach-case-004-steady-headwind-compliant",
+    "environment": "environment-case-004-steady-headwind-compliant"
+  },
+  "expected_claims": [
+    {
+      "claim_id": "observed-work-count",
+      "expectation": "Telemetry contains 4 observed work intervals against 4 planned intervals.",
+      "evidence_refs": [
+        "speedcoach.csv",
+        "plan.json"
+      ]
+    }
+  ],
+  "required_abstentions": [
+    "Do not infer visible technique or crew synchronization from numeric telemetry.",
+    "Do not present synthetic people, places, dates, or conditions as real observations.",
+    "Do not claim that wind caused the measured speed or proves athlete improvement or regression."
+  ],
+  "required_questions": [],
+  "tolerances": {
+    "segment_boundary_s": 10.0,
+    "distance_m": 15.0,
+    "stroke_rate_spm": 1.0,
+    "clock_offset_s": 0.1
+  }
+}

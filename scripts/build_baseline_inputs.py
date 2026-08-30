@@ -17,7 +17,7 @@ from verify_hero_fixture import nearest_stats, sensor_summary, speedcoach_summar
 
 
 ROOT = Path(__file__).resolve().parents[1]
-GENERATOR_VERSION = "1.0"
+GENERATOR_VERSION = "1.1"
 SUMMARY_VERSION = "wake.case_summary.v1"
 DOMAIN_KNOWLEDGE = [
     {
@@ -419,8 +419,209 @@ def case_002_summary() -> dict:
     }
 
 
+def diagnostic_case_summary(case_id: str) -> dict:
+    """Build one compact summary for a generated case 003-010."""
+    case_dir = ROOT / "data/fixtures" / case_id
+    input_dir = case_dir / "input"
+    context = read_json(input_dir / "context.json")
+    plan = read_json(input_dir / "plan.json")
+    speedcoach = csv_rows(input_dir / "speedcoach.csv")
+    provided = {
+        item["kind"]: item for item in context["provided_sources"]
+    }
+    speedcoach_id = provided["SPEEDCOACH"]["source_id"]
+    speedcoach_spm = [
+        float(row["stroke_rate_spm"])
+        for row in speedcoach
+        if float(row["stroke_rate_spm"]) > 0
+    ]
+    route_speedcoach = [
+        (float(row["latitude"]), float(row["longitude"])) for row in speedcoach
+    ]
+    sources = [
+        {
+            "source_id": speedcoach_id,
+            "kind": "SPEEDCOACH",
+            "evidence_refs": ["input/speedcoach.csv"],
+            "metrics": {
+                "start_time": speedcoach[0]["timestamp"],
+                "duration_s": float(speedcoach[-1]["elapsed_s"]),
+                "end_distance_m": float(speedcoach[-1]["distance_m"]),
+                "average_positive_spm": round(statistics.mean(speedcoach_spm), 2),
+                "positive_spm_rows": len(speedcoach_spm),
+                "route_points": len(speedcoach),
+            },
+            "quality_flags": ["GPS_PRESENT", "SPM_PRESENT"],
+            "time_series_windows": aggregate_windows(speedcoach, 30),
+        }
+    ]
+    findings = []
+    mobile_path = input_dir / "mobile.csv"
+    if mobile_path.is_file():
+        mobile = csv_rows(mobile_path)
+        mobile_id = provided["MOBILE"]["source_id"]
+        mobile_spm = [
+            float(row["stroke_rate_spm"])
+            for row in mobile
+            if float(row["stroke_rate_spm"]) > 0
+        ]
+        route_mobile = [
+            (float(row["latitude"]), float(row["longitude"])) for row in mobile
+        ]
+        speedcoach_start = datetime.fromisoformat(speedcoach[0]["timestamp"])
+        mobile_start = datetime.fromisoformat(mobile[0]["timestamp"])
+        distance_ratio = float(mobile[-1]["distance_m"]) / float(
+            speedcoach[-1]["distance_m"]
+        )
+        sources.append(
+            {
+                "source_id": mobile_id,
+                "kind": "MOBILE",
+                "evidence_refs": ["input/mobile.csv"],
+                "metrics": {
+                    "start_time": mobile[0]["timestamp"],
+                    "duration_s": float(mobile[-1]["elapsed_s"]),
+                    "end_distance_m": float(mobile[-1]["distance_m"]),
+                    "average_positive_spm": (
+                        round(statistics.mean(mobile_spm), 2) if mobile_spm else None
+                    ),
+                    "positive_spm_rows": len(mobile_spm),
+                    "route_points": len(mobile),
+                },
+                "quality_flags": [
+                    "GPS_PRESENT",
+                    "SPM_PRESENT" if mobile_spm else "SPM_ALL_ZERO",
+                    "DISTANCE_BIAS_PRESENT",
+                ],
+                "time_series_windows": [],
+            }
+        )
+        findings.extend(
+            [
+                {
+                    "finding_id": "mobile-clock-offset",
+                    "type": "CLOCK_OFFSET",
+                    "summary": "The mobile clock starts after the SpeedCoach clock.",
+                    "values": {
+                        "mobile_from_speedcoach_s": (
+                            mobile_start - speedcoach_start
+                        ).total_seconds()
+                    },
+                    "evidence_refs": ["input/speedcoach.csv", "input/mobile.csv"],
+                },
+                {
+                    "finding_id": "distance-bias",
+                    "type": "DISTANCE_CONFLICT",
+                    "summary": "Mobile cumulative distance ends above SpeedCoach distance.",
+                    "values": {
+                        "mobile_to_speedcoach_ratio": round(distance_ratio, 5),
+                        "difference_percent": round((distance_ratio - 1) * 100, 3),
+                    },
+                    "evidence_refs": ["input/speedcoach.csv", "input/mobile.csv"],
+                },
+                {
+                    "finding_id": "route-overlap",
+                    "type": "ROUTE_OVERLAP",
+                    "summary": "The two synthetic routes overlap closely.",
+                    "values": {
+                        "speedcoach_to_mobile": nearest_stats(
+                            route_speedcoach, route_mobile
+                        ),
+                        "mobile_to_speedcoach": nearest_stats(
+                            route_mobile, route_speedcoach
+                        ),
+                    },
+                    "evidence_refs": ["input/speedcoach.csv", "input/mobile.csv"],
+                },
+            ]
+        )
+
+    environment_summary = None
+    environment_path = input_dir / "environment.json"
+    if environment_path.is_file():
+        environment = read_json(environment_path)
+        heading = float(context["session_candidate"]["route_heading_deg"])
+        environment_start = datetime.fromisoformat(
+            environment["samples"][0]["timestamp"]
+        )
+        windows = []
+        for sample in environment["samples"]:
+            timestamp = datetime.fromisoformat(sample["timestamp"])
+            direction = float(sample["wind_direction_deg"])
+            speed = float(sample["wind_speed_m_s"])
+            relative = math.radians(direction - heading)
+            windows.append(
+                {
+                    "elapsed_s": (timestamp - environment_start).total_seconds(),
+                    "wind_speed_m_s": speed,
+                    "wind_direction_from_deg": direction,
+                    "gust_speed_m_s": sample["gust_speed_m_s"],
+                    "effective_headwind_m_s": round(speed * math.cos(relative), 3),
+                    "effective_crosswind_m_s": round(speed * math.sin(relative), 3),
+                }
+            )
+        environment_summary = {
+            "timeline_id": environment["timeline_id"],
+            "source": environment["source"],
+            "direction_convention": environment["direction_convention"],
+            "route_heading_deg": heading,
+            "method": (
+                "Wind is projected against the confirmed synthetic route heading; "
+                "the timeline supports association, not causation."
+            ),
+            "time_series_windows": windows,
+        }
+
+    evidence_gaps = [
+        "No coach technique or crew-synchronization observation is supplied.",
+        "No perceived-effort report is supplied.",
+    ]
+    if environment_summary is None:
+        evidence_gaps.append("No environmental timeline is supplied.")
+    if not mobile_path.is_file():
+        evidence_gaps.append(
+            "No independent mobile recording is supplied for route corroboration."
+        )
+    return {
+        "schema_version": SUMMARY_VERSION,
+        "summary_id": f"baseline-input-v2-{case_id}",
+        "case_id": case_id,
+        "generated_by": "scripts/build_baseline_inputs.py@1.1",
+        "input_hashes": input_hashes(input_dir),
+        "investigation_request": context["investigation_request"],
+        "domain_knowledge": DOMAIN_KNOWLEDGE,
+        "known_context": {
+            "session_candidate": context["session_candidate"],
+            "human_confirmations": context["human_confirmations"],
+            "input_notice": context["input_notice"],
+        },
+        "plan": plan,
+        "sources": sources,
+        "cross_source_findings": findings,
+        "environment": environment_summary,
+        "evidence_gaps": evidence_gaps,
+    }
+
+
 def build(output_dir: Path) -> None:
-    summaries = [case_001_summary(), case_002_summary()]
+    diagnostic_ids = [
+        f"case-{index:03d}-{suffix}"
+        for index, suffix in (
+            (3, "calm-expert-compliant"),
+            (4, "steady-headwind-compliant"),
+            (5, "tailwind-fast-not-improvement"),
+            (6, "crosswind-gusts"),
+            (7, "incomplete-intervals"),
+            (8, "correct-distance-wrong-spm"),
+            (9, "excess-recovery"),
+            (10, "mobile-spm-zero"),
+        )
+    ]
+    summaries = [
+        case_001_summary(),
+        case_002_summary(),
+        *(diagnostic_case_summary(case_id) for case_id in diagnostic_ids),
+    ]
     output_dir.mkdir(parents=True, exist_ok=True)
     summary_files = []
     for summary in summaries:
@@ -431,7 +632,7 @@ def build(output_dir: Path) -> None:
     prompt_path = ROOT / "prompts/baseline-v1.md"
     manifest = {
         "schema": "wake.baseline_input_manifest.v1",
-        "version": "1.0",
+        "version": "2.0",
         "generator": "scripts/build_baseline_inputs.py",
         "generator_version": GENERATOR_VERSION,
         "summary_schema": "wake.case_summary.v1",
@@ -457,7 +658,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT / "evaluation/baseline-inputs/v1"
+        default=ROOT / "evaluation/baseline-inputs/v2"
     )
     args = parser.parse_args()
     build(args.output)

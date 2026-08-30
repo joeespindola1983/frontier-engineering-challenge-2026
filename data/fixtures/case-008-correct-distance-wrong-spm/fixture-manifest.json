@@ -1,0 +1,30 @@
+{
+  "schema": "wake.synthetic_fixture_manifest.v1",
+  "fixture_id": "case-008-correct-distance-wrong-spm",
+  "fixture_version": "1.0",
+  "generator": "scripts/generate_diagnostic_cases.py",
+  "generator_version": "1.0",
+  "seed": 20260830008,
+  "files": {
+    "README.md": {
+      "sha256": "39943dc6541d1851bd984331efb88b1ed5e219862bb28ca5f7ab1ab9c0bb96d3",
+      "bytes": 239
+    },
+    "ground-truth.json": {
+      "sha256": "86711a8e50470336c13226d37d94120bb7968e92361b77358055a68297b4872a",
+      "bytes": 3209
+    },
+    "input/context.json": {
+      "sha256": "057d4a9a16e1af7048e49af54b03b48c245e27d2004e3c2f4bb9d8756cede759",
+      "bytes": 1136
+    },
+    "input/plan.json": {
+      "sha256": "313c76f65e5492c171b0ba35568b86909a3b38f01fcadcd17ac4a00e946fb311",
+      "bytes": 1154
+    },
+    "input/speedcoach.csv": {
+      "sha256": "4e7e7ed7a7a2b24ca2274141492997290556f8c6b6846a82969b14c38bf8bae0",
+      "bytes": 17848
+    }
+  }
+}

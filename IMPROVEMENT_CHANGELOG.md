@@ -369,6 +369,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A generic user-safe error is not enough for diagnosis. The next runtime hardening change should preserve a sanitized local failure artifact or correlation id while keeping internal exception details out of the browser response.
 - **Next step:** Complete a browser-path rehearsal with the public synthetic files, then expand the fixed evaluation beyond two implemented cases.
 
+### 35. Eight isolated diagnostic fixtures and immutable evaluation input v2
+
+- **Hypothesis:** Eight small cases that each isolate one rowing evidence failure will reveal where WAKE generalizes or fails more clearly than adding another complex hero scenario.
+- **Change:** Added a seeded deterministic generator for cases 003-010, with synthetic plans, SpeedCoach telemetry, optional environment/mobile evidence, evaluator-only ground truth, per-fixture hashes, privacy-safe coordinates, compact ground-truth-free summaries, and a public verifier. The scenarios cover calm compliance, steady headwind, tailwind without an improvement claim, crosswind gusts without causal overreach, an omitted work interval, correct distance with low SPM, excessive recovery, and zero-only mobile SPM. Published the ten-case summaries as `baseline-inputs/v2` while keeping the official two-case v1 bundle byte-stable.
+- **Evaluation:** RED began with the missing generator, then required byte reproducibility, schema validity, no ground-truth leakage, isolated expected deviations, correct mobile-zero behavior, ten compact summaries, a corruption-sensitive public verifier, and an immutable-v1/expanded-v2 boundary. An attempted early `IMPLEMENTED` label caused the full regression to fail because grader v1.1 correctly required outputs for every implemented case; the labels were returned to `PLANNED`. A second review caught that the first builder draft had expanded the already frozen v1 manifest; a new RED required v1 to retain two entries and v2 to retain those exact entries plus eight. Final repository verification passes 148 deterministic Python tests and all four public fixture/artifact checks.
+- **Result:** Ten public case inputs now exist, and the eight new fixtures are reproducible and ready for no-cost agent request generation. They have no baseline or WAKE model outputs and do not change the published two-case score. Grader v1.1 is known to contain case-002-specific environmental and source-policy checks, so it is not yet valid for this expansion.
+- **Cost/runtime:** No model call and no API cost. Only deterministic local generation, tests, schema checks, and hash verification ran.
+- **Decision:** Keep the eight fixtures and the v2 input bundle. Keep cases 003-010 out of the denominator until grader v1.2 and their required outputs exist. Preserve the failed status-label attempt and v1-overwrite attempt as evidence of why artifact state and version identity are part of evaluation correctness.
+- **Learning:** A fixture can be complete before an evaluation case is complete. Registry status, input-bundle version, grader coverage, and model-output availability must advance together or reproducibility becomes misleading.
+- **Next step:** Add generalized grader v1.2 behavior with RED tests for dynamic source policy, scenario-specific environmental interpretation, abstention, missing intervals, low SPM, and excess recovery; then create a no-cost ten-case baseline/agent preflight before authorizing paid calls.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

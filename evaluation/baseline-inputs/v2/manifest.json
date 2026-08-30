@@ -1,0 +1,63 @@
+{
+  "generator": "scripts/build_baseline_inputs.py",
+  "generator_version": "1.1",
+  "prompt": {
+    "path": "prompts/baseline-v1.md",
+    "sha256": "d61d162b84753de6774bb07ded352681fdfbc2821bf78cc64bb4b914d058ec50"
+  },
+  "schema": "wake.baseline_input_manifest.v1",
+  "summaries": {
+    "case-001-misaligned-double-scull": {
+      "bytes": 12996,
+      "path": "case-001-misaligned-double-scull.json",
+      "sha256": "9286dc502db48898a748da54016b845cf7ffb3fc0c4ed69974d264b10a449a15"
+    },
+    "case-002-wind-shift-plan-deviation": {
+      "bytes": 51988,
+      "path": "case-002-wind-shift-plan-deviation.json",
+      "sha256": "76dbfe7be77c8d747ac837e1b78b173a2c4bfeeeb2847a05df2fc498382430c1"
+    },
+    "case-003-calm-expert-compliant": {
+      "bytes": 21239,
+      "path": "case-003-calm-expert-compliant.json",
+      "sha256": "97d265adfabc20b8bbd74d0cb1c20d3256e87d9f717ba17b00bf98466be15db1"
+    },
+    "case-004-steady-headwind-compliant": {
+      "bytes": 23129,
+      "path": "case-004-steady-headwind-compliant.json",
+      "sha256": "e869d6bc1aed93e7de6b0fe1c5d2ef7cf32e26e4cec6ce2d8ec57cb317c1f473"
+    },
+    "case-005-tailwind-fast-not-improvement": {
+      "bytes": 20384,
+      "path": "case-005-tailwind-fast-not-improvement.json",
+      "sha256": "cc56e520147c96346aba01b67d1d66ab439c48448eb803eb257c7e2409559c49"
+    },
+    "case-006-crosswind-gusts": {
+      "bytes": 21203,
+      "path": "case-006-crosswind-gusts.json",
+      "sha256": "bd3702195a9087480d9477a5b7d73be63c1cbefa8b8ecd779e0eccf89610ec64"
+    },
+    "case-007-incomplete-intervals": {
+      "bytes": 10071,
+      "path": "case-007-incomplete-intervals.json",
+      "sha256": "a9c80d2fda22cbe85efd7df3926ad7695a2fda0d3b988b33f7b1c2b89b647945"
+    },
+    "case-008-correct-distance-wrong-spm": {
+      "bytes": 12607,
+      "path": "case-008-correct-distance-wrong-spm.json",
+      "sha256": "7afd128fe41bfb26fed31291ec2c43a7ee633843742d79883020dc61db61f20f"
+    },
+    "case-009-excess-recovery": {
+      "bytes": 13840,
+      "path": "case-009-excess-recovery.json",
+      "sha256": "a08f52fea5aa27532e2bf4e249563175a912a9824714a5de997ec682f83d0d1a"
+    },
+    "case-010-mobile-spm-zero": {
+      "bytes": 14314,
+      "path": "case-010-mobile-spm-zero.json",
+      "sha256": "5334e33e141b2c6100159fb51746873667a3c85d53e7ce46598f48d4c59841fe"
+    }
+  },
+  "summary_schema": "wake.case_summary.v1",
+  "version": "2.0"
+}
