@@ -14,6 +14,9 @@ import {
 test('models two work weeks across the requested ten rowing crews', () => {
   assert.equal(demoClub.schema_version, 'wake.demo_club.v1');
   assert.equal(demoClub.synthetic, true);
+  assert.equal(demoClub.provenance.basis, 'REAL_INFORMED_SYNTHETIC');
+  assert.ok(demoClub.provenance.real_inputs.length >= 4);
+  assert.match(demoClub.provenance.boundary, /not statistically representative/i);
   assert.equal(demoClub.period.weekdays.length, 10);
   assert.equal(demoClub.athletes.length, 16);
   assert.equal(demoClub.crews.filter((crew) => crew.boat_class === '2x').length, 4);
@@ -92,7 +95,9 @@ test('sessions surface exposes club, crew, and athlete drill-downs', async () =>
   assert.match(page, /function CrewScreen/);
   assert.match(page, /function AthleteScreen/);
   assert.match(page, /Two-week club pulse/);
-  assert.match(page, /Synthetic demo club/);
+  assert.match(page, /Real-informed synthetic data/);
+  assert.match(page, /modeled from real coach plans/);
+  assert.match(page, /Identities, club history, and session outcomes are fictional/);
   assert.match(page, /onOpenCrew/);
   assert.match(page, /onOpenAthlete/);
 });

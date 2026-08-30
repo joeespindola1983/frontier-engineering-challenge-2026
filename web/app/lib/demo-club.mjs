@@ -157,6 +157,17 @@ const participationGaps = [
 export const demoClub = {
   schema_version: 'wake.demo_club.v1',
   synthetic: true,
+  provenance: {
+    basis: 'REAL_INFORMED_SYNTHETIC',
+    real_inputs: [
+      'Coach prescriptions shared as WhatsApp images and a competition-preparation PDF.',
+      'SpeedCoach CSV structure and observed timestamp, GPS, distance, pace or speed, and SPM patterns.',
+      'WAKE mobile iOS and Android sensor and workout export structures, including missing or failed mobile SPM.',
+      'First-hand club context about attendance, crew changes, boat classes, seats, and alternate training.',
+    ],
+    fictional_elements: 'Athlete and crew identities, the demo club, physical-boat names, exact outings, outcomes, and aggregate history are fictional.',
+    boundary: 'Real-informed means structurally and operationally grounded; it is not statistically representative of rowing clubs or evidence of real athletic performance.',
+  },
   club: { club_id: 'wake-demo-club', name: 'WAKE Demo Club' },
   period: {
     start: '2026-08-17',

@@ -70,6 +70,12 @@ button { cursor: pointer; }
 .club-overview-heading h2, .operational-inbox-heading h2 { margin: 0; font-size: 31px; font-weight: 600; letter-spacing: -0.035em; }
 .club-overview-heading p { max-width: 750px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
 .saved-evidence-label { flex: 0 0 auto; padding: 6px 8px; border: 1px solid #c5d9d3; background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.club-provenance-note { padding: 18px 0; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line-strong); }
+.club-provenance-note > div { padding-right: 26px; display: grid; align-content: start; }
+.club-provenance-note > div + div { padding: 0 0 0 26px; border-left: 1px solid var(--line); }
+.club-provenance-note span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; }
+.club-provenance-note strong { margin-top: 4px; font-size: 13px; }
+.club-provenance-note p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
 .club-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line-strong); }
 .club-summary-grid > div { min-height: 118px; padding: 22px 20px 20px 0; display: grid; align-content: start; border-right: 1px solid var(--line); }
 .club-summary-grid > div:not(:first-child) { padding-left: 20px; }
@@ -494,6 +500,9 @@ button { cursor: pointer; }
   .club-overview { padding-top: 40px; }
   .club-overview-heading, .operational-inbox-heading { align-items: flex-start; flex-direction: column; gap: 14px; }
   .club-overview-heading p, .operational-inbox-heading p { text-align: left; }
+  .club-provenance-note { grid-template-columns: 1fr; gap: 16px; }
+  .club-provenance-note > div, .club-provenance-note > div + div { padding: 0; border-left: 0; }
+  .club-provenance-note > div + div { padding-top: 16px; border-top: 1px solid var(--line); }
   .club-summary-grid, .club-detail-stats { grid-template-columns: 1fr 1fr; }
   .club-summary-grid > div, .club-detail-stats > div { min-height: 102px; padding: 17px 12px 16px 0; }
   .club-summary-grid > div:not(:first-child), .club-detail-stats > div:not(:first-child) { padding-left: 12px; }

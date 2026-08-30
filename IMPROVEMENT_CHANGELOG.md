@@ -446,6 +446,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** The unit of rowing memory is not only a session. Athlete, ordered lineup, physical shell, modality, and date must remain separately addressable or useful longitudinal questions become impossible to answer safely.
 - **Next step:** Rehearse the demo from club pulse to crew to athlete to the existing evidence-backed session, then decide whether real-derived anonymized summaries can be prepared without weakening privacy or submission focus.
 
+### 42. Real-informed synthetic data provenance
+
+- **Hypothesis:** Labelling the club pulse only as synthetic protects privacy but obscures the real rowing material that informed its source shapes, plausible values, workout patterns, and failure modes. Showing both the grounding and the fictional boundary should improve credibility without fabricating athlete history.
+- **Change:** Added structured `REAL_INFORMED_SYNTHETIC` provenance to the demo-club contract; identified the real material classes that informed the demonstration; separated fictional elements; and added an explicit non-representativeness boundary. Revised the Sessions, crew, and athlete surfaces to use `Real-informed synthetic data`, with a visible two-column explanation of what is grounded and what remains fictional. Updated product documentation and the stable decision record.
+- **Evaluation:** RED first failed because the dataset had no provenance contract and the page contained none of the required grounding or fictional-boundary language. GREEN tests require the provenance classification, four real input classes, the statistical boundary, and visible interface copy. Full verification passes 163 Python tests, four public fixture/artifact verifiers, 51 web tests, ESLint, and the Vinext production build. Browser QA confirmed the grounding and fictional-boundary copy in the default layout and at 390 × 844.
+- **Result:** The public interface now states that its people and exact history are fictional while its structures, formats, plausible ranges, and operational situations are modeled from supplied real rowing material. It does not call those fictional outcomes observed sessions or claim statistical calibration.
+- **Cost/runtime:** No model call and no API cost. The change is deterministic metadata, interface copy, styling, tests, and documentation.
+- **Decision:** Keep the combined classification. Do not shorten it back to `synthetic` on the club surface, and do not use `real data` for fictional records.
+- **Learning:** Data credibility has two independent dimensions: whether a record describes a real person and whether its structure and scenario are grounded in real domain material. A trustworthy demo must expose both.
+- **Next step:** Use the provenance explanation in the demo narration before opening crew and athlete drill-downs.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

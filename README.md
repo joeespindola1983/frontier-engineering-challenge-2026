@@ -138,17 +138,17 @@ condition.
 
 ## Product interface
 
-The `web/` application demonstrates the smallest truthful coach workflow over the committed synthetic case 002 and a separate two-week relational demo club:
+The `web/` application demonstrates the smallest truthful coach workflow over the committed synthetic case 002 and a separate two-week real-informed synthetic demo club:
 
 ```text
 session inbox -> evidence intake -> review -> human checkpoint
               -> verified briefing -> approved goal memory
 
-synthetic club pulse -> crew lineup and physical boat history
-                     -> athlete crew / solo / ergometer history
+real-informed synthetic club pulse -> crew lineup and physical boat history
+                                    -> athlete crew / solo / ergometer history
 ```
 
-The club pulse contains ten fictional crews (four 2x, four 4x, and two 8x), sixteen fictional athletes, eleven named physical boats including a shared 1x, 38 planned crew outings over ten weekdays, three crew-unavailable events, alternate solo/ergometer activities, and three explicitly unaccounted expected training days. It is deterministic demonstration data rather than a model output or evidence of real athletic performance. The operational session inbox and the technical Evaluation view remain separate.
+The club pulse contains ten fictional crews (four 2x, four 4x, and two 8x), sixteen fictional athletes, eleven named physical boats including a shared 1x, 38 planned crew outings over ten weekdays, three crew-unavailable events, alternate solo/ergometer activities, and three explicitly unaccounted expected training days. It is **real-informed synthetic data**: workout patterns, source formats, plausible value ranges, and operational failure modes were modeled from real coach prescriptions shared through WhatsApp/PDF/spreadsheet-style material, SpeedCoach CSVs, pre-existing WAKE mobile export structures, and first-hand rowing-club context. Identities, the displayed club history, lineups, exact sessions, outcomes, aggregates, and physical-boat names remain fictional. The dataset is not statistically representative, a model output, or evidence of real athletic performance. The operational session inbox and the technical Evaluation view remain separate.
 
 The hosted product remains a safe replay. When connected to the local product service, its intake requires a plan and SpeedCoach recording and accepts mobile, environment, and context as optional evidence enhancers. The service prepares a new ground-truth-free compact summary containing source coverage, quality, supported cross-source findings, and explicit evidence gaps. Only the byte-identical five-source public demonstration bundle can use committed replay output; different evidence cannot inherit that answer, and prepared new bundles are not executed automatically. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
 

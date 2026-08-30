@@ -320,6 +320,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Add a clearly labelled two-week `WAKE Demo Club` dataset with four 2x lineups, four 4x lineups, two 8x lineups, sixteen fictional named athletes, named physical boats, planned crew outings, recorded solo/ergometer alternatives, and explicit participation gaps. Model a crew as an ordered lineup snapshot linked to a physical boat. Keep this dataset separate from the persistent session inbox and technical evaluation fixtures.
 - **Rationale:** One deep session demonstrates reconstruction quality but does not make the club-scale problem visible. The relational dataset lets the interface answer how often a crew launched, which lineups and physical boats an athlete rowed, and where expected activity lacks a record. Using fictional deterministic data avoids exposing the owner's private GPS and athlete identities. It also prevents a frontend aggregation from being misrepresented as an agent-generated longitudinal conclusion.
 
+## 2026-08-30 - Label demo data by privacy status and domain provenance
+
+- **Status:** accepted for the hackathon interface and documentation.
+- **Decision:** Label the two-week club dataset `real-informed synthetic`, and show both halves of that classification in the interface. State that workout patterns, source formats, plausible value ranges, and operational failure modes were modeled from supplied real coach prescriptions, SpeedCoach CSVs, pre-existing WAKE mobile exports, and first-hand rowing-club context. Separately state that identities, the displayed club history, lineups, exact sessions, outcomes, aggregates, and physical-boat names are fictional. Preserve the boundary that this is not a statistically representative sample or evidence of real athletic performance.
+- **Rationale:** `Synthetic` alone protects privacy but hides the domain grounding that makes the demo credible. Calling the records `real` would fabricate athlete history and overstate validation. The combined label communicates both provenance and limitation without exposing private inputs.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
