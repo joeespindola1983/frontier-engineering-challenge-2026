@@ -15,6 +15,7 @@ VERIFIERS = [
     ROOT / "scripts/verify_diagnostic_cases.py",
     ROOT / "scripts/verify_baseline_inputs.py",
     ROOT / "scripts/verify_demo_club_evidence.py",
+    ROOT / "scripts/verify_demo_club_investigation_run.py",
 ]
 
 

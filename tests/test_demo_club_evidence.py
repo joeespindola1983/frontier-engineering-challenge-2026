@@ -74,7 +74,7 @@ class DemoClubEvidenceTests(unittest.TestCase):
             ["recovery-02"],
         )
         self.assertTrue(all(
-            fixture["agent_executed"] is False
+            fixture["execution_status"] == "PRESERVED_SEPARATELY"
             for fixture in report["fixtures"].values()
         ))
 
@@ -156,6 +156,9 @@ class DemoClubEvidenceTests(unittest.TestCase):
         self.assertEqual(len(manifest["cases"]), 2)
         self.assertTrue(all(case["provenance"] == "REAL_INFORMED_SYNTHETIC" for case in manifest["cases"]))
         self.assertTrue(all(len(case["input_sha256"]) == 3 for case in manifest["cases"]))
+        self.assertTrue(all(case["execution_status"] == "PRESERVED_SEPARATELY" for case in manifest["cases"]))
+        self.assertTrue(all(case["execution_result_ref"].endswith("run-manifest.json") for case in manifest["cases"]))
+        self.assertTrue(all("agent_executed" not in case for case in manifest["cases"]))
         serialized = json.dumps(manifest).lower()
         self.assertNotIn("/users/", serialized)
         self.assertNotIn("private-data", serialized)

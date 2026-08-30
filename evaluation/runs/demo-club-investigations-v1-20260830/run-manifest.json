@@ -1,0 +1,75 @@
+{
+  "schema_version": "wake.demo_club_investigation_run.v1",
+  "run_id": "demo-club-investigations-v1-20260830",
+  "executed_at": "2026-08-30",
+  "workflow": "wake-agent-v2-tool-loop",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "medium",
+  "authorization": {
+    "execution_count": 2,
+    "authorized_cost_usd_per_execution": 0.2,
+    "hard_provider_cap": false,
+    "owner_authorized": true
+  },
+  "executions": [
+    {
+      "case_id": "club-bridge-mixed-20260820-spm",
+      "bundle_id": "source-bundle-0b67a935b039ea01",
+      "artifact_run_id": "20260830T142519911882Z",
+      "output_path": "../product-live-bundles/20260830T142519911882Z/outputs/club-bridge-mixed-20260820-spm.json",
+      "output_sha256": "da476a8652bcabef869db5da3b8a0494921d1b797b3b8ea88013a9cf7261d550",
+      "trajectory_path": "../product-live-bundles/20260830T142519911882Z/trajectories/club-bridge-mixed-20260820-spm.trajectory.json",
+      "trajectory_sha256": "cacc2d14132b710856ab90adde7be5537e8b21fb915d4d5065399621a24ba113",
+      "authorized_cost_usd": 0.2,
+      "approximate_cost_usd": 0.089806,
+      "runtime_ms": 26693,
+      "usage": {
+        "input_tokens": 24575,
+        "output_tokens": 3388,
+        "total_tokens": 27963
+      },
+      "expected_deviations": [
+        {
+          "segment_ref": "work-02",
+          "type": "SPM_OUTSIDE_TARGET"
+        }
+      ]
+    },
+    {
+      "case_id": "club-atlas-men-20260828-recovery",
+      "bundle_id": "source-bundle-aa7570e9187b5ccd",
+      "artifact_run_id": "20260830T142616009750Z",
+      "output_path": "../product-live-bundles/20260830T142616009750Z/outputs/club-atlas-men-20260828-recovery.json",
+      "output_sha256": "cb87d4e1ba95692a91265bbf57085a6cb663a79f1fff1d1e82abc2ed3e7479d1",
+      "trajectory_path": "../product-live-bundles/20260830T142616009750Z/trajectories/club-atlas-men-20260828-recovery.trajectory.json",
+      "trajectory_sha256": "93363bb54642d1da9a3b53b2663d8953a12a75296002804da157b8b1f7e3a0a7",
+      "authorized_cost_usd": 0.2,
+      "approximate_cost_usd": 0.104312,
+      "runtime_ms": 29308,
+      "usage": {
+        "input_tokens": 28126,
+        "output_tokens": 4005,
+        "total_tokens": 32131
+      },
+      "expected_deviations": [
+        {
+          "segment_ref": "recovery-02",
+          "type": "RECOVERY_DURATION_OUTSIDE_TARGET"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "execution_count": 2,
+    "approximate_cost_usd": 0.194118,
+    "runtime_ms": 56001,
+    "input_tokens": 52701,
+    "output_tokens": 7393,
+    "total_tokens": 60094
+  },
+  "longitudinal_synthesis": {
+    "status": "NOT_EXECUTED",
+    "authorized": false
+  },
+  "boundary": "These paid outputs analyze two real-informed synthetic candidate sessions. They do not establish human-coach superiority, real athletic outcomes, or a longitudinal club conclusion."
+}

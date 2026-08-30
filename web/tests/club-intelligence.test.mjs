@@ -65,15 +65,22 @@ test('routes ten attention signals without paying for human or source gaps', () 
     HUMAN_CONTEXT: 6,
     SOURCE_REQUEST: 1,
   });
-  assert.equal(analysis.deep_investigations.completed, 0);
+  assert.equal(analysis.deep_investigations.completed, 2);
   assert.equal(analysis.deep_investigations.queued, 2);
-  assert.equal(analysis.deep_investigations.status, 'READY_FOR_AUTHORIZATION');
+  assert.equal(analysis.deep_investigations.pending, 0);
+  assert.equal(analysis.deep_investigations.status, 'COMPLETED');
   assert.ok(analysis.deep_investigations.queue.every((signal) => signal.source_bundle_id));
+  assert.equal(analysis.deep_investigations.results.length, 2);
+  assert.ok(analysis.deep_investigations.results.every((result) => result.verification_passed));
   assert.equal(analysis.longitudinal_synthesis.status, 'NOT_EXECUTED');
-  assert.equal(analysis.cost_forecast.paid_executions, 3);
-  assert.equal(analysis.cost_forecast.observed_projection_usd, 0.213455);
-  assert.equal(analysis.cost_forecast.planning_projection_usd, 0.45);
-  assert.equal(analysis.cost_forecast.authorization_gate_total_usd, 0.6);
+  assert.equal(analysis.cost_observed.execution_count, 2);
+  assert.equal(analysis.cost_observed.approximate_total_cost_usd, 0.194118);
+  assert.equal(analysis.cost_observed.total_tokens, 60094);
+  assert.ok(analysis.deep_investigations.results.every((result) => result.result_ref));
+  assert.equal(analysis.cost_forecast.paid_executions, 1);
+  assert.equal(analysis.cost_forecast.observed_projection_usd, 0.071152);
+  assert.equal(analysis.cost_forecast.planning_projection_usd, 0.15);
+  assert.equal(analysis.cost_forecast.authorization_gate_total_usd, 0.2);
 });
 
 
@@ -101,8 +108,10 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
 
   assert.match(page, /buildClubPeriodAnalysis/);
   assert.match(page, /Deterministic scan complete/);
-  assert.match(page, /Deep agent analysis has not run yet/);
-  assert.match(page, /complete bundles passed deterministic preflight/);
-  assert.match(page, /planning_projection_usd/);
+  assert.match(page, /Two bounded investigations completed/);
+  assert.match(page, /Longitudinal synthesis has not run/);
+  assert.match(page, /cost_observed\.approximate_total_cost_usd/);
+  assert.match(page, /Verified investigation results/);
+  assert.match(page, /result\.briefing/);
   assert.doesNotMatch(page, /Executed as planned/);
 });

@@ -95,7 +95,8 @@ def verify_fixture_set(fixture_root: Path = DEFAULT_FIXTURE_ROOT) -> dict:
         assert deviations == EXPECTED_DEVIATIONS[case_id], f"Deviation mismatch: {case_id}"
         fixtures[case_id] = {
             "deviation_segments": deviations,
-            "agent_executed": item["agent_executed"],
+            "execution_status": item["execution_status"],
+            "execution_result_ref": item["execution_result_ref"],
             "input_count": len(item["input_sha256"]),
         }
 

@@ -204,6 +204,37 @@ const participationGaps = [
   { date: '2026-08-26', athlete_id: 'athlete-mateus', crew_id: 'crew-8x-men', classification: 'EXPECTED_DAY_WITHOUT_RECORDED_ACTIVITY', statement: 'No completed crew or alternate activity was recorded after the planned 8x became unavailable.' },
 ];
 
+const investigationResults = [
+  {
+    case_id: 'club-bridge-mixed-20260820-spm',
+    title: 'Bridge Mixed 2x',
+    source_bundle_id: 'club-bridge-mixed-20260820-spm',
+    status: 'AGENT_COMPLETED',
+    verification_passed: true,
+    deviation_segment: 'work-02',
+    deviation_type: 'SPM_OUTSIDE_TARGET',
+    approximate_cost_usd: 0.089806,
+    total_tokens: 27963,
+    briefing: 'Two work intervals were reconstructed. Work 1 met the 20 SPM target; work 2 averaged 18 SPM and is the only supported execution deviation. Distance completion, environmental cause, technique, and effort remain unestablished.',
+    next_step: 'Athlete context requested',
+    result_ref: 'evaluation/runs/product-live-bundles/20260830T142519911882Z/outputs/club-bridge-mixed-20260820-spm.json',
+  },
+  {
+    case_id: 'club-atlas-men-20260828-recovery',
+    title: 'Atlas Men 4x',
+    source_bundle_id: 'club-atlas-men-20260828-recovery',
+    status: 'AGENT_COMPLETED',
+    verification_passed: true,
+    deviation_segment: 'recovery-02',
+    deviation_type: 'RECOVERY_DURATION_OUTSIDE_TARGET',
+    approximate_cost_usd: 0.104312,
+    total_tokens: 32131,
+    briefing: 'Four work intervals stayed within the planned 20–22 SPM range. The only supported deviation is recovery-02 at 247 seconds, 67 seconds above the planned maximum. Distance completion and causal explanations remain unestablished.',
+    next_step: 'Ready for coach review',
+    result_ref: 'evaluation/runs/product-live-bundles/20260830T142616009750Z/outputs/club-atlas-men-20260828-recovery.json',
+  },
+];
+
 export const demoClub = {
   schema_version: 'wake.demo_club.v1',
   synthetic: true,
@@ -230,6 +261,7 @@ export const demoClub = {
   outings,
   activities: [...crewActivities, ...alternateActivities],
   participation_gaps: participationGaps,
+  investigation_results: investigationResults,
 };
 
 function maps(club) {

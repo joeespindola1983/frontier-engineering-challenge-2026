@@ -49,15 +49,16 @@ rounds.
 ### Two-week demo-club projection
 
 The deterministic period screen processes all 40 recorded activities at zero
-model cost. Of ten attention signals, two are candidates for bounded agent
-investigation; the other eight require a human answer or missing source first.
-Adding one future longitudinal synthesis produces three projected paid
-executions. At the observed ten-case average this projects to approximately
-US$0.213455; at the accepted US$0.15 planning reference it projects to US$0.45;
-and three US$0.20 start authorizations total US$0.60. The two investigation
-bundles are now complete and deterministically preflighted, but none of these
-values is an observed club-period charge: neither candidate nor the future
-synthesis has been executed through the model.
+model cost. Of ten attention signals, two complete candidates were explicitly
+authorized for bounded investigation; the other eight remain routed to a human
+or missing source. The two calls cost US$0.089806 and US$0.104312, for an
+observed total of **US$0.194118**, 60,094 tokens, and 56.001 seconds of summed
+case runtime. Both stayed within their individual US$0.20 start authorizations.
+
+Only the optional longitudinal synthesis remains a projected paid execution.
+At the accepted planning reference it projects to US$0.15 and requires a new
+US$0.20 operational start authorization. Neither value is an observed synthesis
+charge, and the synthesis has not been authorized or executed.
 
 ## Runtime contract
 

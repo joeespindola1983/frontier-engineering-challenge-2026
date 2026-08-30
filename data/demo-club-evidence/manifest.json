@@ -12,7 +12,8 @@
         "plan.json": "5b45d76b9a3d6bc8d1da1a5931027ca21f16e1d6cd60268fc6eadecd654a18c8",
         "speedcoach.csv": "be6706518e60e678b10a9f195cfd0ac534566c9ad9f5cd09958ab53e5aae0c17"
       },
-      "agent_executed": false
+      "execution_status": "PRESERVED_SEPARATELY",
+      "execution_result_ref": "evaluation/runs/demo-club-investigations-v1-20260830/run-manifest.json"
     },
     {
       "case_id": "club-atlas-men-20260828-recovery",
@@ -24,7 +25,8 @@
         "plan.json": "1c6fb3a75747a6cdf48e80f489ba90c533e0b79545742fcb57913b46ebce006c",
         "speedcoach.csv": "885f15d03f8021ff371e7b7eedcda9f12983308dfb080d0f076fe08e1d729e40"
       },
-      "agent_executed": false
+      "execution_status": "PRESERVED_SEPARATELY",
+      "execution_result_ref": "evaluation/runs/demo-club-investigations-v1-20260830/run-manifest.json"
     }
   ],
   "boundary": "These are complete public synthetic source bundles, not observed athlete sessions and not completed agent analyses."

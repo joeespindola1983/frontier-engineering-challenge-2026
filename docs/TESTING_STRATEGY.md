@@ -78,7 +78,11 @@ to be counted only when linked to the paid queue, and cost projections to retain
 their observed, planning, and authorization meanings. A separate public
 verifier checks the two demo-club bundles for reproducible generation, input
 hashes, privacy invariants, schema validity, and exact deterministic deviation
-identities without invoking a model.
+identities without invoking a model. A second verifier freezes the two paid
+candidate outputs: it checks artifact hashes, output schema, v2 trajectory and
+verification status, absence of private chain-of-thought, exact isolated
+deviation identities, per-run usage/cost, authorization compliance, and summed
+totals. Neither verifier can invoke the model.
 
 ## Commands
 

@@ -85,6 +85,16 @@ button { cursor: pointer; }
 .club-intelligence-status small { margin-top: 8px; color: var(--muted); font-size: 9px; }
 .club-intelligence-boundary { padding: 11px 13px; display: flex; gap: 14px; border-bottom: 1px solid var(--line-strong); background: #edf4f1; color: var(--ink-soft); font-size: 10px; }
 .club-intelligence-boundary strong { flex: 0 0 auto; color: var(--accent); }
+.club-investigation-results { padding: 24px 0; border-bottom: 1px solid var(--line-strong); }
+.club-investigation-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.club-investigation-result-grid article { min-height: 194px; padding: 20px; display: grid; align-content: space-between; gap: 18px; background: var(--surface); }
+.club-investigation-result-grid article > div { display: grid; }
+.club-investigation-result-grid article > div span { color: var(--accent); font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+.club-investigation-result-grid article > div strong { margin-top: 6px; font-size: 18px; }
+.club-investigation-result-grid article > p { margin: 0; color: var(--ink-soft); font-size: 11px; line-height: 1.55; }
+.club-investigation-result-grid footer { display: flex; align-items: end; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding-top: 12px; }
+.club-investigation-result-grid footer span { color: var(--accent); font-size: 10px; font-weight: 600; }
+.club-investigation-result-grid footer small { color: var(--muted); font-family: var(--mono); font-size: 8px; text-align: right; }
 .club-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line-strong); }
 .club-summary-grid > div { min-height: 118px; padding: 22px 20px 20px 0; display: grid; align-content: start; border-right: 1px solid var(--line); }
 .club-summary-grid > div:not(:first-child) { padding-left: 20px; }
@@ -518,6 +528,8 @@ button { cursor: pointer; }
   .club-intelligence-status > div:nth-child(2) { border-right: 0; }
   .club-intelligence-status > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .club-intelligence-boundary { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .club-investigation-result-grid { grid-template-columns: 1fr; }
+  .club-investigation-result-grid article { min-height: 176px; }
   .club-summary-grid, .club-detail-stats { grid-template-columns: 1fr 1fr; }
   .club-summary-grid > div, .club-detail-stats > div { min-height: 102px; padding: 17px 12px 16px 0; }
   .club-summary-grid > div:not(:first-child), .club-detail-stats > div:not(:first-child) { padding-left: 12px; }

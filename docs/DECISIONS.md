@@ -338,6 +338,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Generate two complete real-informed synthetic plan + SpeedCoach + context bundles from a deterministic script, preserve their input hashes and fictional boundary in a manifest, and require the public verifier to reproduce the expected `work-02` SPM and `recovery-02` duration deviations before showing `READY_FOR_AUTHORIZATION`. Keep `agent_executed: false`, `0/2` completed, and longitudinal synthesis `NOT_EXECUTED` until an explicit paid run is authorized.
 - **Rationale:** Compact UI observations are sufficient for cheap triage but not a defensible agent input. Complete source artifacts make the next paid comparison reproducible, while preflight separates parser/tool correctness from model behavior and prevents the interface from implying that a prepared case was already analysed.
 
+## 2026-08-30 - Preserve two authorized club-candidate investigations separately from synthesis
+
+- **Status:** accepted and executed for the two public synthetic candidates; longitudinal synthesis remains unauthorized.
+- **Decision:** Run exactly the Bridge Mixed 2x and Atlas Men 4x source bundles with the accepted v2 bounded workflow and a US$0.20 start authorization for each. Preserve outputs, trajectories, hashes, verification status, token use, runtime, and cost in a dedicated versioned run manifest. Show `2/2` and the observed total in the club interface, but keep the eight human/source routes outside the paid queue and keep longitudinal synthesis `NOT_EXECUTED` until separately authorized.
+- **Rationale:** Candidate-level reasoning is now evidence rather than a forecast. Separating the still-optional synthesis prevents the earlier two-call authorization from silently expanding into a third paid action and prevents two synthetic sessions from being presented as a full-club conclusion.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

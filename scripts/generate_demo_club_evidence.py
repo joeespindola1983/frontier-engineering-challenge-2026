@@ -260,7 +260,11 @@ def build_demo_club_evidence(output_root: Path) -> dict:
                 "provenance": "REAL_INFORMED_SYNTHETIC",
                 "generator_version": GENERATOR_VERSION,
                 "input_sha256": input_sha256,
-                "agent_executed": False,
+                "execution_status": "PRESERVED_SEPARATELY",
+                "execution_result_ref": (
+                    "evaluation/runs/demo-club-investigations-v1-20260830/"
+                    "run-manifest.json"
+                ),
             }
         )
 
@@ -278,8 +282,9 @@ def build_demo_club_evidence(output_root: Path) -> dict:
         "# Demo-club evidence bundles\n\n"
         "Two complete real-informed synthetic plan + SpeedCoach + context bundles "
         "for the numeric candidates selected by the zero-cost club-period screen. "
-        "They are public fixtures, not real athlete sessions. `agent_executed` remains "
-        "false until an explicit paid run is preserved.\n\n"
+        "They are public fixtures, not real athlete sessions. Their two paid results "
+        "are preserved separately under `evaluation/runs/demo-club-investigations-"
+        "v1-20260830/`; this input manifest does not embed model output.\n\n"
         "- `club-bridge-mixed-20260820-spm` reconstructs two planned 4 km work "
         "intervals and exposes only `work-02` below the prescribed 20 SPM.\n"
         "- `club-atlas-men-20260828-recovery` reconstructs four planned 2 km work "

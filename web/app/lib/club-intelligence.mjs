@@ -185,8 +185,21 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
   const deepQueue = attentionSignals.filter((signal) => signal.route === 'AGENT_INVESTIGATION');
   const completeSourceBundles = deepQueue.filter((signal) => signal.source_bundle_id).length;
   const allDeepBundlesReady = deepQueue.length > 0 && completeSourceBundles === deepQueue.length;
-  const paidExecutions = deepQueue.length + 1;
+  const resultByBundle = new Map(
+    (club.investigation_results ?? []).map((result) => [result.source_bundle_id, result]),
+  );
+  const completedResults = deepQueue
+    .map((signal) => resultByBundle.get(signal.source_bundle_id))
+    .filter((result) => result?.status === 'AGENT_COMPLETED' && result.verification_passed);
+  const completedBundleIds = new Set(completedResults.map((result) => result.source_bundle_id));
+  const pendingQueue = deepQueue.filter((signal) => !completedBundleIds.has(signal.source_bundle_id));
+  const paidExecutions = pendingQueue.length + 1;
   const observedAverage = costBasis.observed_total_cost_usd / costBasis.observed_cases;
+  const observedCost = roundUsd(completedResults.reduce(
+    (total, result) => total + result.approximate_cost_usd,
+    0,
+  ));
+  const observedTokens = completedResults.reduce((total, result) => total + result.total_tokens, 0);
 
   return {
     schema_version: 'wake.club_period_analysis.v1',
@@ -209,18 +222,28 @@ export function buildClubPeriodAnalysis(club, costBasis = DEFAULT_COST_BASIS) {
     attention_signals: attentionSignals,
     routing,
     deep_investigations: {
-      completed: 0,
+      completed: completedResults.length,
       queued: deepQueue.length,
-      status: !deepQueue.length
-        ? 'NOT_REQUIRED'
-        : allDeepBundlesReady
-          ? 'READY_FOR_AUTHORIZATION'
-          : 'REQUIRES_SOURCE_BUNDLES',
+      pending: pendingQueue.length,
+      status: completedResults.length === deepQueue.length && deepQueue.length > 0
+        ? 'COMPLETED'
+        : !deepQueue.length
+          ? 'NOT_REQUIRED'
+          : allDeepBundlesReady
+            ? 'READY_FOR_AUTHORIZATION'
+            : 'REQUIRES_SOURCE_BUNDLES',
       queue: deepQueue,
+      results: completedResults,
     },
     longitudinal_synthesis: {
       status: 'NOT_EXECUTED',
       prerequisite: 'Complete queued investigations and collect or explicitly mark missing human/source context.',
+    },
+    cost_observed: {
+      basis: 'evaluation/runs/demo-club-investigations-v1-20260830/run-manifest.json',
+      execution_count: completedResults.length,
+      approximate_total_cost_usd: observedCost,
+      total_tokens: observedTokens,
     },
     cost_forecast: {
       basis: costBasis.evidence_ref,
