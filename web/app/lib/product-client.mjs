@@ -80,16 +80,19 @@ export class HttpWakeClient {
     });
   }
 
-  async analyzeSourceBundle({ sourceIds, mode }) {
+  async analyzeSourceBundle({ sourceIds, mode, authorizedCostUsd }) {
     if (mode !== 'live') {
       throw new TypeError('New source bundle analysis requires explicit live mode.');
+    }
+    if (!Number.isFinite(authorizedCostUsd) || authorizedCostUsd <= 0) {
+      throw new TypeError('Live source bundle analysis requires explicit cost authorization.');
     }
     const prepared = await this.request('/api/source-bundles/prepare', {
       source_ids: sourceIds,
     });
     const executed = await this.request(
       `/api/source-bundles/${prepared.bundle_id}/execute`,
-      { mode: 'live' },
+      { mode: 'live', authorized_cost_usd: authorizedCostUsd },
     );
     return {
       executionId: executed.execution_id,
@@ -98,6 +101,7 @@ export class HttpWakeClient {
       checkpointId: executed.checkpoint_id,
       goalId: executed.goal_id,
       investigationStatus: executed.investigation_status,
+      cost: executed.cost,
       status: executed.status,
       agentCalled: executed.agent_called,
       review: this.reviewAdapter(executed.review),

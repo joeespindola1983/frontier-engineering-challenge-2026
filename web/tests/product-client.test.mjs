@@ -148,6 +148,15 @@ test('HTTP client prepares and explicitly executes a new source bundle', async (
       investigation_status: 'QUESTION_REQUIRED',
       status: 'AGENT_COMPLETED',
       agent_called: true,
+      cost: {
+        currency: 'USD',
+        authorized_cost_usd: 0.20,
+        approximate_cost_usd: 0.087826,
+        status: 'WITHIN_AUTHORIZATION',
+        hard_provider_cap: false,
+        usage: { input_tokens: 27917, output_tokens: 2666, total_tokens: 30583 },
+        runtime_ms: 19219,
+      },
       review: { analysis: {}, summary: {}, context: {} },
     },
   ];
@@ -163,6 +172,7 @@ test('HTTP client prepares and explicitly executes a new source bundle', async (
   const result = await client.analyzeSourceBundle({
     sourceIds: ['plan', 'speedcoach', 'mobile', 'environment', 'context'],
     mode: 'live',
+    authorizedCostUsd: 0.20,
   });
 
   assert.deepEqual(
@@ -175,13 +185,17 @@ test('HTTP client prepares and explicitly executes a new source bundle', async (
   assert.deepEqual(JSON.parse(requests[0].init.body), {
     source_ids: ['plan', 'speedcoach', 'mobile', 'environment', 'context'],
   });
-  assert.deepEqual(JSON.parse(requests[1].init.body), { mode: 'live' });
+  assert.deepEqual(JSON.parse(requests[1].init.body), {
+    mode: 'live',
+    authorized_cost_usd: 0.20,
+  });
   assert.equal(result.review, demoReview);
   assert.equal(result.agentCalled, true);
   assert.equal(result.investigationId, 'investigation-source-bundle-abc123');
   assert.equal(result.checkpointId, 'checkpoint-source-bundle-abc123');
   assert.equal(result.goalId, 'goal-uploaded-session');
   assert.equal(result.investigationStatus, 'QUESTION_REQUIRED');
+  assert.equal(result.cost.approximate_cost_usd, 0.087826);
 });
 
 test('HTTP client refuses implicit new-bundle execution before any request', async () => {
@@ -197,6 +211,23 @@ test('HTTP client refuses implicit new-bundle execution before any request', asy
   await assert.rejects(
     client.analyzeSourceBundle({ sourceIds: ['one'], mode: 'replay' }),
     /explicit live mode/,
+  );
+  assert.equal(requests, 0);
+});
+
+test('HTTP client refuses live bundle execution without cost authorization', async () => {
+  let requests = 0;
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async () => {
+      requests += 1;
+      throw new Error('must not be called');
+    },
+  });
+
+  await assert.rejects(
+    client.analyzeSourceBundle({ sourceIds: ['one'], mode: 'live' }),
+    /cost authorization/i,
   );
   assert.equal(requests, 0);
 });

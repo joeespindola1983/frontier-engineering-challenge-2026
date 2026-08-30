@@ -259,6 +259,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Agent correctness can be lost after model verification if downstream product state inserts fixture-specific meaning. Checkpoint and memory transformations therefore need the same evidence-driven tests as tools and prompts.
 - **Next step:** Define and document the per-session cost envelope and execution-budget observability, then prepare the submission narrative and demonstration using replay for reliability and one explicitly authorized live path only if needed.
 
+### 25. Live cost authorization and observable execution ledger
+
+- **Hypothesis:** A deliberate per-session authorization plus post-run usage evidence will prevent silent live spend and make the solution's scaling trade-off legible without falsely presenting an application-side value as a provider billing cap.
+- **Change:** Added a configurable positive finite US$0.20 operational start gate to prepared-bundle execution; trajectory-derived token, runtime, and approximate-cost output; an explicit authorization-overrun status; a same-process ledger that counts idempotent repeats once; and a cost summary endpoint. The HTTP client refuses missing authorization before network access. The intake explains the gate, and the review shows actual approximate cost and token use. `docs/COST_MODEL.md` records official price sources, observed references, projections, limitations, and a quality-preserving optimization order.
+- **Evaluation:** RED tests first showed that a prepared bundle could reach the runner without a dollar authorization, production artifacts lost their trajectory cost at the product boundary, repeated requests could not be audited, the client issued a request without authorization, and the review hid spend. Later REDs rejected `NaN`/infinite configuration and required an overrun warning. GREEN covers service configuration, pre-run rejection, runner envelopes, idempotent aggregation, HTTP input/output, production artifact loading, client refusal, and UI disclosure. Final verification passes 103 Python tests, three public verifiers, 23 web tests, ESLint, the Vinext production build, and an npm audit with zero vulnerabilities.
+- **Result:** A new live upload cannot start without deliberate cost authorization, and a completed run carries auditable spend evidence from the trajectory into the coach review and process ledger. The gate does not stop a request at an exact dollar value, and the ledger is not durable accounting.
+- **Cost/runtime:** No model call and no API cost. Tests use an injected trajectory matching the preserved full-evidence v2 observation (US$0.087826, 30,583 tokens, 19.219 seconds) without claiming it as novel-upload performance.
+- **Decision:** Keep the US$0.20 operational authorization and US$0.15 planning reference. Preserve replay and deterministic preparation as free defaults. Evaluate cost optimizations only against frozen quality and abstention checks.
+- **Learning:** Product cost safety requires two separate truths: permission before execution and provider-reported usage after execution. Conflating them would turn a UI setting into a false hard-cap guarantee.
+- **Next step:** Run complete repository verification, then assemble the submission narrative and five-minute demonstration around the measured workflow improvement, transparent cost, and one reliable replay path.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

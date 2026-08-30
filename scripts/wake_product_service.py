@@ -13,6 +13,7 @@ import base64
 import binascii
 import hashlib
 import json
+import math
 import os
 import tempfile
 from datetime import datetime, timezone
@@ -51,6 +52,14 @@ SOURCE_FILENAMES = {
     "CONTEXT": "context.json",
 }
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
+DEFAULT_REQUIRED_COST_AUTHORIZATION_USD = 0.20
+
+
+def validate_required_cost_authorization(value: float) -> float:
+    value = float(value)
+    if not math.isfinite(value) or value <= 0:
+        raise ValueError("Cost authorization must be a positive finite USD value.")
+    return value
 
 
 def human_confirmation_from_answer(question: str, answer: str) -> dict:
@@ -83,16 +92,21 @@ class WakeProductService:
         root: Path = ROOT,
         live_runner: Callable[[str], dict] | None = None,
         bundle_live_runner: Callable[[dict, dict[str, bytes]], dict] | None = None,
+        required_cost_authorization_usd: float = DEFAULT_REQUIRED_COST_AUTHORIZATION_USD,
     ) -> None:
         self.root = root
         self.live_runner = live_runner
         self.bundle_live_runner = bundle_live_runner
+        self.required_cost_authorization_usd = validate_required_cost_authorization(
+            required_cost_authorization_usd
+        )
         self.investigations: dict[str, dict] = {}
         self.briefings: dict[str, dict] = {}
         self.goals: dict[str, dict] = {}
         self.sources: dict[str, dict] = {}
         self.source_bundles: dict[str, dict] = {}
         self.bundle_results: dict[str, dict] = {}
+        self.cost_executions: dict[str, dict] = {}
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -277,6 +291,12 @@ class WakeProductService:
                 for source in summary["sources"]
             ],
             "evidence_gaps": summary["evidence_gaps"],
+            "cost_authorization": {
+                "currency": "USD",
+                "required_authorization_usd": self.required_cost_authorization_usd,
+                "hard_provider_cap": False,
+                "basis": "START_GATE_WITH_POST_RUN_USAGE",
+            },
             "agent_called": False,
         }
         self.source_bundles[bundle_id] = {
@@ -286,7 +306,13 @@ class WakeProductService:
         }
         return response
 
-    def execute_source_bundle(self, bundle_id: str, *, mode: str) -> tuple[dict, bool]:
+    def execute_source_bundle(
+        self,
+        bundle_id: str,
+        *,
+        mode: str,
+        authorized_cost_usd: float | None = None,
+    ) -> tuple[dict, bool]:
         """Execute one prepared bundle only after explicit live authorization.
 
         Returns the result and whether it was newly created. Repeated requests in
@@ -299,6 +325,15 @@ class WakeProductService:
         execution_id = f"execution-{bundle_id}"
         if execution_id in self.bundle_results:
             return self.bundle_results[execution_id], False
+        if (
+            authorized_cost_usd is None
+            or not math.isfinite(authorized_cost_usd)
+            or authorized_cost_usd < self.required_cost_authorization_usd
+        ):
+            raise ValueError(
+                "Explicit cost authorization of at least "
+                f"US${self.required_cost_authorization_usd:.2f} is required."
+            )
         if self.bundle_live_runner is None:
             raise ValueError("Live prepared-bundle execution is disabled for this service.")
 
@@ -314,7 +349,39 @@ class WakeProductService:
                 if kind in {"SPEEDCOACH", "MOBILE"}
                 else source["_content"]
             )
-        analysis = self.bundle_live_runner(bundle["summary"], evidence)
+        runner_result = self.bundle_live_runner(bundle["summary"], evidence)
+        if not isinstance(runner_result, dict) or not isinstance(
+            runner_result.get("analysis"), dict
+        ):
+            raise ValueError("Prepared-bundle runner omitted its analysis envelope.")
+        analysis = runner_result["analysis"]
+        observability = runner_result.get("observability")
+        if not isinstance(observability, dict):
+            raise ValueError("Prepared-bundle runner omitted cost observability.")
+        usage = observability.get("usage")
+        if not isinstance(usage, dict) or not all(
+            isinstance(usage.get(key), int)
+            for key in ("input_tokens", "output_tokens", "total_tokens")
+        ):
+            raise ValueError("Prepared-bundle runner returned invalid token usage.")
+        approximate_cost_usd = float(observability["approximate_cost_usd"])
+        runtime_ms = int(observability["runtime_ms"])
+        cost = {
+            "currency": "USD",
+            "authorized_cost_usd": authorized_cost_usd,
+            "approximate_cost_usd": approximate_cost_usd,
+            "status": (
+                "WITHIN_AUTHORIZATION"
+                if approximate_cost_usd <= authorized_cost_usd
+                else "AUTHORIZATION_EXCEEDED"
+            ),
+            "hard_provider_cap": False,
+            "usage": {
+                key: usage[key]
+                for key in ("input_tokens", "output_tokens", "total_tokens")
+            },
+            "runtime_ms": runtime_ms,
+        }
         jsonschema.validate(
             instance=analysis,
             schema=read_json(self.root / "schemas/analysis-output.schema.json"),
@@ -370,11 +437,33 @@ class WakeProductService:
             "checkpoint_id": investigation["checkpoint_id"],
             "goal_id": investigation["goal_id"],
             "investigation_status": investigation["status"],
+            "cost": cost,
             "analysis": analysis,
             "review": review,
         }
         self.bundle_results[execution_id] = result
+        self.cost_executions[execution_id] = cost
         return result, True
+
+    def get_cost_summary(self) -> dict:
+        usage_keys = ("input_tokens", "output_tokens", "total_tokens")
+        return {
+            "schema_version": "wake.product_cost_summary.v1",
+            "currency": "USD",
+            "execution_count": len(self.cost_executions),
+            "approximate_total_cost_usd": round(
+                sum(
+                    item["approximate_cost_usd"]
+                    for item in self.cost_executions.values()
+                ),
+                6,
+            ),
+            "total_usage": {
+                key: sum(item["usage"][key] for item in self.cost_executions.values())
+                for key in usage_keys
+            },
+            "hard_provider_cap": False,
+        }
 
     def create_investigation_from_sources(
         self,
@@ -760,10 +849,19 @@ class WakeProductApi:
             and parts[:2] == ["api", "source-bundles"]
             and parts[3] == "execute"
         ):
+            authorized_cost = body.get("authorized_cost_usd")
+            if not isinstance(authorized_cost, (int, float)) or isinstance(
+                authorized_cost, bool
+            ):
+                authorized_cost = None
             result, created = self.service.execute_source_bundle(
-                parts[2], mode=str(body.get("mode", ""))
+                parts[2],
+                mode=str(body.get("mode", "")),
+                authorized_cost_usd=authorized_cost,
             )
             return (201 if created else 200), result
+        if method == "GET" and parts == ["api", "runtime", "costs"]:
+            return 200, self.service.get_cost_summary()
         if method == "POST" and parts == ["api", "investigations"]:
             if "source_ids" in body:
                 source_ids = body["source_ids"]
@@ -829,6 +927,18 @@ def build_live_runner(root: Path) -> Callable[[str], dict]:
     return execute
 
 
+def load_product_run_envelope(artifacts: dict[str, Path]) -> dict:
+    trajectory = read_json(artifacts["trajectory_path"])
+    return {
+        "analysis": read_json(artifacts["output_path"]),
+        "observability": {
+            "usage": trajectory["usage"],
+            "approximate_cost_usd": trajectory["approximate_cost_usd"],
+            "runtime_ms": trajectory["runtime_ms"],
+        },
+    }
+
+
 def build_bundle_live_runner(
     root: Path,
 ) -> Callable[[dict, dict[str, bytes]], dict]:
@@ -856,7 +966,7 @@ def build_bundle_live_runner(
                 now=utc_now,
                 git_commit=current_git_commit(),
             )
-        return read_json(result["output_path"])
+        return load_product_run_envelope(result)
 
     return execute
 
@@ -906,13 +1016,26 @@ def main() -> None:
     parser.add_argument("--port", default=8788, type=int)
     parser.add_argument("--origin", default="http://localhost:3000")
     parser.add_argument("--allow-live", action="store_true")
+    parser.add_argument(
+        "--required-cost-authorization-usd",
+        type=float,
+        default=DEFAULT_REQUIRED_COST_AUTHORIZATION_USD,
+    )
     args = parser.parse_args()
+
+    try:
+        required_cost_authorization_usd = validate_required_cost_authorization(
+            args.required_cost_authorization_usd
+        )
+    except ValueError as error:
+        parser.error(str(error))
 
     service = WakeProductService(
         live_runner=build_live_runner(ROOT) if args.allow_live else None,
         bundle_live_runner=(
             build_bundle_live_runner(ROOT) if args.allow_live else None
         ),
+        required_cost_authorization_usd=required_cost_authorization_usd,
     )
     api = WakeProductApi(service)
     server = ThreadingHTTPServer(
@@ -921,6 +1044,10 @@ def main() -> None:
     )
     print(f"WAKE product service listening on http://{args.host}:{args.port}")
     print(f"Live agent execution: {'enabled' if args.allow_live else 'disabled'}")
+    print(
+        "Required live cost authorization: "
+        f"US${required_cost_authorization_usd:.2f} (operational start gate)"
+    )
     server.serve_forever()
 
 

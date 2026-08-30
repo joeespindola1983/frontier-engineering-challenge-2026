@@ -116,4 +116,11 @@ Live mode is available only through all three conditions:
 2. the investigation request explicitly uses `mode: live`;
 3. `OPENAI_API_KEY` exists.
 
-Every live execution still uses `run_agent_case`, preserving its verifier, bounded rounds, trajectory, runtime, token, and cost evidence. The HTTP service never exposes low-level tool names to the product client.
+Prepared-bundle execution adds a fourth condition: the request must explicitly
+authorize at least the configured operational amount, US$0.20 by default. This
+is a start gate rather than a provider-enforced dollar cap. The response carries
+the trajectory's usage, runtime, and approximate cost; the process-local ledger
+counts an idempotent execution only once and is available through
+`GET /api/runtime/costs`.
+
+Every live execution still uses `run_agent_case`, preserving its verifier, bounded rounds, trajectory, runtime, token, and cost evidence. The HTTP service never exposes low-level tool names to the product client. See `docs/COST_MODEL.md` for the measured reference, projections, limitations, and optimization policy.

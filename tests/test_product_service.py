@@ -3,7 +3,9 @@ from __future__ import annotations
 import base64
 import copy
 import json
+import math
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -41,12 +43,26 @@ class FakeBundleRunner:
     def __init__(self) -> None:
         self.calls: list[tuple[dict, dict[str, bytes]]] = []
         self.output_override: dict | None = None
+        self.approximate_cost_usd = 0.087826
+        self.runtime_ms = 19_219
+        self.usage = {
+            "input_tokens": 27_917,
+            "output_tokens": 2_666,
+            "total_tokens": 30_583,
+        }
 
     def __call__(self, summary: dict, evidence: dict[str, bytes]) -> dict:
         self.calls.append((copy.deepcopy(summary), copy.deepcopy(evidence)))
         output = copy.deepcopy(self.output_override or read_json(COMMITTED_OUTPUT))
         output["case_id"] = summary["case_id"]
-        return output
+        return {
+            "analysis": output,
+            "observability": {
+                "approximate_cost_usd": self.approximate_cost_usd,
+                "runtime_ms": self.runtime_ms,
+                "usage": copy.deepcopy(self.usage),
+            },
+        }
 
 
 class WakeProductServiceTests(unittest.TestCase):
@@ -58,6 +74,16 @@ class WakeProductServiceTests(unittest.TestCase):
             live_runner=self.live_runner,
             bundle_live_runner=self.bundle_runner,
         )
+
+    def test_required_cost_authorization_config_is_positive_and_finite(self) -> None:
+        self.assertEqual(
+            wake_product_service.validate_required_cost_authorization(0.25),
+            0.25,
+        )
+        for invalid in (0, -0.01, math.nan, math.inf):
+            with self.subTest(invalid=invalid):
+                with self.assertRaisesRegex(ValueError, "positive finite"):
+                    wake_product_service.validate_required_cost_authorization(invalid)
 
     def test_replay_investigation_uses_public_evidence_without_live_api(self) -> None:
         result = self.service.create_investigation(CASE_ID, mode="replay")
@@ -375,6 +401,15 @@ class WakeProductServiceTests(unittest.TestCase):
             ],
         )
         self.assertEqual(prepared["finding_types"], [])
+        self.assertEqual(
+            prepared["cost_authorization"],
+            {
+                "currency": "USD",
+                "required_authorization_usd": 0.20,
+                "hard_provider_cap": False,
+                "basis": "START_GATE_WITH_POST_RUN_USAGE",
+            },
+        )
         gaps = " ".join(prepared["evidence_gaps"]).lower()
         self.assertIn("mobile telemetry is not supplied", gaps)
         self.assertIn("environmental timeline is not supplied", gaps)
@@ -398,6 +433,7 @@ class WakeProductServiceTests(unittest.TestCase):
         result, created = self.service.execute_source_bundle(
             prepared["bundle_id"],
             mode="live",
+            authorized_cost_usd=0.20,
         )
 
         self.assertTrue(created)
@@ -478,7 +514,7 @@ class WakeProductServiceTests(unittest.TestCase):
         status, result = api.handle(
             "POST",
             f"/api/source-bundles/{prepared['bundle_id']}/execute",
-            {"mode": "live"},
+            {"mode": "live", "authorized_cost_usd": 0.20},
         )
 
         self.assertEqual(status, 201)
@@ -510,11 +546,120 @@ class WakeProductServiceTests(unittest.TestCase):
         repeated_status, repeated = api.handle(
             "POST",
             f"/api/source-bundles/{prepared['bundle_id']}/execute",
-            {"mode": "live"},
+            {"mode": "live", "authorized_cost_usd": 0.20},
         )
         self.assertEqual(repeated_status, 200)
         self.assertEqual(repeated, result)
         self.assertEqual(len(self.bundle_runner.calls), 1)
+
+    def test_live_bundle_requires_explicit_cost_authorization_before_runner(self) -> None:
+        prepared = self.service.prepare_source_bundle(
+            self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        )
+
+        with self.assertRaisesRegex(ValueError, "cost authorization"):
+            self.service.execute_source_bundle(
+                prepared["bundle_id"],
+                mode="live",
+            )
+        with self.assertRaisesRegex(ValueError, "cost authorization"):
+            self.service.execute_source_bundle(
+                prepared["bundle_id"],
+                mode="live",
+                authorized_cost_usd=math.nan,
+            )
+
+        self.assertEqual(self.bundle_runner.calls, [])
+
+    def test_live_cost_observability_and_ledger_use_actual_runner_usage_once(self) -> None:
+        prepared = self.service.prepare_source_bundle(
+            self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        )
+
+        result, created = self.service.execute_source_bundle(
+            prepared["bundle_id"],
+            mode="live",
+            authorized_cost_usd=0.20,
+        )
+        repeated, repeated_created = self.service.execute_source_bundle(
+            prepared["bundle_id"],
+            mode="live",
+        )
+        ledger = self.service.get_cost_summary()
+
+        self.assertTrue(created)
+        self.assertFalse(repeated_created)
+        self.assertEqual(repeated, result)
+        self.assertEqual(
+            result["cost"],
+            {
+                "currency": "USD",
+                "authorized_cost_usd": 0.20,
+                "approximate_cost_usd": 0.087826,
+                "status": "WITHIN_AUTHORIZATION",
+                "hard_provider_cap": False,
+                "usage": self.bundle_runner.usage,
+                "runtime_ms": self.bundle_runner.runtime_ms,
+            },
+        )
+        self.assertEqual(ledger["execution_count"], 1)
+        self.assertEqual(ledger["approximate_total_cost_usd"], 0.087826)
+        self.assertEqual(ledger["total_usage"], self.bundle_runner.usage)
+        self.assertEqual(len(self.bundle_runner.calls), 1)
+
+    def test_product_run_envelope_reads_analysis_and_trajectory_observability(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            output_path = directory / "output.json"
+            trajectory_path = directory / "trajectory.json"
+            output = read_json(COMMITTED_OUTPUT)
+            output_path.write_text(json.dumps(output), encoding="utf-8")
+            trajectory_path.write_text(
+                json.dumps(
+                    {
+                        "usage": self.bundle_runner.usage,
+                        "approximate_cost_usd": self.bundle_runner.approximate_cost_usd,
+                        "runtime_ms": self.bundle_runner.runtime_ms,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            envelope = wake_product_service.load_product_run_envelope(
+                {
+                    "output_path": output_path,
+                    "trajectory_path": trajectory_path,
+                }
+            )
+
+        self.assertEqual(envelope["analysis"], output)
+        self.assertEqual(
+            envelope["observability"],
+            {
+                "usage": self.bundle_runner.usage,
+                "approximate_cost_usd": self.bundle_runner.approximate_cost_usd,
+                "runtime_ms": self.bundle_runner.runtime_ms,
+            },
+        )
+
+    def test_http_execution_authorizes_cost_and_exposes_process_ledger(self) -> None:
+        prepared = self.service.prepare_source_bundle(
+            self._upload_public_bundle(kinds=("PLAN", "SPEEDCOACH"))
+        )
+        api = wake_product_service.WakeProductApi(self.service)
+
+        status, result = api.handle(
+            "POST",
+            f"/api/source-bundles/{prepared['bundle_id']}/execute",
+            {"mode": "live", "authorized_cost_usd": 0.20},
+        )
+        ledger_status, ledger = api.handle("GET", "/api/runtime/costs")
+
+        self.assertEqual(status, 201)
+        self.assertEqual(result["cost"]["status"], "WITHIN_AUTHORIZATION")
+        self.assertEqual(ledger_status, 200)
+        self.assertEqual(ledger["execution_count"], 1)
+        self.assertEqual(ledger["approximate_total_cost_usd"], 0.087826)
 
     def test_new_bundle_continues_through_generic_checkpoint_and_memory(self) -> None:
         plan = read_json(CASE_INPUT / "plan.json")
@@ -582,7 +727,7 @@ class WakeProductServiceTests(unittest.TestCase):
         self.bundle_runner.output_override = output
 
         execution, _ = self.service.execute_source_bundle(
-            prepared["bundle_id"], mode="live"
+            prepared["bundle_id"], mode="live", authorized_cost_usd=0.20
         )
 
         self.assertEqual(execution["investigation_status"], "QUESTION_REQUIRED")

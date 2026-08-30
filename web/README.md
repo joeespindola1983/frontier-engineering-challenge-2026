@@ -47,8 +47,21 @@ This still uses replay mode and makes no API call. Live execution additionally r
 ```bash
 NEXT_PUBLIC_WAKE_API_URL=http://127.0.0.1:8788 \
 NEXT_PUBLIC_WAKE_RUNTIME_MODE=live \
+NEXT_PUBLIC_WAKE_COST_AUTHORIZATION_USD=0.20 \
 npm run dev
 ```
+
+Start the service with the matching operational start gate:
+
+```bash
+uv run python scripts/wake_product_service.py \
+  --allow-live \
+  --required-cost-authorization-usd 0.20
+```
+
+The authorization is not a provider billing cap. The review shows the
+token-based approximate cost after execution and flags an overrun. The service
+also exposes a process-local aggregate at `GET /api/runtime/costs`.
 
 The product client calls only task-level endpoints; source trust and agent tools remain server-side.
 

@@ -12,9 +12,19 @@ type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
 type EvidenceKind = 'PLAN' | 'SPEEDCOACH' | 'MOBILE' | 'ENVIRONMENT' | 'CONTEXT';
 type EvidenceFiles = Partial<Record<EvidenceKind, File>>;
+type ExecutionCost = {
+  approximate_cost_usd: number;
+  authorized_cost_usd: number;
+  status: 'WITHIN_AUTHORIZATION' | 'AUTHORIZATION_EXCEEDED';
+  usage: { total_tokens: number };
+  runtime_ms: number;
+};
 
 const configuredRuntimeUrl = process.env.NEXT_PUBLIC_WAKE_API_URL ?? '';
 const configuredRuntimeMode = process.env.NEXT_PUBLIC_WAKE_RUNTIME_MODE === 'live' ? 'live' : 'replay';
+const configuredCostAuthorizationUsd = Number.parseFloat(
+  process.env.NEXT_PUBLIC_WAKE_COST_AUTHORIZATION_USD ?? '0.20',
+);
 
 function formatDate(value: string | null) {
   if (!value) return 'Date not supplied';
@@ -106,6 +116,7 @@ function IntakeScreen({ onInvestigate, processing, error }: { onInvestigate: (fi
           </div>
           {hasSelectedFiles ? <p className="upload-boundary">Plan and SpeedCoach enable the core review. Missing mobile, environment, or context will remain visible as evidence gaps. A different bundle cannot reuse the committed replay.</p> : null}
           <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>{files.CONTEXT ? 'Boat, crew, goal, and observations will be read from the selected context file.' : 'No context file selected. Boat, crew, goal, and human observations will remain unknown.'}</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
+          {hasSelectedFiles && configuredRuntimeMode === 'live' ? <p className="upload-boundary"><strong>Operational authorization: US${configuredCostAuthorizationUsd.toFixed(2)}.</strong> This allows the run to start; it is not a provider billing cap. WAKE shows the token-based approximate cost after execution.</p> : null}
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
           <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files)} type="button">{processing ? 'Investigating…' : hasSelectedFiles ? 'Validate and investigate' : 'Investigate sample session'}</button>
         </section>
@@ -150,13 +161,13 @@ function SourcePolicy({ review }: { review: Review }) {
   );
 }
 
-function ReviewScreen({ review, onComplete, processing, error }: { review: Review; onComplete: (answer: string) => void; processing: boolean; error: string }) {
+function ReviewScreen({ review, executionCost, onComplete, processing, error }: { review: Review; executionCost: ExecutionCost | null; onComplete: (answer: string) => void; processing: boolean; error: string }) {
   const [answer, setAnswer] = useState('UNKNOWN');
   const questionRequired = review.status === 'QUESTION_REQUIRED';
   return (
     <main className="page">
       <PrototypeNotice />
-      <header className="review-header"><div className="review-title"><div className="kicker">Session review</div><h1>{review.title}</h1><div className="review-meta"><span>{formatDate(review.scheduledDate)}</span><span>Plan + SpeedCoach + mobile + environment</span>{review.mobileClockOffsetS == null ? null : <span>{review.mobileClockOffsetS} s mobile clock offset</span>}</div></div><div className="review-state"><span className={`status ${questionRequired ? 'attention' : 'approved'}`}>{questionRequired ? 'Human context required' : 'Ready for review'}</span><strong>{questionRequired ? 'One answer can change the briefing' : 'No additional question was requested'}</strong></div></header>
+      <header className="review-header"><div className="review-title"><div className="kicker">Session review</div><h1>{review.title}</h1><div className="review-meta"><span>{formatDate(review.scheduledDate)}</span><span>Plan + SpeedCoach + mobile + environment</span>{review.mobileClockOffsetS == null ? null : <span>{review.mobileClockOffsetS} s mobile clock offset</span>}{executionCost ? <span>Approx. agent cost US${executionCost.approximate_cost_usd.toFixed(4)} · {executionCost.usage.total_tokens.toLocaleString('en-US')} tokens{executionCost.status === 'AUTHORIZATION_EXCEEDED' ? ' · Exceeded operational authorization' : ''}</span> : null}</div></div><div className="review-state"><span className={`status ${questionRequired ? 'attention' : 'approved'}`}>{questionRequired ? 'Human context required' : 'Ready for review'}</span><strong>{questionRequired ? 'One answer can change the briefing' : 'No additional question was requested'}</strong></div></header>
       <div className="progress-line" aria-label="Session review progress"><span /></div>
       <div className="review-layout">
         <div><section><div className="kicker">Current reconstruction</div><p className="finding-intro">{review.currentReconstruction}</p></section><IntervalChart review={review} /><SourcePolicy review={review} /><section className="environment-note"><div><div className="kicker">Environmental boundary</div><h2>Condition context, not a causal verdict</h2></div><p>{review.environment.summary}</p></section></div>
@@ -203,12 +214,13 @@ export default function Home() {
   const [checkpointId, setCheckpointId] = useState(demoReview.checkpoint.checkpointId);
   const [briefing, setBriefing] = useState<Briefing>(() => resolveCheckpoint(demoReview, 'UNKNOWN'));
   const [memory, setMemory] = useState<GoalMemory>(() => approveBriefingMemory(briefing, false));
+  const [executionCost, setExecutionCost] = useState<ExecutionCost | null>(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  async function investigate(files: EvidenceFiles = {}) { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files) : undefined; const result = sourceIds && configuredRuntimeMode === 'live' ? await client.analyzeSourceBundle({ sourceIds, mode: 'live' }) : await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
+  async function investigate(files: EvidenceFiles = {}) { setProcessing(true); setError(''); try { const sourceIds = Object.keys(files).length ? await uploadEvidenceBundle(client, files) : undefined; const result = sourceIds && configuredRuntimeMode === 'live' ? await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }) : await client.createInvestigation({ mode: configuredRuntimeMode, sourceIds }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
   async function completeReview(answer: string) { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, answer); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} processing={processing} /> : null}{screen === 'review' ? <ReviewScreen error={error} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} processing={processing} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
 }

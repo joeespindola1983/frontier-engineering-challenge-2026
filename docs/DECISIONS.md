@@ -242,6 +242,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Register every successfully executed prepared bundle as a process-local investigation and derive its checkpoint, briefing, and memory proposal from that bundle's plan, verified analysis, and follow-up question. Use a generic `humanConfirmation` object rather than an equipment-specific field. Let the page invoke this path only when both a local service URL and explicit live mode are configured; keep hosted replay as the default.
 - **Rationale:** A generic review followed by a hard-coded six-by-one-kilometer briefing would turn a correct agent result into a false product claim. The complete transition is now tested with a different plan and question, while explicit live authorization preserves the existing paid-action boundary. Durable club memory still requires authentication, tenancy, and storage.
 
+## 2026-08-29 - Separate live cost authorization from observed API cost
+
+- **Status:** accepted for the local demonstration runtime.
+- **Decision:** Require an explicit positive finite `authorized_cost_usd` of at least US$0.20 before a new prepared-bundle execution may start. Treat it as an operational gate, not a provider-enforced cap. Return trajectory-derived token usage, runtime, approximate cost, and overrun status; show the result in the coach review; and aggregate each new execution once in a process-local ledger. Use US$0.15 only as a planning reference derived from the observed v2 conditions, not as a guarantee.
+- **Rationale:** Silent paid actions are unacceptable, but the Responses API does not provide a dollar cap for an individual request. Separating authorization from observed usage makes that limitation honest, prevents missing or invalid client values from reaching the runner, and gives the hackathon demonstration auditable scaling evidence without claiming durable billing controls.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
