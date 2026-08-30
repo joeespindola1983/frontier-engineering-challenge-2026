@@ -1,0 +1,90 @@
+{
+  "boundaries": [
+    "The weighted quality rubric was not frozen before execution, so no post-hoc score is reported.",
+    "The two scopes are real-informed synthetic and do not establish human-coach superiority or athletic improvement.",
+    "Observed API cost is approximate and the authorization gate was not a provider cap."
+  ],
+  "costs": {
+    "direct_baseline_usd": 0.06458,
+    "total_usd": 0.110426,
+    "wake_bounded_agent_usd": 0.045846,
+    "wake_vs_baseline_percent": -29.01,
+    "wake_vs_baseline_usd": -0.018734
+  },
+  "evaluation_design": "POST_RUN_CAPABILITY_AUDIT_NOT_PREREGISTERED",
+  "execution_count": 4,
+  "interpretation": "Both workflows passed the same mandatory capability checks. WAKE used bounded tools and fewer resources, but this audit does not establish a quality improvement over the direct baseline.",
+  "quality_conclusion": "NO_DEMONSTRATED_QUALITY_GAIN",
+  "quality_score": null,
+  "reports": [
+    {
+      "all_checks_passed": true,
+      "approximate_cost_usd": 0.02974,
+      "checks": {
+        "human_review_preserved": true,
+        "performance_trend_abstained": true,
+        "required_attention_refs_present": true,
+        "verification_passed": true,
+        "water_indoor_boundary_preserved": true
+      },
+      "pilot_id": "athlete-lucas",
+      "runtime_ms": 14762,
+      "total_tokens": 5840,
+      "workflow": "DIRECT_BASELINE"
+    },
+    {
+      "all_checks_passed": true,
+      "approximate_cost_usd": 0.017008,
+      "checks": {
+        "human_review_preserved": true,
+        "performance_trend_abstained": true,
+        "required_attention_refs_present": true,
+        "verification_passed": true,
+        "water_indoor_boundary_preserved": true
+      },
+      "pilot_id": "athlete-lucas",
+      "runtime_ms": 10952,
+      "total_tokens": 3339,
+      "workflow": "WAKE_BOUNDED_AGENT"
+    },
+    {
+      "all_checks_passed": true,
+      "approximate_cost_usd": 0.03484,
+      "checks": {
+        "human_review_preserved": true,
+        "performance_trend_abstained": true,
+        "required_attention_refs_present": true,
+        "verification_passed": true,
+        "water_indoor_boundary_preserved": true
+      },
+      "pilot_id": "club-coach",
+      "runtime_ms": 12381,
+      "total_tokens": 9195,
+      "workflow": "DIRECT_BASELINE"
+    },
+    {
+      "all_checks_passed": true,
+      "approximate_cost_usd": 0.028838,
+      "checks": {
+        "human_review_preserved": true,
+        "performance_trend_abstained": true,
+        "required_attention_refs_present": true,
+        "verification_passed": true,
+        "water_indoor_boundary_preserved": true
+      },
+      "pilot_id": "club-coach",
+      "runtime_ms": 15777,
+      "total_tokens": 4899,
+      "workflow": "WAKE_BOUNDED_AGENT"
+    }
+  ],
+  "schema_version": "wake.longitudinal_capability_audit.v1",
+  "tokens": {
+    "direct_baseline": 15035,
+    "wake_bounded_agent": 8238
+  },
+  "tool_use": {
+    "baseline_tool_events": 0,
+    "wake_tool_events": 16
+  }
+}

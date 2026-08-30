@@ -1,0 +1,221 @@
+{
+  "boundary": "Saved structured output can be reopened without another model call.",
+  "finished_at": "2026-08-30T19:43:47.622+00:00",
+  "input_sha256": "674ab1acbc35e298f14caf7ab44891c8a78958c7b0df6f4444017c1f5b133728",
+  "observability": {
+    "approximate_cost_usd": 0.02974,
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "medium",
+    "runtime_ms": 14762,
+    "usage": {
+      "cached_input_tokens": 0,
+      "input_tokens": 4034,
+      "output_tokens": 1806,
+      "reasoning_output_tokens": 0,
+      "total_tokens": 5840
+    }
+  },
+  "output": {
+    "boundaries": [
+      "Water and indoor distance remain separate and must not be summed into one performance total.",
+      "No visible technique, crew synchronization, health, strength, stamina, fitness, or commitment conclusion is supported.",
+      "No performance trend is supported by this preflight.",
+      "The data are real-informed synthetic and do not describe real athletes."
+    ],
+    "coach_briefing": "Review the documented 2026-08-28 recovery-02 deviation first. Otherwise, treat this period as an activity and context record rather than a performance assessment: Lucas appears in multiple water-crew configurations, one solo-water alternative, and two indoor alternatives, but the supplied evidence does not support cross-session ranking or a trend. Keep water and ERG totals separate, and define coach-reviewed repeatable benchmarks before making future longitudinal comparisons.",
+    "comparisons": [
+      {
+        "comparison_id": "comparison-performance-trend",
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "limitations": [
+          "The preflight explicitly marks performance-trend support as false.",
+          "Repeated titles or contexts do not establish comparable performance tests.",
+          "Environmental conditions, human effort, technical execution, and source comparability are not controlled sufficiently.",
+          "Water and indoor results are separate modalities and must not be merged."
+        ],
+        "statement": "No water or indoor performance trend can be concluded for Lucas in this period.",
+        "status": "INSUFFICIENT"
+      },
+      {
+        "comparison_id": "comparison-erg-sessions",
+        "evidence_refs": [
+          "record:activity-lucas-erg-20260818",
+          "record:activity-lucas-erg-20260826"
+        ],
+        "limitations": [
+          "They have different workout types: 1,000 m fixed distance versus 6 \u00d7 2 km intervals.",
+          "The 2026-08-26 record includes recovery rows, while the 2026-08-18 record is a fixed-distance summary.",
+          "The supplied preflight does not support a performance trend."
+        ],
+        "statement": "The two ERG records should not be treated as a direct performance comparison.",
+        "status": "INSUFFICIENT"
+      },
+      {
+        "comparison_id": "comparison-water-sessions",
+        "evidence_refs": [
+          "record:club-2x-men-20260817-am",
+          "record:club-4x-men-20260818-am",
+          "record:club-8x-men-20260819-evening",
+          "record:activity-lucas-solo-20260824",
+          "record:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "Sessions span solo water and 2x, 4x, and 8x crew contexts.",
+          "Session titles, distances, and stated roles vary.",
+          "Environmental conditions, crew contribution, effort, and technical execution are not controlled in the supplied evidence."
+        ],
+        "statement": "The recorded water sessions should not be ranked as comparable athlete performances across dates or boat classes.",
+        "status": "INSUFFICIENT"
+      }
+    ],
+    "headline": "Lucas has 12 recorded activities across 8 active days from 2026-08-17 to 2026-08-28: 10 water activities totaling 98,373.8 m and 2 indoor ERG activities totaling 13,000 m. The supplied preflight does not support a performance trend.",
+    "observed_facts": [
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "fact_id": "fact-coverage",
+        "statement": "The period spans 2026-08-17 through 2026-08-28 and contains 12 activities for Lucas across 8 active days: 10 water activities and 2 indoor activities."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "fact_id": "fact-modality-distance",
+        "statement": "Recorded water distance is 98,373.8 m and recorded indoor distance is 13,000 m; these are retained as separate modality totals."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-2x-men-20260817-am",
+          "record:club-4x-men-20260818-am",
+          "record:club-8x-men-20260819-evening",
+          "record:activity-lucas-solo-20260824"
+        ],
+        "fact_id": "fact-water-crew-context",
+        "statement": "Lucas is recorded in 2x, 4x, and 8x water-crew sessions during the period, plus one solo-water alternative session on 2026-08-24."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:activity-lucas-erg-20260818",
+          "record:activity-lucas-erg-20260826"
+        ],
+        "fact_id": "fact-indoor-sessions",
+        "statement": "Two indoor ERG alternatives are recorded: a 1,000 m fixed-distance session on 2026-08-18 and a 6 \u00d7 2 km interval session on 2026-08-26."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-atlas-men-20260828-recovery",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-aug28-investigation",
+        "statement": "The 2026-08-28 4x race-pieces session has a preserved bounded investigation that passed verification and recorded one recovery-duration-outside-target deviation in segment recovery-02."
+      }
+    ],
+    "pilot_id": "athlete-lucas",
+    "priorities": [
+      {
+        "action": "Review the verified recovery-duration-outside-target deviation for recovery-02 in the 2026-08-28 4x session and determine whether any session-context follow-up is needed.",
+        "evidence_refs": [
+          "record:club-atlas-men-20260828-recovery",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "priority_id": "priority-aug28-recovery",
+        "rank": 1,
+        "reason": "This is the only explicitly verified deviation in the supplied record; verification passed, but the deviation remains documented.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Establish coach-reviewed comparability criteria before using these records for athlete-performance review.",
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "priority_id": "priority-comparability",
+        "rank": 2,
+        "reason": "The supplied preflight says no performance trend is supported because context does not adequately control environment, effort, technical execution, or source comparability.",
+        "requires_human_review": true
+      }
+    ],
+    "recommendations": [
+      {
+        "action": "Coach to inspect the 2026-08-28 session record, including the intended and recorded recovery structure for recovery-02, before drawing any session-level conclusion.",
+        "evidence_refs": [
+          "record:club-atlas-men-20260828-recovery",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "The evidence does not identify why the deviation occurred.",
+          "No conclusion about technique, health, effort, or performance follows from this deviation."
+        ],
+        "rationale": "A verified bounded investigation passed and preserved a recovery-duration-outside-target deviation; no cause is supplied.",
+        "recommendation_id": "recommendation-investigate-aug28",
+        "status": "REVIEW_REQUIRED"
+      },
+      {
+        "action": "Collect coach-reviewed contextual fields for future comparable sessions, including defined workout structure, intended rate/pace targets, conditions, crew and boat configuration, and source-quality confirmation.",
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "limitations": [
+          "Collecting context may support future review but cannot retrospectively establish a trend from the current records."
+        ],
+        "rationale": "The current preflight identifies insufficient control of environment, effort, technical execution, and source comparability for a performance trend.",
+        "recommendation_id": "recommendation-record-context",
+        "status": "INFORMATION_REQUEST"
+      }
+    ],
+    "schema_version": "wake.longitudinal_intelligence_output.v1",
+    "scope": {
+      "entity_id": "athlete-lucas",
+      "type": "ATHLETE"
+    },
+    "unresolved_questions": [
+      {
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What was the intended recovery-duration target for recovery-02 on 2026-08-28, and what session circumstances explain the documented deviation?",
+        "question_id": "question-recovery-02",
+        "reason": "The verified investigation identifies recovery-02 as outside target but does not provide the target or contextual explanation."
+      },
+      {
+        "evidence_refs": [
+          "record:activity-lucas-solo-20260824",
+          "record:activity-lucas-erg-20260826"
+        ],
+        "expected_respondent": "ATHLETE_OR_COACH",
+        "question": "For the 2026-08-24 solo-water alternative and 2026-08-26 indoor alternative, what planned crew sessions were replaced and what were the relevant cancellation circumstances?",
+        "question_id": "question-session-context",
+        "reason": "Both records are labeled as alternatives following crew cancellation, but the supplied summary does not provide sufficient replacement-session context."
+      },
+      {
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "expected_respondent": "COACH",
+        "question": "Which water and ERG session formats should be designated as repeatable, coach-reviewed benchmarks for future comparisons?",
+        "question_id": "question-comparability-protocol",
+        "reason": "No repeated-context group is considered adequate for performance-trend support in the supplied preflight."
+      }
+    ]
+  },
+  "pilot_id": "athlete-lucas",
+  "response_ids": [
+    "resp_03a8036323474e24016a9487e586a487d29cb55806d954d87f"
+  ],
+  "schema_version": "wake.longitudinal_pilot_artifact.v1",
+  "started_at": "2026-08-30T19:43:32.861+00:00",
+  "tool_events": [],
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "DIRECT_BASELINE"
+}

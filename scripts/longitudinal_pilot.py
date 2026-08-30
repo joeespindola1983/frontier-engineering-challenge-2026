@@ -400,6 +400,19 @@ def _all_evidence_refs(value: object) -> list[str]:
     return refs
 
 
+def _has_duplicate_evidence_refs(value: object) -> bool:
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key == "evidence_refs" and isinstance(item, list):
+                if len(item) != len(set(str(ref) for ref in item)):
+                    return True
+            elif _has_duplicate_evidence_refs(item):
+                return True
+    elif isinstance(value, list):
+        return any(_has_duplicate_evidence_refs(item) for item in value)
+    return False
+
+
 def verify_longitudinal_output(*, output: dict, output_schema: dict, summary: dict) -> list[str]:
     errors: list[str] = []
     try:
@@ -416,6 +429,8 @@ def verify_longitudinal_output(*, output: dict, output_schema: dict, summary: di
     allowed = set(summary["evidence_catalog"])
     for reference in sorted(set(_all_evidence_refs(output)) - allowed):
         errors.append(f"Evidence reference does not exist in pilot input: {reference}")
+    if _has_duplicate_evidence_refs(output):
+        errors.append("Duplicate evidence reference in one output claim.")
     serialized = json.dumps(output, sort_keys=True).lower()
     prohibited = (
         "improved fitness", "fitness improved", "declined fitness", "fitness declined",

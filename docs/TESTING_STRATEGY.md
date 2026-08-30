@@ -101,7 +101,7 @@ Source-batch tests begin RED on the missing batch boundary and require
 content-addressed idempotence, invalid-item isolation, sequential start-gate
 execution, resume without duplicate calls, one runner failure not blocking a
 later item, restart-safe state, and compact responses without telemetry rows.
-The forty-record public-batch verifier independently checks every source hash,
+The fifty-two-record public-batch verifier independently checks every source hash,
 plan schema, confirmed Concept2 PM5 semantics, SpeedCoach normalization,
 deterministic v2 water-session reconstruction, exact two paid-result links,
 routing totals, cost totals, and the zero-human-approval and no-synthesis
@@ -147,9 +147,19 @@ require the same boundaries to remain visible in athlete drill-downs.
 
 Longitudinal-pilot TDD begins with the compact-summary and interface contracts,
 then tests request construction, finite per-start authorization, bounded tool
-rounds, strict output verification, report persistence, and tamper detection.
-The committed verifier requires two scopes and four hashed requests with
-`api_called: false`, `store: false`, Terra medium, zero saved reports, and the
-US$0.80 full-comparison gate. Fake-client tests prove orchestration and storage;
-they are not evidence of model quality. Browser QA must also confirm the no-spend
-state, cost disclosure, both scope cards, and responsive layout.
+rounds, provider-compatible strict schemas, duplicate-evidence rejection,
+report persistence, and tamper detection. The completed run preserves two
+rejected provider-schema attempts plus four verified reports with `store:
+false` and Terra medium. The post-run capability audit is deliberately
+non-scored because no weighted rubric was frozen before execution. Browser QA
+must confirm the neutral quality result, observed cost, both scope cards, and
+zero-cost report reopening.
+
+Post-regatta TDD requires the second package to cover all sixteen athletes and
+ten crews across ten weekdays, contain both water and athlete-owned Concept2
+records, and match its committed public manifest. The deterministic comparison
+must produce all six designed scenarios, preserve evidence references, call no
+model, cost US$0.00, and retain `causal_conclusion: NOT_ESTABLISHED`. Static and
+browser interface tests require an explicit load action, pre-load state,
+post-load coverage, comparison boundaries, reset behavior, responsive layout,
+and no fitness/performance-causation copy.

@@ -364,9 +364,27 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-30 - Evaluate longitudinal intelligence through two selective scopes
 
-- **Status:** accepted as a zero-cost preflight; paid execution remains unauthorized.
+- **Status:** accepted and executed; the observed result does not demonstrate a quality gain.
 - **Decision:** Freeze one athlete briefing and one club-priority briefing after the deterministic 52-activity screen. Compare a direct baseline with the bounded WAKE workflow for each scope using the same compact input, `gpt-5.6-terra` at medium reasoning, and one strict output schema. Keep water and indoor volumes separate; forbid unsupported technique, physiology, fitness, or performance-trend conclusions; require evidence references and human review. Persist verified reports so reopening costs nothing. Require a new US$0.20 start gate for each of the four planned calls, US$0.80 total, while disclosing that the gate is not a provider cap.
 - **Rationale:** Two preserved session exceptions demonstrate selective investigation but not period-level value. A small controlled longitudinal comparison can test whether agentic investigation improves prioritization without spending on every activity or silently turning deterministic aggregates into model conclusions. Freezing inputs, costs, and evaluation boundaries before execution prevents post-result redesign.
+
+## 2026-08-30 - Preserve the neutral longitudinal result without a post-hoc score
+
+- **Status:** accepted for the submission evidence.
+- **Decision:** Preserve all four verified reports and the two provider schema-rejection attempts. Report the observed US$0.110426 total, 15,035 direct-baseline tokens, 8,238 WAKE tokens, and 29.01% lower WAKE cost. Do not invent a weighted quality score after seeing the outputs. Use a clearly labelled, non-scored capability audit only: both workflows covered the required evidence, abstained from unsupported trend claims, kept water and indoor boundaries, and required human review; therefore the result is `NO_DEMONSTRATED_QUALITY_GAIN`.
+- **Rationale:** A negative or neutral experiment is more credible than retrofitting a rubric to manufacture a win. The result still provides useful evidence about resource use and schema compatibility, while keeping the official pre-registered ten-case evaluation separate.
+
+## 2026-08-30 - Reproduce the submission without credentials or a new model call
+
+- **Status:** accepted for clean-environment judging.
+- **Decision:** Make `scripts/reproduce_submission.sh` the safe clean-checkout verifier. It installs locked dependencies unless `--verify-only` is supplied, unsets live credentials, runs deterministic tests and public verifiers, rebuilds the longitudinal audit, lints the interface, and creates a production build. It contains no `--execute` path and costs US$0.00.
+- **Rationale:** Judges should be able to verify the solution, baseline, evaluation, and saved outputs without receiving the owner's API key or paying to recreate stochastic prose. Live execution remains a separate opt-in path with a new key and authorization.
+
+## 2026-08-30 - Demonstrate new club evidence through a second post-regatta package
+
+- **Status:** accepted for the deterministic replay and interface.
+- **Decision:** Add a second public real-informed synthetic period for the same 16 athletes and 10 crews: 50 compact activities across ten weekdays, with 30 crew-water records and 20 individual Concept2 records. Load it explicitly from the Sessions page and compare it deterministically at US$0.00. Include six supported product scenarios: observed faster comparable, observed slower comparable, stable range, environment-confounded water, participation review, and insufficient equivalent evidence. Every comparison must preserve evidence references and `causal_conclusion: NOT_ESTABLISHED`.
+- **Rationale:** A second period demonstrates that WAKE memory can evolve when new training arrives without paying GPT to restate deterministic facts. Varied observations make the product value visible while preventing a faster time, slower time, windy outing, or missing record from becoming an unsupported fitness or performance conclusion.
 
 ## 2026-08-30 - Add a synthetic competition review without attaching real identities to fictional history
 

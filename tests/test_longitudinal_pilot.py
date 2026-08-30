@@ -153,6 +153,39 @@ class LongitudinalPilotTests(unittest.TestCase):
         self.assertEqual(len(request["tools"]), 4)
         self.assertTrue(request["text"]["format"]["strict"])
 
+    def test_structured_output_schema_uses_only_provider_supported_keywords(self) -> None:
+        request = longitudinal_pilot.build_baseline_request(
+            self.summaries["athlete-lucas"], self.schema
+        )
+        schema = request["text"]["format"]["schema"]
+        serialized_schema = json.dumps(schema)
+        self.assertNotIn('"uniqueItems"', serialized_schema)
+
+        def assert_typed_constants(value: object) -> None:
+            if isinstance(value, dict):
+                if "const" in value:
+                    self.assertIn("type", value)
+                for child in value.values():
+                    assert_typed_constants(child)
+            elif isinstance(value, list):
+                for child in value:
+                    assert_typed_constants(child)
+
+        assert_typed_constants(schema)
+
+    def test_verifier_rejects_duplicate_evidence_references_without_schema_keyword(self) -> None:
+        summary = self.summaries["athlete-lucas"]
+        output = longitudinal_pilot.example_valid_output(summary)
+        output["observed_facts"][0]["evidence_refs"] *= 2
+        self.assertTrue(any(
+            "duplicate evidence reference" in error.lower()
+            for error in longitudinal_pilot.verify_longitudinal_output(
+                output=output,
+                output_schema=self.schema,
+                summary=summary,
+            )
+        ))
+
     def test_paid_execution_requires_a_finite_gate_for_every_start(self) -> None:
         self.assertEqual(longitudinal_pilot.required_authorization_usd(4), 0.8)
         with self.assertRaisesRegex(ValueError, r"US\$0.80"):

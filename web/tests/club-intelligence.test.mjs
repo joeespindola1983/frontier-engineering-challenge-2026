@@ -121,7 +121,8 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
   assert.match(page, /buildClubPeriodAnalysis/);
   assert.match(page, /Deterministic scan complete/);
   assert.match(page, /Two bounded investigations completed/);
-  assert.match(page, /Longitudinal synthesis has not run/);
+  assert.match(page, /The separate longitudinal pilot is complete/);
+  assert.doesNotMatch(page, /Longitudinal synthesis has not run/);
   assert.match(page, /cost_observed\.approximate_total_cost_usd/);
   assert.match(page, /Verified investigation results/);
   assert.match(page, /Two-week validation funnel/);
@@ -135,12 +136,12 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
 });
 
 
-test('prepares a selective two-case longitudinal pilot without spending', () => {
+test('presents the completed selective longitudinal pilot without overstating quality', () => {
   const pilot = buildLongitudinalPilot(demoClub);
 
   assert.equal(pilot.schema_version, 'wake.longitudinal_pilot.v1');
-  assert.equal(pilot.status, 'READY_FOR_AUTHORIZATION');
-  assert.equal(pilot.model_called, false);
+  assert.equal(pilot.status, 'COMPLETED');
+  assert.equal(pilot.model_called, true);
   assert.equal(pilot.cases.length, 2);
   assert.deepEqual(pilot.cases.map((item) => item.scope_type).sort(), ['ATHLETE', 'CLUB']);
   assert.equal(pilot.execution_plan.baseline_calls, 2);
@@ -148,7 +149,14 @@ test('prepares a selective two-case longitudinal pilot without spending', () => 
   assert.equal(pilot.execution_plan.total_paid_starts, 4);
   assert.equal(pilot.execution_plan.authorization_gate_total_usd, 0.8);
   assert.equal(pilot.execution_plan.planning_projection_usd, 0.6);
-  assert.equal(pilot.saved_reports.count, 0);
+  assert.equal(pilot.saved_reports.count, 4);
+  assert.equal(pilot.saved_reports.reopen_cost_usd, 0);
+  assert.equal(pilot.observed.total_cost_usd, 0.110426);
+  assert.equal(pilot.observed.wake_cost_usd, 0.045846);
+  assert.equal(pilot.observed.baseline_cost_usd, 0.06458);
+  assert.equal(pilot.evaluation.quality_conclusion, 'NO_DEMONSTRATED_QUALITY_GAIN');
+  assert.equal(pilot.evaluation.quality_score, null);
+  assert.equal(pilot.evaluation.all_reports_verified, true);
   assert.ok(pilot.cases.every((item) => item.why_model_is_used));
   assert.ok(pilot.boundaries.some((item) => /no performance trend/i.test(item)));
 });
@@ -161,8 +169,9 @@ test('interface presents pilot scope, cost, provenance, and saved-report behavio
   assert.match(page, /Why GPT is used/);
   assert.match(page, /Athlete briefing/);
   assert.match(page, /Club briefing/);
-  assert.match(page, /0 paid calls/);
-  assert.match(page, /US\$0\.80 authorization/);
+  assert.match(page, /4 saved reports/);
+  assert.match(page, /No demonstrated quality gain/);
+  assert.match(page, /pilot\.observed\.total_cost_usd\.toFixed\(6\)/);
   assert.match(page, /Reopening a saved report makes no new model call/);
   assert.match(page, /onOpenLongitudinalPilot/);
   assert.match(page, /function LongitudinalPilotScreen/);

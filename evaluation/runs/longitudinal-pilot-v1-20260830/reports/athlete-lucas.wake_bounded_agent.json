@@ -1,0 +1,164 @@
+{
+  "boundary": "Saved structured output can be reopened without another model call.",
+  "finished_at": "2026-08-30T19:43:58.586+00:00",
+  "input_sha256": "674ab1acbc35e298f14caf7ab44891c8a78958c7b0df6f4444017c1f5b133728",
+  "observability": {
+    "approximate_cost_usd": 0.017008,
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "medium",
+    "runtime_ms": 10952,
+    "usage": {
+      "cached_input_tokens": 0,
+      "input_tokens": 2306,
+      "output_tokens": 1033,
+      "reasoning_output_tokens": 236,
+      "total_tokens": 3339
+    }
+  },
+  "output": {
+    "boundaries": [
+      "Water and indoor distance remain separate and must not be summed into one performance total.",
+      "No performance trend is supported by the comparison preflight.",
+      "No visible technique, crew synchronization, health, strength, stamina, fitness, commitment, or athletic-improvement conclusion is supported.",
+      "Environmental association is not causation.",
+      "The data are real-informed synthetic and do not describe real athletes."
+    ],
+    "coach_briefing": "Review the verified recovery-02 duration deviation from the 2026-08-28 multi-athlete session against its intended target and context. Do not interpret this isolated finding as a performance trend or as evidence of a physiological, technical, or commitment-related issue.",
+    "comparisons": [
+      {
+        "comparison_id": "comparison-performance-trend",
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "Repeated comparable-session groups are not available.",
+          "The comparison preflight explicitly states that repeated context does not adequately control environment, human effort, technical execution, or source comparability."
+        ],
+        "statement": "No performance trend is reported for Lucas in this scope.",
+        "status": "INSUFFICIENT"
+      }
+    ],
+    "headline": "One verified, multi-athlete session investigation identifies a recovery-duration deviation for review; no performance trend can be supported in this scope.",
+    "observed_facts": [
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-atlas-men-20260828-recovery",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-verified-investigation",
+        "statement": "A bounded session investigation dated 2026-08-28 is preserved for a session that includes Lucas, and the investigation verification passed."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-recovery-deviation",
+        "statement": "The verified investigation records recovery segment recovery-02 as having a duration outside its target."
+      }
+    ],
+    "pilot_id": "athlete-lucas",
+    "priorities": [
+      {
+        "action": "Coach review the recovery-02 duration deviation against the intended session target and session context.",
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "priority_id": "priority-review-recovery-02",
+        "rank": 1,
+        "reason": "The preserved verified investigation identifies this segment as outside its recovery-duration target.",
+        "requires_human_review": true
+      }
+    ],
+    "recommendations": [
+      {
+        "action": "Review the verified recovery-duration deviation with the coach before drawing any session-level conclusion or changing training.",
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "No performance trend is supported.",
+          "No conclusion about technique, synchronization, health, strength, stamina, fitness, commitment, or athletic improvement is supported."
+        ],
+        "rationale": "A verified deviation is present, but the available evidence does not establish its cause or appropriate response.",
+        "recommendation_id": "recommendation-review-verified-deviation",
+        "status": "REVIEW_REQUIRED"
+      }
+    ],
+    "schema_version": "wake.longitudinal_intelligence_output.v1",
+    "scope": {
+      "entity_id": "athlete-lucas",
+      "type": "ATHLETE"
+    },
+    "unresolved_questions": [
+      {
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What was the intended recovery-duration target for recovery-02, and what contextual factors should be considered when reviewing this deviation?",
+        "question_id": "question-coach-recovery-target",
+        "reason": "The investigation identifies an outside-target duration but does not provide the intended target or explanatory context."
+      }
+    ]
+  },
+  "pilot_id": "athlete-lucas",
+  "response_ids": [
+    "resp_06a220401a7636bb016a9487f3d53487d2b31a65eed945ba5f",
+    "resp_06a220401a7636bb016a9487f5eb3c87d2b944b871e4d06802"
+  ],
+  "schema_version": "wake.longitudinal_pilot_artifact.v1",
+  "started_at": "2026-08-30T19:43:47.634+00:00",
+  "tool_events": [
+    {
+      "call_id": "call_EJ90YhXZSdM9L17J8Qeh0ddv",
+      "name": "inspect_scope_coverage",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_EJ90YhXZSdM9L17J8Qeh0ddv",
+      "name": "inspect_scope_coverage",
+      "result_sha256": "a5aaf5d493e7d3ddec08c2b41c95f3a6142496927c325de4bc503ba58268778b",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_7LZy9IihFLtpR90IoXGDmpzD",
+      "name": "list_attention_signals",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_7LZy9IihFLtpR90IoXGDmpzD",
+      "name": "list_attention_signals",
+      "result_sha256": "b85d4ef1bcf8512c62f4d823317263108be0d3dc7bb7c7b39ce2d2f62bc5f6b3",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_E45OkOd8JdjiVlsCQzMJHSRc",
+      "name": "find_comparable_sessions",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_E45OkOd8JdjiVlsCQzMJHSRc",
+      "name": "find_comparable_sessions",
+      "result_sha256": "4692d67e15f9e0115652c6a99c86e56a8e61fa4ebe01c808bc070cf6430793f7",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_7SvUdJEkk4T0AT3qMHz0v7eQ",
+      "name": "get_verified_investigations",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_7SvUdJEkk4T0AT3qMHz0v7eQ",
+      "name": "get_verified_investigations",
+      "result_sha256": "2c3bd8260ba4e80cc32ee5a0401e5468bfc86f016df7f0fd5d9b179fc6c569c5",
+      "type": "TOOL_RESULT"
+    }
+  ],
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "WAKE_BOUNDED_AGENT"
+}

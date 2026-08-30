@@ -1,0 +1,254 @@
+{
+  "boundary": "Saved structured output can be reopened without another model call.",
+  "finished_at": "2026-08-30T19:44:26.779+00:00",
+  "input_sha256": "042b3ea0fbae4fcbb3cb29c7ce1457f77e3990c32c43ec729de20a7f35ed6c3f",
+  "observability": {
+    "approximate_cost_usd": 0.028838,
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "medium",
+    "runtime_ms": 15777,
+    "usage": {
+      "cached_input_tokens": 0,
+      "input_tokens": 2995,
+      "output_tokens": 1904,
+      "reasoning_output_tokens": 185,
+      "total_tokens": 4899
+    }
+  },
+  "output": {
+    "boundaries": [
+      "Water and indoor distance remain separate and must not be summed into one performance total.",
+      "No visible technique, crew synchronization, health, strength, stamina, fitness, or commitment conclusion is supported.",
+      "No performance trend is supported by this preflight.",
+      "The data are real-informed synthetic and do not describe real athletes."
+    ],
+    "coach_briefing": "Do not treat this scope as evidence of a club performance trend. First reconcile the missing 27 August 4x mixed B workout source and obtain context for the 28 August women\u2019s 8x session. Then review the verified stroke-rate and recovery-duration deviations with their responsible coaches; verification confirms bounded deviations, not their cause or required response.",
+    "comparisons": [
+      {
+        "comparison_id": "comparison-performance-trend",
+        "evidence_refs": [
+          "record:activity-camila-erg-20260819",
+          "record:activity-marina-erg-20260820",
+          "record:activity-lucas-solo-20260824",
+          "record:activity-camila-solo-20260827",
+          "record:activity-andre-erg-20260826",
+          "record:activity-bruno-erg-20260826",
+          "record:activity-caio-erg-20260826",
+          "record:activity-diego-erg-20260826",
+          "record:activity-lucas-erg-20260826",
+          "record:activity-rafael-erg-20260826",
+          "record:activity-helena-erg-20260827",
+          "record:activity-marina-erg-20260827"
+        ],
+        "limitations": [
+          "Repeated contexts exist, but they do not sufficiently control environment, human effort, technical execution, or source comparability.",
+          "Water and indoor activity must remain separate.",
+          "No inference about athletic improvement is supported."
+        ],
+        "statement": "No club performance trend is supported in this scope.",
+        "status": "INSUFFICIENT"
+      }
+    ],
+    "headline": "Across 17\u201328 August 2026, the club scope contains 52 activities over 10 active days; performance trend assessment is explicitly unsupported, while one missing workout source, one required athlete-context item, and two verified session deviations warrant human review.",
+    "observed_facts": [
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:activity-camila-erg-20260819",
+          "record:activity-marina-erg-20260820",
+          "record:activity-lucas-solo-20260824",
+          "record:activity-camila-solo-20260827",
+          "record:activity-andre-erg-20260826",
+          "record:activity-bruno-erg-20260826",
+          "record:activity-caio-erg-20260826",
+          "record:activity-diego-erg-20260826",
+          "record:activity-lucas-erg-20260826",
+          "record:activity-rafael-erg-20260826",
+          "record:activity-helena-erg-20260827",
+          "record:activity-marina-erg-20260827"
+        ],
+        "fact_id": "fact-coverage",
+        "statement": "The frozen club scope covers 17\u201328 August 2026, with 52 activities across 10 active days: 38 water activities and 14 indoor activities. Water distance is 366,225.8 m and indoor distance is 106,050 m, reported separately."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "fact_id": "fact-missing-workout-source",
+        "statement": "The planned workout source is missing for the 27 August club 4x mixed B session."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "fact_id": "fact-athlete-context-needed",
+        "statement": "Athlete context is required before interpreting the 28 August club women\u2019s 8x evening session."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-verified-deviations",
+        "statement": "Two verified session investigations are preserved: one identifies stroke rate outside target in work segment work-02 for the 20 August mixed bridge session; the other identifies recovery duration outside target in recovery segment recovery-02 for the 28 August Atlas men\u2019s session."
+      }
+    ],
+    "pilot_id": "club-coach",
+    "priorities": [
+      {
+        "action": "Have a coach locate or confirm the planned workout source for the 27 August club 4x mixed B session before interpreting it against plan.",
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "priority_id": "priority-missing-source",
+        "rank": 1,
+        "reason": "The session has a source-required attention signal and its planned workout source is missing.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Obtain relevant athlete context for the 28 August club women\u2019s 8x evening session before drawing an interpretation.",
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "priority_id": "priority-athlete-context",
+        "rank": 2,
+        "reason": "The session is explicitly marked as requiring athlete context.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Review the two preserved verified deviations with the responsible coach in their session context.",
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "priority_id": "priority-verified-review",
+        "rank": 3,
+        "reason": "Verified investigations identified one stroke-rate target deviation and one recovery-duration target deviation; their practical significance requires human contextual review.",
+        "requires_human_review": true
+      }
+    ],
+    "recommendations": [
+      {
+        "action": "Reconcile the missing planned workout source for the 27 August club 4x mixed B session.",
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "limitations": [
+          "This is an information request, not a training prescription."
+        ],
+        "rationale": "Plan-to-session interpretation is bounded until the source is available or confirmed inapplicable.",
+        "recommendation_id": "recommendation-source-reconciliation",
+        "status": "INFORMATION_REQUEST"
+      },
+      {
+        "action": "Conduct human review of the two verified session investigations before assigning operational significance to their deviations.",
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "No conclusion about technique, health, fitness, effort, or crew synchronization is supported."
+        ],
+        "rationale": "Verification establishes that the deviations occurred, not why they occurred or what action is appropriate.",
+        "recommendation_id": "recommendation-verified-case-review",
+        "status": "REVIEW_REQUIRED"
+      }
+    ],
+    "schema_version": "wake.longitudinal_intelligence_output.v1",
+    "scope": {
+      "entity_id": "wake-demo-club",
+      "type": "CLUB"
+    },
+    "unresolved_questions": [
+      {
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What was the planned workout source for the 27 August club 4x mixed B session, or should the session be recorded as having no applicable planned source?",
+        "question_id": "question-planned-source",
+        "reason": "A planned workout source is missing."
+      },
+      {
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "expected_respondent": "ATHLETE",
+        "question": "What relevant context should be recorded for the 28 August club women\u2019s 8x evening session before it is interpreted?",
+        "question_id": "question-womens-8x-context",
+        "reason": "Athlete context is explicitly required before interpretation."
+      },
+      {
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "expected_respondent": "COACH",
+        "question": "Were the verified stroke-rate and recovery-duration deviations expected adaptations, recording issues, or items requiring follow-up?",
+        "question_id": "question-verified-deviations-context",
+        "reason": "The preserved investigations identify deviations but do not establish their contextual significance."
+      }
+    ]
+  },
+  "pilot_id": "club-coach",
+  "response_ids": [
+    "resp_0c32b76dca285f4d016a94880b365087d294a1b3bc398cbd8f",
+    "resp_0c32b76dca285f4d016a94880d249487d2abe47f1e8ff23ac8"
+  ],
+  "schema_version": "wake.longitudinal_pilot_artifact.v1",
+  "started_at": "2026-08-30T19:44:11.001+00:00",
+  "tool_events": [
+    {
+      "call_id": "call_syA3rrYN81lzyPW2maEr0Ln7",
+      "name": "inspect_scope_coverage",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_syA3rrYN81lzyPW2maEr0Ln7",
+      "name": "inspect_scope_coverage",
+      "result_sha256": "3365fa280b4722a9114883a35393662970609b54e38f5d46b0132ae797796225",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_uMetOdNYmp9YL4Oh3LaWfN9n",
+      "name": "list_attention_signals",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_uMetOdNYmp9YL4Oh3LaWfN9n",
+      "name": "list_attention_signals",
+      "result_sha256": "29235cea89956a321aab261792fd5e4df7cd8e9ff4c441dbd95051d338b93060",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_k5fmrBFPsIv5YgbgzYJdb3ZE",
+      "name": "find_comparable_sessions",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_k5fmrBFPsIv5YgbgzYJdb3ZE",
+      "name": "find_comparable_sessions",
+      "result_sha256": "26c6dfb6be99f5fd70900abdb3ad303492e749f200757d07b2d4f0558cd4205f",
+      "type": "TOOL_RESULT"
+    },
+    {
+      "call_id": "call_YwEVIJtDGyhVXu2kBVRgGbc2",
+      "name": "get_verified_investigations",
+      "type": "TOOL_CALL"
+    },
+    {
+      "call_id": "call_YwEVIJtDGyhVXu2kBVRgGbc2",
+      "name": "get_verified_investigations",
+      "result_sha256": "4c4bc788835f103befa0000f5d3b4273c1a5cf4cefe35113c88d4c0f464e997f",
+      "type": "TOOL_RESULT"
+    }
+  ],
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "WAKE_BOUNDED_AGENT"
+}

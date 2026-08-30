@@ -1,0 +1,37 @@
+{
+  "schema_version": "wake.post_regatta_package_manifest.v1",
+  "package_id": "wake-demo-club-post-regatta-v1",
+  "implementation_ref": "web/app/lib/post-regatta.mjs",
+  "interface_ref": "web/app/page.tsx#PostRegattaScreen",
+  "period": {
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "weekdays": 10
+  },
+  "coverage": {
+    "activities": 50,
+    "water_crew_activities": 30,
+    "individual_concept2_activities": 20,
+    "athletes": 16,
+    "crews": 10
+  },
+  "analysis": {
+    "mode": "DETERMINISTIC_PERIOD_COMPARISON",
+    "model_called": false,
+    "load_cost_usd": 0,
+    "causal_conclusion": "NOT_ESTABLISHED"
+  },
+  "scenarios": [
+    "OBSERVED_FASTER_COMPARABLE",
+    "OBSERVED_SLOWER_COMPARABLE",
+    "STABLE_RANGE",
+    "ENVIRONMENT_CONFOUNDED",
+    "PARTICIPATION_REVIEW",
+    "INSUFFICIENT_EVIDENCE"
+  ],
+  "provenance": {
+    "basis": "REAL_INFORMED_SYNTHETIC",
+    "fictional": true,
+    "boundary": "This package demonstrates reproducible longitudinal product behavior. It is not evidence that a real athlete or crew changed after a regatta."
+  }
+}

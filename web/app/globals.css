@@ -827,4 +827,70 @@ button { cursor: pointer; }
   .competition-result-table article > div small { white-space: normal; }
 }
 
+.post-regatta-entry { margin: 26px 0 0; padding: 28px 30px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr); gap: 38px; align-items: center; border: 1px solid var(--line-strong); background: linear-gradient(135deg, rgba(232, 241, 237, 0.8), rgba(255, 255, 255, 0.42)); }
+.post-regatta-entry h3 { margin: 6px 0 7px; font-size: 23px; }
+.post-regatta-entry p { max-width: 700px; color: var(--ink-soft); font-size: 11px; line-height: 1.65; }
+.post-regatta-entry-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; }
+.post-regatta-entry-meta > span { min-height: 52px; padding-left: 14px; display: grid; align-content: center; border-left: 1px solid var(--line); }
+.post-regatta-entry-meta strong { font-size: 13px; }
+.post-regatta-entry-meta small { color: var(--muted); font-size: 8px; }
+.post-regatta-entry-meta .button { grid-column: 1 / -1; }
+.post-regatta-header { align-items: flex-start; }
+.post-regatta-load-card { min-height: 300px; padding: 38px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 0.6fr); gap: 36px; align-items: center; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.45); }
+.post-regatta-load-card > div { display: grid; }
+.post-regatta-load-card > div > span { color: var(--accent); font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
+.post-regatta-load-card > div > strong { margin-top: 8px; font-size: 28px; }
+.post-regatta-load-card p { margin-top: 14px; max-width: 640px; color: var(--ink-soft); line-height: 1.7; }
+.post-regatta-load-card dl { display: grid; border-top: 1px solid var(--line); }
+.post-regatta-load-card dl div { padding: 12px 0; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.post-regatta-load-card dt { color: var(--muted); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.post-regatta-load-card dd { font-size: 11px; }
+.post-regatta-load-card .button { grid-column: 2; }
+.post-regatta-status { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+.post-regatta-status > div { min-height: 116px; padding: 22px 20px 18px 0; display: grid; align-content: start; border-right: 1px solid var(--line); }
+.post-regatta-status > div:not(:first-child) { padding-left: 20px; }
+.post-regatta-status > div:last-child { border-right: 0; }
+.post-regatta-status span, .post-regatta-signal header span { color: var(--accent); font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+.post-regatta-status strong { margin-top: 8px; font-size: 23px; }
+.post-regatta-status small { margin-top: 4px; color: var(--muted); font-size: 8px; }
+.post-regatta-boundary { margin-top: 22px; padding: 14px 16px; display: flex; align-items: baseline; gap: 13px; border-left: 2px solid var(--accent); background: var(--accent-soft); font-size: 10px; }
+.post-regatta-boundary strong { flex: 0 0 auto; color: var(--accent); }
+.post-regatta-signals { padding-top: 56px; }
+.post-regatta-signal-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
+.post-regatta-signal { min-height: 292px; padding: 22px; display: grid; grid-template-rows: auto 1fr auto auto; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.35); }
+.post-regatta-signal header { display: grid; }
+.post-regatta-signal header strong { margin-top: 7px; font-size: 19px; }
+.post-regatta-signal header small { margin-top: 3px; color: var(--muted); }
+.post-regatta-signal > p { margin-top: 18px; color: var(--ink-soft); font-size: 11px; line-height: 1.65; }
+.post-regatta-signal > div { padding: 12px; display: grid; gap: 4px; background: rgba(232, 241, 237, 0.75); }
+.post-regatta-signal > div strong { color: var(--accent); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.post-regatta-signal > div span { font-size: 9px; line-height: 1.5; }
+.post-regatta-signal footer { margin-top: 12px; color: var(--muted); font-family: var(--mono); font-size: 8px; }
+.post-regatta-signal.signal-review, .post-regatta-signal.signal-human_context { background: linear-gradient(145deg, rgba(244, 232, 223, 0.75), rgba(255, 255, 255, 0.35)); }
+.post-regatta-method { margin-top: 46px; padding: 28px 30px; display: grid; grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr) auto; gap: 28px; align-items: center; border: 1px solid var(--line-strong); }
+.post-regatta-method h2 { margin-top: 7px; font-size: 24px; }
+.post-regatta-method p { color: var(--ink-soft); font-size: 11px; line-height: 1.65; }
+
+@media (max-width: 940px) {
+  .post-regatta-entry, .post-regatta-load-card, .post-regatta-method { grid-template-columns: 1fr; }
+  .post-regatta-load-card .button { grid-column: 1; justify-self: start; }
+  .post-regatta-signal-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 620px) {
+  .post-regatta-entry { padding: 22px 18px; }
+  .post-regatta-entry-meta { grid-template-columns: 1fr; }
+  .post-regatta-entry-meta .button { grid-column: 1; }
+  .post-regatta-load-card { padding: 24px 20px; }
+  .post-regatta-status { grid-template-columns: 1fr 1fr; }
+  .post-regatta-status > div { min-height: 98px; padding: 16px 12px 14px 0; }
+  .post-regatta-status > div:not(:first-child) { padding-left: 12px; }
+  .post-regatta-status > div:nth-child(2) { border-right: 0; }
+  .post-regatta-status > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .post-regatta-boundary { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .post-regatta-signal-grid { grid-template-columns: 1fr; }
+  .post-regatta-signal { min-height: 0; }
+  .post-regatta-method { padding: 22px 18px; }
+}
+
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

@@ -10,34 +10,34 @@
   "configuration": {
     "config_sha256": "a53189b2a133a5efb010b21e715bf396c7988021625b73ed4c755f08694e8311",
     "model": "gpt-5.6-terra",
-    "output_schema_sha256": "0582c36c8c44e81239564bd2dbd29d6f211fc06dd1b049b5e4a0564c8d5f485a",
+    "output_schema_sha256": "b440f995ad72012720e4c603e10e1d0b55458940a92e476567423ccf663da7cf",
     "reasoning_effort": "medium"
   },
-  "created_at": "2026-08-30T18:47:16+00:00",
+  "created_at": "2026-08-30T19:43:22+00:00",
   "request_count": 4,
   "requests": [
     {
       "path": "requests/athlete-lucas.direct_baseline.json",
       "pilot_id": "athlete-lucas",
-      "sha256": "491f2242266761ffc30248e390378634e6b1f269ee506c5eb34460d2fc98fdea",
+      "sha256": "6c83818a5b84017be293e77241f255cf6b890995e48be317726c3939de2e2cbe",
       "workflow": "DIRECT_BASELINE"
     },
     {
       "path": "requests/athlete-lucas.wake_bounded_agent.json",
       "pilot_id": "athlete-lucas",
-      "sha256": "6ac2b8327781eb35813b1078627d91624551e082df7328832552e348cd04cfe5",
+      "sha256": "92559ed9d3d72d015c1140bf72369fec76817eb9bce4c3b4a461bd780bf2878c",
       "workflow": "WAKE_BOUNDED_AGENT"
     },
     {
       "path": "requests/club-coach.direct_baseline.json",
       "pilot_id": "club-coach",
-      "sha256": "1248dca17155cbefe23c9f0ec153cc2d656a0566d46a920b591dfb07733a5515",
+      "sha256": "95d5e96f88668ba63734e711c134a35688f72318719be7de222d069019d39005",
       "workflow": "DIRECT_BASELINE"
     },
     {
       "path": "requests/club-coach.wake_bounded_agent.json",
       "pilot_id": "club-coach",
-      "sha256": "7bc118ebc2edbe5ccc2f3f6dea7a95b1f48d1758188a7ca890c883f506db130e",
+      "sha256": "fb026767da1613dda00e600d0a992fdabdf51a09ca19841195f8588dd51b59b4",
       "workflow": "WAKE_BOUNDED_AGENT"
     }
   ],

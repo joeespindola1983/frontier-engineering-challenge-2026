@@ -1,0 +1,201 @@
+{
+  "boundary": "Saved structured output can be reopened without another model call.",
+  "finished_at": "2026-08-30T19:44:10.986+00:00",
+  "input_sha256": "042b3ea0fbae4fcbb3cb29c7ce1457f77e3990c32c43ec729de20a7f35ed6c3f",
+  "observability": {
+    "approximate_cost_usd": 0.03484,
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "medium",
+    "runtime_ms": 12381,
+    "usage": {
+      "cached_input_tokens": 0,
+      "input_tokens": 7550,
+      "output_tokens": 1645,
+      "reasoning_output_tokens": 103,
+      "total_tokens": 9195
+    }
+  },
+  "output": {
+    "boundaries": [
+      "Water and indoor distance remain separate and must not be summed into one performance total.",
+      "No visible technique, crew synchronization, health, strength, stamina, fitness, or commitment conclusion is supported.",
+      "No performance trend is supported by this preflight.",
+      "The data are real-informed synthetic and do not describe real athletes."
+    ],
+    "coach_briefing": "Review the missing 2026-08-27 planned source first, then obtain context for the 2026-08-28 women's 8x before interpreting either session. Inspect the verified work-02 SPM and recovery-02 duration deviations against the intended prescriptions. Treat the recorded water and indoor totals separately, and do not use this preflight to claim a performance trend. [record:club-4x-mixed-b-20260827-pm; record:club-8x-women-20260828-evening; verified:club-bridge-mixed-20260820-spm; verified:club-atlas-men-20260828-recovery; batch:manifest]",
+    "comparisons": [
+      {
+        "comparison_id": "comparison-performance-trend",
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "limitations": [
+          "Repeated context does not adequately control environment, human effort, technical execution, or source comparability.",
+          "Repeated titles or contexts alone do not establish comparable performance tests.",
+          "Water and indoor distances are separate and cannot be merged for performance comparison."
+        ],
+        "statement": "No club performance trend can be supported from this preflight.",
+        "status": "INSUFFICIENT"
+      }
+    ],
+    "headline": "Two-week club record: 52 activities across 10 active days, with water and indoor activity recorded separately; no performance trend is supported by this preflight. [batch:manifest]",
+    "observed_facts": [
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "fact_id": "fact-coverage",
+        "statement": "The period 2026-08-17 to 2026-08-28 contains 52 club activities across 10 active days: 38 water activities and 14 indoor activities."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "fact_id": "fact-modality-distance",
+        "statement": "Recorded water distance is 366,225.8 m and recorded indoor distance is 106,050 m; these are separate modality totals."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm"
+        ],
+        "fact_id": "fact-bridge-investigation",
+        "statement": "A verified investigation for club-bridge-mixed-20260820-spm identified work-02 as SPM_OUTSIDE_TARGET; the investigation passed verification."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-atlas-investigation",
+        "statement": "A verified investigation for club-atlas-men-20260828-recovery identified recovery-02 as RECOVERY_DURATION_OUTSIDE_TARGET; the investigation passed verification."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "fact_id": "fact-missing-source",
+        "statement": "The planned workout source is missing for club-4x-mixed-b-20260827-pm."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "fact_id": "fact-context-needed",
+        "statement": "Athlete context is required before interpreting club-8x-women-20260828-evening."
+      }
+    ],
+    "pilot_id": "club-coach",
+    "priorities": [
+      {
+        "action": "Recover and review the planned workout source for club-4x-mixed-b-20260827-pm before interpreting the session against its intended plan.",
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "priority_id": "priority-1-source",
+        "rank": 1,
+        "reason": "The session is flagged because its planned workout source is missing.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Obtain and review athlete context for club-8x-women-20260828-evening before drawing any session interpretation.",
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "priority_id": "priority-2-context",
+        "rank": 2,
+        "reason": "The record explicitly requires human context before interpretation.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Review the verified target deviations in the 2026-08-20 mixed 2x and 2026-08-28 men's 4x sessions against the coach's intended session plan.",
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "priority_id": "priority-3-verified-deviations",
+        "rank": 3,
+        "reason": "Verified investigations preserved an out-of-target SPM segment and an out-of-target recovery-duration segment.",
+        "requires_human_review": true
+      }
+    ],
+    "recommendations": [
+      {
+        "action": "Have the coach audit the two verified deviations against the original session prescriptions and recorded adjustments.",
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "limitations": [
+          "No technique, synchronization, health, effort, or performance conclusion is supported."
+        ],
+        "rationale": "The available evidence confirms an SPM target deviation in one session and a recovery-duration target deviation in another, but does not establish their meaning or cause.",
+        "recommendation_id": "recommendation-1-plan-audit",
+        "status": "REVIEW_REQUIRED"
+      },
+      {
+        "action": "For any future performance review, collect comparable session context, including source prescription and relevant human and environmental context, while retaining water and indoor records as separate modalities.",
+        "evidence_refs": [
+          "batch:manifest"
+        ],
+        "limitations": [
+          "This is an information request, not a training prescription or performance conclusion."
+        ],
+        "rationale": "The preflight does not support a performance trend because comparability controls are insufficient.",
+        "recommendation_id": "recommendation-2-comparability-metadata",
+        "status": "INFORMATION_REQUEST"
+      }
+    ],
+    "schema_version": "wake.longitudinal_intelligence_output.v1",
+    "scope": {
+      "entity_id": "wake-demo-club",
+      "type": "CLUB"
+    },
+    "unresolved_questions": [
+      {
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "expected_respondent": "COACH",
+        "question": "Can you provide the planned workout source or intended session structure for club-4x-mixed-b-20260827-pm?",
+        "question_id": "question-1-workout-source",
+        "reason": "The planned source is missing, preventing plan-based interpretation."
+      },
+      {
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "expected_respondent": "ATHLETE_OR_COACH",
+        "question": "What athlete or session context should be considered before interpreting club-8x-women-20260828-evening?",
+        "question_id": "question-2-8x-context",
+        "reason": "The record is explicitly routed for human context before interpretation."
+      },
+      {
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What were the intended targets and any coach-approved adjustments for work-02 in club-bridge-mixed-20260820-spm and recovery-02 in club-atlas-men-20260828-recovery?",
+        "question_id": "question-3-verified-segments",
+        "reason": "The verified results identify target deviations but do not establish their operational context or significance."
+      }
+    ]
+  },
+  "pilot_id": "club-coach",
+  "response_ids": [
+    "resp_0453224331894533016a9487ff0c0087d288b86d5152aa179f"
+  ],
+  "schema_version": "wake.longitudinal_pilot_artifact.v1",
+  "started_at": "2026-08-30T19:43:58.604+00:00",
+  "tool_events": [],
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "DIRECT_BASELINE"
+}

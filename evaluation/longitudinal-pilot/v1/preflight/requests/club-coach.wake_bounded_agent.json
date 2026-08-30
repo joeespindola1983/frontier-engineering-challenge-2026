@@ -60,8 +60,7 @@
               "type": "string"
             },
             "minItems": 1,
-            "type": "array",
-            "uniqueItems": true
+            "type": "array"
           },
           "fact": {
             "additionalProperties": false,
@@ -109,7 +108,8 @@
                 "type": "string"
               },
               "requires_human_review": {
-                "const": true
+                "const": true,
+                "type": "boolean"
               }
             },
             "required": [
@@ -242,7 +242,8 @@
             "type": "array"
           },
           "schema_version": {
-            "const": "wake.longitudinal_intelligence_output.v1"
+            "const": "wake.longitudinal_intelligence_output.v1",
+            "type": "string"
           },
           "scope": {
             "additionalProperties": false,

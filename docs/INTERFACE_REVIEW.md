@@ -1,6 +1,6 @@
 # Interface review and visual evidence plan
 
-**Status:** functional hackathon MVP complete; presentation refinement pending
+**Status:** final five-minute coach-path QA complete; video rehearsal remains
 
 The local browser rehearsal completed the full synthetic workflow: independent
 source selection, upload, replay-safe investigation, review, human checkpoint,
@@ -31,6 +31,25 @@ The visual review also found that every prescribed SPM range was drawn at one
 fixed height. The chart now uses one explicit 16–26 SPM scale, calculates each
 target band from its own minimum and maximum, and clamps only the geometry while
 retaining the original labels.
+
+## Final coach-path QA — 2026-08-30
+
+The final in-app browser rehearsal covered the club pulse and all ten recurring
+crews, Lucas and his Training Days, South Women 8x with athlete context pending,
+the approved hero-session memory, Competition Review, the official ten-case
+WAKE-versus-baseline view, the completed neutral longitudinal pilot, and the
+new post-regatta package before and after loading.
+
+One comprehension defect was found: the club status still said longitudinal
+synthesis had not run while the completed four-report pilot appeared directly
+below it. A RED regression test was added, then the copy was corrected to state
+that the separate pilot is complete and did not demonstrate a quality gain.
+
+The post-regatta screen showed 50 activities, 16 athletes, 10 crews, no model
+call, US$0.00, six evidence-ranked outcomes, and `NOT_ESTABLISHED` causation. At
+390 × 844 it had no horizontal overflow; cards remained legible and the compact
+header retained an app action. Application console review found no warnings or
+errors. The final tab was restored to the Sessions page for owner QA.
 
 ## Highest-value presentation improvements
 

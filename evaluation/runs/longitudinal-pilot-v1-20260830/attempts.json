@@ -1,0 +1,31 @@
+{
+  "schema_version": "wake.longitudinal_execution_attempts.v1",
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "status": "REQUEST_REJECTED",
+      "api_status": 400,
+      "error_code": "invalid_json_schema",
+      "reason": "uniqueItems is not permitted by the strict Structured Outputs schema subset.",
+      "model_report_created": false,
+      "provider_cost_observed_usd": null
+    },
+    {
+      "attempt_index": 2,
+      "status": "REQUEST_REJECTED",
+      "api_status": 400,
+      "error_code": "invalid_json_schema",
+      "reason": "A const schema field did not declare an explicit type.",
+      "model_report_created": false,
+      "provider_cost_observed_usd": null
+    },
+    {
+      "attempt_index": 3,
+      "status": "COMPLETED",
+      "execution_count": 4,
+      "model_report_created": true,
+      "approximate_cost_usd": 0.110426
+    }
+  ],
+  "boundary": "Rejected requests produced no model report. Provider-side billing for rejected requests is not asserted because no observed cost was returned."
+}

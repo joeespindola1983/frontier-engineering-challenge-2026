@@ -1,0 +1,15 @@
+{
+  "api_called": true,
+  "authorization_is_provider_cap": false,
+  "authorized_cost_usd": 0.8,
+  "created_at": "2026-08-30T19:44:26.793+00:00",
+  "execution_count": 4,
+  "reports": [
+    "reports/athlete-lucas.direct_baseline.json",
+    "reports/athlete-lucas.wake_bounded_agent.json",
+    "reports/club-coach.direct_baseline.json",
+    "reports/club-coach.wake_bounded_agent.json"
+  ],
+  "schema_version": "wake.longitudinal_pilot_run.v1",
+  "total_approximate_cost_usd": 0.110426
+}

@@ -545,6 +545,46 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Race number alone is not an event identity, boat class alone is not a distance rule, and a result without training context is incomplete. Conversely, joining the records does not create causation: the product earns trust by showing the connection and its limits together.
 - **Next step:** Rehearse the competition segment in the submission video, then decide whether the separately frozen longitudinal GPT comparison adds enough evaluated value to justify its four authorized starts.
 
+### 51. Authorized longitudinal pilot with a neutral quality result
+
+- **Hypothesis:** The bounded WAKE workflow should improve the quality of one athlete briefing and one club-priority briefing over a direct GPT call while preserving evidence and abstention boundaries.
+- **Change:** After explicit US$0.80 start authorization, executed the four frozen requests with `gpt-5.6-terra`, medium reasoning, and `store: false`. The first two execution attempts were rejected before reports were produced because the strict Responses schema used unsupported `uniqueItems`, then `const` without an explicit `type`. Added regression tests before removing `uniqueItems`, enforcing explicit types, and moving duplicate-evidence rejection into deterministic verification. Preserved both rejected attempts, all successful requests, outputs, tool events, hashes, runtime, tokens, costs, and a non-scored capability audit.
+- **Evaluation:** All four final reports passed the existing strict verifier. Direct baseline used 15,035 tokens and US$0.064580; bounded WAKE used 8,238 tokens, 16 tool events, and US$0.045846. Both workflows passed the same post-run capability checks for evidence coverage, trend abstention, water/indoor separation, and human review. No weighted quality rubric had been frozen before execution, so no post-hoc score was created.
+- **Result:** `NO_DEMONSTRATED_QUALITY_GAIN`. Keep the reports as an honest neutral experiment. WAKE used fewer tokens and cost 29.01% less on these two scopes, but the pilot does not establish better longitudinal reasoning.
+- **Cost/runtime:** Four successful reports cost US$0.110426 combined. Athlete baseline: 5,840 tokens, US$0.029740, 14.762 s. Athlete WAKE: 3,339 tokens, US$0.017008, 10.952 s. Club baseline: 9,195 tokens, US$0.034840, 12.381 s. Club WAKE: 4,899 tokens, US$0.028838, 15.777 s. Provider billing for the two schema-rejected requests is unknown and is not asserted as zero.
+- **Decision:** Preserve the frozen pilot, neutral conclusion, and schema failures. Do not optimize the prompt against these two outputs or present lower cost as proof of better coaching intelligence.
+- **Learning:** Strict provider schemas need API-compatibility tests in addition to local JSON Schema validation. More importantly, a negative experiment is still useful when the contract was frozen first and the result is reported without moving the goalposts.
+
+### 52. Clean-environment, zero-cost submission reproduction
+
+- **Hypothesis:** A reviewer should be able to reproduce WAKE's code, baseline requests, saved outputs, public verifiers, evaluation, and interface without the owner's credentials or new model spend.
+- **Change:** Added `docs/REPRODUCTION_GUIDE.md`, `scripts/reproduce_submission.sh`, and RED-first contract tests. The script installs locked Python and web dependencies, explicitly unsets live credentials, runs the complete deterministic verification path, rebuilds the longitudinal capability audit, lints the interface, and builds production assets. `--verify-only` reuses installed dependencies. No paid execution flag exists.
+- **Evaluation:** Contract tests verify the documented commands, credential removal, absence of `--execute`, expected US$0.00 behavior, and required outputs. The script composes existing public artifact verifiers rather than creating a second evaluation implementation.
+- **Result:** Keep the zero-cost path as the primary judge workflow. Saved baseline, WAKE, investigation, evaluation, longitudinal, and competition artifacts can be inspected offline; new live prose is optional and not required for reproduction.
+- **Cost/runtime:** US$0.00 model cost. Expected clean runtime is approximately 2–5 minutes, dominated by dependency download and production build; installed verification is faster.
+- **Decision:** Never distribute `.env` or the owner's key. Reproduction uses committed reports; new execution requires the reviewer's key and explicit authorization.
+- **Learning:** Reproducibility is not equivalent to rerunning an LLM. For a stochastic paid system, hashes, inputs, outputs, trajectories, deterministic verifiers, and offline grading are the more useful submission contract.
+
+### 53. Loadable two-week post-regatta evolution package
+
+- **Hypothesis:** The club-scale value becomes easier to see when the same fictional athletes and crews receive a second period whose records produce different evidence-supported outcomes without claiming that training caused them.
+- **Change:** Added RED-first tests, a public manifest, and an executable 50-activity post-regatta package for the same 16 athletes and 10 crews. Added an explicit Sessions-page package entry and load state, period coverage, six evidence-ranked comparison cards, causal boundaries, and reset behavior. The comparison distinguishes faster/slower equivalent Concept2 observations, a stable range, a high-wind water confounder, a missing-participation question, and a workout with no equivalent benchmark.
+- **Evaluation:** RED failed on the missing package module and UI route. GREEN verifies all athlete/crew coverage, ten weekdays, 30 water and 20 athlete-owned Concept2 records, all six scenarios, evidence references, absence of fitness/performance causation language, manifest consistency, US$0.00 load cost, no model call, ESLint, and the production build.
+- **Result:** Keep the package as a replayable future-period demonstration, not as additional training data for a hidden model. It shows how WAKE gains useful club memory through new evidence and deterministic comparison while routing ambiguity explicitly.
+- **Cost/runtime:** No external API or model call; US$0.00. Package load and comparison are local and deterministic.
+- **Decision:** Use observed-direction labels only for compatible indoor workout shapes. Treat water changes with weather as confounded, missing records as questions, and unmatched workouts as insufficient evidence. Keep `causal_conclusion: NOT_ESTABLISHED` visible.
+- **Learning:** Product evolution does not require continual fine-tuning. A trustworthy first step is accumulating structured evidence, preserving provenance, and recomputing supported comparisons while the agent is reserved for ambiguous synthesis.
+
+### 54. Final five-minute coach-path and clean-reproduction QA
+
+- **Hypothesis:** The submission path should communicate club scale, individual chronology, unresolved human context, session memory, competition context, and measured evaluation in under five minutes without contradictory state or a fragile local setup.
+- **Change:** Rehearsed the complete route in the in-app browser, including the loaded post-regatta state and 390 × 844 responsive breakpoint. QA found a stale club message saying longitudinal synthesis had not run directly above the completed pilot; a RED copy-state regression test was added before correcting it. The clean-reproduction rehearsal also found that Node 20 reached the Vinext build despite the documented Node 22.13 requirement, and that a double-quoted shell echo expanded `$0` inside `US$0.110426`. Added fail-fast Node version validation, a repository-local ignored uv cache, and a regression test requiring literal cost output.
+- **Evaluation:** Browser checks confirmed 52/52 club coverage, 10 crews, 16 athletes, Lucas Training Days, an athlete-context-pending crew, approved session memory, Competition Review, official 83.76-versus-49.00 evaluation, completed neutral longitudinal pilot, and the six-card post-regatta comparison. Mobile width had no horizontal overflow and application console logs contained no warnings or errors. With Node 24, `./scripts/reproduce_submission.sh --verify-only` passed 198 Python tests, eight public fixture/artifact verifiers, the longitudinal audit, 74 web tests, ESLint, and the Vinext production build.
+- **Result:** Keep the route and the two regression fixes. The dashboard is ready for owner QA and video rehearsal at `http://localhost:3000/`.
+- **Cost/runtime:** No model or external API call. The complete installed-dependency reproduction took about 28 seconds on the development machine; browser QA cost US$0.00.
+- **Decision:** Correct only comprehension and reproduction blockers at this stage. Do not broaden the MVP before recording unless owner QA finds another material obstacle.
+- **Learning:** A correct artifact can still tell a false story if neighboring status copy is stale. Reproduction scripts also need to validate the runtime before long tests and protect currency strings from shell expansion.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
