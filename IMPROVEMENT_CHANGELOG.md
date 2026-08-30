@@ -358,6 +358,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Reproducibility includes operational configuration, not only fixtures and prompts. The host had Node 20 first on `PATH` while the compatible Homebrew Node was installed elsewhere, which is exactly the kind of rehearsal failure a single checked entry point should handle.
 - **Next step:** Use the launcher for the owner-led interface QA and record any usability failures separately from startup reliability.
 
+### 34. Successful current product-bundle live retest
+
+- **Hypothesis:** The earlier browser failure may not represent the current accepted v2 bundle runner; executing the exact public bundle through the same service functions should either expose the real exception or preserve a successful verified trajectory.
+- **Change:** Reconstructed the public five-source upload through the normal source adapters and compact bundle preparation, then invoked the current `build_bundle_live_runner` through `execute_source_bundle` with the existing US$0.20 operational start authorization. Preserved the output, complete observable trajectory, hashes, and an explicit statement that this was a service-function retest rather than a browser end-to-end result.
+- **Evaluation:** The bundle prepared with all five sources and the expected clock-offset, distance-conflict, and route-overlap findings. The bounded v2 agent called all four deterministic tools, produced a final result on round two, and passed schema, case identity, evidence reference, material evidence, derived-distance, source identity, unsupported-claim, and broken-SPM checks without a verifier retry.
+- **Result:** The current live bundle runner completed successfully in 22.522 seconds with 31,610 input tokens, 2,680 output tokens, and 34,290 total tokens. Approximate cost was US$0.095380. The earlier `Agent runtime unavailable` remains preserved and unexplained; this result narrows it to a prior or transient full-path failure rather than a deterministic incompatibility in the current bundle runner.
+- **Cost/runtime:** US$0.095380 and 22.522 seconds, recorded from the committed trajectory. The authorization was a start gate, not a hard cap.
+- **Decision:** Keep both results. Use the successful current trajectory as live-run evidence, retain replay as the dependable video fallback, and do not claim browser-path reliability until a separate browser rehearsal succeeds.
+- **Learning:** A generic user-safe error is not enough for diagnosis. The next runtime hardening change should preserve a sanitized local failure artifact or correlation id while keeping internal exception details out of the browser response.
+- **Next step:** Complete a browser-path rehearsal with the public synthetic files, then expand the fixed evaluation beyond two implemented cases.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
