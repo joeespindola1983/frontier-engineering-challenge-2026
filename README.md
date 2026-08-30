@@ -130,12 +130,17 @@ uv run python scripts/post_regatta_baseline.py
 The baseline receives the same compact summary and strict output schema but no
 tools. A non-scored capability contract is frozen with the request. Live
 execution remains separate and requires one new finite US$0.20 start
-authorization.
+authorization. The preserved execution cost US$0.043700, used 8,005 tokens,
+completed in 19.640 seconds, and passed strict output verification with
+`store: false`.
 
 The frozen result comparison is implemented by
-`scripts/score_post_regatta_comparison.py`. It reports seven observable
-capabilities and preserves neutral, mixed, or adverse outcomes without
-manufacturing a post-hoc weighted score.
+`scripts/score_post_regatta_comparison.py`. WAKE preserved 7/7 exact contract
+checks while the direct baseline preserved 3/7. A manual construct-validity
+review found that the baseline expressed much of the same coaching content
+under different IDs, statuses, or sections. The accepted claim is therefore a
+**structural fidelity gain only**, not a semantic coaching-quality score. The
+frozen audit remains unchanged and no post-hoc weighted score was created.
 
 Grade a complete directory of structured outputs without network access:
 

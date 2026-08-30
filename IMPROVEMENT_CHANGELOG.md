@@ -605,6 +605,16 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Execute only the one discriminating baseline before considering any athlete/crew report expansion. Do not use a 24-hour asynchronous batch for this deadline-sensitive single call, and do not change the non-scored capability contract after output.
 - **Learning:** Cost optimization and product evidence align here: selective calls keep provenance clearer and make each spend answer a concrete evaluation question. The strongest final story is complete deterministic coverage, bounded reasoning where ambiguity exists, and honest preservation of both positive and neutral results.
 
+### 57. Executed club baseline and construct-validity review
+
+- **Hypothesis:** On the exact same compact 102-activity input, the bounded WAKE workflow should preserve more of the pre-frozen machine-readable capability contract than a direct model call without tools or verification.
+- **Change:** After explicit US$0.20 authorization, executed exactly one `gpt-5.6-terra` medium direct baseline with no tools and `store: false`; preserved its strict verified output, manifest, and frozen capability audit. RED-first tests now lock the authorization, input hash, cost, runtime, tokens, and a separate manual construct-validity review. The read-only Evaluation interface exposes the result and its claim boundary.
+- **Evaluation:** The frozen auditor reported WAKE 7/7 and direct baseline 3/7 with `DEMONSTRATED_CAPABILITY_COVERAGE_GAIN`. Manual output review found construct sensitivity in all four failed checks: the baseline contained the three supported comparisons under different IDs, abstained from club trend outside the canonical comparison object, preserved a non-causal Atlas wind boundary under a different ID/status, and routed both verified deviations through priorities rather than recommendations. The frozen audit was not edited or rescored.
+- **Result:** Accept `STRUCTURAL_FIDELITY_GAIN_ONLY`. WAKE better preserved canonical identifiers, statuses, placement, and deterministic review routes. Do not claim that this 7/7 versus 3/7 result proves semantically better coaching advice; the direct baseline expressed much of the same content. The official frozen ten-case 83.76 versus 49.00 rubric remains the primary measured quality evidence.
+- **Cost/runtime:** The direct baseline used 5,236 input tokens, 2,769 output tokens, 8,005 total tokens, one Responses call, no tools, and 19.640 seconds for US$0.043700. WAKE used 6,322 tokens, 22.507 seconds, and US$0.037384. WAKE was 14.45% cheaper and used 21.02% fewer tokens, while taking 14.60% longer. Both outputs passed strict verification and reopen for US$0.00.
+- **Decision:** Preserve both the positive structural result and its construct limitation. Do not spend on mass athlete/crew prose before a new fixed decision question and evaluation contract justify it.
+- **Learning:** Exact schemas make product memory automatable, but an exact-contract audit can mistake equivalent prose in a different location for missing capability. Structural fidelity and semantic coaching quality are distinct outcomes and must be reported separately.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

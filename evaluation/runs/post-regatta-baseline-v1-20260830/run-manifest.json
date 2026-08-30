@@ -1,0 +1,19 @@
+{
+  "api_called": true,
+  "authorization_is_provider_cap": false,
+  "authorized_cost_usd": 0.2,
+  "capability_contract_sha256": "4edfb80ffc77292ea9d4018296d833c955b7d383a796f2f549d5022300cd063b",
+  "created_at": "2026-08-30T20:49:59.412+00:00",
+  "execution_count": 1,
+  "input_sha256": "af3bf12be09d207d83f3500d3a614d342ff40fe667b6453ba806ae4728336530",
+  "reopen_cost_usd": 0,
+  "report": "reports/club-post-regatta-memory.direct_baseline.json",
+  "schema_version": "wake.post_regatta_baseline_run.v1",
+  "store": false,
+  "total_approximate_cost_usd": 0.0437,
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "DIRECT_BASELINE"
+}

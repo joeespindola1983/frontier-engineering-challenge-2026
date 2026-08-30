@@ -29,6 +29,27 @@ export const evaluationResults = {
     "all_final_outputs_verified": true,
     "private_chain_of_thought_stored": false
   },
+  "club_memory_comparison": {
+    "evaluation_type": "NON_SCORED_CAPABILITY_AUDIT",
+    "baseline": {
+      "passed_count": 3,
+      "check_count": 7,
+      "cost_usd": 0.0437,
+      "tokens": 8005,
+      "runtime_seconds": 19.64
+    },
+    "wake": {
+      "passed_count": 7,
+      "check_count": 7,
+      "cost_usd": 0.037384,
+      "tokens": 6322,
+      "runtime_seconds": 22.507
+    },
+    "accepted_claim": "STRUCTURAL_FIDELITY_GAIN_ONLY",
+    "semantic_quality_gain": false,
+    "reopen_cost_usd": 0,
+    "review_note": "The frozen 7/7 versus 3/7 audit remains valid evidence of machine-stable contract fidelity. Because the direct baseline surfaced much of the same coaching content in different IDs, statuses, or sections, the audit is not accepted as a semantic coaching-quality score and was not rescored after output review."
+  },
   "cases": [
     {
       "case_id": "case-001-misaligned-double-scull",

@@ -95,15 +95,19 @@ the saved combined-club WAKE memory:
 uv run python scripts/post_regatta_baseline.py
 ```
 
-This safe preflight costs US$0.00 and writes no model output. A new live result
-requires `--execute`, `OPENAI_API_KEY`, and a separate finite US$0.20 start
-authorization. The authorization is not a provider billing cap. Its non-scored
-capability contract was frozen before execution so an unfavorable or neutral
-result cannot be redesigned after the fact.
+This safe preflight costs US$0.00 and does not call the model. The preserved
+live result is already committed under
+`evaluation/runs/post-regatta-baseline-v1-20260830/`: one verified call,
+US$0.043700, 8,005 tokens, 19.640 seconds, and `store: false`. Creating a new
+result requires `--execute`, `OPENAI_API_KEY`, and a new finite US$0.20 start
+authorization. The authorization is not a provider billing cap.
 
-When a verified baseline artifact exists, reproduce the non-scored audit with
+Reproduce the committed non-scored audit with
 `scripts/score_post_regatta_comparison.py`; the exact command is documented in
-`evaluation/post-regatta-baseline/v1/README.md`.
+`evaluation/post-regatta-baseline/v1/README.md`. Expected exact-contract result:
+WAKE 7/7 and direct baseline 3/7. Read
+`construct-validity-review.json` beside the audit before interpreting it: this
+supports a structural-fidelity claim, not a semantic coaching-quality score.
 
 ## Reproduce the solution workflow
 
@@ -141,6 +145,13 @@ The fixed ten-case comparison must report:
 - absolute gain: **+34.76 points**;
 - incremental WAKE cost: **US$0.283344**;
 - environmental interpretation regression: **80% to 76%**.
+
+The separate same-input 102-activity club-memory comparison must report:
+
+- direct baseline: **3/7 exact contract checks**, US$0.043700, 8,005 tokens;
+- bounded WAKE: **7/7 exact contract checks**, US$0.037384, 6,322 tokens;
+- accepted claim: **structural fidelity gain only**;
+- semantic coaching-quality gain: **not established**.
 
 Rebuild the separate, non-scored longitudinal capability audit:
 
@@ -184,6 +195,7 @@ CPU, package cache, and filesystem performance.
 | Reopen committed baseline, WAKE, or longitudinal reports | No | US$0.00 |
 | Official ten-case comparison already preserved | Historical only | US$1.139688 observed |
 | Four-report longitudinal pilot already preserved | Historical only | US$0.110426 observed |
+| Same-input 102-activity direct baseline already preserved | Historical only | US$0.043700 observed |
 | New live execution | Yes | Variable and separately authorized |
 
 ## Optional live execution and secrets

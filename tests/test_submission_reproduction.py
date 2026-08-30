@@ -31,9 +31,12 @@ class SubmissionReproductionTests(unittest.TestCase):
         self.assertIn("npm ci", script)
         self.assertIn("scripts/test_all.py", script)
         self.assertIn("scripts/score_longitudinal_pilot.py", script)
+        self.assertIn("scripts/score_post_regatta_comparison.py", script)
+        self.assertIn("post-regatta-baseline-v1-20260830", script)
         self.assertIn("Node.js 22.13.0 or newer is required", script)
         self.assertIn("node_major", script)
         self.assertIn("'Longitudinal pilot: 4 saved reports, US$0.110426 observed", script)
+        self.assertIn("'Club memory contract: WAKE 7/7, baseline 3/7", script)
         self.assertNotIn("--execute", script)
 
     def test_clean_environment_guide_covers_every_required_submission_detail(self) -> None:

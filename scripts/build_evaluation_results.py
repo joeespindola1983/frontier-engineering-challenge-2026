@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OFFICIAL_RUN = Path("evaluation/runs/expanded-evaluation-v2/official-20260830")
+CLUB_BASELINE_RUN = Path("evaluation/runs/post-regatta-baseline-v1-20260830")
 DEFAULT_OUTPUT = ROOT / "web/app/lib/evaluation-results.mjs"
 
 DIMENSION_LABELS = {
@@ -132,6 +133,10 @@ def build_evaluation_results(root: Path = ROOT) -> dict:
         read_json(path)
         for path in sorted((run_dir / "baseline/cases").glob("*.json"))
     ]
+    club_audit = read_json(root / CLUB_BASELINE_RUN / "capability-audit.json")
+    club_validity_review = read_json(
+        root / CLUB_BASELINE_RUN / "construct-validity-review.json"
+    )
 
     baseline_score = baseline_report["macro_average_score"]
     wake_score = agent_report["macro_average_score"]
@@ -175,6 +180,45 @@ def build_evaluation_results(root: Path = ROOT) -> dict:
             "private_chain_of_thought_stored": any(
                 item["private_chain_of_thought_stored"] for item in trajectories
             ),
+        },
+        "club_memory_comparison": {
+            "evaluation_type": club_audit["evaluation_type"],
+            "baseline": {
+                "passed_count": club_audit["baseline"]["passed_count"],
+                "check_count": club_audit["baseline"]["check_count"],
+                "cost_usd": club_audit["baseline"]["observability"][
+                    "approximate_cost_usd"
+                ],
+                "tokens": club_audit["baseline"]["observability"]["usage"][
+                    "total_tokens"
+                ],
+                "runtime_seconds": round(
+                    club_audit["baseline"]["observability"]["runtime_ms"] / 1000,
+                    3,
+                ),
+            },
+            "wake": {
+                "passed_count": club_audit["wake"]["passed_count"],
+                "check_count": club_audit["wake"]["check_count"],
+                "cost_usd": club_audit["wake"]["observability"][
+                    "approximate_cost_usd"
+                ],
+                "tokens": club_audit["wake"]["observability"]["usage"][
+                    "total_tokens"
+                ],
+                "runtime_seconds": round(
+                    club_audit["wake"]["observability"]["runtime_ms"] / 1000,
+                    3,
+                ),
+            },
+            "accepted_claim": club_validity_review["decision"].removeprefix(
+                "ACCEPT_"
+            ),
+            "semantic_quality_gain": club_validity_review["accepted_claims"][
+                "semantic_coaching_quality_gain"
+            ],
+            "reopen_cost_usd": 0,
+            "review_note": club_validity_review["review_note"],
         },
         "cases": cases,
         "dimensions": dimensions,

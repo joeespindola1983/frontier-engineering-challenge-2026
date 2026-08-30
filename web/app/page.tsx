@@ -625,7 +625,7 @@ function formatProvenance(value: string) {
 }
 
 function EvaluationScreen({ onBack }: { onBack: () => void }) {
-  const { comparison, cost, usage, agent_observability: observability, cases, dimensions, boundaries } = evaluationResults;
+  const { comparison, cost, usage, agent_observability: observability, club_memory_comparison: clubMemory, cases, dimensions, boundaries } = evaluationResults;
   return (
     <main className="page evaluation-page">
       <div className="evaluation-notice" role="note"><span>Saved result · No model call</span>This view renders committed evaluation artifacts. Opening it never runs the agent or spends API budget.</div>
@@ -638,6 +638,15 @@ function EvaluationScreen({ onBack }: { onBack: () => void }) {
         <article className="score-card score-card-wake"><div><span>Bounded WAKE agent</span><small>Four tools · verified output</small></div><strong>{comparison.wake_score.toFixed(2)}</strong><div className="score-track" aria-label={`WAKE score ${comparison.wake_score} out of 100`}><span style={{ width: `${comparison.wake_score}%` }} /></div></article>
         <article className="score-card"><div><span>Direct model baseline</span><small>One call · no tools or verifier</small></div><strong>{comparison.baseline_score.toFixed(2)}</strong><div className="score-track score-track-baseline" aria-label={`Baseline score ${comparison.baseline_score} out of 100`}><span style={{ width: `${comparison.baseline_score}%` }} /></div></article>
         <article className="gain-card"><span>Measured gain</span><strong>+{comparison.absolute_gain.toFixed(2)}</strong><p>points · +{comparison.relative_gain_percent.toFixed(2)}% relative</p><small>{comparison.all_cases_improved ? 'All 10 cases improved' : 'Not every case improved'}</small></article>
+      </section>
+
+      <section className="evaluation-learning" aria-label="Club memory structural validation">
+        <div><div className="kicker">Same-input club memory experiment</div><h2>Structured contract fidelity</h2></div>
+        <div>
+          <p><strong>WAKE {clubMemory.wake.passed_count}/{clubMemory.wake.check_count}</strong> · direct baseline {clubMemory.baseline.passed_count}/{clubMemory.baseline.check_count} on the frozen non-scored contract.</p>
+          <p>This is evidence that WAKE preserved canonical IDs, statuses, placement, and review routes more reliably. It is <strong>not a semantic coaching-quality score</strong>: manual review found that the baseline expressed much of the same content in different sections or identifiers.</p>
+          <small>WAKE US${clubMemory.wake.cost_usd.toFixed(6)} · {clubMemory.wake.tokens.toLocaleString('en-US')} tokens · {clubMemory.wake.runtime_seconds.toFixed(3)} s. Baseline US${clubMemory.baseline.cost_usd.toFixed(6)} · {clubMemory.baseline.tokens.toLocaleString('en-US')} tokens · {clubMemory.baseline.runtime_seconds.toFixed(3)} s. Saved review cost: US${clubMemory.reopen_cost_usd.toFixed(2)}.</small>
+        </div>
       </section>
 
       <section className="evaluation-facts" aria-label="Evaluation observability">

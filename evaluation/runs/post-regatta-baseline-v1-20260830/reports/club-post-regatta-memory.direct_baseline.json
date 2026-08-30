@@ -1,0 +1,328 @@
+{
+  "boundary": "Saved structured output can be reopened without another model call.",
+  "finished_at": "2026-08-30T20:49:59.400+00:00",
+  "input_sha256": "af3bf12be09d207d83f3500d3a614d342ff40fe667b6453ba806ae4728336530",
+  "observability": {
+    "approximate_cost_usd": 0.0437,
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "medium",
+    "runtime_ms": 19640,
+    "usage": {
+      "cached_input_tokens": 0,
+      "input_tokens": 5236,
+      "output_tokens": 2769,
+      "reasoning_output_tokens": 0,
+      "total_tokens": 8005
+    }
+  },
+  "output": {
+    "boundaries": [
+      "Water and indoor distance remain separate and must not be summed into one performance total.",
+      "Observed faster, slower, or stable values do not establish fitness, strength, stamina, technique, or causation.",
+      "Weather-confounded water evidence requires context rather than attribution to a crew.",
+      "Missing activity creates a human question rather than a commitment or readiness conclusion.",
+      "Every identity and activity in this public package is fictional and real-informed synthetic."
+    ],
+    "coach_briefing": "The evidence supports three narrow, controlled indoor observations: Lucas was 4 seconds faster over a comparable 1,000 m low-rate Concept2 record at 12 SPM; Bianca was 12 seconds slower over a comparable 2,000 m record at a 26 SPM average; and Marina was within 1 second on a comparable 1,000 m activation. These observations do not support a club-level performance trend or causal interpretation. Immediate review should focus on the verified Bridge Mixed work-02 stroke-rate deviation, the verified Atlas Men recovery-02 duration deviation, the missing 4x Mixed B workout source, and unresolved athlete/session context. Keep water and indoor evidence separate, and do not attribute Atlas Men 4x pace differences to the crew without resolving the 7.8 m/s tail-cross wind and other session context.",
+    "comparisons": [
+      {
+        "comparison_id": "lucas-low-rate-1000m",
+        "evidence_refs": [
+          "record:activity-lucas-erg-20260818",
+          "post-athlete-lucas-erg-1000m-20260917"
+        ],
+        "limitations": [
+          "This is a within-workout observed difference; the evidence does not establish why the time changed."
+        ],
+        "statement": "Lucas completed the comparable 1,000 m low-rate Concept2 record 4 seconds faster than the pre-regatta synthetic reference at the same 12 SPM.",
+        "status": "SUPPORTED"
+      },
+      {
+        "comparison_id": "bianca-2000m",
+        "evidence_refs": [
+          "record:activity-bianca-erg-20260824",
+          "post-athlete-bianca-erg-2000m-20260916"
+        ],
+        "limitations": [
+          "Fatigue, intent, resistance setting, recovery, and other human context remain unknown."
+        ],
+        "statement": "Bianca completed the comparable 2,000 m Concept2 record 12 seconds slower than the pre-regatta synthetic reference at the same 26 SPM average.",
+        "status": "SUPPORTED"
+      },
+      {
+        "comparison_id": "marina-1000m-activation",
+        "evidence_refs": [
+          "record:activity-marina-erg-20260820",
+          "post-athlete-marina-erg-1000m-20260915"
+        ],
+        "limitations": [
+          "The observation is narrow to this workout shape and does not establish a broader trend."
+        ],
+        "statement": "Marina's comparable 1,000 m activation was within 1 second of the pre-regatta synthetic reference.",
+        "status": "SUPPORTED"
+      },
+      {
+        "comparison_id": "atlas-high-wind-water",
+        "evidence_refs": [
+          "post-crew-4x-men-2026-09-16"
+        ],
+        "limitations": [
+          "Wind, current, lineup, equipment, course, and session intent prevent attribution to the crew."
+        ],
+        "statement": "Atlas Men 4x recorded a different on-water pace pattern during a session with a 7.8 m/s tail-cross wind.",
+        "status": "CONFLICTED"
+      },
+      {
+        "comparison_id": "andre-participation-gap",
+        "evidence_refs": [
+          "post-athlete-andre-expected-20260911"
+        ],
+        "limitations": [
+          "Rest, absence, unlinked evidence, and another modality remain possible explanations."
+        ],
+        "statement": "Andre has one expected post-regatta training day without an individual or linked crew record.",
+        "status": "INSUFFICIENT"
+      },
+      {
+        "comparison_id": "sofia-unmatched-interval",
+        "evidence_refs": [
+          "post-athlete-sofia-erg-interval-20260918"
+        ],
+        "limitations": [
+          "The record can be preserved, but a direction-of-change comparison is unsupported."
+        ],
+        "statement": "Sofia's post-regatta interval has no equivalent pre-regatta workout shape in the package.",
+        "status": "INSUFFICIENT"
+      }
+    ],
+    "headline": "Across 102 recorded activities over two periods, three supported indoor workout comparisons show narrow numeric differences, but the available evidence does not support a club-level performance trend.",
+    "observed_facts": [
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest",
+          "package:wake-demo-club-post-regatta-v1"
+        ],
+        "fact_id": "fact-coverage",
+        "statement": "The package covers 102 activities across 20 active days, involving 16 athletes, 10 crews, 68 water activities, and 34 indoor activities."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "batch:manifest",
+          "package:wake-demo-club-post-regatta-v1"
+        ],
+        "fact_id": "fact-activity-counts-by-period",
+        "statement": "The pre-regatta period contains 52 activities and the post-regatta period contains 50 activities."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm"
+        ],
+        "fact_id": "fact-bridge-spm-deviation",
+        "statement": "The verified investigation for the Bridge Mixed session on 2026-08-20 identified one work segment outside the stroke-rate target."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery"
+        ],
+        "fact_id": "fact-atlas-recovery-deviation",
+        "statement": "The verified investigation for the Atlas Men recovery session on 2026-08-28 identified one recovery segment with duration outside target."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "fact_id": "fact-missing-workout-source",
+        "statement": "A planned-workout source is missing for the 4x Mixed B session on 2026-08-27."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "fact_id": "fact-women-8x-context-needed",
+        "statement": "Athlete context is required before interpreting the Women's 8x session on 2026-08-28."
+      },
+      {
+        "confidence": 1,
+        "evidence_refs": [
+          "package:wake-demo-club-post-regatta-v1"
+        ],
+        "fact_id": "fact-post-distance-coverage",
+        "statement": "The post-regatta package preserves activity-level records and comparison evidence but does not expose a cross-modality combined-distance total."
+      }
+    ],
+    "pilot_id": "club-post-regatta-memory",
+    "priorities": [
+      {
+        "action": "Review the preserved Bridge Mixed investigation and inspect the work-02 stroke-rate deviation against the intended session plan.",
+        "evidence_refs": [
+          "verified:club-bridge-mixed-20260820-spm",
+          "record:club-bridge-mixed-20260820-spm"
+        ],
+        "priority_id": "priority-bridge-target-review",
+        "rank": 1,
+        "reason": "The investigation was verified and found one work segment outside the stroke-rate target; interpretation of cause is not established by this evidence.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Recover or confirm the planned-workout source for the 4x Mixed B session on 2026-08-27 before assessing execution against plan.",
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "priority_id": "priority-source-recovery",
+        "rank": 2,
+        "reason": "The planned workout source is missing, limiting session interpretation.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Obtain required athlete context for the Women's 8x session on 2026-08-28 and Andre's unlinked expected training day before drawing session or participation conclusions.",
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening",
+          "post-athlete-andre-expected-20260911"
+        ],
+        "priority_id": "priority-context-resolution",
+        "rank": 3,
+        "reason": "The package explicitly marks athlete context as required for the Women's 8x session and leaves multiple explanations open for Andre's missing linked record.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Review environmental, lineup, equipment, course, and session-intent context before interpreting the Atlas Men 4x on-water pace pattern.",
+        "evidence_refs": [
+          "post-crew-4x-men-2026-09-16"
+        ],
+        "priority_id": "priority-atlas-environment-review",
+        "rank": 4,
+        "reason": "The recorded 7.8 m/s tail-cross wind and other uncontrolled water-session factors prevent attribution to the crew.",
+        "requires_human_review": true
+      },
+      {
+        "action": "Review the Atlas Men recovery investigation and inspect the recovery-02 duration deviation against the intended recovery target.",
+        "evidence_refs": [
+          "verified:club-atlas-men-20260828-recovery",
+          "record:club-atlas-men-20260828-recovery"
+        ],
+        "priority_id": "priority-recovery-segment-review",
+        "rank": 5,
+        "reason": "The verified investigation found one recovery duration outside target, without establishing an explanation or broader implication.",
+        "requires_human_review": true
+      }
+    ],
+    "recommendations": [
+      {
+        "action": "Do not present the three indoor comparisons as a club-level athletic-performance trend; have a coach review whether additional controlled, like-for-like records exist.",
+        "evidence_refs": [
+          "record:activity-lucas-erg-20260818",
+          "post-athlete-lucas-erg-1000m-20260917",
+          "record:activity-bianca-erg-20260824",
+          "post-athlete-bianca-erg-2000m-20260916",
+          "record:activity-marina-erg-20260820",
+          "post-athlete-marina-erg-1000m-20260915"
+        ],
+        "limitations": [
+          "Intent, effort, recovery, equipment, environment, and physiology are not sufficiently controlled for an athletic-performance or causal trend."
+        ],
+        "rationale": "The package states that three narrow workout comparisons support numeric differences only and that performance-trend support is false.",
+        "recommendation_id": "recommendation-hold-club-trend-claim",
+        "status": "REVIEW_REQUIRED"
+      },
+      {
+        "action": "Keep water and indoor activity totals and any future distance reporting separate; request post-regatta modality-specific distance totals if distance comparison is needed.",
+        "evidence_refs": [
+          "batch:manifest",
+          "package:wake-demo-club-post-regatta-v1"
+        ],
+        "limitations": [
+          "Water and indoor distance must not be summed into one performance total."
+        ],
+        "rationale": "The pre-regatta package reports separate indoor and water distances, while the post-regatta package does not expose a combined-distance total.",
+        "recommendation_id": "recommendation-separate-modality-reporting",
+        "status": "REVIEW_REQUIRED"
+      },
+      {
+        "action": "Collect the missing 4x Mixed B workout source and the required context for the Women's 8x, Andre, Atlas Men 4x, and Sofia records before extending interpretation.",
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm",
+          "record:club-8x-women-20260828-evening",
+          "post-athlete-andre-expected-20260911",
+          "post-crew-4x-men-2026-09-16",
+          "post-athlete-sofia-erg-interval-20260918"
+        ],
+        "limitations": [
+          "Environmental association is not causation, and missing or unmatched records do not establish readiness, participation intent, or athletic status."
+        ],
+        "rationale": "Each item is explicitly routed as source-required, context-required, human-or-source-required, conflicted, or insufficient for the relevant interpretation.",
+        "recommendation_id": "recommendation-source-and-context-completion",
+        "status": "INFORMATION_REQUEST"
+      }
+    ],
+    "schema_version": "wake.longitudinal_intelligence_output.v1",
+    "scope": {
+      "entity_id": "wake-demo-club",
+      "type": "CLUB"
+    },
+    "unresolved_questions": [
+      {
+        "evidence_refs": [
+          "record:club-4x-mixed-b-20260827-pm"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What was the intended workout structure and target guidance for the 4x Mixed B session on 2026-08-27?",
+        "question_id": "question-4x-mixed-b-plan",
+        "reason": "The planned-workout source is missing, so the session cannot be assessed against its documented plan."
+      },
+      {
+        "evidence_refs": [
+          "record:club-8x-women-20260828-evening"
+        ],
+        "expected_respondent": "ATHLETE_OR_COACH",
+        "question": "What athlete or session context is needed to interpret the Women's 8x session on 2026-08-28?",
+        "question_id": "question-women-8x-context",
+        "reason": "The package explicitly requires athlete context before interpretation."
+      },
+      {
+        "evidence_refs": [
+          "post-athlete-andre-expected-20260911"
+        ],
+        "expected_respondent": "ATHLETE_OR_COACH",
+        "question": "How should Andre's expected post-regatta training day on 2026-09-11 be accounted for: rest, absence, an unlinked record, or another modality?",
+        "question_id": "question-andre-record-gap",
+        "reason": "No individual or linked crew record is available, and the evidence does not identify the explanation."
+      },
+      {
+        "evidence_refs": [
+          "post-crew-4x-men-2026-09-16"
+        ],
+        "expected_respondent": "COACH",
+        "question": "What were the lineup, equipment, course, current, and intended session objective for the Atlas Men 4x session conducted in a 7.8 m/s tail-cross wind?",
+        "question_id": "question-atlas-water-context",
+        "reason": "These uncontrolled factors are required before interpreting the different on-water pace pattern."
+      },
+      {
+        "evidence_refs": [
+          "post-athlete-sofia-erg-interval-20260918"
+        ],
+        "expected_respondent": "COACH",
+        "question": "Is there an intended pre-regatta comparator or workout prescription for Sofia's post-regatta interval?",
+        "question_id": "question-sofia-comparator",
+        "reason": "The package contains no equivalent pre-regatta workout shape for a direction-of-change comparison."
+      }
+    ]
+  },
+  "pilot_id": "club-post-regatta-memory",
+  "response_ids": [
+    "resp_0798df1b4df1a1d4016a94976560c087d28fc6c8c3aa0a9537"
+  ],
+  "schema_version": "wake.longitudinal_pilot_artifact.v1",
+  "started_at": "2026-08-30T20:49:39.760+00:00",
+  "tool_events": [],
+  "verification": {
+    "errors": [],
+    "passed": true
+  },
+  "workflow": "DIRECT_BASELINE"
+}

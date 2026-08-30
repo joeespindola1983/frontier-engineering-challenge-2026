@@ -19,6 +19,13 @@ test('committed evaluation summary exposes official scores without private evide
   assert.ok(evaluationResults.cases.every((item) => item.dimensions.length > 0));
   assert.doesNotMatch(JSON.stringify(evaluationResults), /ground_truth|coach_briefing|input\//);
   assert.doesNotMatch(JSON.stringify(evaluationResults), /evidence_refs|reasons/);
+  assert.equal(evaluationResults.club_memory_comparison.baseline.passed_count, 3);
+  assert.equal(evaluationResults.club_memory_comparison.wake.passed_count, 7);
+  assert.equal(evaluationResults.club_memory_comparison.baseline.cost_usd, 0.0437);
+  assert.equal(evaluationResults.club_memory_comparison.wake.cost_usd, 0.037384);
+  assert.equal(evaluationResults.club_memory_comparison.accepted_claim, 'STRUCTURAL_FIDELITY_GAIN_ONLY');
+  assert.equal(evaluationResults.club_memory_comparison.semantic_quality_gain, false);
+  assert.equal(evaluationResults.club_memory_comparison.reopen_cost_usd, 0);
 });
 
 
@@ -38,4 +45,8 @@ test('evaluation is a separate read-only submission evidence view', async () => 
   assert.match(page, /<details className="case-report"/);
   assert.match(page, /Open individual report/);
   assert.match(page, /item\.dimensions\.map/);
+  assert.match(page, /Structured contract fidelity/);
+  assert.match(page, /clubMemory\.wake\.passed_count/);
+  assert.match(page, /clubMemory\.baseline\.passed_count/);
+  assert.match(page, /not a semantic coaching-quality score/);
 });

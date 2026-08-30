@@ -1,0 +1,52 @@
+{
+  "schema_version": "wake.post_regatta_construct_validity_review.v1",
+  "review_type": "MANUAL_CONTRACT_VALIDITY_REVIEW",
+  "frozen_audit_preserved": true,
+  "frozen_audit_conclusion": "DEMONSTRATED_CAPABILITY_COVERAGE_GAIN",
+  "accepted_claims": {
+    "structural_fidelity_gain": true,
+    "semantic_coaching_quality_gain": false,
+    "human_coach_superiority": false
+  },
+  "decision": "ACCEPT_STRUCTURAL_FIDELITY_GAIN_ONLY",
+  "findings": [
+    {
+      "check_id": "supported_comparisons",
+      "classification": "STRUCTURAL_ID_SENSITIVITY",
+      "finding": "The baseline described all three supported comparisons but generated different comparison IDs, so the frozen exact-contract audit did not recognize them."
+    },
+    {
+      "check_id": "club_trend_abstention",
+      "classification": "SECTION_AND_ID_SENSITIVITY",
+      "finding": "The baseline explicitly abstained from a club performance trend in its headline and recommendation, but it did not emit the canonical insufficient comparison object required by the frozen contract."
+    },
+    {
+      "check_id": "environmental_noncausality",
+      "classification": "STATUS_AND_ID_SENSITIVITY",
+      "finding": "The baseline preserved a non-causal boundary for the high-wind Atlas outing but used its own comparison ID and CONFLICTED status rather than the canonical ID and INSUFFICIENT status."
+    },
+    {
+      "check_id": "verified_deviation_review",
+      "classification": "SECTION_SENSITIVITY",
+      "finding": "The baseline routed both verified deviations to coach priorities with their evidence references, while the frozen audit required them in recommendations."
+    }
+  ],
+  "resource_comparison": {
+    "baseline": {
+      "approximate_cost_usd": 0.0437,
+      "total_tokens": 8005,
+      "runtime_ms": 19640
+    },
+    "wake": {
+      "approximate_cost_usd": 0.037384,
+      "total_tokens": 6322,
+      "runtime_ms": 22507
+    },
+    "wake_relative_to_baseline": {
+      "cost_percent_lower": 14.45,
+      "tokens_percent_lower": 21.02,
+      "runtime_percent_higher": 14.6
+    }
+  },
+  "review_note": "The frozen 7/7 versus 3/7 audit remains valid evidence of machine-stable contract fidelity. Because the direct baseline surfaced much of the same coaching content in different IDs, statuses, or sections, the audit is not accepted as a semantic coaching-quality score and was not rescored after output review."
+}

@@ -62,6 +62,9 @@ fi
 
 uv run python scripts/test_all.py
 uv run python scripts/score_longitudinal_pilot.py
+uv run python scripts/score_post_regatta_comparison.py \
+  --baseline-artifact evaluation/runs/post-regatta-baseline-v1-20260830/reports/club-post-regatta-memory.direct_baseline.json \
+  --output evaluation/runs/post-regatta-baseline-v1-20260830/capability-audit.json
 
 (
   cd web
@@ -73,4 +76,5 @@ uv run python scripts/score_longitudinal_pilot.py
 echo "WAKE reproduction complete."
 echo "Expected fixed-case result: WAKE 83.76 / baseline 49.00."
 echo 'Longitudinal pilot: 4 saved reports, US$0.110426 observed, no demonstrated quality gain.'
+echo 'Club memory contract: WAKE 7/7, baseline 3/7; structural fidelity gain only.'
 echo "Start the no-cost interface with ./scripts/start_dashboard.sh"

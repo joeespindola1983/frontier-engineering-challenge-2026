@@ -404,6 +404,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Compare the saved bounded WAKE memory with one direct call over the byte-equivalent semantic 102-activity summary, same model configuration, and same strict output schema. Give the baseline no tools. Freeze a seven-check non-scored capability contract before execution and preserve a neutral or unfavorable outcome without changing the contract. Keep per-athlete and per-crew mass generation outside the submission unless this comparison exposes a specific missing product capability.
 - **Rationale:** More generated prose does not itself validate club intelligence. One same-input comparison isolates whether tool-backed investigation changes supported-comparison coverage, abstention, environmental boundaries, priorities, questions, and deviation review. It adds stronger evidence at one paid start while retaining the selective-reasoning and deterministic-source-of-truth architecture.
 
+## 2026-08-30 - Accept the same-input club result as structural fidelity evidence only
+
+- **Status:** accepted and executed once after explicit US$0.20 authorization.
+- **Decision:** Preserve the frozen 7/7 WAKE versus 3/7 direct-baseline capability audit unchanged, together with a separate manual construct-validity review. Accept only the claim that WAKE more reliably preserves canonical IDs, statuses, output placement, and review routes. Do not present this audit as a semantic coaching-quality score or human-coach comparison, and do not rescore it after inspecting the output.
+- **Rationale:** The direct baseline expressed much of the same coaching content but used different identifiers, statuses, or sections for four checks. That makes the frozen audit valid evidence of machine-stable contract fidelity while limiting its validity as a broad measure of coaching quality. Keeping the original audit plus the limitation is more credible than changing the contract after seeing the result.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

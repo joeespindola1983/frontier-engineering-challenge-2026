@@ -43,5 +43,14 @@ uv run python scripts/score_post_regatta_comparison.py \
   --output evaluation/runs/post-regatta-baseline-v1-YYYYMMDD/capability-audit.json
 ```
 
-The auditor reports capability coverage and one of four explicit conclusions;
-it does not calculate a weighted quality score.
+The preserved 2026-08-30 run is under
+`evaluation/runs/post-regatta-baseline-v1-20260830/`. It made one verified call,
+used `store: false`, cost US$0.043700, used 8,005 tokens, and completed in
+19.640 seconds. The frozen audit reports WAKE 7/7 and the direct baseline 3/7.
+
+Read `construct-validity-review.json` with that audit. Manual review found that
+four failures were sensitive to canonical IDs, statuses, or output-section
+placement even though the baseline expressed much of the same content. The
+accepted result is therefore an exact structural-fidelity gain only. It is not
+a semantic coaching-quality score, and the frozen audit was not rescored after
+review.
