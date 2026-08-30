@@ -625,6 +625,16 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Finish the product QA before rewriting the demonstration video. Treat every owner finding as one of comprehension, rowing-language, functional, evidence-boundary, or visual issues before deciding what to fix.
 - **Learning:** Saved outputs make demonstrations reliable, but only fresh isolated state and real file selection reveal whether ingestion and workflow transitions still work. Replay credibility and live operability must be tested separately.
 
+### 59. Product-first five-minute story
+
+- **Hypothesis:** A video organized around a coach, athlete, crew, and accumulating club memory will communicate WAKE's value more clearly than a narration organized around parsers, tools, schemas, and verification stages, while a short evidence segment can still satisfy the technical judging requirements.
+- **Change:** Added a RED-first recording-contract test for explicit coach/athlete audience, an 85/15 product-to-technical split, the club-to-session-to-human-to-longitudinal-to-competition route, and the boundary that detailed architecture remains in the repository. Rewrote the five-minute script around the human problem, Harbor Men 2x, the investigated session, complementary athlete/coach authority, Lucas Training Days and Concept2, 102 club activities, Competition Review, then the fixed-case result and failed experiment. Removed the former forty-second narration of deterministic processing and four tools from the primary story.
+- **Evaluation:** The new contract initially failed against the technical-first script and passed after the rewrite. The script still contains the required simple baseline, one end-to-end path, 83.76 versus 49.00 comparison, visible regression, removed experiment, changelog learning, and zero-cost reproduction boundary. The timed narration is approximately 630 spoken words before owner rehearsal.
+- **Result:** `READY_FOR_OWNER_QA`, not recording-frozen. The first minute is now understandable without software vocabulary, implementation detail supports credibility rather than leading the pitch, and the close returns to joint coach/athlete value.
+- **Cost/runtime:** Documentation and local tests only; US$0.00 and no model or weather request.
+- **Decision:** Sell the product outcome in the video and let the repository sell the implementation depth. Do not remove technical evidence; relocate it to the final evaluation/failure segment and submission documentation.
+- **Learning:** Judges need both emotional clarity and reproducible evidence, but those do not need equal screen time. Showing the user's decision first makes the later technical proof easier to interpret.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

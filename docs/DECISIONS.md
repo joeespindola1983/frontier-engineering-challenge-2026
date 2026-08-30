@@ -416,6 +416,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Publish one upload-ready five-source derived-synthetic QA bundle and use the same folder for the two-source minimum-evidence path. Add an explicit dashboard `--state-store` option so owner QA can use isolated replay and live state without deleting or changing the normal local club state. Validate the interface in replay first, then run three separately authorized live starts: core Plan + SpeedCoach, complete five-source evidence, and core evidence with historical weather.
 - **Rationale:** A visual walkthrough cannot prove ingestion, evidence gaps, persistence, live verification, or weather enrichment. A fixed public pack makes the file chooser reproducible, while isolated state prevents old answers from masking first-run behavior. Separate start gates keep the paid scope auditable.
 
+## 2026-08-30 - Make the submission video product-first
+
+- **Status:** accepted; rewritten script pending owner QA and rehearsal.
+- **Decision:** Aim the five-minute video primarily at coaches and athletes: 85% product story and 15% technical proof. Lead with the operational problem, follow one session through athlete and coach collaboration, demonstrate value across the club and competition, and use the final minute for measured evaluation, one failure, and reproduction. Leave architecture, schemas, trajectories, tests, and exact commands in the repository rather than narrating them in the main product path.
+- **Rationale:** The solution video must make the practical value understandable before asking judges to interpret implementation detail. Technical judges can inspect the source and documentation; the recording should establish why the workflow matters, then present only enough evidence to make its claims credible and satisfy the hackathon requirements.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

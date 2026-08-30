@@ -77,8 +77,22 @@ class SubmissionReproductionTests(unittest.TestCase):
             "49.00",
             "removed experiment",
             "US$0.00",
+            "Primary audience: coaches and athletes",
+            "Product story: 85%",
+            "Technical proof: 15%",
+            "Lucas",
+            "SpeedCoach",
+            "Concept2",
+            "Competition Review",
+            "Every row leaves a wake",
+            "The architecture, schemas, trajectories, tests, and exact commands remain in the repository",
         ):
             self.assertIn(required, script)
+
+        self.assertNotIn(
+            "The bounded agent can then inspect four read-only tools",
+            script,
+        )
 
 
 if __name__ == "__main__":

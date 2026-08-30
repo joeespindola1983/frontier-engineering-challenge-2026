@@ -1,6 +1,6 @@
 # Interface review and visual evidence plan
 
-**Status:** final five-minute coach-path QA and recording script complete; owner rehearsal remains
+**Status:** product-first recording script updated; owner QA and final rehearsal remain
 
 The local browser rehearsal completed the full synthetic workflow: independent
 source selection, upload, replay-safe investigation, review, human checkpoint,
@@ -108,5 +108,7 @@ identify the material deviation, the selected evidence, the unresolved human
 question, and the agentic work performed in under 30 seconds without reading the
 full briefing.
 
-The timed recording route, narration, and privacy checklist are frozen in
+The timed recording route now prioritizes coach and athlete value, with the
+technical comparison and experiment history kept as a short credibility layer.
+It remains subject to owner QA before recording and lives in
 [`VIDEO_DEMO_SCRIPT.md`](VIDEO_DEMO_SCRIPT.md).
