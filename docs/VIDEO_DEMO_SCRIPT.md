@@ -2,6 +2,9 @@
 
 **Status:** product-first draft; owner QA and final rehearsal remain
 
+Generation-ready ElevenLabs copy is separated into seven clips in
+[`submission/video/VOICEOVER_ELEVENLABS_V3.md`](../submission/video/VOICEOVER_ELEVENLABS_V3.md).
+
 **Primary audience: coaches and athletes.** The judges should first understand
 why WAKE matters inside a rowing club. The technical material exists to prove
 that the visible product is credible, not to become the main character.

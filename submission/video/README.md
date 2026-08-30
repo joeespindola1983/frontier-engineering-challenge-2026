@@ -55,3 +55,8 @@ five-minute submission video. The final cut must also introduce the current
 coach workflow and simple baseline, show the measured baseline-versus-WAKE
 comparison, summarize the Improvement Changelog, and highlight the most
 impactful correction plus one removed experiment.
+
+The generation-ready English narration for the final product-first cut is
+split into seven Eleven v3 inputs in
+[`VOICEOVER_ELEVENLABS_V3.md`](VOICEOVER_ELEVENLABS_V3.md). The sheet contains
+only output filenames, target timing, and API-ready text with inline audio tags.

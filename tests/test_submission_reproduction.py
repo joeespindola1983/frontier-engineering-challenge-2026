@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/reproduce_submission.sh"
 GUIDE = ROOT / "docs/REPRODUCTION_GUIDE.md"
 VIDEO_GUIDE = ROOT / "docs/VIDEO_DEMO_SCRIPT.md"
+VOICEOVER_GUIDE = ROOT / "submission" / "video" / "VOICEOVER_ELEVENLABS_V3.md"
 
 
 class SubmissionReproductionTests(unittest.TestCase):
@@ -93,6 +94,28 @@ class SubmissionReproductionTests(unittest.TestCase):
             "The bounded agent can then inspect four read-only tools",
             script,
         )
+
+    def test_elevenlabs_voiceover_sheet_contains_only_generation_ready_audio(self) -> None:
+        self.assertTrue(VOICEOVER_GUIDE.is_file())
+        sheet = VOICEOVER_GUIDE.read_text(encoding="utf-8")
+
+        self.assertIn("model_id: `eleven_v3`", sheet)
+        self.assertEqual(sheet.count("## wake-vo-"), 7)
+        self.assertIn("[short pause]", sheet)
+        self.assertIn("[confidently]", sheet)
+        self.assertIn("[thoughtfully]", sheet)
+        self.assertIn("eighty-three point seven six", sheet)
+        self.assertIn("forty-nine point zero zero", sheet)
+        self.assertIn("Every row leaves a wake", sheet)
+        self.assertNotIn("<break", sheet)
+        self.assertNotIn("**Screen:**", sheet)
+        self.assertNotIn("**Show:**", sheet)
+
+        prompts = sheet.split("```text\n")[1:]
+        self.assertEqual(len(prompts), 7)
+        for prompt_with_suffix in prompts:
+            prompt = prompt_with_suffix.split("\n```", 1)[0]
+            self.assertGreaterEqual(len(prompt), 250)
 
 
 if __name__ == "__main__":

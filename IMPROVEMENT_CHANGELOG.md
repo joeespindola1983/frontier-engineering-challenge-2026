@@ -635,6 +635,16 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Sell the product outcome in the video and let the repository sell the implementation depth. Do not remove technical evidence; relocate it to the final evaluation/failure segment and submission documentation.
 - **Learning:** Judges need both emotional clarity and reproducible evidence, but those do not need equal screen time. Showing the user's decision first makes the later technical proof easier to interpret.
 
+### 60. Eleven v3 generation-ready voiceover sheet
+
+- **Hypothesis:** Seven context-rich, independently generated clips with sparse delivery tags will be easier to time and selectively regenerate than either one five-minute request or nine short prompts, without mixing recording directions into spoken output.
+- **Change:** Added a RED-first submission test and `submission/video/VOICEOVER_ELEVENLABS_V3.md`. The sheet maps the complete product-first narration to seven named MP3 outputs, uses `eleven_v3` inline tags for thoughtfulness, confidence, warmth, measured delivery, reflection, and short pauses, and writes ambiguous figures such as 83.76 and 49.00 as spoken English. Screen and editing directions remain exclusively in the master video script.
+- **Evaluation:** RED failed because no generation sheet existed. GREEN verifies seven text prompts, required delivery tags, spoken evaluation values and closing tagline, absence of SSML and screen instructions, and at least 250 characters of context in every prompt. The sheet follows the current ElevenLabs distinction: Eleven v3 uses audio tags and does not support SSML break tags.
+- **Result:** `READY_TO_GENERATE`; no audio has been generated or reviewed yet. The seven target windows cover the complete five-minute timeline.
+- **Cost/runtime:** Documentation and local tests only; US$0.00. ElevenLabs generation cost and duration remain unmeasured until the owner executes the API calls.
+- **Decision:** Generate each clip separately with one consistent voice and the `eleven_v3` model. Regenerate only clips that miss tone, pronunciation, or target duration; do not alter the evidence claims during voice tuning.
+- **Learning:** TTS input is a production artifact, not a copy-paste of the recording document. Segment size, spoken-number normalization, and model-specific pause syntax materially affect reproducibility.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

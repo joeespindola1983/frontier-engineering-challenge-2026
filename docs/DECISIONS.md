@@ -422,6 +422,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Aim the five-minute video primarily at coaches and athletes: 85% product story and 15% technical proof. Lead with the operational problem, follow one session through athlete and coach collaboration, demonstrate value across the club and competition, and use the final minute for measured evaluation, one failure, and reproduction. Leave architecture, schemas, trajectories, tests, and exact commands in the repository rather than narrating them in the main product path.
 - **Rationale:** The solution video must make the practical value understandable before asking judges to interpret implementation detail. Technical judges can inspect the source and documentation; the recording should establish why the workflow matters, then present only enough evidence to make its claims credible and satisfy the hackathon requirements.
 
+## 2026-08-30 - Generate the final voiceover as seven tagged Eleven v3 clips
+
+- **Status:** accepted; generation sheet implemented, audio generation pending.
+- **Decision:** Use the `eleven_v3` model and generate seven independent English narration clips aligned to the product-first timeline. Keep every input above 250 characters, use sparse inline emotion/delivery/pause tags, spell ambiguous numbers and product names for speech, and avoid SSML breaks because Eleven v3 uses audio tags instead.
+- **Rationale:** Separate clips make timing and selective regeneration manageable without losing enough textual context for stable delivery. A generation-only document prevents screen directions from being accidentally synthesized and preserves the editable five-minute master script separately.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
