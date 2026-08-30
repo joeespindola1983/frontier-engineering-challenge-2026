@@ -1,0 +1,17 @@
+{
+  "schema_version": "wake.longitudinal_pilot_config.v1",
+  "workflow": "wake-longitudinal-pilot-v1",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "medium",
+  "max_output_tokens": 6000,
+  "service_tier": "default",
+  "store": false,
+  "max_rounds": 4,
+  "max_verifier_retries": 1,
+  "authorization_gate_per_start_usd": 0.20,
+  "pricing": {
+    "input_usd_per_million_tokens": 2.0,
+    "cached_input_usd_per_million_tokens": 0.2,
+    "output_usd_per_million_tokens": 12.0
+  }
+}

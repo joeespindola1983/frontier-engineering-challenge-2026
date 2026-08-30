@@ -363,8 +363,13 @@ keeping water and indoor volume separate. The adapter was grounded by a
 public minimized real-reference packet covering fixed-distance, fixed-time, and
 interval displays; automatic photo OCR and native ErgData ingestion remain
 unimplemented. Batch upload is therefore an outer envelope; model analysis, cost,
-review, and history remain session-level. Longitudinal synthesis remains a
-separate unexecuted experiment.
+review, and history remain session-level. Longitudinal synthesis now has a
+frozen two-case experiment rather than an undefined future call: one athlete
+briefing and one club-priority briefing, each compared as direct baseline versus
+bounded WAKE. The preflight preserves compact inputs, four request hashes,
+tools, strict schema, evidence verifier, persistence, and the US$0.80 full-run
+start gate. It remains unexecuted, incurred no new API cost, and supports no
+period-level model conclusion yet.
 
 A candidate five-minute narrative is:
 

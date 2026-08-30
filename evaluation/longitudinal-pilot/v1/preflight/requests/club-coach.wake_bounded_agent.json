@@ -1,0 +1,345 @@
+{
+  "input": [
+    {
+      "content": "{\"instruction\": \"Investigate this frozen longitudinal scope with the available tools.\", \"pilot_id\": \"club-coach\", \"scope\": {\"display_name\": \"WAKE Demo Club\", \"entity_id\": \"wake-demo-club\", \"type\": \"CLUB\"}}",
+      "role": "user"
+    }
+  ],
+  "instructions": "You are WAKE's bounded longitudinal rowing intelligence agent.\n\nInvestigate one supplied pilot scope using the available deterministic tools. Inspect scope coverage, attention signals, comparable-session readiness, and preserved verified investigations before producing the final structured output. Use only evidence references returned by tools. Do not ask a tool for raw telemetry and do not invent missing context.\n\nSeparate observed facts from comparisons, priorities, questions, and recommendations. Never merge water and indoor distance. Do not infer visible technique, crew synchronization, injury, medical state, muscular strength, stamina, commitment, fitness, or athletic improvement. Environmental association is not causation. Recommendations require human review; do not autonomously prescribe training or select crews. When comparison readiness says a performance trend is unsupported, explicitly abstain from one.\n\nReturn only the required structured output after the investigation is sufficient.\n",
+  "max_output_tokens": 6000,
+  "model": "gpt-5.6-terra",
+  "parallel_tool_calls": true,
+  "reasoning": {
+    "effort": "medium"
+  },
+  "service_tier": "default",
+  "store": false,
+  "text": {
+    "format": {
+      "name": "wake_longitudinal_intelligence_v1",
+      "schema": {
+        "$defs": {
+          "comparison": {
+            "additionalProperties": false,
+            "properties": {
+              "comparison_id": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "SUPPORTED",
+                  "INSUFFICIENT",
+                  "CONFLICTED"
+                ]
+              }
+            },
+            "required": [
+              "comparison_id",
+              "status",
+              "statement",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          },
+          "evidence_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "fact": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "fact_id": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fact_id",
+              "statement",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "priority": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "priority_id": {
+                "type": "string"
+              },
+              "rank": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "requires_human_review": {
+                "const": true
+              }
+            },
+            "required": [
+              "priority_id",
+              "rank",
+              "action",
+              "reason",
+              "requires_human_review",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "question": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "expected_respondent": {
+                "enum": [
+                  "ATHLETE",
+                  "COACH",
+                  "ATHLETE_OR_COACH"
+                ]
+              },
+              "question": {
+                "type": "string"
+              },
+              "question_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question_id",
+              "expected_respondent",
+              "question",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "recommendation": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "recommendation_id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "REVIEW_REQUIRED",
+                  "INFORMATION_REQUEST"
+                ]
+              }
+            },
+            "required": [
+              "recommendation_id",
+              "status",
+              "action",
+              "rationale",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          }
+        },
+        "$id": "https://wake-rowing.dev/schemas/longitudinal-intelligence-output.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "boundaries": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "coach_briefing": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "comparisons": {
+            "items": {
+              "$ref": "#/$defs/comparison"
+            },
+            "type": "array"
+          },
+          "headline": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "observed_facts": {
+            "items": {
+              "$ref": "#/$defs/fact"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "pilot_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priorities": {
+            "items": {
+              "$ref": "#/$defs/priority"
+            },
+            "type": "array"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/$defs/recommendation"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "wake.longitudinal_intelligence_output.v1"
+          },
+          "scope": {
+            "additionalProperties": false,
+            "properties": {
+              "entity_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "ATHLETE",
+                  "CLUB"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "entity_id"
+            ],
+            "type": "object"
+          },
+          "unresolved_questions": {
+            "items": {
+              "$ref": "#/$defs/question"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "pilot_id",
+          "scope",
+          "headline",
+          "observed_facts",
+          "comparisons",
+          "priorities",
+          "unresolved_questions",
+          "recommendations",
+          "boundaries",
+          "coach_briefing"
+        ],
+        "title": "WAKE Longitudinal Intelligence Output",
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    }
+  },
+  "tool_choice": "auto",
+  "tools": [
+    {
+      "description": "Return scope, period, coverage, modality totals, and boundaries.",
+      "name": "inspect_scope_coverage",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "Return only evidence-backed human, source, and verified-session attention signals.",
+      "name": "list_attention_signals",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "Return repeated-context groups and the deterministic trend-support boundary.",
+      "name": "find_comparable_sessions",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    },
+    {
+      "description": "Return preserved verified session investigations inside this scope.",
+      "name": "get_verified_investigations",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "function"
+    }
+  ]
+}

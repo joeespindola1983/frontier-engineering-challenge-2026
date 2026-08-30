@@ -362,6 +362,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Treat every Concept2 PM5 result as an individual athlete activity even when several athletes share one prescription. Group activities by athlete and date only after preserving source identity. Use declared roles (`PRE_WATER`, `POST_WATER`, `PRIMARY`, or `ALTERNATIVE`) and link status to classify water-only, indoor-only, combined, and expected-missing Training Days. Keep water and indoor distance separate; compare Concept2 pace, SPM, and watts only within compatible workout shapes and plan context.
 - **Rationale:** A PM5 measures one machine and athlete, not a crew. A day can legitimately contain water plus indoor work or indoor-only training, especially during weather or seasonal constraints. Athlete-centered chronology makes that workload visible without converting ergometer meters into on-water performance or inferring muscular strength, technique, or fitness from unsupported metrics.
 
+## 2026-08-30 - Evaluate longitudinal intelligence through two selective scopes
+
+- **Status:** accepted as a zero-cost preflight; paid execution remains unauthorized.
+- **Decision:** Freeze one athlete briefing and one club-priority briefing after the deterministic 52-activity screen. Compare a direct baseline with the bounded WAKE workflow for each scope using the same compact input, `gpt-5.6-terra` at medium reasoning, and one strict output schema. Keep water and indoor volumes separate; forbid unsupported technique, physiology, fitness, or performance-trend conclusions; require evidence references and human review. Persist verified reports so reopening costs nothing. Require a new US$0.20 start gate for each of the four planned calls, US$0.80 total, while disclosing that the gate is not a provider cap.
+- **Rationale:** Two preserved session exceptions demonstrate selective investigation but not period-level value. A small controlled longitudinal comparison can test whether agentic investigation improves prioritization without spending on every activity or silently turning deterministic aggregates into model conclusions. Freezing inputs, costs, and evaluation boundaries before execution prevents post-result redesign.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

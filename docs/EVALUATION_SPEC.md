@@ -201,3 +201,19 @@ Each evaluation run must record:
 - runtime, token usage, and approximate cost.
 
 Do not store private chain-of-thought. Store only observable actions, evidence, concise reasons, and outputs.
+
+## Longitudinal pilot addendum v1
+
+The longitudinal pilot is a separate controlled experiment and does not alter
+the official ten-case score. It freezes two real-informed synthetic scopes:
+`athlete-lucas` and `club-coach`. Each scope is evaluated twice, once by the
+direct baseline and once by the bounded WAKE workflow, with identical compact
+input, model, reasoning effort, and strict output schema.
+
+The primary behavioral checks are evidence coverage, unsupported-claim rate,
+useful prioritization, and required abstention. In particular, neither workflow
+may merge water with indoor distance or infer visible technique, strength,
+stamina, injury, fitness, or performance improvement from the supplied period.
+The pilot has no grader score until all four future outputs are preserved and
+assessed under one frozen rubric. Request generation, fake-client loop tests,
+and preflight verification establish readiness only.

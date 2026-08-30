@@ -131,3 +131,12 @@ fixed-distance, fixed-time, and interval workout shapes, deterministic day
 classification, plan-declared pre/post-water ordering, explicit missing-record
 states, and separate water versus indoor distance aggregation. Interface tests
 require the same boundaries to remain visible in athlete drill-downs.
+
+Longitudinal-pilot TDD begins with the compact-summary and interface contracts,
+then tests request construction, finite per-start authorization, bounded tool
+rounds, strict output verification, report persistence, and tamper detection.
+The committed verifier requires two scopes and four hashed requests with
+`api_called: false`, `store: false`, Terra medium, zero saved reports, and the
+US$0.80 full-comparison gate. Fake-client tests prove orchestration and storage;
+they are not evidence of model quality. Browser QA must also confirm the no-spend
+state, cost disclosure, both scope cards, and responsive layout.

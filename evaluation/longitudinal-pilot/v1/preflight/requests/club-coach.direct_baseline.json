@@ -1,0 +1,288 @@
+{
+  "input": "{\"activity_summaries\":[{\"crew_id\":\"crew-2x-men\",\"date\":\"2026-08-17\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-men-20260817-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-men-20260817-am\"},{\"crew_id\":\"crew-4x-women\",\"date\":\"2026-08-17\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-4x-women-20260817-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-women-20260817-am\"},{\"crew_id\":\"crew-2x-mixed-a\",\"date\":\"2026-08-17\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-mixed-a-20260817-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-a-20260817-pm\"},{\"crew_id\":null,\"date\":\"2026-08-18\",\"distance_m\":1000.0,\"evidence_refs\":[\"record:activity-lucas-erg-20260818\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-lucas-erg-20260818\"},{\"crew_id\":\"crew-2x-women\",\"date\":\"2026-08-18\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-women-20260818-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-women-20260818-am\"},{\"crew_id\":\"crew-4x-men\",\"date\":\"2026-08-18\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-4x-men-20260818-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-men-20260818-am\"},{\"crew_id\":\"crew-4x-mixed-b\",\"date\":\"2026-08-18\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-4x-mixed-b-20260818-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-b-20260818-am\"},{\"crew_id\":\"crew-2x-mixed-b\",\"date\":\"2026-08-18\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-mixed-b-20260818-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-b-20260818-pm\"},{\"crew_id\":\"crew-2x-men\",\"date\":\"2026-08-19\",\"distance_m\":8252.0,\"evidence_refs\":[\"record:club-2x-men-20260819-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-men-20260819-am\"},{\"crew_id\":\"crew-4x-mixed-a\",\"date\":\"2026-08-19\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-4x-mixed-a-20260819-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-a-20260819-am\"},{\"crew_id\":\"crew-8x-men\",\"date\":\"2026-08-19\",\"distance_m\":15500.0,\"evidence_refs\":[\"record:club-8x-men-20260819-evening\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-8x-men-20260819-evening\"},{\"crew_id\":null,\"date\":\"2026-08-19\",\"distance_m\":1000.0,\"evidence_refs\":[\"record:activity-camila-erg-20260819\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-camila-erg-20260819\"},{\"crew_id\":\"crew-4x-women\",\"date\":\"2026-08-19\",\"distance_m\":14000.0,\"evidence_refs\":[\"record:club-4x-women-20260819-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-women-20260819-pm\"},{\"crew_id\":null,\"date\":\"2026-08-20\",\"distance_m\":1000.0,\"evidence_refs\":[\"record:activity-marina-erg-20260820\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-marina-erg-20260820\"},{\"crew_id\":\"crew-2x-women\",\"date\":\"2026-08-20\",\"distance_m\":8252.0,\"evidence_refs\":[\"record:club-2x-women-20260820-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-women-20260820-am\"},{\"crew_id\":\"crew-4x-mixed-b\",\"date\":\"2026-08-20\",\"distance_m\":14000.0,\"evidence_refs\":[\"record:club-4x-mixed-b-20260820-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-b-20260820-am\"},{\"crew_id\":\"crew-8x-women\",\"date\":\"2026-08-20\",\"distance_m\":15500.0,\"evidence_refs\":[\"record:club-8x-women-20260820-evening\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-8x-women-20260820-evening\"},{\"crew_id\":\"crew-2x-mixed-a\",\"date\":\"2026-08-20\",\"distance_m\":8252.0,\"evidence_refs\":[\"record:club-bridge-mixed-20260820-spm\"],\"modality\":\"WATER_CREW\",\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-bridge-mixed-20260820-spm\"},{\"crew_id\":\"crew-4x-men\",\"date\":\"2026-08-21\",\"distance_m\":14000.0,\"evidence_refs\":[\"record:club-4x-men-20260821-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-men-20260821-am\"},{\"crew_id\":\"crew-4x-mixed-a\",\"date\":\"2026-08-21\",\"distance_m\":14000.0,\"evidence_refs\":[\"record:club-4x-mixed-a-20260821-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-a-20260821-am\"},{\"crew_id\":\"crew-8x-men\",\"date\":\"2026-08-21\",\"distance_m\":8756.0,\"evidence_refs\":[\"record:club-8x-men-20260821-evening\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-8x-men-20260821-evening\"},{\"crew_id\":\"crew-2x-mixed-b\",\"date\":\"2026-08-21\",\"distance_m\":8252.0,\"evidence_refs\":[\"record:club-2x-mixed-b-20260821-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-b-20260821-pm\"},{\"crew_id\":null,\"date\":\"2026-08-24\",\"distance_m\":8000.0,\"evidence_refs\":[\"record:activity-lucas-solo-20260824\"],\"modality\":\"WATER_SOLO\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-lucas-solo-20260824\"},{\"crew_id\":null,\"date\":\"2026-08-24\",\"distance_m\":6500.0,\"evidence_refs\":[\"record:activity-sofia-erg-20260824\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-sofia-erg-20260824\"},{\"crew_id\":\"crew-4x-women\",\"date\":\"2026-08-24\",\"distance_m\":4756.0,\"evidence_refs\":[\"record:club-4x-women-20260824-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-women-20260824-am\"},{\"crew_id\":null,\"date\":\"2026-08-24\",\"distance_m\":2000.0,\"evidence_refs\":[\"record:activity-bianca-erg-20260824\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-bianca-erg-20260824\"},{\"crew_id\":\"crew-2x-mixed-a\",\"date\":\"2026-08-24\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-2x-mixed-a-20260824-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-a-20260824-pm\"},{\"crew_id\":\"crew-2x-women\",\"date\":\"2026-08-25\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-2x-women-20260825-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-women-20260825-am\"},{\"crew_id\":\"crew-4x-mixed-a\",\"date\":\"2026-08-25\",\"distance_m\":4756.0,\"evidence_refs\":[\"record:club-4x-mixed-a-20260825-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-a-20260825-am\"},{\"crew_id\":\"crew-8x-women\",\"date\":\"2026-08-25\",\"distance_m\":8756.0,\"evidence_refs\":[\"record:club-8x-women-20260825-evening\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-8x-women-20260825-evening\"},{\"crew_id\":null,\"date\":\"2026-08-25\",\"distance_m\":2550.0,\"evidence_refs\":[\"record:activity-felipe-erg-20260825\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-felipe-erg-20260825\"},{\"crew_id\":\"crew-2x-mixed-b\",\"date\":\"2026-08-25\",\"distance_m\":7260.0,\"evidence_refs\":[\"record:club-2x-mixed-b-20260825-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-b-20260825-pm\"},{\"crew_id\":\"crew-4x-men\",\"date\":\"2026-08-26\",\"distance_m\":4756.0,\"evidence_refs\":[\"record:club-4x-men-20260826-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-men-20260826-am\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-andre-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-andre-erg-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-bruno-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-bruno-erg-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-caio-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-caio-erg-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-diego-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-diego-erg-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":9000.0,\"evidence_refs\":[\"record:activity-felipe-solo-20260826\"],\"modality\":\"WATER_SOLO\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-felipe-solo-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-lucas-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-lucas-erg-20260826\"},{\"crew_id\":null,\"date\":\"2026-08-26\",\"distance_m\":12000.0,\"evidence_refs\":[\"record:activity-rafael-erg-20260826\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-rafael-erg-20260826\"},{\"crew_id\":\"crew-2x-mixed-a\",\"date\":\"2026-08-26\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-mixed-a-20260826-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-a-20260826-pm\"},{\"crew_id\":\"crew-2x-mixed-b\",\"date\":\"2026-08-26\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-mixed-b-20260826-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-mixed-b-20260826-pm\"},{\"crew_id\":null,\"date\":\"2026-08-27\",\"distance_m\":7000.0,\"evidence_refs\":[\"record:activity-camila-solo-20260827\"],\"modality\":\"WATER_SOLO\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-camila-solo-20260827\"},{\"crew_id\":null,\"date\":\"2026-08-27\",\"distance_m\":10000.0,\"evidence_refs\":[\"record:activity-helena-erg-20260827\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-helena-erg-20260827\"},{\"crew_id\":null,\"date\":\"2026-08-27\",\"distance_m\":10000.0,\"evidence_refs\":[\"record:activity-marina-erg-20260827\"],\"modality\":\"ERG\",\"route\":\"RECONSTRUCTED_ALTERNATIVE\",\"session_id\":\"activity-marina-erg-20260827\"},{\"crew_id\":\"crew-2x-men\",\"date\":\"2026-08-27\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-men-20260827-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-men-20260827-pm\"},{\"crew_id\":\"crew-4x-mixed-b\",\"date\":\"2026-08-27\",\"distance_m\":4756.0,\"evidence_refs\":[\"record:club-4x-mixed-b-20260827-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"SOURCE_REQUIRED\",\"session_id\":\"club-4x-mixed-b-20260827-pm\"},{\"crew_id\":\"crew-4x-mixed-a\",\"date\":\"2026-08-28\",\"distance_m\":8756.0,\"evidence_refs\":[\"record:club-4x-mixed-a-20260828-am\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-a-20260828-am\"},{\"crew_id\":\"crew-4x-men\",\"date\":\"2026-08-28\",\"distance_m\":8849.8,\"evidence_refs\":[\"record:club-atlas-men-20260828-recovery\"],\"modality\":\"WATER_CREW\",\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-atlas-men-20260828-recovery\"},{\"crew_id\":\"crew-8x-women\",\"date\":\"2026-08-28\",\"distance_m\":16500.0,\"evidence_refs\":[\"record:club-8x-women-20260828-evening\"],\"modality\":\"WATER_CREW\",\"route\":\"HUMAN_CONTEXT_REQUIRED\",\"session_id\":\"club-8x-women-20260828-evening\"},{\"crew_id\":\"crew-2x-women\",\"date\":\"2026-08-28\",\"distance_m\":11500.0,\"evidence_refs\":[\"record:club-2x-women-20260828-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-2x-women-20260828-pm\"},{\"crew_id\":\"crew-4x-mixed-b\",\"date\":\"2026-08-28\",\"distance_m\":8756.0,\"evidence_refs\":[\"record:club-4x-mixed-b-20260828-pm\"],\"modality\":\"WATER_CREW\",\"route\":\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\",\"session_id\":\"club-4x-mixed-b-20260828-pm\"}],\"attention_signals\":[{\"date\":\"2026-08-20\",\"evidence_refs\":[\"record:club-bridge-mixed-20260820-spm\"],\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-bridge-mixed-20260820-spm\",\"statement\":\"A bounded session investigation is preserved.\"},{\"date\":\"2026-08-27\",\"evidence_refs\":[\"record:club-4x-mixed-b-20260827-pm\"],\"route\":\"SOURCE_REQUIRED\",\"session_id\":\"club-4x-mixed-b-20260827-pm\",\"statement\":\"A planned workout source is missing.\"},{\"date\":\"2026-08-28\",\"evidence_refs\":[\"record:club-atlas-men-20260828-recovery\"],\"route\":\"AGENT_VERIFIED\",\"session_id\":\"club-atlas-men-20260828-recovery\",\"statement\":\"A bounded session investigation is preserved.\"},{\"date\":\"2026-08-28\",\"evidence_refs\":[\"record:club-8x-women-20260828-evening\"],\"route\":\"HUMAN_CONTEXT_REQUIRED\",\"session_id\":\"club-8x-women-20260828-evening\",\"statement\":\"Athlete context is required before interpretation.\"}],\"boundaries\":[\"Water and indoor distance remain separate and must not be summed into one performance total.\",\"No visible technique, crew synchronization, health, strength, stamina, fitness, or commitment conclusion is supported.\",\"No performance trend is supported by this preflight.\",\"The data are real-informed synthetic and do not describe real athletes.\"],\"comparison_readiness\":{\"performance_trend_supported\":false,\"reason\":\"Repeated context alone does not control environment, human effort, technical execution, or source comparability well enough for a performance trend.\",\"repeated_context_groups\":[{\"evidence_refs\":[\"record:activity-camila-erg-20260819\",\"record:activity-marina-erg-20260820\"],\"session_ids\":[\"activity-camila-erg-20260819\",\"activity-marina-erg-20260820\"],\"signature\":\"ERG|FIXED_DISTANCE|1,000 m activation before water|NONE|NONE\"},{\"evidence_refs\":[\"record:activity-lucas-solo-20260824\",\"record:activity-camila-solo-20260827\"],\"session_ids\":[\"activity-lucas-solo-20260824\",\"activity-camila-solo-20260827\"],\"signature\":\"WATER_SOLO|NONE|Individual water session after crew cancellation|NONE|boat-1x-spare\"},{\"evidence_refs\":[\"record:activity-andre-erg-20260826\",\"record:activity-bruno-erg-20260826\",\"record:activity-caio-erg-20260826\",\"record:activity-diego-erg-20260826\",\"record:activity-lucas-erg-20260826\",\"record:activity-rafael-erg-20260826\"],\"session_ids\":[\"activity-andre-erg-20260826\",\"activity-bruno-erg-20260826\",\"activity-caio-erg-20260826\",\"activity-diego-erg-20260826\",\"activity-lucas-erg-20260826\",\"activity-rafael-erg-20260826\"],\"signature\":\"ERG|INTERVAL|6 \\u00d7 2 km indoor alternative after 8x cancellation|NONE|NONE\"},{\"evidence_refs\":[\"record:activity-helena-erg-20260827\",\"record:activity-marina-erg-20260827\"],\"session_ids\":[\"activity-helena-erg-20260827\",\"activity-marina-erg-20260827\"],\"signature\":\"ERG|FIXED_DISTANCE|10 km indoor alternative after 4x cancellation|NONE|NONE\"}]},\"coverage\":{\"active_days\":10,\"activity_count\":52,\"club_activity_count\":52,\"indoor_activity_count\":14,\"water_activity_count\":38},\"evidence_catalog\":{\"batch:manifest\":\"Content-addressed two-week public batch manifest.\",\"record:activity-andre-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-bianca-erg-20260824\":\"Deterministically normalized ERG activity on 2026-08-24.\",\"record:activity-bruno-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-caio-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-camila-erg-20260819\":\"Deterministically normalized ERG activity on 2026-08-19.\",\"record:activity-camila-solo-20260827\":\"Deterministically normalized WATER_SOLO activity on 2026-08-27.\",\"record:activity-diego-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-felipe-erg-20260825\":\"Deterministically normalized ERG activity on 2026-08-25.\",\"record:activity-felipe-solo-20260826\":\"Deterministically normalized WATER_SOLO activity on 2026-08-26.\",\"record:activity-helena-erg-20260827\":\"Deterministically normalized ERG activity on 2026-08-27.\",\"record:activity-lucas-erg-20260818\":\"Deterministically normalized ERG activity on 2026-08-18.\",\"record:activity-lucas-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-lucas-solo-20260824\":\"Deterministically normalized WATER_SOLO activity on 2026-08-24.\",\"record:activity-marina-erg-20260820\":\"Deterministically normalized ERG activity on 2026-08-20.\",\"record:activity-marina-erg-20260827\":\"Deterministically normalized ERG activity on 2026-08-27.\",\"record:activity-rafael-erg-20260826\":\"Deterministically normalized ERG activity on 2026-08-26.\",\"record:activity-sofia-erg-20260824\":\"Deterministically normalized ERG activity on 2026-08-24.\",\"record:club-2x-men-20260817-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-2x-men-20260819-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-2x-men-20260827-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-27.\",\"record:club-2x-mixed-a-20260817-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-2x-mixed-a-20260824-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-24.\",\"record:club-2x-mixed-a-20260826-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-2x-mixed-b-20260818-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-2x-mixed-b-20260821-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-2x-mixed-b-20260825-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-2x-mixed-b-20260826-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-2x-women-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-2x-women-20260820-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-2x-women-20260825-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-2x-women-20260828-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-men-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-4x-men-20260821-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-4x-men-20260826-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-26.\",\"record:club-4x-mixed-a-20260819-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-4x-mixed-a-20260821-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-4x-mixed-a-20260825-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-4x-mixed-a-20260828-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-mixed-b-20260818-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-18.\",\"record:club-4x-mixed-b-20260820-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-4x-mixed-b-20260827-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-27.\",\"record:club-4x-mixed-b-20260828-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-4x-women-20260817-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-17.\",\"record:club-4x-women-20260819-pm\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-4x-women-20260824-am\":\"Deterministically normalized WATER_CREW activity on 2026-08-24.\",\"record:club-8x-men-20260819-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-19.\",\"record:club-8x-men-20260821-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-21.\",\"record:club-8x-women-20260820-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"record:club-8x-women-20260825-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-25.\",\"record:club-8x-women-20260828-evening\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-atlas-men-20260828-recovery\":\"Deterministically normalized WATER_CREW activity on 2026-08-28.\",\"record:club-bridge-mixed-20260820-spm\":\"Deterministically normalized WATER_CREW activity on 2026-08-20.\",\"verified:club-atlas-men-20260828-recovery\":\"Verified bounded-agent result for club-atlas-men-20260828-recovery.\",\"verified:club-bridge-mixed-20260820-spm\":\"Verified bounded-agent result for club-bridge-mixed-20260820-spm.\"},\"modality_totals\":{\"indoor_distance_m\":106050.0,\"water_distance_m\":366225.8},\"model_called\":false,\"period\":{\"end\":\"2026-08-28\",\"start\":\"2026-08-17\"},\"pilot_id\":\"club-coach\",\"provenance\":\"REAL_INFORMED_SYNTHETIC\",\"routing\":{\"AGENT_VERIFIED\":2,\"HUMAN_CONTEXT_REQUIRED\":1,\"HUMAN_OR_SOURCE_REQUIRED\":2,\"RECONSTRUCTED_ALTERNATIVE\":17,\"RECONSTRUCTED_NO_MATERIAL_SIGNAL\":31,\"SOURCE_REQUIRED\":1},\"schema_version\":\"wake.longitudinal_summary.v1\",\"scope\":{\"display_name\":\"WAKE Demo Club\",\"entity_id\":\"wake-demo-club\",\"type\":\"CLUB\"},\"verified_investigations\":[{\"case_id\":\"club-bridge-mixed-20260820-spm\",\"deviations\":[{\"segment_ref\":\"work-02\",\"type\":\"SPM_OUTSIDE_TARGET\"}],\"evidence_refs\":[\"verified:club-bridge-mixed-20260820-spm\"],\"scope_athlete_ids\":[\"athlete-bruno\",\"athlete-camila\"],\"verification_passed\":true},{\"case_id\":\"club-atlas-men-20260828-recovery\",\"deviations\":[{\"segment_ref\":\"recovery-02\",\"type\":\"RECOVERY_DURATION_OUTSIDE_TARGET\"}],\"evidence_refs\":[\"verified:club-atlas-men-20260828-recovery\"],\"scope_athlete_ids\":[\"athlete-lucas\",\"athlete-rafael\",\"athlete-bruno\",\"athlete-diego\"],\"verification_passed\":true}]}",
+  "instructions": "You are producing a coach-facing longitudinal rowing briefing from one compact, ground-truth-free WAKE summary.\n\nUse only supplied evidence. Separate observed facts from comparisons, priorities, questions, and recommendations. Cite every material item with an evidence reference from the summary. Never merge water and indoor distance. Do not infer visible technique, crew synchronization, injury, medical state, muscular strength, stamina, commitment, fitness, or athletic improvement. A repeated title alone does not establish a comparable performance test. Environmental association is not causation.\n\nRecommendations require human review and may request information or propose what the coach should inspect. Do not autonomously prescribe training, select a crew, or declare a performance trend when the summary marks trend support as false. Return only the required structured output.\n",
+  "max_output_tokens": 6000,
+  "model": "gpt-5.6-terra",
+  "reasoning": {
+    "effort": "medium"
+  },
+  "service_tier": "default",
+  "store": false,
+  "text": {
+    "format": {
+      "name": "wake_longitudinal_intelligence_v1",
+      "schema": {
+        "$defs": {
+          "comparison": {
+            "additionalProperties": false,
+            "properties": {
+              "comparison_id": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "SUPPORTED",
+                  "INSUFFICIENT",
+                  "CONFLICTED"
+                ]
+              }
+            },
+            "required": [
+              "comparison_id",
+              "status",
+              "statement",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          },
+          "evidence_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "fact": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "fact_id": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fact_id",
+              "statement",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "priority": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "priority_id": {
+                "type": "string"
+              },
+              "rank": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "requires_human_review": {
+                "const": true
+              }
+            },
+            "required": [
+              "priority_id",
+              "rank",
+              "action",
+              "reason",
+              "requires_human_review",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "question": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "expected_respondent": {
+                "enum": [
+                  "ATHLETE",
+                  "COACH",
+                  "ATHLETE_OR_COACH"
+                ]
+              },
+              "question": {
+                "type": "string"
+              },
+              "question_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question_id",
+              "expected_respondent",
+              "question",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "recommendation": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "$ref": "#/$defs/evidence_refs"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "recommendation_id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "REVIEW_REQUIRED",
+                  "INFORMATION_REQUEST"
+                ]
+              }
+            },
+            "required": [
+              "recommendation_id",
+              "status",
+              "action",
+              "rationale",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          }
+        },
+        "$id": "https://wake-rowing.dev/schemas/longitudinal-intelligence-output.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "boundaries": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "coach_briefing": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "comparisons": {
+            "items": {
+              "$ref": "#/$defs/comparison"
+            },
+            "type": "array"
+          },
+          "headline": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "observed_facts": {
+            "items": {
+              "$ref": "#/$defs/fact"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "pilot_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priorities": {
+            "items": {
+              "$ref": "#/$defs/priority"
+            },
+            "type": "array"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/$defs/recommendation"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "wake.longitudinal_intelligence_output.v1"
+          },
+          "scope": {
+            "additionalProperties": false,
+            "properties": {
+              "entity_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "ATHLETE",
+                  "CLUB"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "entity_id"
+            ],
+            "type": "object"
+          },
+          "unresolved_questions": {
+            "items": {
+              "$ref": "#/$defs/question"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "pilot_id",
+          "scope",
+          "headline",
+          "observed_facts",
+          "comparisons",
+          "priorities",
+          "unresolved_questions",
+          "recommendations",
+          "boundaries",
+          "coach_briefing"
+        ],
+        "title": "WAKE Longitudinal Intelligence Output",
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "api_called": false,
+  "authorization": {
+    "authorized": false,
+    "provider_cap": false,
+    "required_per_start_usd": 0.2,
+    "required_total_usd": 0.8
+  },
+  "boundary": "This artifact freezes requests only. It contains no model output and incurred no API cost.",
+  "configuration": {
+    "config_sha256": "a53189b2a133a5efb010b21e715bf396c7988021625b73ed4c755f08694e8311",
+    "model": "gpt-5.6-terra",
+    "output_schema_sha256": "0582c36c8c44e81239564bd2dbd29d6f211fc06dd1b049b5e4a0564c8d5f485a",
+    "reasoning_effort": "medium"
+  },
+  "created_at": "2026-08-30T18:47:16+00:00",
+  "request_count": 4,
+  "requests": [
+    {
+      "path": "requests/athlete-lucas.direct_baseline.json",
+      "pilot_id": "athlete-lucas",
+      "sha256": "491f2242266761ffc30248e390378634e6b1f269ee506c5eb34460d2fc98fdea",
+      "workflow": "DIRECT_BASELINE"
+    },
+    {
+      "path": "requests/athlete-lucas.wake_bounded_agent.json",
+      "pilot_id": "athlete-lucas",
+      "sha256": "6ac2b8327781eb35813b1078627d91624551e082df7328832552e348cd04cfe5",
+      "workflow": "WAKE_BOUNDED_AGENT"
+    },
+    {
+      "path": "requests/club-coach.direct_baseline.json",
+      "pilot_id": "club-coach",
+      "sha256": "1248dca17155cbefe23c9f0ec153cc2d656a0566d46a920b591dfb07733a5515",
+      "workflow": "DIRECT_BASELINE"
+    },
+    {
+      "path": "requests/club-coach.wake_bounded_agent.json",
+      "pilot_id": "club-coach",
+      "sha256": "7bc118ebc2edbe5ccc2f3f6dea7a95b1f48d1758188a7ca890c883f506db130e",
+      "workflow": "WAKE_BOUNDED_AGENT"
+    }
+  ],
+  "saved_reports": {
+    "count": 0,
+    "reopen_cost_usd": 0
+  },
+  "schema_version": "wake.longitudinal_pilot_dry_run.v1"
+}

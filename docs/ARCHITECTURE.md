@@ -98,6 +98,25 @@ Committed public output      bounded WAKE runner
 
 The service binds to localhost by default and persists uploaded bytes, normalized telemetry, prepared summaries, bundle and batch results, investigation, briefing, goal, and cost state in a Git-ignored user-restricted JSON file. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. A plan and SpeedCoach source plus optional enhancers may prepare a hashed compact summary without an agent call. Source-batch preparation groups up to 100 such sessions while retaining independent bundle identities and item-level failures. Paid batch execution remains sequential, resumable, idempotent, and start-gate authorized. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
 
+### Longitudinal pilot — preflight implemented, paid execution pending
+
+`scripts/longitudinal_pilot.py` builds two compact, ground-truth-free summaries
+from the isolated 52-activity public batch: an athlete scope and a club scope.
+High-volume rows stay behind deterministic adapters. Both scopes expose a small
+evidence catalog, modality-separated totals, comparison readiness, attention
+signals, and the two preserved verified investigations. The bounded workflow
+can call exactly four read-only tools: coverage, attention signals, comparable
+sessions, and verified investigations.
+
+Each scope is run under two controlled workflows: a one-call direct baseline
+and the bounded agent. Both use the same model, reasoning effort, strict output
+schema, and compact evidence. The verifier rejects nonexistent evidence,
+conflicting scope identifiers, merged water/indoor volume, and unsupported
+performance or physiology trends. Successful outputs are stored with request
+hashes, response identifiers, structured tool events, runtime, usage, and
+approximate cost. The preflight contains no model output and makes no quality
+claim.
+
 ## Baseline hypothesis
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.

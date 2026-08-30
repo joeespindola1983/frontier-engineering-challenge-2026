@@ -60,6 +60,14 @@ The current implementation therefore keeps work interval five as the material SP
 
 Sessions and Goal memory remain the operational coach workflow. The hackathon build exposes one additional Evaluation destination, explicitly labelled `Saved result · No model call`. It renders a consolidated public summary and expandable per-case score reports generated from committed manifests and grade reports; it cannot execute an investigation, access evaluator ground truth, expose raw evidence, or change saved workflow state. Evaluation fixtures do not appear in the coach inbox because they are benchmark scenarios, not club sessions. Full fixtures, structured outputs, grader controls, and trajectories remain repository artifacts rather than browser controls. A production club build may omit this submission-only destination.
 
+The Sessions page also exposes a separate **Longitudinal intelligence pilot**
+preflight. It shows the athlete and club scopes, why GPT is being considered,
+the baseline-versus-WAKE protocol, zero current paid calls, projections, the
+US$0.80 authorization gate, evidence boundaries, and saved-report behavior. It
+does not contain an execution control and cannot spend from the browser. Until
+the four planned calls are separately authorized and completed, it must say
+`Ready for authorization`, show zero saved reports, and make no quality claim.
+
 ## Task-level API
 
 The local application service exposes:

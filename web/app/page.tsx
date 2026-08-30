@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
 import { buildClubPeriodAnalysis } from './lib/club-intelligence.mjs';
+import { buildLongitudinalPilot } from './lib/longitudinal-intelligence.mjs';
 import { demoClub, listCoachAttention, summarizeAthlete, summarizeClub, summarizeCrew } from './lib/demo-club.mjs';
 import { demoReview } from './lib/demo-review.mjs';
 import { formatEvidenceKind, formatMeasurementRange } from './lib/display-format.mjs';
@@ -12,7 +13,7 @@ import { createWakeClient } from './lib/product-client.mjs';
 import { sessionActionLabel, sessionStatusLabel, summarizeSessionInbox } from './lib/session-inbox.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
-type Screen = 'sessions' | 'club-crew' | 'club-athlete' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
+type Screen = 'sessions' | 'club-crew' | 'club-athlete' | 'longitudinal-pilot' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
 type Briefing = ReturnType<typeof resolveCheckpoint>;
 type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
@@ -119,7 +120,7 @@ function checkpointResponse(answer: 'YES' | 'NO', mode: ConfirmationMode): Check
 }
 
 function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen: Screen) => void }) {
-  const sessionActive = ['sessions', 'club-crew', 'club-athlete', 'intake', 'review', 'briefing'].includes(screen);
+  const sessionActive = ['sessions', 'club-crew', 'club-athlete', 'longitudinal-pilot', 'intake', 'review', 'briefing'].includes(screen);
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -204,10 +205,11 @@ function ergWorkoutLabel(value: string) {
   }[value] ?? value.replaceAll('_', ' ').toLowerCase();
 }
 
-function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void }) {
+function ClubOverview({ onOpenCrew, onOpenAthlete, onOpenLongitudinalPilot }: { onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; onOpenLongitudinalPilot: () => void }) {
   const summary = summarizeClub(demoClub);
   const attention = listCoachAttention(demoClub);
   const intelligence = buildClubPeriodAnalysis(demoClub);
+  const pilot = buildLongitudinalPilot(demoClub);
   return (
     <section className="club-overview" aria-labelledby="club-pulse-title">
       <div className="club-overview-heading"><div><div className="kicker">Real-informed synthetic data · 17–28 Aug 2026</div><h2 id="club-pulse-title">Two-week club pulse</h2><p>Ten named crews share sixteen athletes across 2x, 4x, and 8x boats. WAKE surfaces the records that need attention without asking the coach to open every outing.</p></div><span className="saved-evidence-label">Deterministic scan complete · 2 verified agent calls</span></div>
@@ -227,6 +229,11 @@ function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: stri
         <div className="club-batch-boundary" role="note"><strong>52 sessions reconstructed, including 14 individual synthetic Concept2 transcription records.</strong><span>Thirty-one water sessions had no material signal in the available evidence, seventeen sessions were reconstructed alternatives, one needs its plan, and one needs athlete context. Each PM5 result belongs to one athlete; the real reference transcriptions were human-confirmed and photo OCR is not claimed.</span></div>
       </section>
       <section className="club-investigation-results" aria-labelledby="club-investigation-results-title"><div className="section-heading compact-heading"><div><div className="kicker">Saved agent evidence</div><h3 id="club-investigation-results-title">Verified investigation results</h3></div><p>Two selected candidates · no synthesis</p></div><div className="club-investigation-result-grid">{intelligence.deep_investigations.results.map((result) => <article key={result.case_id}><div><span>{result.deviation_segment} · {result.deviation_type.replaceAll('_', ' ').toLowerCase()}</span><strong>{result.title}</strong></div><p>{result.briefing}</p><footer><span>{result.next_step}</span><small>US${result.approximate_cost_usd.toFixed(6)} · {result.total_tokens.toLocaleString('en-US')} tokens</small></footer></article>)}</div></section>
+      <section className="longitudinal-pilot-card" aria-labelledby="longitudinal-pilot-card-title">
+        <div><div className="kicker">Selective synthesis · ready, not executed</div><h3 id="longitudinal-pilot-card-title">Longitudinal intelligence pilot</h3><p>Two frozen cases test whether GPT adds useful evidence-linked prioritization after deterministic screening: one athlete briefing and one club briefing.</p></div>
+        <div className="longitudinal-pilot-summary"><span><strong>0 paid calls</strong><small>no model output yet</small></span><span><strong>{pilot.execution_plan.total_paid_starts} planned starts</strong><small>baseline × WAKE</small></span><span><strong>US${pilot.execution_plan.authorization_gate_total_usd.toFixed(2)} authorization</strong><small>start gate, not provider cap</small></span></div>
+        <button className="button button-primary" onClick={onOpenLongitudinalPilot} type="button">Inspect pilot design</button>
+      </section>
       <div className="club-summary-grid" aria-label="Club activity summary">
         <div><span>Crews monitored</span><strong>{summary.crewCount}</strong><small>4 × 2x · 4 × 4x · 2 × 8x</small></div>
         <div><span>Athletes connected</span><strong>{summary.athleteCount}</strong><small>{summary.physicalBoatCount} physical boats used</small></div>
@@ -288,7 +295,25 @@ function AthleteScreen({ athleteId, onBack, onOpenCrew }: { athleteId: string; o
   );
 }
 
-function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpenAthlete, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; sessions: SessionRecord[]; processing: boolean; error: string }) {
+function LongitudinalPilotScreen({ onBack }: { onBack: () => void }) {
+  const pilot = buildLongitudinalPilot(demoClub);
+  return (
+    <main className="page longitudinal-pilot-page">
+      <PrototypeNotice />
+      <header className="page-header longitudinal-pilot-header">
+        <div className="page-header-copy"><div className="kicker">Evidence-ranked synthesis · preflight</div><h1>Longitudinal intelligence pilot</h1><p className="lede">The club is already reconstructed deterministically. This pilot tests whether a bounded GPT workflow can turn that evidence into a safer, more useful review order than one direct model call.</p></div>
+        <button className="button" onClick={onBack} type="button">Back to club</button>
+      </header>
+      <section className="longitudinal-pilot-state" aria-label="Pilot execution state"><div><span>Status</span><strong>Ready for authorization</strong><small>0 paid calls · no report generated</small></div><div><span>Comparison</span><strong>2 × baseline + 2 × WAKE</strong><small>same inputs, model, and schema</small></div><div><span>Planning estimate</span><strong>US${pilot.execution_plan.planning_projection_usd.toFixed(2)}</strong><small>observed projection US${pilot.execution_plan.observed_projection_usd.toFixed(6)}</small></div><div><span>Required start gate</span><strong>US${pilot.execution_plan.authorization_gate_total_usd.toFixed(2)}</strong><small>authorization, not provider cap</small></div></section>
+      <div className="longitudinal-no-spend" role="note"><strong>No model execution occurred.</strong><span>The requests, tool boundaries, evidence references, and strict output schema are frozen. A separate explicit US$0.80 authorization is required before four paid starts.</span></div>
+      <section className="longitudinal-case-section" aria-labelledby="longitudinal-case-title"><div className="section-heading"><div><div className="kicker">Frozen evaluation cases</div><h2 id="longitudinal-case-title">Athlete briefing + Club briefing</h2></div><p>Selective synthesis follows deterministic screening.</p></div><div className="longitudinal-case-grid">{pilot.cases.map((item) => <article key={item.pilot_id}><header><span>{item.scope_type}</span><strong>{item.title}</strong><small>{item.subject}</small></header><div><h3>Why GPT is used</h3><p>{item.why_model_is_used}</p></div><dl><div><dt>Deterministic coverage</dt><dd>{item.deterministic_coverage}</dd></div><div><dt>Comparison boundary</dt><dd>{item.comparison_status}</dd></div></dl><footer>{item.required_tools.map((tool) => <span key={tool}>{tool}</span>)}</footer></article>)}</div></section>
+      <section className="longitudinal-method" aria-labelledby="longitudinal-method-title"><div><div className="kicker">Controlled comparison</div><h2 id="longitudinal-method-title">What must improve</h2><p>Both workflows receive the same compact evidence and must return the same strict structure. WAKE earns its place only if bounded tools and verification improve evidence coverage, useful prioritization, abstention, and unsupported-claim control.</p></div><ol><li><span>01</span><div><strong>Direct baseline</strong><p>One model call receives the compact summary without investigation tools.</p></div></li><li><span>02</span><div><strong>WAKE bounded agent</strong><p>The same model can inspect four deterministic views, then its structured result is verified.</p></div></li><li><span>03</span><div><strong>Saved report</strong><p>Verified outputs are stored with request hashes, evidence references, runtime, tokens, and approximate cost.</p></div></li></ol></section>
+      <section className="longitudinal-boundaries"><div><div className="kicker">Deliberate limits</div><h2>Useful memory without false certainty</h2></div><ul>{pilot.boundaries.map((boundary) => <li key={boundary}>{boundary}</li>)}</ul><div className="saved-report-behavior"><strong>Reopening a saved report makes no new model call.</strong><span>Saved results remain reviewable at US$0.00. Re-analysis is a new, separately authorized execution.</span></div></section>
+    </main>
+  );
+}
+
+function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpenAthlete, onOpenLongitudinalPilot, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; onOpenLongitudinalPilot: () => void; sessions: SessionRecord[]; processing: boolean; error: string }) {
   const summary = summarizeSessionInbox(sessions);
   return (
     <main className="page">
@@ -304,7 +329,7 @@ function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpe
           <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
         </div>
       </header>
-      <ClubOverview onOpenAthlete={onOpenAthlete} onOpenCrew={onOpenCrew} />
+      <ClubOverview onOpenAthlete={onOpenAthlete} onOpenCrew={onOpenCrew} onOpenLongitudinalPilot={onOpenLongitudinalPilot} />
       <section className="operational-inbox-heading"><div><div className="kicker">Operational workflow</div><h2>Saved session reviews</h2></div><p>These records exercise the full evidence-to-review workflow. The two-week club pulse above is a separate real-informed synthetic relational dataset.</p></section>
       <section className="summary-strip" aria-label="Saved review workflow summary">
         <div><span>Needs action</span><strong>{summary.needsAction}</strong><small>Answer or coach approval</small></div>
@@ -634,5 +659,5 @@ export default function Home() {
   function openCrew(crewId: string) { setSelectedCrewId(crewId); setScreen('club-crew'); }
   function openAthlete(athleteId: string) { setSelectedAthleteId(athleteId); setScreen('club-athlete'); }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenAthlete={openAthlete} onOpenCrew={openCrew} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'club-crew' ? <CrewScreen crewId={selectedCrewId} onBack={() => setScreen('sessions')} onOpenAthlete={openAthlete} /> : null}{screen === 'club-athlete' ? <AthleteScreen athleteId={selectedAthleteId} onBack={() => setScreen('sessions')} onOpenCrew={openCrew} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenAthlete={openAthlete} onOpenCrew={openCrew} onOpenLongitudinalPilot={() => setScreen('longitudinal-pilot')} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'club-crew' ? <CrewScreen crewId={selectedCrewId} onBack={() => setScreen('sessions')} onOpenAthlete={openAthlete} /> : null}{screen === 'club-athlete' ? <AthleteScreen athleteId={selectedAthleteId} onBack={() => setScreen('sessions')} onOpenCrew={openCrew} /> : null}{screen === 'longitudinal-pilot' ? <LongitudinalPilotScreen onBack={() => setScreen('sessions')} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
 }

@@ -103,6 +103,20 @@ new execution once and the local prototype state restores that ledger after a
 service restart. This is still not production billing control: the JSON store is
 not transactional across processes, externally reconciled, or provider-enforced.
 
+## Longitudinal pilot budget
+
+The frozen pilot plans four paid starts: two direct baselines and two bounded
+WAKE executions. Using the observed US$0.097059 reference per start gives a
+US$0.388236 projection; the conservative planning reference is US$0.60. The
+operational start authorization is US$0.20 per call, or US$0.80 for the complete
+comparison. None of these forecasts is an observed pilot charge, and the
+authorization is not a provider billing cap.
+
+The committed preflight has `api_called: false`, zero saved model reports, and
+zero new API cost. After a future authorized run, each verified report is saved
+with usage, runtime, response IDs, and approximate cost. Opening that saved JSON
+again costs US$0.00; asking the model to reanalyse it is a new paid execution.
+
 ## Optimization policy
 
 Cost changes must preserve the fixed-case quality and abstention boundaries.

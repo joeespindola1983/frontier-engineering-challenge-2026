@@ -71,7 +71,7 @@ The repository will preserve:
 
 ## Current repository state
 
-The repository contains one difficult anonymized multi-device fixture, nine deterministic synthetic fixtures, a 16-case registry, versioned JSON Schemas, deterministic raw telemetry adapters, progressive two-to-five-source compact-summary preparation, an explicit prepared-bundle runner, a generic coach-review adapter, a local persistent session inbox, versioned ground-truth-free baseline input bundles, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, explicit per-execution cost authorization with a local ledger, offline graders, the [historical two-case comparison](evaluation/runs/comparison-v1-20260829/README.md), the [official ten-case comparison](evaluation/runs/expanded-evaluation-v2/official-20260830/README.md), and a coach-facing product replay with a separate no-cost Evaluation view. Registry v1 preserves the historical two-case denominator; registry v2 promotes cases 001-010 only after their paid outputs, trajectories, and offline grading were committed.
+The repository contains one difficult anonymized multi-device fixture, nine deterministic synthetic fixtures, a 16-case registry, versioned JSON Schemas, deterministic raw telemetry adapters, progressive two-to-five-source compact-summary preparation, an explicit prepared-bundle runner, a generic coach-review adapter, a local persistent session inbox, versioned ground-truth-free baseline input bundles, comparable baseline and agentic OpenAI Responses API runners, monotonic per-case/run observability, explicit per-execution cost authorization with a local ledger, offline graders, the [historical two-case comparison](evaluation/runs/comparison-v1-20260829/README.md), the [official ten-case comparison](evaluation/runs/expanded-evaluation-v2/official-20260830/README.md), and a coach-facing product replay with a separate no-cost Evaluation view. A second two-case longitudinal pilot is now frozen at zero cost: an athlete briefing and club-priority briefing each compare a direct call with the bounded WAKE workflow. Its four requests, compact summaries, strict output schema, tool contracts, hashes, verifier, persistence format, and US$0.80 start gate are committed; no longitudinal model output or quality claim exists yet. Registry v1 preserves the historical two-case denominator; registry v2 promotes cases 001-010 only after their paid outputs, trajectories, and offline grading were committed.
 
 Install the locked dependencies, then run the deterministic tests and public verifiers:
 
@@ -91,6 +91,19 @@ Preview the agent requests and its four deterministic tools without calling the 
 ```bash
 uv run python scripts/wake_agent.py
 ```
+
+Rebuild and verify the two-case longitudinal pilot without calling the API:
+
+```bash
+uv run python scripts/longitudinal_pilot.py
+uv run python scripts/verify_longitudinal_pilot.py
+```
+
+The safe default freezes four requests: direct baseline and bounded WAKE for
+`athlete-lucas` and `club-coach`. A paid run additionally requires `--execute`,
+`OPENAI_API_KEY`, and an explicit `--authorized-cost-usd` covering every start.
+The full four-start comparison requires US$0.80; this operational gate is not a
+provider billing cap. Saved verified reports can be reopened without a new call.
 
 Grade a complete directory of structured outputs without network access:
 

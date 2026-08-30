@@ -4,6 +4,7 @@ import test from 'node:test';
 
 import { buildClubPeriodAnalysis } from '../app/lib/club-intelligence.mjs';
 import { demoClub } from '../app/lib/demo-club.mjs';
+import { buildLongitudinalPilot } from '../app/lib/longitudinal-intelligence.mjs';
 
 
 test('screens every recorded activity without calling a model', () => {
@@ -131,4 +132,38 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
   assert.match(page, /14 individual synthetic Concept2 transcription records/);
   assert.match(page, /result\.briefing/);
   assert.doesNotMatch(page, /Executed as planned/);
+});
+
+
+test('prepares a selective two-case longitudinal pilot without spending', () => {
+  const pilot = buildLongitudinalPilot(demoClub);
+
+  assert.equal(pilot.schema_version, 'wake.longitudinal_pilot.v1');
+  assert.equal(pilot.status, 'READY_FOR_AUTHORIZATION');
+  assert.equal(pilot.model_called, false);
+  assert.equal(pilot.cases.length, 2);
+  assert.deepEqual(pilot.cases.map((item) => item.scope_type).sort(), ['ATHLETE', 'CLUB']);
+  assert.equal(pilot.execution_plan.baseline_calls, 2);
+  assert.equal(pilot.execution_plan.wake_calls, 2);
+  assert.equal(pilot.execution_plan.total_paid_starts, 4);
+  assert.equal(pilot.execution_plan.authorization_gate_total_usd, 0.8);
+  assert.equal(pilot.execution_plan.planning_projection_usd, 0.6);
+  assert.equal(pilot.saved_reports.count, 0);
+  assert.ok(pilot.cases.every((item) => item.why_model_is_used));
+  assert.ok(pilot.boundaries.some((item) => /no performance trend/i.test(item)));
+});
+
+
+test('interface presents pilot scope, cost, provenance, and saved-report behavior', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+
+  assert.match(page, /Longitudinal intelligence pilot/);
+  assert.match(page, /Why GPT is used/);
+  assert.match(page, /Athlete briefing/);
+  assert.match(page, /Club briefing/);
+  assert.match(page, /0 paid calls/);
+  assert.match(page, /US\$0\.80 authorization/);
+  assert.match(page, /Reopening a saved report makes no new model call/);
+  assert.match(page, /onOpenLongitudinalPilot/);
+  assert.match(page, /function LongitudinalPilotScreen/);
 });

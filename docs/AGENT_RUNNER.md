@@ -119,6 +119,26 @@ uv run python scripts/wake_agent.py \
 
 Without `--execute`, this remains a zero-cost dry-run.
 
+## Longitudinal pilot runner
+
+The separate period-level experiment is prepared with:
+
+```bash
+uv run python scripts/longitudinal_pilot.py
+uv run python scripts/verify_longitudinal_pilot.py
+```
+
+This freezes two compact summaries and four comparable Responses API requests
+without calling the API. The baseline performs one structured call. The WAKE
+path may inspect four deterministic tools within four bounded rounds and then
+passes the same strict output verifier. Both save successful results under a
+report path that can be reopened without another call.
+
+A future complete paid comparison requires `--execute`, `OPENAI_API_KEY`, and
+`--authorized-cost-usd 0.80`. Case and workflow filters may reduce the number of
+starts and the corresponding required gate. The gate is checked before client
+creation and is not a provider billing cap.
+
 ## Product-service entry point
 
 `scripts/wake_product_service.py` wraps the runner behind task-level product operations. Its safe default is a committed public replay:
