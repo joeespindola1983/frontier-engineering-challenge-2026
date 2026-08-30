@@ -65,6 +65,7 @@ The repository will preserve:
 - [Deterministic grader](docs/GRADER.md)
 - [Testing strategy](docs/TESTING_STRATEGY.md)
 - [Clean-environment reproduction guide](docs/REPRODUCTION_GUIDE.md)
+- [Sequential owner interface QA guide](docs/OWNER_QA_GUIDE.md)
 - [Interface review and visual evidence plan](docs/INTERFACE_REVIEW.md)
 - [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)

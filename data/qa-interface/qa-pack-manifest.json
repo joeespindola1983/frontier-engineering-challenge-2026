@@ -1,0 +1,52 @@
+{
+  "schema_version": "wake.owner_qa_pack.v1",
+  "provenance": "DERIVED_SYNTHETIC",
+  "privacy": "PUBLIC_SYNTHETIC_ONLY",
+  "source_case": "case-002-wind-shift-plan-deviation",
+  "full_replay": {
+    "directory": "full-replay-bundle",
+    "file_count": 5,
+    "files": [
+      "plan.json",
+      "speedcoach.csv",
+      "mobile.csv",
+      "environment.json",
+      "context.json"
+    ],
+    "sha256": {
+      "plan.json": "ae7276eafdd99a8f36592f599a9c53801e13cba91adc28cc71e6145ea1d4572a",
+      "speedcoach.csv": "c48af984c4bac0a8dbdcc5d66b6932d998514ce90cc297ebf63ed195b48813e3",
+      "mobile.csv": "783897638823daf5a8e916e4731b2e131307495a6a9b02a142e48a215ea27255",
+      "environment.json": "b494d72843465766f2959822db2d3112cfb560ee70b038bfdc4168780fadd9ad",
+      "context.json": "e6d9320261ced80b14bffbf6812c9d48c74ef4930d686df56a406ede30da3b48"
+    },
+    "expected_action": "Validate and open replay",
+    "expected_cost_usd": 0
+  },
+  "minimum_preparation": {
+    "directory": "full-replay-bundle",
+    "files": [
+      "plan.json",
+      "speedcoach.csv"
+    ],
+    "expected_action": "Validate and prepare · No agent call",
+    "expected_cost_usd": 0
+  },
+  "live_validation": {
+    "start_count": 3,
+    "authorization_per_start_usd": 0.2,
+    "authorization_total_usd": 0.6,
+    "authorization_is_provider_cap": false,
+    "scenarios": [
+      "plan_speedcoach_core",
+      "five_source_complete_bundle",
+      "plan_speedcoach_historical_weather"
+    ]
+  },
+  "exclusions": [
+    "ground-truth.json",
+    "fixture-manifest.json",
+    "private telemetry",
+    "credentials"
+  ]
+}

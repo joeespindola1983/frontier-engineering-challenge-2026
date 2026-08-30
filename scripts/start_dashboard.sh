@@ -9,6 +9,7 @@ PRINT_PLAN="0"
 API_PORT="${WAKE_API_PORT:-8788}"
 WEB_PORT="${WAKE_WEB_PORT:-3000}"
 COST_AUTHORIZATION_USD="${WAKE_COST_AUTHORIZATION_USD:-0.20}"
+STATE_STORE="${WAKE_STATE_STORE:-$ROOT_DIR/private-data/wake-product/product-state.json}"
 API_PID=""
 WEB_PID=""
 
@@ -26,6 +27,7 @@ Options:
   --no-weather        Disable historical-weather enrichment.
   --api-port PORT     API port (default: 8788).
   --web-port PORT     dashboard port (default: 3000).
+  --state-store PATH  local state file (default: private-data/wake-product/product-state.json).
   --print-plan        Print the safe launch configuration and exit.
   -h, --help          Show this help.
 
@@ -64,6 +66,12 @@ while [ "$#" -gt 0 ]; do
     --web-port)
       [ "$#" -ge 2 ] || fail "--web-port requires a value."
       WEB_PORT="$2"
+      shift 2
+      ;;
+    --state-store)
+      [ "$#" -ge 2 ] || fail "--state-store requires a value."
+      [ -n "$2" ] || fail "--state-store requires a non-empty path."
+      STATE_STORE="$2"
       shift 2
       ;;
     --print-plan)
@@ -114,7 +122,7 @@ print_plan() {
   fi
   printf '  API: %s/\n' "$API_URL"
   printf '  Dashboard: %s/\n' "$WEB_URL"
-  printf '  Local state: private-data/wake-product/product-state.json\n'
+  printf '  Local state: %s\n' "$STATE_STORE"
 }
 
 if [ "$PRINT_PLAN" = "1" ]; then
@@ -197,6 +205,7 @@ API_COMMAND=(
   "$UV_BIN" run python scripts/wake_product_service.py
   --port "$API_PORT"
   --origin "$WEB_URL"
+  --state-store "$STATE_STORE"
 )
 
 if [ "$ALLOW_WEATHER" = "1" ]; then

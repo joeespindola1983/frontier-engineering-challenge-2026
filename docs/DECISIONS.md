@@ -410,6 +410,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Preserve the frozen 7/7 WAKE versus 3/7 direct-baseline capability audit unchanged, together with a separate manual construct-validity review. Accept only the claim that WAKE more reliably preserves canonical IDs, statuses, output placement, and review routes. Do not present this audit as a semantic coaching-quality score or human-coach comparison, and do not rescore it after inspecting the output.
 - **Rationale:** The direct baseline expressed much of the same coaching content but used different identifiers, statuses, or sections for four checks. That makes the frozen audit valid evidence of machine-stable contract fidelity while limiting its validity as a broad measure of coaching quality. Keeping the original audit plus the limitation is more credible than changing the contract after seeing the result.
 
+## 2026-08-30 - Separate owner QA data and isolate its local state
+
+- **Status:** accepted; replay package and checklist implemented, live executions pending explicit finite authorization.
+- **Decision:** Publish one upload-ready five-source derived-synthetic QA bundle and use the same folder for the two-source minimum-evidence path. Add an explicit dashboard `--state-store` option so owner QA can use isolated replay and live state without deleting or changing the normal local club state. Validate the interface in replay first, then run three separately authorized live starts: core Plan + SpeedCoach, complete five-source evidence, and core evidence with historical weather.
+- **Rationale:** A visual walkthrough cannot prove ingestion, evidence gaps, persistence, live verification, or weather enrichment. A fixed public pack makes the file chooser reproducible, while isolated state prevents old answers from masking first-run behavior. Separate start gates keep the paid scope auditable.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

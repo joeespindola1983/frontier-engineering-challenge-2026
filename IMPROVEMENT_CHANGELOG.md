@@ -615,6 +615,16 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Preserve both the positive structural result and its construct limitation. Do not spend on mass athlete/crew prose before a new fixed decision question and evaluation contract justify it.
 - **Learning:** Exact schemas make product memory automatable, but an exact-contract audit can mistake equivalent prose in a different location for missing capability. Structural fidelity and semantic coaching quality are distinct outcomes and must be reported separately.
 
+### 58. Owner QA pack and isolated end-to-end validation plan
+
+- **Hypothesis:** A coach-facing QA run needs fixed upload data, isolated state, explicit expected outcomes, and both replay and live paths; otherwise visual inspection can miss stale-state reuse, unsupported optional-source claims, or a broken paid workflow.
+- **Change:** Added a deterministic public QA-pack builder, a five-source upload directory, manifest, byte-reproducibility and privacy tests, and a 16-step owner checklist. Added `--state-store` to the dashboard launcher so QA can preserve or isolate state without deleting the normal store. The checklist covers club/crew/athlete value, post-regatta evolution, saved memory, inbox milestones, minimum and full replay uploads, competition, evaluation, validation failures, core live analysis, complete live analysis, and historical-weather live analysis.
+- **Evaluation:** RED tests first failed on the absent pack, guide, live-scope manifest, and launcher option. GREEN verifies that every upload file is byte-identical to the public derived-synthetic source, no evaluator ground truth or credential is present, the pack rebuilds byte-for-byte, all 16 QA stages and claim boundaries are documented, and an isolated state path appears in the launch plan. Ten focused tests pass. A second local replay server could not be opened concurrently because Vinext correctly detected the existing dashboard; no user process was stopped and no live or external API call occurred.
+- **Result:** The owner can now perform one sequential product QA run from public files. Replay QA is expected to cost US$0.00. Three live starts are deliberately pending a separate US$0.60 total operational authorization; this is not a provider cap.
+- **Cost/runtime:** Pack generation and focused tests are local and cost US$0.00. No model or weather-provider request occurred in this change.
+- **Decision:** Finish the product QA before rewriting the demonstration video. Treat every owner finding as one of comprehension, rowing-language, functional, evidence-boundary, or visual issues before deciding what to fix.
+- **Learning:** Saved outputs make demonstrations reliable, but only fresh isolated state and real file selection reveal whether ingestion and workflow transitions still work. Replay credibility and live operability must be tested separately.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

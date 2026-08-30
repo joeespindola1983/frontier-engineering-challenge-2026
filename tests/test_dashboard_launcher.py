@@ -82,6 +82,20 @@ class DashboardLauncherTests(unittest.TestCase):
         self.assertIn("Cost authorization: US$0.20", completed.stdout)
         self.assertNotIn(secret, completed.stdout + completed.stderr)
 
+    def test_plan_accepts_an_isolated_qa_state_store(self) -> None:
+        completed = run_launcher(
+            "--state-store",
+            "/private/tmp/wake-owner-qa-state.json",
+            "--print-plan",
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn(
+            "Local state: /private/tmp/wake-owner-qa-state.json",
+            completed.stdout,
+        )
+        self.assertIn("--state-store", run_launcher("--help").stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
