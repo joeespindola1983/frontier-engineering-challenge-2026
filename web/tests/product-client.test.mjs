@@ -264,6 +264,50 @@ test('HTTP client prepares a source bundle without invoking the agent', async ()
   });
 });
 
+test('HTTP client reads the durable session inbox and marks a review as viewed', async () => {
+  const requests = [];
+  const responses = [
+    {
+      schema_version: 'wake.session_inbox.v1',
+      sessions: [{ session_id: 'session-001', status: 'NEEDS_HUMAN_RESPONSE' }],
+      counts: { needs_action: 1 },
+    },
+    {
+      session_id: 'session-001',
+      status: 'NEEDS_HUMAN_RESPONSE',
+      review: { analysis: {}, summary: {}, context: {} },
+    },
+    {
+      session_id: 'session-001',
+      coach_view_status: 'VIEWED',
+    },
+  ];
+  const client = new HttpWakeClient({
+    baseUrl: 'http://127.0.0.1:8788',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return { ok: true, status: 200, json: async () => responses.shift() };
+    },
+    reviewAdapter: () => demoReview,
+  });
+
+  const inbox = await client.listSessions();
+  const detail = await client.getSession('session-001');
+  const viewed = await client.markSessionViewed('session-001');
+
+  assert.equal(inbox.sessions.length, 1);
+  assert.equal(detail.review, demoReview);
+  assert.equal(viewed.coach_view_status, 'VIEWED');
+  assert.deepEqual(
+    requests.map(({ url, init }) => [url, init.method]),
+    [
+      ['http://127.0.0.1:8788/api/sessions', 'GET'],
+      ['http://127.0.0.1:8788/api/sessions/session-001', 'GET'],
+      ['http://127.0.0.1:8788/api/sessions/session-001/view', 'POST'],
+    ],
+  );
+});
+
 test('HTTP client prepares and explicitly executes a new source bundle', async () => {
   const requests = [];
   const responses = [

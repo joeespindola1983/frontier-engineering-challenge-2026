@@ -266,8 +266,15 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Let replay-mode users upload the core sources, retrieve authorized historical conditions, inspect a coordinate-free preview, and prepare the resulting bundle without invoking the agent. Preserve the exact five-source public replay separately. Require explicit live runtime configuration and the existing cost authorization before a changed prepared bundle can reach the bounded agent.
 - **Rationale:** Weather lookup and input validation can be tested without spending model budget. Conflating enrichment with paid investigation would make interface QA expensive, hide provider failures behind agent execution, and weaken the product's existing separation between deterministic preparation and agent analysis.
 
+## 2026-08-30 - Persist a local session inbox with independent workflow milestones
+
+- **Status:** accepted for the single-user local demonstration runtime; production storage remains pending.
+- **Decision:** Persist validated source bytes, normalized telemetry, prepared bundles, investigations, checkpoint answers, briefings, approved goal memory, weather-cache metadata, and cost observations in a versioned JSON state file under the Git-ignored `private-data/wake-product/` boundary. Restrict the file to the current OS user. Represent analysis completion, coach view, human response, and coach approval as independent session milestones; make investigation creation idempotent so reopening cannot erase an existing answer. Expose safe list/detail/view session endpoints that never return raw or normalized telemetry rows.
+- **Rationale:** A reset form and one aggregate status cannot tell a coach whether evidence was merely received, analysed, seen, answered, or accepted into club memory. A local restart-safe state file makes the weekend workflow functional and demonstrable without claiming a production database. The boundary must remain explicit: this store is not encrypted, authenticated, multi-tenant, backed up, or distributed exactly-once storage.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.
+- Production database, encryption, backup, retention, authentication, and club tenancy.
 - Schema revisions justified by parser and grader implementation evidence.
 - Historical-weather commercial plan, reanalysis fallback, and precedence for station or on-boat measurements.

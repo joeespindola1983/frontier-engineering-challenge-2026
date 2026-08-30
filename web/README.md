@@ -80,6 +80,8 @@ The product client calls only task-level endpoints; source trust and agent tools
 
 With the local service configured, the intake requires a plan and SpeedCoach file and accepts mobile, environment, and context files independently. An athlete or coach may contribute the files; the service records the uploader separately from the source origin and authority scope. Each selected file is validated and the browser receives metadata rather than stored bytes. SpeedCoach vendor and WAKE mobile sensor CSVs are normalized deterministically, with missing SPM preserved as missing. In explicit live mode, a selected bundle now continues through preparation, bounded-agent execution, a role-routed human checkpoint, verified briefing, and approval-gated process-local memory. Confirmed answers retain answerer, recorder, and authority basis. Only the exact five-file public case-002 bundle can reuse committed replay output.
 
+The local service stores its prototype state at `private-data/wake-product/product-state.json` by default. The Sessions page reloads this safe index, distinguishes whether analysis, coach view, human response, and coach approval happened, and can reopen the appropriate review, briefing, or memory screen. The ignored state file also retains raw evidence so a prepared bundle survives a service restart. It is restricted to the current OS user, but it is not encrypted, authenticated, backed up, or multi-tenant; do not treat it as production club storage.
+
 ## Safe browser rehearsal bundle
 
 Use the five public synthetic files under:

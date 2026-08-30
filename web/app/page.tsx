@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
 import { demoReview } from './lib/demo-review.mjs';
 import { formatEvidenceKind, formatMeasurementRange } from './lib/display-format.mjs';
 import { evidenceSourceDefinitions, uploadEvidenceBundleWithWeather } from './lib/evidence-intake.mjs';
 import { createWakeClient } from './lib/product-client.mjs';
+import { sessionActionLabel, sessionStatusLabel, summarizeSessionInbox } from './lib/session-inbox.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
 type Screen = 'sessions' | 'intake' | 'review' | 'briefing' | 'memory';
@@ -52,9 +53,30 @@ type WeatherOutcome = {
 };
 type PreparedBundle = {
   bundle_id: string;
+  session_id?: string;
   status: string;
   agent_called: boolean;
   source_coverage: { kind: string; status: string }[];
+};
+type SessionRecord = {
+  session_id: string;
+  case_id?: string;
+  title: string;
+  scheduled_date: string | null;
+  status: 'READY_FOR_INVESTIGATION' | 'NEEDS_HUMAN_RESPONSE' | 'READY_FOR_COACH_REVIEW' | 'READY_FOR_COACH_APPROVAL' | 'IN_CLUB_MEMORY';
+  analysis_status: 'NOT_STARTED' | 'COMPLETED';
+  coach_view_status: 'UNSEEN' | 'VIEWED';
+  human_context_status: 'NOT_REQUESTED' | 'AWAITING_RESPONSE' | 'RESPONDED';
+  memory_status: 'NOT_READY' | 'AWAITING_APPROVAL' | 'APPROVED';
+  storage_status: 'SAVED_LOCALLY' | 'PROCESS_ONLY' | 'REPLAY_ONLY';
+  source_coverage?: { kind: string; status: string }[];
+};
+type SessionDetail = SessionRecord & {
+  review?: Review;
+  briefing?: Briefing;
+  goal?: GoalMemory;
+  checkpoint_id?: string;
+  bundle?: PreparedBundle;
 };
 
 const configuredRuntimeUrl = process.env.NEXT_PUBLIC_WAKE_API_URL ?? '';
@@ -118,7 +140,23 @@ function PrototypeNotice() {
   return <div className="prototype-notice" role="note"><span>{configuredRuntimeMode === 'live' ? 'Local live runtime' : 'Prototype replay'}</span>{configuredRuntimeMode === 'live' ? 'The bounded WAKE agent is enabled. Uploaded evidence stays in the local process and every execution requires an explicit review action.' : demoReview.notice}</div>;
 }
 
-function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; processing: boolean; error: string }) {
+function milestoneLabel(session: SessionRecord, milestone: 'analysis' | 'view' | 'answer' | 'memory') {
+  if (milestone === 'analysis') return session.analysis_status === 'COMPLETED' ? 'Analysed' : 'Awaiting analysis';
+  if (milestone === 'view') return session.coach_view_status === 'VIEWED' ? 'Viewed by coach' : 'Unseen by coach';
+  if (milestone === 'answer') return {
+    NOT_REQUESTED: 'No answer requested',
+    AWAITING_RESPONSE: 'Awaiting answer',
+    RESPONDED: 'Answered',
+  }[session.human_context_status];
+  return {
+    NOT_READY: 'Not in memory',
+    AWAITING_APPROVAL: 'Awaiting approval',
+    APPROVED: 'In club memory',
+  }[session.memory_status];
+}
+
+function SessionsScreen({ onNavigate, onReview, onOpenSession, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; sessions: SessionRecord[]; processing: boolean; error: string }) {
+  const summary = summarizeSessionInbox(sessions);
   return (
     <main className="page">
       <PrototypeNotice />
@@ -131,19 +169,22 @@ function SessionsScreen({ onNavigate, onReview, processing, error }: { onNavigat
         <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
       </header>
       <section className="summary-strip" aria-label="Session summary">
-        <div><span>Needs review</span><strong>1</strong><small>One material question</small></div>
-        <div><span>Processing</span><strong>0</strong><small>No active investigations</small></div>
-        <div><span>Approved memory</span><strong>0</strong><small>Coach approval required</small></div>
-        <div><span>Open conflicts</span><strong>2</strong><small>Preserved, not averaged</small></div>
+        <div><span>Needs action</span><strong>{summary.needsAction}</strong><small>Answer or coach approval</small></div>
+        <div><span>Awaiting analysis</span><strong>{summary.awaitingAnalysis}</strong><small>Evidence received, agent pending</small></div>
+        <div><span>Viewed by coach</span><strong>{summary.viewed}</strong><small>Opened at least once</small></div>
+        <div><span>In club memory</span><strong>{summary.inClubMemory}</strong><small>Explicitly coach approved</small></div>
       </section>
+      <div className="storage-note"><strong>Saved locally</strong><span>The inbox and workflow milestones survive a page refresh and service restart. Raw evidence stays in a Git-ignored, user-restricted prototype file; it is not yet encrypted, authenticated, or multi-club.</span></div>
       {error ? <div className="runtime-error" role="alert">{error}</div> : null}
       <section className="session-list" aria-label="Session reviews">
-        <button className="session-row" disabled={processing} onClick={() => onReview()} type="button">
-          <div><div className="session-title">{demoReview.title}</div><div className="session-subtitle">Plan, SpeedCoach, mobile telemetry, and wind timeline</div></div>
-          <div><span className="meta-label">Date</span><span>{formatDate(demoReview.scheduledDate)}</span></div>
-          <div><span className="meta-label">Goal</span><span>Regatta preparation</span></div>
-          <span className="status attention">Needs context</span>
-        </button>
+        {sessions.length ? sessions.map((session) => (
+          <button className="session-row session-row-operational" disabled={processing} key={session.session_id} onClick={() => onOpenSession(session)} type="button">
+            <div><div className="session-title">{session.title}</div><div className="session-subtitle">{session.storage_status === 'SAVED_LOCALLY' ? 'Private local record' : 'Prototype record'} · {session.source_coverage?.filter((source) => source.status === 'PRESENT').map((source) => formatEvidenceKind(source.kind)).join(' + ') || 'Committed synthetic evidence'}</div></div>
+            <div><span className="meta-label">Date</span><span>{formatDate(session.scheduled_date)}</span></div>
+            <div className="milestone-grid" aria-label="Session workflow milestones"><span className={session.analysis_status === 'COMPLETED' ? 'done' : ''}>{milestoneLabel(session, 'analysis')}</span><span className={session.coach_view_status === 'VIEWED' ? 'done' : ''}>{milestoneLabel(session, 'view')}</span><span className={session.human_context_status === 'RESPONDED' ? 'done' : ''}>{milestoneLabel(session, 'answer')}</span><span className={session.memory_status === 'APPROVED' ? 'done' : ''}>{milestoneLabel(session, 'memory')}</span></div>
+            <div className="session-action"><span className={`status ${session.memory_status === 'APPROVED' ? 'approved' : 'attention'}`}>{sessionStatusLabel(session.status)}</span><small>{sessionActionLabel(session.status)} →</small></div>
+          </button>
+        )) : <button className="session-row" disabled={processing} onClick={() => onReview()} type="button"><div><div className="session-title">{demoReview.title}</div><div className="session-subtitle">Sample session · not added to the local inbox yet</div></div><div><span className="meta-label">Date</span><span>{formatDate(demoReview.scheduledDate)}</span></div><div><span className="meta-label">Start here</span><span>Open the committed replay</span></div><span className="status attention">Investigate sample</span></button>}
       </section>
     </main>
   );
@@ -207,7 +248,7 @@ function IntakeScreen({ onInvestigate, processing, error, preparedBundle, weathe
           {hasSelectedFiles ? <p className="upload-boundary">Plan and SpeedCoach enable the core review. Missing mobile, environment, or context will remain visible as evidence gaps. A different bundle cannot reuse the committed replay.</p> : null}
           <div className="known-context"><div className="kicker">Known context</div>{hasSelectedFiles ? <p>{files.CONTEXT ? 'Boat, crew, goal, and observations will be read from the selected context file.' : 'No context file selected. Boat, crew, goal, and human observations will remain unknown.'}</p> : <div className="context-grid"><span>Men&apos;s double scull (2x)</span><span>Two synthetic athletes</span><span>Regatta preparation</span><span>Water session</span></div>}</div>
           {hasSelectedFiles && configuredRuntimeMode === 'live' ? <p className="upload-boundary"><strong>Operational authorization: US${configuredCostAuthorizationUsd.toFixed(2)}.</strong> This allows the run to start; it is not a provider billing cap. WAKE shows the token-based approximate cost after execution.</p> : null}
-          {preparedBundle ? <div className="prepared-bundle" role="status"><span>Bundle prepared</span><strong>{preparedBundle.source_coverage.filter((source) => source.status === 'PRESENT').map((source) => formatEvidenceKind(source.kind)).join(' + ')}</strong><p>No agent call was made. The validated process-local evidence is ready for an explicitly authorized live investigation.</p></div> : null}
+          {preparedBundle ? <div className="prepared-bundle" role="status"><span>Saved locally · Ready for investigation</span><strong>{preparedBundle.source_coverage.filter((source) => source.status === 'PRESENT').map((source) => formatEvidenceKind(source.kind)).join(' + ')}</strong><p>No agent call was made. This session now appears in the inbox and can continue through an explicitly authorized live investigation.</p></div> : null}
           {error ? <div className="runtime-error" role="alert">{error}</div> : null}
           <button className="button button-primary" disabled={processing} onClick={() => onInvestigate(files, contributorRole, { enabled: weatherEnabled, authorizedLocationLookup, sessionTimezone })} type="button">{processing ? configuredRuntimeMode === 'live' ? 'Investigating…' : 'Preparing…' : buttonLabel}</button>
         </section>
@@ -310,12 +351,64 @@ export default function Home() {
   const [executionCost, setExecutionCost] = useState<ExecutionCost | null>(null);
   const [preparedBundle, setPreparedBundle] = useState<PreparedBundle | null>(null);
   const [weatherOutcome, setWeatherOutcome] = useState<WeatherOutcome>({ status: 'NOT_REQUESTED' });
+  const [sessions, setSessions] = useState<SessionRecord[]>([]);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  async function investigate(files: EvidenceFiles = {}, contributorRole: ContributorRole = 'COACH', weather: WeatherRequest = { enabled: false, authorizedLocationLookup: false, sessionTimezone: '' }) { setProcessing(true); setError(''); setPreparedBundle(null); try { if (!Object.keys(files).length) { const sample = await client.createInvestigation({ mode: 'replay' }); setReview(sample.review); setCheckpointId(sample.checkpointId); setExecutionCost(null); setWeatherOutcome({ status: 'NOT_REQUESTED' }); setScreen('review'); return; } const uploaded = await uploadEvidenceBundleWithWeather(client, files, { uploadedByRole: contributorRole, weather }); const sourceIds = uploaded.sourceIds; setWeatherOutcome(uploaded.weather); if (configuredRuntimeMode === 'live') { const result = await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); setScreen('review'); return; } const allReplayFilesSelected = evidenceSourceDefinitions.every(({ kind }) => files[kind as EvidenceKind]); if (allReplayFilesSelected && uploaded.weather.status !== 'ADDED') { const replay = await client.createInvestigation({ mode: 'replay', sourceIds }); setReview(replay.review); setCheckpointId(replay.checkpointId); setExecutionCost(null); setScreen('review'); return; } const prepared = await client.prepareSourceBundle(sourceIds); setPreparedBundle(prepared); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
-  async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
-  async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
+  async function reloadSessions() {
+    const inbox = await client.listSessions();
+    setSessions(inbox.sessions ?? []);
+  }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onReview={investigate} processing={processing} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
+  useEffect(() => {
+    let active = true;
+    client.listSessions().then((inbox) => {
+      if (active) setSessions(inbox.sessions ?? []);
+    }).catch((cause) => {
+      if (active) setError(cause instanceof Error ? cause.message : 'WAKE could not load the session inbox.');
+    });
+    return () => { active = false; };
+  }, [client]);
+
+  function showSessionDetail(detail: SessionDetail) {
+    if (detail.review) {
+      setReview(detail.review);
+      setCheckpointId(detail.checkpoint_id ?? detail.review.checkpoint.checkpointId);
+    }
+    if (detail.status === 'IN_CLUB_MEMORY' && detail.goal) {
+      setMemory(detail.goal);
+      setScreen('memory');
+    } else if (detail.status === 'READY_FOR_COACH_APPROVAL' && detail.briefing) {
+      setBriefing(detail.briefing);
+      setScreen('briefing');
+    } else if (detail.review) {
+      setScreen('review');
+    } else if (detail.bundle) {
+      setPreparedBundle(detail.bundle);
+      setScreen('intake');
+    }
+  }
+
+  async function openSession(session: SessionRecord) {
+    setProcessing(true);
+    setError('');
+    try {
+      const detail = await client.getSession(session.session_id) as SessionDetail;
+      if (detail.review) {
+        await client.markSessionViewed(session.session_id);
+      }
+      showSessionDetail(detail);
+      await reloadSessions();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'WAKE could not open this session.');
+    } finally {
+      setProcessing(false);
+    }
+  }
+
+  async function investigate(files: EvidenceFiles = {}, contributorRole: ContributorRole = 'COACH', weather: WeatherRequest = { enabled: false, authorizedLocationLookup: false, sessionTimezone: '' }) { setProcessing(true); setError(''); setPreparedBundle(null); try { if (!Object.keys(files).length) { const sample = await client.createInvestigation({ mode: 'replay' }); if (sample.status === 'VERIFIED') { const detail = await client.getSession(sample.sessionId) as SessionDetail; await client.markSessionViewed(sample.sessionId); showSessionDetail(detail); await reloadSessions(); return; } await client.markSessionViewed(sample.sessionId); setReview(sample.review); setCheckpointId(sample.checkpointId); setExecutionCost(null); setWeatherOutcome({ status: 'NOT_REQUESTED' }); await reloadSessions(); setScreen('review'); return; } const uploaded = await uploadEvidenceBundleWithWeather(client, files, { uploadedByRole: contributorRole, weather }); const sourceIds = uploaded.sourceIds; setWeatherOutcome(uploaded.weather); if (configuredRuntimeMode === 'live') { const result = await client.analyzeSourceBundle({ sourceIds, mode: 'live', authorizedCostUsd: configuredCostAuthorizationUsd }); await client.markSessionViewed(result.sessionId); setReview(result.review); setCheckpointId(result.checkpointId); setExecutionCost(result.cost ?? null); await reloadSessions(); setScreen('review'); return; } const allReplayFilesSelected = evidenceSourceDefinitions.every(({ kind }) => files[kind as EvidenceKind]); if (allReplayFilesSelected && uploaded.weather.status !== 'ADDED') { const replay = await client.createInvestigation({ mode: 'replay', sourceIds }); await client.markSessionViewed(replay.sessionId); setReview(replay.review); setCheckpointId(replay.checkpointId); setExecutionCost(null); await reloadSessions(); setScreen('review'); return; } const prepared = await client.prepareSourceBundle(sourceIds); setPreparedBundle(prepared); await reloadSessions(); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not investigate this session.'); } finally { setProcessing(false); } }
+  async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); await reloadSessions(); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
+  async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); await reloadSessions(); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
+
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}</>;
 }

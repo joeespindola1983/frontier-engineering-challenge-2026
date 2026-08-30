@@ -101,3 +101,27 @@ test('weather intake makes consent, timezone, provenance, and no-model preparati
   assert.match(page, /mode: 'replay'/);
   assert.doesNotMatch(page, /weather explains/i);
 });
+
+test('session inbox exposes analysis, view, answer, and club-memory milestones', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /Awaiting analysis/);
+  assert.match(page, /Viewed by coach/);
+  assert.match(page, /Awaiting answer/);
+  assert.match(page, /In club memory/);
+  assert.match(page, /Saved locally/);
+});
+
+test('reinvestigating an answered sample restores its saved workflow instead of asking again', async () => {
+  const page = await readFile(
+    new URL('../app/page.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(page, /sample\.status === 'VERIFIED'/);
+  assert.match(page, /client\.getSession\(sample\.sessionId\)/);
+  assert.match(page, /showSessionDetail\(detail\)/);
+});

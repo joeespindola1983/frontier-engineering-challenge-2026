@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import base64
 import binascii
+import copy
 import hashlib
 import json
 import math
@@ -65,6 +66,7 @@ SOURCE_FILENAMES = {
 }
 MAX_SOURCE_BYTES = 10 * 1024 * 1024
 DEFAULT_REQUIRED_COST_AUTHORIZATION_USD = 0.20
+DEFAULT_STATE_STORE = ROOT / "private-data/wake-product/product-state.json"
 DEFAULT_SOURCE_ORIGIN = {
     "PLAN": "COACH",
     "SPEEDCOACH": "DEVICE",
@@ -224,6 +226,8 @@ class WakeProductService:
         bundle_live_runner: Callable[[dict, dict[str, bytes]], dict] | None = None,
         weather_provider: Callable[[dict], dict] | None = None,
         weather_now: Callable[[], datetime] | None = None,
+        product_now: Callable[[], datetime] | None = None,
+        state_store_path: Path | None = None,
         required_cost_authorization_usd: float = DEFAULT_REQUIRED_COST_AUTHORIZATION_USD,
     ) -> None:
         self.root = root
@@ -231,6 +235,8 @@ class WakeProductService:
         self.bundle_live_runner = bundle_live_runner
         self.weather_provider = weather_provider
         self.weather_now = weather_now or (lambda: datetime.now(timezone.utc))
+        self.product_now = product_now or (lambda: datetime.now(timezone.utc))
+        self.state_store_path = state_store_path
         self.required_cost_authorization_usd = validate_required_cost_authorization(
             required_cost_authorization_usd
         )
@@ -242,6 +248,147 @@ class WakeProductService:
         self.bundle_results: dict[str, dict] = {}
         self.cost_executions: dict[str, dict] = {}
         self.weather_enrichments: dict[str, dict] = {}
+        self.sessions: dict[str, dict] = {}
+        self._load_state()
+
+    def _timestamp(self) -> str:
+        return self.product_now().astimezone(timezone.utc).isoformat().replace(
+            "+00:00", "Z"
+        )
+
+    def _state_snapshot(self) -> dict:
+        sources = {}
+        for source_id, source in self.sources.items():
+            stored = {
+                key: copy.deepcopy(value)
+                for key, value in source.items()
+                if key not in {"_content", "_normalized_content"}
+            }
+            stored["content_base64"] = base64.b64encode(source["_content"]).decode(
+                "ascii"
+            )
+            normalized = source.get("_normalized_content")
+            stored["normalized_content_base64"] = (
+                base64.b64encode(normalized).decode("ascii")
+                if normalized is not None
+                else None
+            )
+            sources[source_id] = stored
+        return {
+            "schema_version": "wake.product_state.v1",
+            "sources": sources,
+            "source_bundles": self.source_bundles,
+            "bundle_results": self.bundle_results,
+            "investigations": self.investigations,
+            "briefings": self.briefings,
+            "goals": self.goals,
+            "cost_executions": self.cost_executions,
+            "weather_enrichments": self.weather_enrichments,
+            "sessions": self.sessions,
+        }
+
+    def _persist_state(self) -> None:
+        if self.state_store_path is None:
+            return
+        self.state_store_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.state_store_path.with_suffix(
+            f"{self.state_store_path.suffix}.tmp"
+        )
+        temporary.write_text(
+            json.dumps(self._state_snapshot(), sort_keys=True, indent=2),
+            encoding="utf-8",
+        )
+        os.replace(temporary, self.state_store_path)
+        os.chmod(self.state_store_path, 0o600)
+
+    def _load_state(self) -> None:
+        if self.state_store_path is None or not self.state_store_path.is_file():
+            return
+        os.chmod(self.state_store_path, 0o600)
+        stored = read_json(self.state_store_path)
+        if stored.get("schema_version") != "wake.product_state.v1":
+            raise ValueError("Unsupported WAKE product state version.")
+        sources = {}
+        for source_id, source in stored.get("sources", {}).items():
+            restored = {
+                key: copy.deepcopy(value)
+                for key, value in source.items()
+                if key not in {"content_base64", "normalized_content_base64"}
+            }
+            restored["_content"] = base64.b64decode(source["content_base64"])
+            normalized = source.get("normalized_content_base64")
+            restored["_normalized_content"] = (
+                base64.b64decode(normalized) if normalized is not None else None
+            )
+            sources[source_id] = restored
+        self.sources = sources
+        for name in (
+            "source_bundles",
+            "bundle_results",
+            "investigations",
+            "briefings",
+            "goals",
+            "cost_executions",
+            "weather_enrichments",
+            "sessions",
+        ):
+            setattr(self, name, copy.deepcopy(stored.get(name, {})))
+
+    @staticmethod
+    def _session_list_item(session: dict) -> dict:
+        hidden = {"review", "briefing", "goal", "bundle"}
+        return {
+            key: copy.deepcopy(value)
+            for key, value in session.items()
+            if key not in hidden
+        }
+
+    def list_sessions(self) -> dict:
+        sessions = sorted(
+            (self._session_list_item(item) for item in self.sessions.values()),
+            key=lambda item: item["timestamps"]["updated_at"],
+            reverse=True,
+        )
+        return {
+            "schema_version": "wake.session_inbox.v1",
+            "storage": {
+                "status": "SAVED_LOCALLY" if self.state_store_path else "PROCESS_ONLY",
+                "raw_evidence_scope": "PRIVATE_LOCAL_ONLY",
+            },
+            "counts": {
+                "needs_action": sum(
+                    item["status"]
+                    in {"NEEDS_HUMAN_RESPONSE", "READY_FOR_COACH_APPROVAL"}
+                    for item in sessions
+                ),
+                "awaiting_analysis": sum(
+                    item["analysis_status"] == "NOT_STARTED" for item in sessions
+                ),
+                "viewed": sum(
+                    item["coach_view_status"] == "VIEWED" for item in sessions
+                ),
+                "in_club_memory": sum(
+                    item["memory_status"] == "APPROVED" for item in sessions
+                ),
+            },
+            "sessions": sessions,
+        }
+
+    def get_session(self, session_id: str) -> dict:
+        if session_id not in self.sessions:
+            raise KeyError(f"Unknown session: {session_id}")
+        return copy.deepcopy(self.sessions[session_id])
+
+    def mark_session_viewed(self, session_id: str) -> dict:
+        if session_id not in self.sessions:
+            raise KeyError(f"Unknown session: {session_id}")
+        now = self._timestamp()
+        session = self.sessions[session_id]
+        session["coach_view_status"] = "VIEWED"
+        session["timestamps"]["last_viewed_at"] = now
+        session["timestamps"]["updated_at"] = now
+        self._persist_state()
+        return self.get_session(session_id)
 
     def _validate_json_source(self, kind: str, content: bytes) -> str:
         try:
@@ -342,6 +489,7 @@ class WakeProductService:
             "_normalized_content": normalized_content,
         }
         self.sources[source_id] = stored
+        self._persist_state()
         return {key: value for key, value in stored.items() if not key.startswith("_")}
 
     def get_source(self, source_id: str) -> dict:
@@ -437,6 +585,7 @@ class WakeProductService:
             "source_id": source["source_id"],
             "preview": preview,
         }
+        self._persist_state()
         return {
             "source": source,
             "lookup": {**safe_lookup, "cache_hit": False},
@@ -523,6 +672,7 @@ class WakeProductService:
         bundle_id = f"source-bundle-{bundle_digest[:16]}"
         response = {
             "bundle_id": bundle_id,
+            "session_id": bundle_id,
             "case_id": summary["case_id"],
             "status": "READY_FOR_LIVE",
             "summary_sha256": summary_digest,
@@ -568,6 +718,58 @@ class WakeProductService:
             "source_ids": list(source_ids),
             "response": response,
         }
+        now = self._timestamp()
+        existing = self.sessions.get(bundle_id, {})
+        session_review = {
+            "analysis": {"case_id": summary["case_id"]},
+            "summary": {"plan": summary.get("plan")},
+            "context": {
+                "session_candidate": summary.get("known_context", {}).get(
+                    "session_candidate", {}
+                )
+            },
+        }
+        self.sessions[bundle_id] = {
+            "session_id": bundle_id,
+            "case_id": summary["case_id"],
+            "title": self._session_title(session_review),
+            "scheduled_date": (summary.get("plan") or {}).get("scheduled_date"),
+            "status": existing.get("status", "READY_FOR_INVESTIGATION"),
+            "analysis_status": existing.get("analysis_status", "NOT_STARTED"),
+            "coach_view_status": existing.get("coach_view_status", "UNSEEN"),
+            "human_context_status": existing.get(
+                "human_context_status", "NOT_REQUESTED"
+            ),
+            "memory_status": existing.get("memory_status", "NOT_READY"),
+            "storage_status": (
+                "SAVED_LOCALLY" if self.state_store_path else "PROCESS_ONLY"
+            ),
+            "source_coverage": copy.deepcopy(response["source_coverage"]),
+            "bundle_id": bundle_id,
+            "investigation_id": existing.get("investigation_id"),
+            "checkpoint_id": existing.get("checkpoint_id"),
+            "briefing_id": existing.get("briefing_id"),
+            "goal_id": existing.get("goal_id"),
+            "timestamps": {
+                "received_at": existing.get("timestamps", {}).get("received_at", now),
+                "analysis_completed_at": existing.get("timestamps", {}).get(
+                    "analysis_completed_at"
+                ),
+                "last_viewed_at": existing.get("timestamps", {}).get(
+                    "last_viewed_at"
+                ),
+                "human_answered_at": existing.get("timestamps", {}).get(
+                    "human_answered_at"
+                ),
+                "approved_at": existing.get("timestamps", {}).get("approved_at"),
+                "updated_at": now,
+            },
+            "bundle": copy.deepcopy(response),
+            **({"review": existing["review"]} if "review" in existing else {}),
+            **({"briefing": existing["briefing"]} if "briefing" in existing else {}),
+            **({"goal": existing["goal"]} if "goal" in existing else {}),
+        }
+        self._persist_state()
         return response
 
     def execute_source_bundle(
@@ -694,6 +896,7 @@ class WakeProductService:
         result = {
             "execution_id": execution_id,
             "bundle_id": bundle_id,
+            "session_id": investigation["session_id"],
             "case_id": bundle["summary"]["case_id"],
             "mode": "live",
             "status": "AGENT_COMPLETED",
@@ -708,6 +911,7 @@ class WakeProductService:
         }
         self.bundle_results[execution_id] = result
         self.cost_executions[execution_id] = cost
+        self._persist_state()
         return result, True
 
     def get_cost_summary(self) -> dict:
@@ -785,6 +989,9 @@ class WakeProductService:
     def create_investigation(self, case_id: str, *, mode: str = "replay") -> dict:
         if mode not in {"replay", "live"}:
             raise ValueError(f"Unsupported investigation mode: {mode}")
+        existing_id = f"investigation-{case_id}"
+        if existing_id in self.investigations:
+            return self.investigations[existing_id]
         if mode == "live":
             if self.live_runner is None:
                 raise ValueError("Live agent execution is disabled for this service.")
@@ -806,6 +1013,8 @@ class WakeProductService:
     ) -> dict:
         case_id = review["analysis"]["case_id"]
         investigation_id = f"investigation-{identity}"
+        if investigation_id in self.investigations:
+            return self.investigations[investigation_id]
         checkpoint_id = f"checkpoint-{identity}"
         goal_id = f"goal-{case_id}"
         questions = review["analysis"].get("follow_up_questions", [])
@@ -819,6 +1028,7 @@ class WakeProductService:
             "investigation_id": investigation_id,
             "checkpoint_id": checkpoint_id,
             "goal_id": goal_id,
+            "session_id": identity,
             "case_id": case_id,
             "mode": mode,
             "status": "QUESTION_REQUIRED" if questions else "READY_FOR_REVIEW",
@@ -826,6 +1036,47 @@ class WakeProductService:
         }
         self.investigations[investigation_id] = result
         self.goals.setdefault(goal_id, self._empty_goal(review))
+        now = self._timestamp()
+        existing = self.sessions.get(identity, {})
+        self.sessions[identity] = {
+            "session_id": identity,
+            "case_id": case_id,
+            "title": self._session_title(review),
+            "scheduled_date": (review.get("summary", {}).get("plan") or {}).get(
+                "scheduled_date"
+            ),
+            "status": (
+                "NEEDS_HUMAN_RESPONSE" if questions else "READY_FOR_COACH_REVIEW"
+            ),
+            "analysis_status": "COMPLETED",
+            "coach_view_status": existing.get("coach_view_status", "UNSEEN"),
+            "human_context_status": (
+                "AWAITING_RESPONSE" if questions else "NOT_REQUESTED"
+            ),
+            "memory_status": "NOT_READY",
+            "storage_status": (
+                "SAVED_LOCALLY" if self.state_store_path else "PROCESS_ONLY"
+            ),
+            "source_coverage": existing.get("source_coverage", []),
+            "bundle_id": existing.get("bundle_id"),
+            "investigation_id": investigation_id,
+            "checkpoint_id": checkpoint_id,
+            "briefing_id": None,
+            "goal_id": goal_id,
+            "timestamps": {
+                "received_at": existing.get("timestamps", {}).get("received_at", now),
+                "analysis_completed_at": now,
+                "last_viewed_at": existing.get("timestamps", {}).get(
+                    "last_viewed_at"
+                ),
+                "human_answered_at": None,
+                "approved_at": None,
+                "updated_at": now,
+            },
+            "review": copy.deepcopy(review),
+            **({"bundle": existing["bundle"]} if "bundle" in existing else {}),
+        }
+        self._persist_state()
         return result
 
     def get_investigation(self, investigation_id: str) -> dict:
@@ -865,6 +1116,20 @@ class WakeProductService:
         self.briefings[briefing["briefingId"]] = briefing
         investigation["status"] = "VERIFIED"
         investigation["briefing_id"] = briefing["briefingId"]
+        session = self.sessions[investigation["session_id"]]
+        now = self._timestamp()
+        session["status"] = "READY_FOR_COACH_APPROVAL"
+        session["coach_view_status"] = "VIEWED"
+        session["human_context_status"] = "RESPONDED"
+        session["memory_status"] = "AWAITING_APPROVAL"
+        session["briefing_id"] = briefing["briefingId"]
+        session["briefing"] = copy.deepcopy(briefing)
+        session["timestamps"]["last_viewed_at"] = (
+            session["timestamps"]["last_viewed_at"] or now
+        )
+        session["timestamps"]["human_answered_at"] = now
+        session["timestamps"]["updated_at"] = now
+        self._persist_state()
         return briefing
 
     def approve_briefing(self, briefing_id: str) -> dict:
@@ -875,6 +1140,23 @@ class WakeProductService:
         goal = self._approved_goal(briefing)
         self.goals[goal_id] = goal
         briefing["pendingApproval"] = False
+        session = next(
+            (
+                item
+                for item in self.sessions.values()
+                if item.get("briefing_id") == briefing_id
+            ),
+            None,
+        )
+        if session is not None:
+            now = self._timestamp()
+            session["status"] = "IN_CLUB_MEMORY"
+            session["memory_status"] = "APPROVED"
+            session["goal"] = copy.deepcopy(goal)
+            session["briefing"] = copy.deepcopy(briefing)
+            session["timestamps"]["approved_at"] = now
+            session["timestamps"]["updated_at"] = now
+        self._persist_state()
         return goal
 
     def get_goal(self, goal_id: str) -> dict:
@@ -1120,6 +1402,17 @@ class WakeProductApi:
     def handle(self, method: str, path: str, body: dict | None = None) -> tuple[int, dict]:
         body = body or {}
         parts = [part for part in urlsplit(path).path.split("/") if part]
+        if method == "GET" and parts == ["api", "sessions"]:
+            return 200, self.service.list_sessions()
+        if method == "GET" and parts[:2] == ["api", "sessions"] and len(parts) == 3:
+            return 200, self.service.get_session(parts[2])
+        if (
+            method == "POST"
+            and len(parts) == 4
+            and parts[:2] == ["api", "sessions"]
+            and parts[3] == "view"
+        ):
+            return 200, self.service.mark_session_viewed(parts[2])
         if method == "POST" and parts == ["api", "sources"]:
             try:
                 content = base64.b64decode(
@@ -1354,6 +1647,15 @@ def main() -> None:
     parser.add_argument("--allow-live", action="store_true")
     parser.add_argument("--allow-weather", action="store_true")
     parser.add_argument(
+        "--state-store",
+        type=Path,
+        default=DEFAULT_STATE_STORE,
+        help=(
+            "Ignored local JSON state store. Contains private uploaded evidence; "
+            "keep it outside version control."
+        ),
+    )
+    parser.add_argument(
         "--required-cost-authorization-usd",
         type=float,
         default=DEFAULT_REQUIRED_COST_AUTHORIZATION_USD,
@@ -1375,6 +1677,7 @@ def main() -> None:
         weather_provider=(
             OpenMeteoHistoricalForecastProvider() if args.allow_weather else None
         ),
+        state_store_path=args.state_store,
         required_cost_authorization_usd=required_cost_authorization_usd,
     )
     api = WakeProductApi(service)
@@ -1392,6 +1695,7 @@ def main() -> None:
         "Required live cost authorization: "
         f"US${required_cost_authorization_usd:.2f} (operational start gate)"
     )
+    print(f"Local session state: {args.state_store}")
     server.serve_forever()
 
 

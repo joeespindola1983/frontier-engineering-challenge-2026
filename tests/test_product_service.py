@@ -4,6 +4,7 @@ import base64
 import copy
 import json
 import math
+import stat
 import sys
 import tempfile
 import unittest
@@ -475,6 +476,115 @@ class WakeProductServiceTests(unittest.TestCase):
             "does not establish a longitudinal trend",
             approved["currentConclusion"],
         )
+
+    def test_session_inbox_tracks_view_answer_and_memory_as_separate_milestones(self) -> None:
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+
+        initial = self.service.list_sessions()
+        self.assertEqual(initial["counts"]["needs_action"], 1)
+        self.assertEqual(len(initial["sessions"]), 1)
+        session = initial["sessions"][0]
+        self.assertEqual(session["analysis_status"], "COMPLETED")
+        self.assertEqual(session["coach_view_status"], "UNSEEN")
+        self.assertEqual(session["human_context_status"], "AWAITING_RESPONSE")
+        self.assertEqual(session["memory_status"], "NOT_READY")
+        self.assertEqual(session["status"], "NEEDS_HUMAN_RESPONSE")
+
+        viewed = self.service.mark_session_viewed(session["session_id"])
+        self.assertEqual(viewed["coach_view_status"], "VIEWED")
+        self.assertIsNotNone(viewed["timestamps"]["last_viewed_at"])
+
+        briefing = self.service.answer_checkpoint(
+            investigation["checkpoint_id"],
+            answer="YES",
+            answered_by_role="ATHLETE",
+            recorded_by_role="COACH",
+            authority_basis="RELAYED_REPORT",
+        )
+        answered = self.service.get_session(session["session_id"])
+        self.assertEqual(answered["human_context_status"], "RESPONDED")
+        self.assertEqual(answered["memory_status"], "AWAITING_APPROVAL")
+        self.assertEqual(answered["status"], "READY_FOR_COACH_APPROVAL")
+        self.assertEqual(answered["briefing"]["briefingId"], briefing["briefingId"])
+
+        self.service.approve_briefing(briefing["briefingId"])
+        approved = self.service.get_session(session["session_id"])
+        self.assertEqual(approved["memory_status"], "APPROVED")
+        self.assertEqual(approved["status"], "IN_CLUB_MEMORY")
+        self.assertEqual(self.service.list_sessions()["counts"]["in_club_memory"], 1)
+
+    def test_reopening_an_investigation_does_not_reset_its_answered_state(self) -> None:
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+        briefing = self.service.answer_checkpoint(
+            investigation["checkpoint_id"],
+            answer="NO",
+            answered_by_role="ATHLETE",
+            recorded_by_role="ATHLETE",
+            authority_basis="DIRECT_PARTICIPANT",
+        )
+
+        reopened = self.service.create_investigation(CASE_ID, mode="replay")
+
+        self.assertEqual(reopened["status"], "VERIFIED")
+        self.assertEqual(reopened["briefing_id"], briefing["briefingId"])
+        self.assertEqual(len(self.service.list_sessions()["sessions"]), 1)
+
+    def test_session_registry_survives_restart_and_never_exposes_raw_source_bytes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_path = Path(temporary) / "wake-product-state.json"
+            first = wake_product_service.WakeProductService(
+                root=ROOT,
+                state_store_path=state_path,
+            )
+            plan = first.upload_source(
+                kind="PLAN",
+                name="plan.json",
+                content=(CASE_INPUT / "plan.json").read_bytes(),
+            )
+            speedcoach = first.upload_source(
+                kind="SPEEDCOACH",
+                name="speedcoach.csv",
+                content=(CASE_INPUT / "speedcoach.csv").read_bytes(),
+            )
+            prepared = first.prepare_source_bundle(
+                [plan["source_id"], speedcoach["source_id"]]
+            )
+            state_path.chmod(0o644)
+
+            second = wake_product_service.WakeProductService(
+                root=ROOT,
+                state_store_path=state_path,
+            )
+            restored = second.get_session(prepared["session_id"])
+
+            self.assertEqual(restored["status"], "READY_FOR_INVESTIGATION")
+            self.assertEqual(restored["analysis_status"], "NOT_STARTED")
+            self.assertEqual(second.get_source(plan["source_id"])["name"], "plan.json")
+            serialized_session = json.dumps(restored).lower()
+            self.assertNotIn("content_base64", serialized_session)
+            self.assertNotIn("normalized_content", serialized_session)
+            self.assertNotIn("latitude", serialized_session)
+            self.assertNotIn("longitude", serialized_session)
+            self.assertEqual(stat.S_IMODE(state_path.stat().st_mode), 0o600)
+
+    def test_http_session_inbox_lists_opens_and_marks_a_session_viewed(self) -> None:
+        api = wake_product_service.WakeProductApi(self.service)
+        investigation = self.service.create_investigation(CASE_ID, mode="replay")
+
+        list_status, inbox = api.handle("GET", "/api/sessions")
+        session_id = inbox["sessions"][0]["session_id"]
+        detail_status, detail = api.handle("GET", f"/api/sessions/{session_id}")
+        view_status, viewed = api.handle(
+            "POST",
+            f"/api/sessions/{session_id}/view",
+            {},
+        )
+
+        self.assertEqual(list_status, 200)
+        self.assertEqual(detail_status, 200)
+        self.assertEqual(view_status, 200)
+        self.assertEqual(detail["investigation_id"], investigation["investigation_id"])
+        self.assertEqual(viewed["coach_view_status"], "VIEWED")
 
     def test_http_boundary_exposes_tasks_not_low_level_agent_tools(self) -> None:
         api = wake_product_service.WakeProductApi(self.service)

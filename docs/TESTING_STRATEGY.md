@@ -40,6 +40,10 @@ latency.
 
 Role-aware product behavior is tested at three boundaries: the service rejects invalid uploader/origin combinations and unattributed confirmed answers; the client preserves uploader, answerer, recorder, and authority-basis fields; and the interface keeps the expected respondent visible without treating a coach or athlete statement as telemetry. These tests establish contract behavior only. Authentication and verified role identity remain outside the current process-local MVP.
 
+The session inbox has restart and lifecycle regression coverage. Tests require prepared evidence to appear as awaiting analysis; completed analysis, coach view, human response, and memory approval to remain separate milestones; reopening to preserve an answered investigation; state to restore from a temporary local store; and session endpoints to omit raw and normalized sensor bytes. The browser rehearsal additionally refreshes the page and restarts the service after approval. This proves local prototype persistence, not encryption, multi-club isolation, backup, or distributed exactly-once execution.
+
+The synthetic-fixture privacy verifier scans only declared textual fixture formats. A regression test preserves the `/Users/` leak check while ensuring binary operating-system metadata such as `.DS_Store` cannot crash the verifier after a web build or Finder visit.
+
 Historical-weather enrichment is tested at four deterministic boundaries: a
 timezone-aware telemetry stream or a local clock with an explicit IANA timezone produces a rounded, bounded lookup request; the
 provider adapter sends no raw route or identity data; a provider response

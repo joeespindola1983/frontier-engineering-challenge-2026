@@ -15,6 +15,7 @@ sys.path.insert(0, str(SCRIPTS))
 import build_baseline_inputs  # noqa: E402
 import build_evidence_ablation  # noqa: E402
 import generate_synthetic_cases  # noqa: E402
+import verify_synthetic_case  # noqa: E402
 
 
 def read_json(path: Path) -> dict:
@@ -70,6 +71,21 @@ class SyntheticGeneratorTests(unittest.TestCase):
                 if path.is_file()
             }
             self.assertEqual(first_files, second_files)
+
+    def test_private_path_scan_ignores_binary_metadata_but_checks_fixture_text(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = Path(directory)
+            (fixture / ".DS_Store").write_bytes(b"\x00\x86\xff")
+            (fixture / "public.json").write_text('{"path":"synthetic"}', encoding="utf-8")
+
+            verify_synthetic_case.assert_no_private_paths(fixture)
+
+            (fixture / "public.json").write_text(
+                '{"path":"/Users/private/example"}',
+                encoding="utf-8",
+            )
+            with self.assertRaises(AssertionError):
+                verify_synthetic_case.assert_no_private_paths(fixture)
 
 
 class BaselineInputTests(unittest.TestCase):

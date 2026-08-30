@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CASE_ID = "case-002-wind-shift-plan-deviation"
 FIXTURE = ROOT / "data/fixtures" / CASE_ID
+TEXT_FIXTURE_SUFFIXES = {".csv", ".json", ".md", ".txt"}
 
 
 def sha256(path: Path) -> str:
@@ -48,6 +49,13 @@ def declared_schema_versions(schema: dict) -> set[str]:
         ]
         if isinstance(version, str)
     }
+
+
+def assert_no_private_paths(root: Path) -> None:
+    """Scan versionable fixture text without interpreting binary OS metadata."""
+    for path in root.rglob("*"):
+        if path.is_file() and path.suffix.lower() in TEXT_FIXTURE_SUFFIXES:
+            assert "/Users/" not in path.read_text(encoding="utf-8")
 
 
 def verify_hashes() -> None:
@@ -164,9 +172,7 @@ def verify_case() -> dict:
     after_speed = sum(float(row["speed_m_s"]) for row in fourth_after) / len(fourth_after)
     assert before_speed - after_speed > 0.4
 
-    for path in FIXTURE.rglob("*"):
-        if path.is_file():
-            assert "/Users/" not in path.read_text(encoding="utf-8")
+    assert_no_private_paths(FIXTURE)
     for row in speedcoach + mobile:
         assert 9.9 < float(row["latitude"]) < 10.1
         assert 9.9 < float(row["longitude"]) < 10.1
