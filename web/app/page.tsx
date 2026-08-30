@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { buildStrokeRateGeometry, STROKE_RATE_DOMAIN } from './lib/chart-scale.mjs';
+import { demoClub, listCoachAttention, summarizeAthlete, summarizeClub, summarizeCrew } from './lib/demo-club.mjs';
 import { demoReview } from './lib/demo-review.mjs';
 import { formatEvidenceKind, formatMeasurementRange } from './lib/display-format.mjs';
 import { evidenceSourceDefinitions, uploadEvidenceBundleWithWeather } from './lib/evidence-intake.mjs';
@@ -10,7 +11,7 @@ import { createWakeClient } from './lib/product-client.mjs';
 import { sessionActionLabel, sessionStatusLabel, summarizeSessionInbox } from './lib/session-inbox.mjs';
 import { approveBriefingMemory, resolveCheckpoint } from './lib/workflow-state.mjs';
 
-type Screen = 'sessions' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
+type Screen = 'sessions' | 'club-crew' | 'club-athlete' | 'intake' | 'review' | 'briefing' | 'memory' | 'evaluation';
 type Briefing = ReturnType<typeof resolveCheckpoint>;
 type GoalMemory = ReturnType<typeof approveBriefingMemory>;
 type Review = typeof demoReview;
@@ -117,7 +118,7 @@ function checkpointResponse(answer: 'YES' | 'NO', mode: ConfirmationMode): Check
 }
 
 function AppHeader({ screen, onNavigate }: { screen: Screen; onNavigate: (screen: Screen) => void }) {
-  const sessionActive = ['sessions', 'intake', 'review', 'briefing'].includes(screen);
+  const sessionActive = ['sessions', 'club-crew', 'club-athlete', 'intake', 'review', 'briefing'].includes(screen);
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -157,23 +158,76 @@ function milestoneLabel(session: SessionRecord, milestone: 'analysis' | 'view' |
   }[session.memory_status];
 }
 
-function SessionsScreen({ onNavigate, onReview, onOpenSession, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; sessions: SessionRecord[]; processing: boolean; error: string }) {
+function clubCategoryLabel(value: string) {
+  return { MEN: 'Men', WOMEN: 'Women', MIXED: 'Mixed' }[value] ?? value;
+}
+
+function clubActivityLabel(value: string) {
+  return { WATER_CREW: 'Crew water session', WATER_SOLO: 'Solo water session', ERG: 'Ergometer' }[value] ?? value;
+}
+
+function clubReviewLabel(value: string) {
+  return {
+    EXECUTED_AS_PLANNED: 'Executed as planned',
+    NEEDS_COACH_REVIEW: 'Coach review needed',
+    READY_FOR_INVESTIGATION: 'Plan link missing',
+    AWAITING_ATHLETE_CONTEXT: 'Athlete context pending',
+    RECORDED_ALTERNATIVE: 'Alternative recorded',
+    ALTERNATIVE_TRAINING_REVIEW: 'Crew unavailable',
+  }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
+function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void }) {
+  const summary = summarizeClub(demoClub);
+  const attention = listCoachAttention(demoClub);
+  return (
+    <section className="club-overview" aria-labelledby="club-pulse-title">
+      <div className="club-overview-heading"><div><div className="kicker">Synthetic demo club · 17–28 Aug 2026</div><h2 id="club-pulse-title">Two-week club pulse</h2><p>Ten named crews share sixteen athletes across 2x, 4x, and 8x boats. WAKE surfaces the records that need attention without asking the coach to open every outing.</p></div><span className="saved-evidence-label">Saved data · No model call</span></div>
+      <div className="club-summary-grid" aria-label="Club activity summary">
+        <div><span>Crews monitored</span><strong>{summary.crewCount}</strong><small>4 × 2x · 4 × 4x · 2 × 8x</small></div>
+        <div><span>Athletes connected</span><strong>{summary.athleteCount}</strong><small>{summary.physicalBoatCount} physical boats used</small></div>
+        <div><span>Crew outings</span><strong>{summary.completedCrewOutings}/{summary.plannedOutings}</strong><small>{summary.disruptedCrewOutings} crews did not launch</small></div>
+        <div><span>Coach attention</span><strong>{summary.attentionCount}</strong><small>{summary.participationGaps} expected days lack a record</small></div>
+      </div>
+      <div className="club-pulse-layout">
+        <section className="club-attention" aria-labelledby="club-attention-title"><div className="section-heading compact-heading"><div><div className="kicker">Prioritized review</div><h3 id="club-attention-title">What changed the two-week picture</h3></div><p>{summary.recordedActivities} recorded activities · {summary.totalDistanceKm.toFixed(1)} km</p></div><div className="club-attention-list">{attention.map((item) => <button key={item.attention_id} onClick={() => item.kind === 'PARTICIPATION_GAP' ? onOpenAthlete(item.entity_id) : onOpenCrew(item.entity_id)} type="button"><time>{formatDate(item.date)}</time><div><strong>{item.entity_name}</strong><p>{item.statement}</p></div><span>{item.kind === 'PARTICIPATION_GAP' ? 'Athlete' : 'Crew'} →</span></button>)}</div></section>
+        <aside className="club-boundary"><div className="kicker">Interpretation boundary</div><h3>An alert is a question, not a verdict.</h3><p>A missing activity may reflect availability, an unlinked device, a planned rest day, or an unreported session. WAKE asks for context and does not infer fitness, injury, or commitment.</p></aside>
+      </div>
+      <section className="crew-groups" aria-labelledby="crew-groups-title"><div className="section-heading compact-heading"><div><div className="kicker">Team and crew memory</div><h3 id="crew-groups-title">Every outing stays attached to people and a physical boat.</h3></div><p>Select a crew to inspect its lineup and two-week history.</p></div>{['2x', '4x', '8x'].map((boatClass) => <div className="crew-class-group" key={boatClass}><div className="crew-class-label"><strong>{boatClass}</strong><span>{demoClub.crews.filter((crew) => crew.boat_class === boatClass).length} crews</span></div><div className="crew-card-grid">{demoClub.crews.filter((crew) => crew.boat_class === boatClass).map((crew) => { const crewSummary = summarizeCrew(demoClub, crew.crew_id); return <button className="crew-card" key={crew.crew_id} onClick={() => onOpenCrew(crew.crew_id)} type="button"><div><span>{clubCategoryLabel(crew.category)} · {crew.boat_class}</span><strong>{crew.name}</strong><small>{crewSummary.boat.name} · {crewSummary.lineup.map((seat) => seat.athlete.name).join(' · ')}</small></div><div className="crew-card-result"><strong>{crewSummary.completedOutings}/{crewSummary.plannedOutings}</strong><span>launched</span>{crewSummary.attentionCount ? <small>{crewSummary.attentionCount} to review</small> : <small>no material flags</small>}</div></button>; })}</div></div>)}</section>
+      <section className="athlete-roster" aria-labelledby="athlete-roster-title"><div className="section-heading compact-heading"><div><div className="kicker">Athlete paths</div><h3 id="athlete-roster-title">The same athlete can contribute across several crews.</h3></div><p>Open an athlete to see crew, solo, ergometer, and boat history.</p></div><div className="athlete-chip-grid">{demoClub.athletes.map((athlete) => { const athleteSummary = summarizeAthlete(demoClub, athlete.athlete_id); return <button key={athlete.athlete_id} onClick={() => onOpenAthlete(athlete.athlete_id)} type="button"><span>{athlete.name}</span><small>{athleteSummary.activeDays} active days · {athleteSummary.crews.length} crews{athleteSummary.participationGaps.length ? ` · ${athleteSummary.participationGaps.length} gap` : ''}</small></button>; })}</div></section>
+    </section>
+  );
+}
+
+function CrewScreen({ crewId, onBack, onOpenAthlete }: { crewId: string; onBack: () => void; onOpenAthlete: (athleteId: string) => void }) {
+  const crew = summarizeCrew(demoClub, crewId);
+  return <main className="page club-detail-page"><div className="prototype-notice" role="note"><span>Synthetic demo club</span>Names, lineups, physical boats, activities, and findings on this screen are fictional product demonstration data.</div><header className="page-header club-detail-header"><div className="page-header-copy"><div className="kicker">{clubCategoryLabel(crew.category)} · {crew.boat_class} · {crew.boat.name}</div><h1>{crew.name}</h1><p className="lede">A crew is stored as a lineup snapshot linked to one physical boat and every outing. Changing an athlete or seat creates new historical context instead of rewriting the past.</p></div><button className="button" onClick={onBack} type="button">Back to club</button></header><section className="club-detail-stats"><div><span>Launched</span><strong>{crew.completedOutings}/{crew.plannedOutings}</strong><small>planned crew outings</small></div><div><span>Distance</span><strong>{crew.distanceKm.toFixed(1)} km</strong><small>completed crew water sessions</small></div><div><span>Needs review</span><strong>{crew.attentionCount}</strong><small>findings or unavailable outings</small></div><div><span>Physical boat</span><strong>{crew.boat.name}</strong><small>{crew.boat.boat_class} club asset</small></div></section><div className="club-detail-layout"><section><div className="section-heading compact-heading"><div><div className="kicker">Lineup</div><h2>People behind the boat</h2></div></div><div className="lineup-list">{crew.lineup.map((seat) => { const athlete = summarizeAthlete(demoClub, seat.athlete_id); return <button key={seat.athlete_id} onClick={() => onOpenAthlete(seat.athlete_id)} type="button"><span className="seat-number">{seat.seat}</span><div><strong>{seat.athlete.name}</strong><small>{seat.role.toLowerCase()} · {athlete.activeDays} active days · {athlete.crews.length} crews</small></div><span>Open athlete →</span></button>; })}</div></section><aside className="club-boundary"><div className="kicker">Crew evidence</div><h3>Composition is context, not causation.</h3><p>WAKE can count shared outings and compare supported execution metrics. Numeric telemetry alone cannot prove visible synchronization, blade work, or that one athlete caused a crew result.</p></aside></div><section className="outing-history"><div className="section-heading compact-heading"><div><div className="kicker">Two-week history</div><h2>Planned versus recorded crew outings</h2></div></div><div className="outing-table">{crew.outings.map((outing) => <article key={outing.outing_id} className={outing.outcome === 'CREW_UNAVAILABLE' || outing.finding ? 'needs-attention' : ''}><time>{formatDate(outing.date)} · {outing.slot.toLowerCase()}</time><div><strong>{outing.plan_title}</strong><small>{outing.finding?.statement ?? (outing.outcome === 'CREW_UNAVAILABLE' ? 'The full lineup did not launch; alternate activities are tracked per athlete.' : 'No material plan-execution finding in the saved summary.')}</small></div><div><span>{outing.distance_m ? `${(outing.distance_m / 1000).toFixed(1)} km` : 'No crew distance'}</span><small>{clubReviewLabel(outing.review_status)}</small></div></article>)}</div></section></main>;
+}
+
+function AthleteScreen({ athleteId, onBack, onOpenCrew }: { athleteId: string; onBack: () => void; onOpenCrew: (crewId: string) => void }) {
+  const athlete = summarizeAthlete(demoClub, athleteId);
+  return <main className="page club-detail-page"><div className="prototype-notice" role="note"><span>Synthetic demo club</span>This athlete identity and every relationship shown here are fictional product demonstration data.</div><header className="page-header club-detail-header"><div className="page-header-copy"><div className="kicker">{clubCategoryLabel(athlete.category)} squad · Athlete memory</div><h1>{athlete.name}</h1><p className="lede">WAKE connects this athlete&apos;s crew, solo, ergometer, and physical-boat history without treating one session as a performance trend.</p></div><button className="button" onClick={onBack} type="button">Back to club</button></header><section className="club-detail-stats"><div><span>Active days</span><strong>{athlete.activeDays}/10</strong><small>weekdays with recorded activity</small></div><div><span>Crew sessions</span><strong>{athlete.waterCrewSessions}</strong><small>completed water outings</small></div><div><span>Solo / erg</span><strong>{athlete.soloSessions} / {athlete.ergSessions}</strong><small>recorded alternatives</small></div><div><span>Distance</span><strong>{athlete.distanceKm.toFixed(1)} km</strong><small>across recorded modalities</small></div></section>{athlete.participationGaps.length ? <div className="athlete-gap-note"><strong>Context requested</strong><span>{athlete.participationGaps.map((gap) => `${formatDate(gap.date)}: ${gap.statement}`).join(' ')}</span></div> : null}<div className="club-detail-layout"><section><div className="section-heading compact-heading"><div><div className="kicker">Crew memberships</div><h2>{athlete.crews.length} recurring lineups</h2></div></div><div className="athlete-memberships">{athlete.crews.map((crew) => <button key={crew.crew_id} onClick={() => onOpenCrew(crew.crew_id)} type="button"><div><strong>{crew.name}</strong><small>{clubCategoryLabel(crew.category)} · {crew.boat_class}</small></div><span>Open crew →</span></button>)}</div></section><aside className="club-boundary"><div className="kicker">Physical boats rowed</div><h3>{athlete.boats.map((boat) => boat.name).join(' · ')}</h3><p>Boat names come from linked session context. A class such as 2x is not treated as the identity of the physical shell.</p></aside></div><section className="outing-history"><div className="section-heading compact-heading"><div><div className="kicker">Activity history</div><h2>Water, solo, and ergometer records</h2></div></div><div className="outing-table">{athlete.activityHistory.map((activity) => { const boat = activity.boat_id ? demoClub.boats.find((item) => item.boat_id === activity.boat_id) : null; return <article key={activity.activity_id}><time>{formatDate(activity.date)} · {activity.slot.toLowerCase()}</time><div><strong>{activity.title}</strong><small>{clubActivityLabel(activity.modality)}{boat ? ` · ${boat.name}` : ''}</small></div><div><span>{(activity.distance_m / 1000).toFixed(1)} km</span><small>{clubReviewLabel(activity.review_status)}</small></div></article>; })}</div></section></main>;
+}
+
+function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpenAthlete, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; sessions: SessionRecord[]; processing: boolean; error: string }) {
   const summary = summarizeSessionInbox(sessions);
   return (
     <main className="page">
       <PrototypeNotice />
       <header className="page-header">
         <div className="page-header-copy">
-          <div className="kicker">Daily intelligence</div>
-          <h1>Review the session,<br />not every chart.</h1>
-          <p className="lede">WAKE combines the plan, recordings, conditions, and attributed human context into one evidence-backed session review.</p>
+          <div className="kicker">Daily intelligence · Team and crew memory</div>
+          <h1>Understand the club,<br />then the session.</h1>
+          <p className="lede">WAKE connects athletes, recurring lineups, physical boats, and session evidence so the coach can find what needs attention without opening every chart.</p>
         </div>
         <div className="page-header-actions">
           <button className="button" onClick={() => onNavigate('evaluation')} type="button">View evaluation results</button>
           <button className="button button-primary" onClick={() => onNavigate('intake')} type="button">Review a session</button>
         </div>
       </header>
-      <section className="summary-strip" aria-label="Session summary">
+      <ClubOverview onOpenAthlete={onOpenAthlete} onOpenCrew={onOpenCrew} />
+      <section className="operational-inbox-heading"><div><div className="kicker">Operational workflow</div><h2>Saved session reviews</h2></div><p>These records exercise the full evidence-to-review workflow. The two-week club pulse above is a separate synthetic relational dataset.</p></section>
+      <section className="summary-strip" aria-label="Saved review workflow summary">
         <div><span>Needs action</span><strong>{summary.needsAction}</strong><small>Answer or coach approval</small></div>
         <div><span>Awaiting analysis</span><strong>{summary.awaitingAnalysis}</strong><small>Evidence received, agent pending</small></div>
         <div><span>Viewed by coach</span><strong>{summary.viewed}</strong><small>Opened at least once</small></div>
@@ -430,6 +484,8 @@ function EvaluationScreen({ onBack }: { onBack: () => void }) {
 export default function Home() {
   const client = useMemo(() => createWakeClient({ baseUrl: configuredRuntimeUrl }), []);
   const [screen, setScreen] = useState<Screen>('sessions');
+  const [selectedCrewId, setSelectedCrewId] = useState('crew-2x-men');
+  const [selectedAthleteId, setSelectedAthleteId] = useState('athlete-lucas');
   const [review, setReview] = useState<Review>(demoReview);
   const [checkpointId, setCheckpointId] = useState(demoReview.checkpoint.checkpointId);
   const [briefing, setBriefing] = useState<Briefing>(() => resolveCheckpoint(demoReview, 'UNKNOWN'));
@@ -496,5 +552,8 @@ export default function Home() {
   async function completeReview(response: CheckpointResponse | 'UNKNOWN') { setProcessing(true); setError(''); try { const next = await client.answerCheckpoint(checkpointId, response); setBriefing(next); await reloadSessions(); setScreen('briefing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not verify this answer.'); } finally { setProcessing(false); } }
   async function approveMemory() { setProcessing(true); setError(''); try { const next = await client.approveBriefing(briefing.briefingId); setMemory(next); await reloadSessions(); setScreen('memory'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'WAKE could not approve this memory.'); } finally { setProcessing(false); } }
 
-  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
+  function openCrew(crewId: string) { setSelectedCrewId(crewId); setScreen('club-crew'); }
+  function openAthlete(athleteId: string) { setSelectedAthleteId(athleteId); setScreen('club-athlete'); }
+
+  return <><AppHeader screen={screen} onNavigate={setScreen} />{screen === 'sessions' ? <SessionsScreen error={error} onNavigate={setScreen} onOpenAthlete={openAthlete} onOpenCrew={openCrew} onOpenSession={openSession} onReview={investigate} processing={processing} sessions={sessions} /> : null}{screen === 'club-crew' ? <CrewScreen crewId={selectedCrewId} onBack={() => setScreen('sessions')} onOpenAthlete={openAthlete} /> : null}{screen === 'club-athlete' ? <AthleteScreen athleteId={selectedAthleteId} onBack={() => setScreen('sessions')} onOpenCrew={openCrew} /> : null}{screen === 'intake' ? <IntakeScreen error={error} onInvestigate={investigate} preparedBundle={preparedBundle} processing={processing} weatherOutcome={weatherOutcome} /> : null}{screen === 'review' ? <ReviewScreen error={error} executionCost={executionCost} onComplete={completeReview} processing={processing} review={review} /> : null}{screen === 'briefing' ? <BriefingScreen briefing={briefing} error={error} onApprove={approveMemory} onBack={() => setScreen('review')} onLeave={() => setScreen('sessions')} processing={processing} /> : null}{screen === 'memory' ? <MemoryScreen memory={memory} onBack={() => setScreen('sessions')} /> : null}{screen === 'evaluation' ? <EvaluationScreen onBack={() => setScreen('sessions')} /> : null}</>;
 }

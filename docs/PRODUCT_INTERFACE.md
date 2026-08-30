@@ -28,8 +28,11 @@ The `web/` application currently implements:
 7. an explicit approval action before an in-memory goal update.
 8. an optional historical-weather intake with explicit approximate-location consent, session-timezone confirmation, coordinate-free condition preview, and a no-model preparation path in replay mode.
 9. a read-only Evaluation view generated from the committed official comparison, with one consolidated result, ten expandable individual case reports, case and dimension diagnostics, cost and trajectory observability, preserved limitations, and no agent invocation path. A visible Sessions-page action keeps this evidence reachable when the compact header navigation is hidden.
+10. a separate two-week synthetic club pulse connecting 16 named fictional athletes, 10 recurring lineups, 11 physical boats, 38 planned crew outings, recorded alternatives, and explicit participation gaps; plus read-only crew and athlete drill-downs.
 
 The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload the core plan and SpeedCoach sources plus any optional mobile, environment, or context evidence, receive validation/normalization metadata, and prepare a compact agent input. When live mode is explicitly enabled, the page executes the prepared bundle, adapts the verified result, completes its server-owned human checkpoint, produces a bundle-specific briefing, and proposes an approval-gated memory update. Uploaded files with different bytes are never allowed to inherit the committed answer. Titles, intervals, targets, deviations, source labels, clocks, environmental absence, checkpoint copy, and memory copy come from the selected bundle rather than case-002 constants.
+
+The club pulse is a committed deterministic frontend dataset, not a second persistence system and not an agent-generated multi-session conclusion. It models four 2x crews, four 4x crews, and two 8x crews across ten weekdays. Crew identity is a named lineup snapshot linked to athlete identities, ordered seats, category, and a physical boat; boat class and physical shell identity remain separate. Three full lineups do not launch. Alternative 1x and ergometer records remain attached to the participating athletes, while an expected day without any recorded activity becomes a context request rather than a performance, injury, or commitment verdict. The drill-downs count supported relationships only: crew outings, activity days, modalities, distance, physical boats, and explicit gaps.
 
 ## Evidence boundaries
 
@@ -43,6 +46,7 @@ The frontend must not:
 - infer technique, synchronization, physiology, improvement, or regression from unsupported data;
 - approve memory automatically;
 - show private routes, identities, devices, or health data.
+- present fictional club names or deterministic aggregates as real club history or agent-generated findings.
 
 The current implementation therefore keeps work interval five as the material SPM deviation, rejects mobile SPM, uses SpeedCoach for distance and SPM, allows mobile route corroboration, and describes the wind shift only as time-aligned context.
 

@@ -1,0 +1,266 @@
+const athletes = [
+  { athlete_id: 'athlete-lucas', name: 'Lucas', category: 'MEN' },
+  { athlete_id: 'athlete-rafael', name: 'Rafael', category: 'MEN' },
+  { athlete_id: 'athlete-bruno', name: 'Bruno', category: 'MEN' },
+  { athlete_id: 'athlete-diego', name: 'Diego', category: 'MEN' },
+  { athlete_id: 'athlete-caio', name: 'Caio', category: 'MEN' },
+  { athlete_id: 'athlete-andre', name: 'André', category: 'MEN' },
+  { athlete_id: 'athlete-felipe', name: 'Felipe', category: 'MEN' },
+  { athlete_id: 'athlete-mateus', name: 'Mateus', category: 'MEN' },
+  { athlete_id: 'athlete-marina', name: 'Marina', category: 'WOMEN' },
+  { athlete_id: 'athlete-helena', name: 'Helena', category: 'WOMEN' },
+  { athlete_id: 'athlete-camila', name: 'Camila', category: 'WOMEN' },
+  { athlete_id: 'athlete-julia', name: 'Júlia', category: 'WOMEN' },
+  { athlete_id: 'athlete-bianca', name: 'Bianca', category: 'WOMEN' },
+  { athlete_id: 'athlete-larissa', name: 'Larissa', category: 'WOMEN' },
+  { athlete_id: 'athlete-renata', name: 'Renata', category: 'WOMEN' },
+  { athlete_id: 'athlete-sofia', name: 'Sofia', category: 'WOMEN' },
+];
+
+const boats = [
+  { boat_id: 'boat-2x-aurora', name: 'Aurora', boat_class: '2x' },
+  { boat_id: 'boat-2x-iris', name: 'Íris', boat_class: '2x' },
+  { boat_id: 'boat-2x-horizon', name: 'Horizon', boat_class: '2x' },
+  { boat_id: 'boat-2x-current', name: 'Current', boat_class: '2x' },
+  { boat_id: 'boat-4x-atlas', name: 'Atlas', boat_class: '4x' },
+  { boat_id: 'boat-4x-gaia', name: 'Gaia', boat_class: '4x' },
+  { boat_id: 'boat-4x-mistral', name: 'Mistral', boat_class: '4x' },
+  { boat_id: 'boat-4x-dawn', name: 'Dawn', boat_class: '4x' },
+  { boat_id: 'boat-8x-north', name: 'North Star', boat_class: '8x' },
+  { boat_id: 'boat-8x-south', name: 'South Star', boat_class: '8x' },
+  { boat_id: 'boat-1x-spare', name: 'Solitude', boat_class: '1x' },
+];
+
+const maleIds = athletes.filter((athlete) => athlete.category === 'MEN').map((athlete) => athlete.athlete_id);
+const femaleIds = athletes.filter((athlete) => athlete.category === 'WOMEN').map((athlete) => athlete.athlete_id);
+
+function lineup(ids) {
+  return ids.map((athleteId, index) => ({
+    athlete_id: athleteId,
+    seat: ids.length - index,
+    role: index === 0 ? 'STROKE' : index === ids.length - 1 ? 'BOW' : 'CREW',
+  }));
+}
+
+const crews = [
+  { crew_id: 'crew-2x-men', name: 'Harbor Men 2x', boat_class: '2x', category: 'MEN', boat_id: 'boat-2x-aurora', lineup: lineup(['athlete-lucas', 'athlete-rafael']) },
+  { crew_id: 'crew-2x-women', name: 'Aurora Women 2x', boat_class: '2x', category: 'WOMEN', boat_id: 'boat-2x-iris', lineup: lineup(['athlete-marina', 'athlete-helena']) },
+  { crew_id: 'crew-2x-mixed-a', name: 'Bridge Mixed 2x', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-horizon', lineup: lineup(['athlete-bruno', 'athlete-camila']) },
+  { crew_id: 'crew-2x-mixed-b', name: 'Current Mixed 2x', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-current', lineup: lineup(['athlete-diego', 'athlete-julia']) },
+  { crew_id: 'crew-4x-men', name: 'Atlas Men 4x', boat_class: '4x', category: 'MEN', boat_id: 'boat-4x-atlas', lineup: lineup(['athlete-lucas', 'athlete-rafael', 'athlete-bruno', 'athlete-diego']) },
+  { crew_id: 'crew-4x-women', name: 'Gaia Women 4x', boat_class: '4x', category: 'WOMEN', boat_id: 'boat-4x-gaia', lineup: lineup(['athlete-marina', 'athlete-helena', 'athlete-camila', 'athlete-julia']) },
+  { crew_id: 'crew-4x-mixed-a', name: 'Mistral Mixed 4x', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-mistral', lineup: lineup(['athlete-caio', 'athlete-bianca', 'athlete-andre', 'athlete-larissa']) },
+  { crew_id: 'crew-4x-mixed-b', name: 'Dawn Mixed 4x', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-dawn', lineup: lineup(['athlete-felipe', 'athlete-renata', 'athlete-mateus', 'athlete-sofia']) },
+  { crew_id: 'crew-8x-men', name: 'North Men 8x', boat_class: '8x', category: 'MEN', boat_id: 'boat-8x-north', lineup: lineup(maleIds) },
+  { crew_id: 'crew-8x-women', name: 'South Women 8x', boat_class: '8x', category: 'WOMEN', boat_id: 'boat-8x-south', lineup: lineup(femaleIds) },
+];
+
+const schedules = {
+  'crew-2x-men': [['2026-08-17', 'AM'], ['2026-08-19', 'AM'], ['2026-08-24', 'AM'], ['2026-08-27', 'PM']],
+  'crew-2x-women': [['2026-08-18', 'AM'], ['2026-08-20', 'AM'], ['2026-08-25', 'AM'], ['2026-08-28', 'PM']],
+  'crew-2x-mixed-a': [['2026-08-17', 'PM'], ['2026-08-20', 'PM'], ['2026-08-24', 'PM'], ['2026-08-26', 'PM']],
+  'crew-2x-mixed-b': [['2026-08-18', 'PM'], ['2026-08-21', 'PM'], ['2026-08-25', 'PM'], ['2026-08-26', 'PM']],
+  'crew-4x-men': [['2026-08-18', 'AM'], ['2026-08-21', 'AM'], ['2026-08-26', 'AM'], ['2026-08-28', 'AM']],
+  'crew-4x-women': [['2026-08-17', 'AM'], ['2026-08-19', 'PM'], ['2026-08-24', 'AM'], ['2026-08-27', 'AM']],
+  'crew-4x-mixed-a': [['2026-08-19', 'AM'], ['2026-08-21', 'AM'], ['2026-08-25', 'AM'], ['2026-08-28', 'AM']],
+  'crew-4x-mixed-b': [['2026-08-18', 'AM'], ['2026-08-20', 'AM'], ['2026-08-27', 'PM'], ['2026-08-28', 'PM']],
+  'crew-8x-men': [['2026-08-19', 'EVENING'], ['2026-08-21', 'EVENING'], ['2026-08-26', 'EVENING']],
+  'crew-8x-women': [['2026-08-20', 'EVENING'], ['2026-08-25', 'EVENING'], ['2026-08-28', 'EVENING']],
+};
+
+const unavailableKeys = new Set([
+  'crew-2x-men:2026-08-24',
+  'crew-4x-women:2026-08-27',
+  'crew-8x-men:2026-08-26',
+]);
+
+const findingByKey = {
+  'crew-2x-mixed-a:2026-08-20': {
+    code: 'SPM_BELOW_PLAN',
+    statement: 'One work interval was below the prescribed SPM range.',
+    review_status: 'NEEDS_COACH_REVIEW',
+  },
+  'crew-4x-men:2026-08-28': {
+    code: 'EXCESS_RECOVERY',
+    statement: 'One recovery interval exceeded the planned duration.',
+    review_status: 'NEEDS_COACH_REVIEW',
+  },
+  'crew-4x-mixed-b:2026-08-27': {
+    code: 'PLAN_NOT_LINKED',
+    statement: 'Telemetry was received, but no planned workout was linked.',
+    review_status: 'READY_FOR_INVESTIGATION',
+  },
+  'crew-8x-women:2026-08-28': {
+    code: 'ATHLETE_CONTEXT_PENDING',
+    statement: 'Execution was reconstructed; perceived effort is still awaiting athlete context.',
+    review_status: 'AWAITING_ATHLETE_CONTEXT',
+  },
+};
+
+const planTitles = {
+  '2x': ['B0/B2 technical row', '2 × 4 km · rate 20', '6 × 1 km · rate 20', 'B1 endurance · 12 km'],
+  '4x': ['B2/B3 · 6 × 1 km', 'B0/B2 technique · 12 km', 'Rate ladder · 18–24 SPM', 'Race pieces · 4 × 2 km'],
+  '8x': ['Crew rhythm · B1', 'Race pieces · 4 × 2 km', 'B0/B2 technique · 14 km'],
+};
+
+const baseDistance = { '2x': 12000, '4x': 14000, '8x': 16000 };
+
+const outings = crews.flatMap((crew) => schedules[crew.crew_id].map(([date, slot], index) => {
+  const key = `${crew.crew_id}:${date}`;
+  const unavailable = unavailableKeys.has(key);
+  const finding = findingByKey[key] ?? null;
+  return {
+    outing_id: `outing-${crew.crew_id}-${date}-${slot.toLowerCase()}`,
+    crew_id: crew.crew_id,
+    boat_id: crew.boat_id,
+    date,
+    slot,
+    plan_title: planTitles[crew.boat_class][index],
+    outcome: unavailable ? 'CREW_UNAVAILABLE' : 'COMPLETED',
+    distance_m: unavailable ? 0 : baseDistance[crew.boat_class] + ((index % 3) - 1) * 500,
+    review_status: unavailable ? 'ALTERNATIVE_TRAINING_REVIEW' : finding?.review_status ?? 'EXECUTED_AS_PLANNED',
+    finding,
+  };
+}));
+
+const crewActivities = outings.filter((outing) => outing.outcome === 'COMPLETED').map((outing) => {
+  const crew = crews.find((item) => item.crew_id === outing.crew_id);
+  return {
+    activity_id: `activity-${outing.outing_id}`,
+    date: outing.date,
+    slot: outing.slot,
+    modality: 'WATER_CREW',
+    title: outing.plan_title,
+    athlete_ids: crew.lineup.map((seat) => seat.athlete_id),
+    crew_id: crew.crew_id,
+    boat_id: crew.boat_id,
+    distance_m: outing.distance_m,
+    review_status: outing.review_status,
+    finding: outing.finding,
+  };
+});
+
+const alternateActivities = [
+  { activity_id: 'activity-lucas-solo-20260824', date: '2026-08-24', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-lucas'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 8000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+  { activity_id: 'activity-gaia-erg-20260827', date: '2026-08-27', slot: 'AM', modality: 'ERG', title: 'Ergometer alternative after crew cancellation', athlete_ids: ['athlete-marina', 'athlete-helena'], crew_id: null, boat_id: null, distance_m: 10000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+  { activity_id: 'activity-camila-solo-20260827', date: '2026-08-27', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-camila'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 7000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+  { activity_id: 'activity-north-erg-20260826', date: '2026-08-26', slot: 'EVENING', modality: 'ERG', title: 'Squad ergometer alternative after 8x cancellation', athlete_ids: maleIds.slice(0, 6), crew_id: null, boat_id: null, distance_m: 12000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+  { activity_id: 'activity-felipe-solo-20260826', date: '2026-08-26', slot: 'EVENING', modality: 'WATER_SOLO', title: 'Individual water session after 8x cancellation', athlete_ids: ['athlete-felipe'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 9000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+];
+
+const participationGaps = [
+  { date: '2026-08-24', athlete_id: 'athlete-rafael', crew_id: 'crew-2x-men', classification: 'EXPECTED_DAY_WITHOUT_RECORDED_ACTIVITY', statement: 'No completed crew or alternate activity was recorded after the planned 2x became unavailable.' },
+  { date: '2026-08-27', athlete_id: 'athlete-julia', crew_id: 'crew-4x-women', classification: 'EXPECTED_DAY_WITHOUT_RECORDED_ACTIVITY', statement: 'No completed crew or alternate activity was recorded after the planned 4x became unavailable.' },
+  { date: '2026-08-26', athlete_id: 'athlete-mateus', crew_id: 'crew-8x-men', classification: 'EXPECTED_DAY_WITHOUT_RECORDED_ACTIVITY', statement: 'No completed crew or alternate activity was recorded after the planned 8x became unavailable.' },
+];
+
+export const demoClub = {
+  schema_version: 'wake.demo_club.v1',
+  synthetic: true,
+  club: { club_id: 'wake-demo-club', name: 'WAKE Demo Club' },
+  period: {
+    start: '2026-08-17',
+    end: '2026-08-28',
+    weekdays: ['2026-08-17', '2026-08-18', '2026-08-19', '2026-08-20', '2026-08-21', '2026-08-24', '2026-08-25', '2026-08-26', '2026-08-27', '2026-08-28'],
+  },
+  athletes,
+  boats,
+  crews,
+  outings,
+  activities: [...crewActivities, ...alternateActivities],
+  participation_gaps: participationGaps,
+};
+
+function maps(club) {
+  return {
+    athletes: new Map(club.athletes.map((athlete) => [athlete.athlete_id, athlete])),
+    boats: new Map(club.boats.map((boat) => [boat.boat_id, boat])),
+    crews: new Map(club.crews.map((crew) => [crew.crew_id, crew])),
+  };
+}
+
+export function listCoachAttention(club) {
+  const entities = maps(club);
+  const unavailable = club.outings.filter((outing) => outing.outcome === 'CREW_UNAVAILABLE').map((outing) => ({
+    attention_id: `unavailable:${outing.outing_id}`,
+    kind: 'CREW_UNAVAILABLE',
+    date: outing.date,
+    entity_id: outing.crew_id,
+    entity_name: entities.crews.get(outing.crew_id).name,
+    statement: 'The planned crew did not launch; recorded alternatives and missing participation need review.',
+  }));
+  const gaps = club.participation_gaps.map((gap) => ({
+    attention_id: `gap:${gap.date}:${gap.athlete_id}`,
+    kind: 'PARTICIPATION_GAP',
+    date: gap.date,
+    entity_id: gap.athlete_id,
+    entity_name: entities.athletes.get(gap.athlete_id).name,
+    statement: gap.statement,
+  }));
+  const findings = club.outings.filter((outing) => outing.finding).map((outing) => ({
+    attention_id: `finding:${outing.outing_id}`,
+    kind: 'SESSION_FINDING',
+    date: outing.date,
+    entity_id: outing.crew_id,
+    entity_name: entities.crews.get(outing.crew_id).name,
+    statement: outing.finding.statement,
+  }));
+  return [...unavailable, ...gaps, ...findings].sort((left, right) => right.date.localeCompare(left.date));
+}
+
+export function summarizeClub(club) {
+  const completed = club.outings.filter((outing) => outing.outcome === 'COMPLETED');
+  return {
+    crewCount: club.crews.length,
+    athleteCount: club.athletes.length,
+    physicalBoatCount: club.boats.length,
+    plannedOutings: club.outings.length,
+    completedCrewOutings: completed.length,
+    disruptedCrewOutings: club.outings.length - completed.length,
+    recordedActivities: club.activities.length,
+    participationGaps: club.participation_gaps.length,
+    attentionCount: listCoachAttention(club).length,
+    totalDistanceKm: Math.round(club.activities.reduce((sum, activity) => sum + activity.distance_m, 0) / 100) / 10,
+  };
+}
+
+export function summarizeCrew(club, crewId) {
+  const entities = maps(club);
+  const crew = entities.crews.get(crewId);
+  if (!crew) throw new RangeError(`Unknown crew: ${crewId}`);
+  const outingsForCrew = club.outings.filter((outing) => outing.crew_id === crewId);
+  const completed = outingsForCrew.filter((outing) => outing.outcome === 'COMPLETED');
+  return {
+    ...crew,
+    boat: entities.boats.get(crew.boat_id),
+    lineup: crew.lineup.map((seat) => ({ ...seat, athlete: entities.athletes.get(seat.athlete_id) })),
+    outings: outingsForCrew,
+    plannedOutings: outingsForCrew.length,
+    completedOutings: completed.length,
+    disruptedOutings: outingsForCrew.length - completed.length,
+    attentionCount: outingsForCrew.filter((outing) => outing.finding || outing.outcome !== 'COMPLETED').length,
+    distanceKm: Math.round(completed.reduce((sum, outing) => sum + outing.distance_m, 0) / 100) / 10,
+  };
+}
+
+export function summarizeAthlete(club, athleteId) {
+  const entities = maps(club);
+  const athlete = entities.athletes.get(athleteId);
+  if (!athlete) throw new RangeError(`Unknown athlete: ${athleteId}`);
+  const memberships = club.crews.filter((crew) => crew.lineup.some((seat) => seat.athlete_id === athleteId));
+  const activityHistory = club.activities.filter((activity) => activity.athlete_ids.includes(athleteId)).sort((left, right) => right.date.localeCompare(left.date));
+  const boatIds = [...new Set(activityHistory.map((activity) => activity.boat_id).filter(Boolean))];
+  return {
+    ...athlete,
+    crewIds: memberships.map((crew) => crew.crew_id),
+    crews: memberships,
+    boats: boatIds.map((boatId) => entities.boats.get(boatId)),
+    activityHistory,
+    activeDays: new Set(activityHistory.map((activity) => activity.date)).size,
+    waterCrewSessions: activityHistory.filter((activity) => activity.modality === 'WATER_CREW').length,
+    soloSessions: activityHistory.filter((activity) => activity.modality === 'WATER_SOLO').length,
+    ergSessions: activityHistory.filter((activity) => activity.modality === 'ERG').length,
+    distanceKm: Math.round(activityHistory.reduce((sum, activity) => sum + activity.distance_m, 0) / 100) / 10,
+    participationGaps: club.participation_gaps.filter((gap) => gap.athlete_id === athleteId),
+  };
+}

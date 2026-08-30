@@ -314,6 +314,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Expose the saved official evaluation through a visible Sessions-page action and a separate read-only destination. Present one consolidated comparison plus ten expandable individual case reports. Do not register benchmark fixtures as operational club sessions.
 - **Rationale:** The compact header hides primary navigation at narrower widths, so a submission-critical report needs an in-content entry point. At the same time, placing synthetic and derived-synthetic fixtures in the coach inbox would misrepresent them as athlete sessions and distort operational counts. Separate per-case reports provide the requested depth without compromising product truthfulness.
 
+## 2026-08-30 - Demonstrate club scale with a separate relational synthetic dataset
+
+- **Status:** accepted for the hackathon interface; live multi-session ingestion remains pending.
+- **Decision:** Add a clearly labelled two-week `WAKE Demo Club` dataset with four 2x lineups, four 4x lineups, two 8x lineups, sixteen fictional named athletes, named physical boats, planned crew outings, recorded solo/ergometer alternatives, and explicit participation gaps. Model a crew as an ordered lineup snapshot linked to a physical boat. Keep this dataset separate from the persistent session inbox and technical evaluation fixtures.
+- **Rationale:** One deep session demonstrates reconstruction quality but does not make the club-scale problem visible. The relational dataset lets the interface answer how often a crew launched, which lineups and physical boats an athlete rowed, and where expected activity lacks a record. Using fictional deterministic data avoids exposing the owner's private GPS and athlete identities. It also prevents a frontend aggregation from being misrepresented as an agent-generated longitudinal conclusion.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

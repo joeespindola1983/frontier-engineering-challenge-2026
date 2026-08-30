@@ -435,6 +435,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A report can exist technically and still be absent from the user journey. Discoverability and truthful data classification are both part of evaluation evidence quality.
 - **Next step:** Use the consolidated-to-individual drill-down in the final demo recording.
 
+### 41. Two-week relational club pulse
+
+- **Hypothesis:** A single deep session can show that WAKE reconstructs evidence, but it cannot show why a coach needs agentic triage across a club. Two weeks of relational activity across named athletes, recurring lineups, and physical boats should make the scaling problem and Team and Crew Memory layer visible without adding another chart-heavy dashboard.
+- **Change:** Added a deterministic `wake.demo_club.v1` dataset with sixteen fictional athletes, four 2x crews, four 4x crews, two 8x crews, ten crew-assigned physical boats, one shared 1x, 38 planned outings, 35 completed crew outings, three unavailable crews, five alternate solo/ergometer activities, and three expected days with no activity record. Added pure club, crew, athlete, and attention aggregations; a two-week club pulse; prioritized coach-review items; crew cards grouped by boat class; an athlete roster; and read-only crew and athlete drill-downs. Kept the synthetic club, operational session inbox, and technical Evaluation surface explicitly separate.
+- **Evaluation:** RED began with a missing module, then required the exact crew-class distribution, lineup size and seat uniqueness, matching physical boats, alternate modalities, gap integrity, relational summaries, safe attention language, and visible drill-down components. GREEN passes 51 web tests, ESLint, and the Vinext production build. Browser QA confirmed all ten crews and sixteen athletes in the default layout, opened Harbor Men 2x to inspect its two-person lineup, Aurora shell, and four planned outings, opened Lucas to inspect three recurring lineups, four physical boats, crew/solo/ergometer activity, and validated the complete home at 390 × 844.
+- **Result:** Keep the relational demo layer. The first club view now communicates 35/38 completed crew outings, 40 recorded activities, 511.5 km, ten review items, three crew-unavailable events, and three participation gaps. Missing participation remains a question requiring context rather than a claim about commitment, health, or fitness.
+- **Cost/runtime:** No model call and no API cost. Dataset construction, aggregation, rendering, tests, and browser QA are deterministic.
+- **Decision:** Use fictional names and explicit synthetic labelling in the public demo. Do not expose private athlete identities or GPS, and do not call this frontend aggregate an agent-generated club briefing until the longitudinal agent path is implemented and evaluated.
+- **Learning:** The unit of rowing memory is not only a session. Athlete, ordered lineup, physical shell, modality, and date must remain separately addressable or useful longitudinal questions become impossible to answer safely.
+- **Next step:** Rehearse the demo from club pulse to crew to athlete to the existing evidence-backed session, then decide whether real-derived anonymized summaries can be prepared without weakening privacy or submission focus.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

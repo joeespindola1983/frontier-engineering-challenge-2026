@@ -65,6 +65,86 @@ button { cursor: pointer; }
 .summary-strip strong { margin-top: 8px; font-size: 30px; font-weight: 560; line-height: 1; }
 .summary-strip small { margin-top: 9px; color: var(--muted); font-size: 11px; }
 
+.club-overview { padding-top: 54px; }
+.club-overview-heading { padding-bottom: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; border-bottom: 1px solid var(--line-strong); }
+.club-overview-heading h2, .operational-inbox-heading h2 { margin: 0; font-size: 31px; font-weight: 600; letter-spacing: -0.035em; }
+.club-overview-heading p { max-width: 750px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+.saved-evidence-label { flex: 0 0 auto; padding: 6px 8px; border: 1px solid #c5d9d3; background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.club-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line-strong); }
+.club-summary-grid > div { min-height: 118px; padding: 22px 20px 20px 0; display: grid; align-content: start; border-right: 1px solid var(--line); }
+.club-summary-grid > div:not(:first-child) { padding-left: 20px; }
+.club-summary-grid > div:last-child { border-right: 0; }
+.club-summary-grid span, .club-detail-stats span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; }
+.club-summary-grid strong { margin-top: 8px; font-size: 29px; font-weight: 570; line-height: 1; }
+.club-summary-grid small, .club-detail-stats small { margin-top: 8px; color: var(--muted); font-size: 10px; }
+.club-pulse-layout { padding-top: 42px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr); gap: 42px; align-items: start; }
+.compact-heading { margin-bottom: 18px; }
+.compact-heading h2, .compact-heading h3 { margin: 0; font-size: 21px; letter-spacing: -0.025em; }
+.club-attention-list { border-top: 1px solid var(--line-strong); }
+.club-attention-list button { width: 100%; min-height: 68px; padding: 13px 0; display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 18px; align-items: center; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; }
+.club-attention-list button:hover { background: rgba(255, 255, 255, 0.48); }
+.club-attention-list time { color: var(--muted); font-family: var(--mono); font-size: 9px; }
+.club-attention-list div { display: grid; }
+.club-attention-list strong { font-size: 12px; }
+.club-attention-list p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+.club-attention-list button > span { color: var(--accent); font-size: 9px; font-weight: 680; }
+.club-boundary { padding: 22px; border-top: 2px solid var(--warning); background: var(--surface); }
+.club-boundary h3 { margin: 0 0 9px; font-size: 18px; line-height: 1.25; }
+.club-boundary p { margin: 0; color: var(--muted); font-size: 10px; }
+.crew-groups, .athlete-roster { padding-top: 58px; }
+.crew-class-group { display: grid; grid-template-columns: 80px 1fr; border-top: 1px solid var(--line-strong); }
+.crew-class-label { padding-top: 18px; display: grid; align-content: start; }
+.crew-class-label strong { color: var(--accent); font-size: 24px; font-weight: 570; }
+.crew-class-label span { color: var(--muted); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.crew-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--line); }
+.crew-card { min-height: 112px; padding: 18px 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; }
+.crew-card:hover { background: var(--surface); }
+.crew-card > div:first-child { display: grid; }
+.crew-card > div:first-child > span { color: var(--accent); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+.crew-card > div:first-child > strong { margin-top: 5px; font-size: 15px; }
+.crew-card > div:first-child > small { margin-top: 5px; color: var(--muted); font-size: 9px; }
+.crew-card-result { display: grid; justify-items: end; text-align: right; }
+.crew-card-result strong { color: var(--accent); font-size: 20px; }
+.crew-card-result span, .crew-card-result small { color: var(--muted); font-family: var(--mono); font-size: 7px; text-transform: uppercase; }
+.crew-card-result small { margin-top: 7px; color: var(--warning); }
+.athlete-chip-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
+.athlete-chip-grid button { min-height: 66px; padding: 12px 14px; display: grid; align-content: center; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; }
+.athlete-chip-grid button:hover { background: var(--surface); }
+.athlete-chip-grid span { font-weight: 650; }
+.athlete-chip-grid small { margin-top: 3px; color: var(--muted); font-size: 8px; }
+.operational-inbox-heading { margin-top: 64px; padding: 25px 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; border-top: 1px solid var(--line-strong); }
+.operational-inbox-heading p { max-width: 520px; margin: 0; color: var(--muted); font-size: 10px; text-align: right; }
+
+.club-detail-page { padding-top: 26px; }
+.club-detail-header h1 { max-width: 760px; font-size: clamp(40px, 6vw, 65px); }
+.club-detail-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line-strong); }
+.club-detail-stats > div { min-height: 112px; padding: 22px 20px 18px 0; display: grid; align-content: start; border-right: 1px solid var(--line); }
+.club-detail-stats > div:not(:first-child) { padding-left: 20px; }
+.club-detail-stats > div:last-child { border-right: 0; }
+.club-detail-stats strong { margin-top: 7px; font-size: 25px; font-weight: 570; }
+.club-detail-layout { padding-top: 46px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(270px, 0.7fr); gap: 46px; align-items: start; }
+.lineup-list, .athlete-memberships { border-top: 1px solid var(--line-strong); }
+.lineup-list button, .athlete-memberships button { width: 100%; min-height: 66px; padding: 12px 0; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 15px; align-items: center; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; }
+.lineup-list button:hover, .athlete-memberships button:hover { background: rgba(255, 255, 255, 0.5); }
+.seat-number { color: var(--line-strong); font-family: var(--mono); font-size: 19px; }
+.lineup-list button > div, .athlete-memberships button > div { display: grid; }
+.lineup-list small, .athlete-memberships small { color: var(--muted); font-size: 9px; }
+.lineup-list button > span:last-child, .athlete-memberships button > span { color: var(--accent); font-size: 9px; font-weight: 680; }
+.athlete-memberships button { grid-template-columns: minmax(0, 1fr) auto; }
+.athlete-gap-note { margin-top: 22px; padding: 13px 15px; display: flex; align-items: baseline; gap: 13px; border-left: 2px solid var(--warning); background: var(--warning-soft); color: var(--ink-soft); font-size: 10px; }
+.athlete-gap-note strong { flex: 0 0 auto; color: var(--warning); font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+.outing-history { padding-top: 58px; }
+.outing-table { border-top: 1px solid var(--line-strong); }
+.outing-table article { min-height: 76px; padding: 14px 0; display: grid; grid-template-columns: 150px minmax(0, 1fr) 150px; gap: 22px; align-items: center; border-bottom: 1px solid var(--line); }
+.outing-table article.needs-attention { background: linear-gradient(90deg, rgba(244, 232, 223, 0.7), transparent 74%); }
+.outing-table time { color: var(--muted); font-family: var(--mono); font-size: 9px; }
+.outing-table article > div { display: grid; }
+.outing-table article > div strong { font-size: 12px; }
+.outing-table article > div small { margin-top: 3px; color: var(--muted); font-size: 9px; }
+.outing-table article > div:last-child { justify-items: end; text-align: right; }
+.outing-table article > div:last-child span { font-family: var(--mono); font-size: 10px; }
+.outing-table article > div:last-child small { color: var(--accent); }
+
 .storage-note { margin-top: 22px; padding: 12px 14px; display: flex; align-items: baseline; gap: 12px; border-left: 2px solid var(--accent); background: var(--accent-soft); color: var(--ink-soft); font-size: 11px; }
 .storage-note strong { flex: 0 0 auto; color: var(--accent); font-family: var(--mono); font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase; }
 
@@ -367,6 +447,9 @@ button { cursor: pointer; }
   .summary-strip { grid-template-columns: repeat(2, 1fr); }
   .summary-strip > div:nth-child(2) { border-right: 0; }
   .summary-strip > div:nth-child(3), .summary-strip > div:nth-child(4) { border-top: 1px solid var(--line); }
+  .club-pulse-layout, .club-detail-layout { grid-template-columns: 1fr; }
+  .club-boundary { max-width: 680px; }
+  .athlete-chip-grid { grid-template-columns: repeat(3, 1fr); }
   .session-row { grid-template-columns: minmax(260px, 1.5fr) 1fr auto; }
   .session-row > div:nth-child(3) { display: none; }
   .session-row-operational { grid-template-columns: minmax(260px, 1.5fr) 0.6fr minmax(170px, 0.8fr); }
@@ -408,6 +491,28 @@ button { cursor: pointer; }
   .summary-strip { grid-template-columns: 1fr 1fr; }
   .summary-strip > div { min-height: 106px; padding: 17px 12px 16px 0; }
   .summary-strip > div:not(:first-child) { padding-left: 12px; }
+  .club-overview { padding-top: 40px; }
+  .club-overview-heading, .operational-inbox-heading { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .club-overview-heading p, .operational-inbox-heading p { text-align: left; }
+  .club-summary-grid, .club-detail-stats { grid-template-columns: 1fr 1fr; }
+  .club-summary-grid > div, .club-detail-stats > div { min-height: 102px; padding: 17px 12px 16px 0; }
+  .club-summary-grid > div:not(:first-child), .club-detail-stats > div:not(:first-child) { padding-left: 12px; }
+  .club-summary-grid > div:nth-child(2), .club-detail-stats > div:nth-child(2) { border-right: 0; }
+  .club-summary-grid > div:nth-child(n + 3), .club-detail-stats > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .club-attention-list button { grid-template-columns: 1fr auto; gap: 5px 12px; }
+  .club-attention-list time { grid-column: 1 / -1; }
+  .club-attention-list button > span { grid-column: 2; grid-row: 2; }
+  .crew-class-group { grid-template-columns: 52px 1fr; }
+  .crew-card-grid { grid-template-columns: 1fr; }
+  .crew-card { padding: 16px 14px; }
+  .athlete-chip-grid { grid-template-columns: repeat(2, 1fr); }
+  .club-detail-header { align-items: flex-start; }
+  .lineup-list button { grid-template-columns: 28px minmax(0, 1fr); }
+  .lineup-list button > span:last-child { grid-column: 2; }
+  .outing-table article { grid-template-columns: 1fr auto; gap: 8px 14px; }
+  .outing-table time { grid-column: 1 / -1; }
+  .outing-table article > div:last-child { grid-column: 2; grid-row: 2; }
+  .athlete-gap-note { align-items: flex-start; flex-direction: column; gap: 5px; }
   .session-row { grid-template-columns: 1fr auto; gap: 12px; }
   .session-row > div:nth-child(2), .session-row > div:nth-child(3) { display: none; }
   .session-action { justify-items: end; }
