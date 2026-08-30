@@ -1,0 +1,25 @@
+{
+  "api_called": false,
+  "authorization": {
+    "authorized": false,
+    "provider_cap": false,
+    "required_total_usd": 0.2
+  },
+  "boundary": "The preflight contains no model output. Live execution uses store:false and persists the verified WAKE report locally.",
+  "created_at": "2026-08-30T20:16:25+00:00",
+  "input": {
+    "path": "inputs/club-post-regatta-memory.json",
+    "sha256": "91d9259cc651a781d312bc9f53755b7aab9827aba27e65b1e74cb9bdda9d9d5e"
+  },
+  "request": {
+    "path": "requests/club-post-regatta-memory.wake_bounded_agent.json",
+    "sha256": "73ad3ef14d93b77b116addb9990958ab837aca9b0b897e47078c9237149bb090",
+    "workflow": "WAKE_BOUNDED_AGENT"
+  },
+  "request_count": 1,
+  "saved_reports": {
+    "count": 0,
+    "reopen_cost_usd": 0
+  },
+  "schema_version": "wake.post_regatta_memory_dry_run.v1"
+}

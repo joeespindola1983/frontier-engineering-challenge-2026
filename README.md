@@ -106,6 +106,19 @@ The safe default freezes four requests: direct baseline and bounded WAKE for
 The full four-start comparison requires US$0.80; this operational gate is not a
 provider billing cap. Saved verified reports can be reopened without a new call.
 
+Freeze the combined pre/post-regatta club memory without calling the API:
+
+```bash
+uv run python scripts/post_regatta_memory.py
+```
+
+This prepares one bounded WAKE request over the deterministic screen of 102
+real-informed synthetic activities, 16 athletes, 10 crews, and six period
+comparison routes. It uses `store: false`; the verified report will be saved by
+WAKE and can be reopened at US$0.00. Live execution remains separate and
+requires `--execute`, `OPENAI_API_KEY`, and a new finite US$0.20 start
+authorization. The authorization is not a provider billing cap.
+
 Grade a complete directory of structured outputs without network access:
 
 ```bash
@@ -168,7 +181,7 @@ The club pulse contains ten fictional crews (four 2x, four 4x, and two 8x), sixt
 
 A separate deterministic **Competition Review** closes the fictional club loop without copying real athlete identities. Ten club entries across eight fictional events connect all sixteen athletes to exact crew snapshots, physical boats, pre-race shared outings, three fictional opponent clubs, official order, pace, gap, displayed-time ties, and one context-seeking non-completion. Category distances are real-informed references from a supplied same-federation programme, not direct confirmation for the separate result stage. Training history remains descriptive context and never becomes a causal performance or automatic crew-selection claim.
 
-The club layer performs a cost-free deterministic screen over 52 recorded activities and 38 planned crew outings. A reproducible public batch under `data/demo-club-batch/` gives every displayed activity an isolated source record: all 52 pass validation and reconstruction, and 51 have a comparable plan. Fourteen individual indoor records cover fixed-distance, fixed-time, and interval Concept2 PM5 transcription shapes. Athlete-level `Training Day` views connect water and indoor work while keeping modality-specific distance separate. Automatic photo OCR and native ErgData ingestion remain unimplemented. A separate [anonymized real-reference packet](docs/evidence/concept2-real-reference/README.md) shows the minimized, human-confirmed PM5 material that informed the adapter. Two authorized session investigations cost US$0.194118 combined. The separate longitudinal pilot then compared two direct-baseline reports with two bounded WAKE reports for US$0.110426; both workflows passed the same post-run capability checks, so no quality advantage is claimed. The [post-regatta package](data/demo-club-post-regatta/v1/README.md) demonstrates how the same club memory accepts another two weeks and distinguishes comparable observations, environmental confounding, missing context, and insufficient evidence at US$0.00.
+The club layer performs a cost-free deterministic screen over 52 recorded activities and 38 planned crew outings. A reproducible public batch under `data/demo-club-batch/` gives every displayed activity an isolated source record: all 52 pass validation and reconstruction, and 51 have a comparable plan. Fourteen individual indoor records cover fixed-distance, fixed-time, and interval Concept2 PM5 transcription shapes. Athlete-level `Training Day` views connect water and indoor work while keeping modality-specific distance separate. Automatic photo OCR and native ErgData ingestion remain unimplemented. A separate [anonymized real-reference packet](docs/evidence/concept2-real-reference/README.md) shows the minimized, human-confirmed PM5 material that informed the adapter. Two authorized session investigations cost US$0.194118 combined. The separate longitudinal pilot then compared two direct-baseline reports with two bounded WAKE reports for US$0.110426; both workflows passed the same post-run capability checks, so no quality advantage is claimed. The [post-regatta package](data/demo-club-post-regatta/v1/README.md) demonstrates how the same club memory accepts another two weeks and distinguishes comparable observations, environmental confounding, missing context, and insufficient evidence at US$0.00. One additional combined-club WAKE memory request is now frozen over the 102-activity pre/post screen; it has not been executed and requires a separate US$0.20 start authorization.
 
 The hosted product remains a safe replay. When connected to the local product service, its intake requires a plan and SpeedCoach recording and accepts mobile, environment, and context as optional evidence enhancers. The service prepares a new ground-truth-free compact summary containing source coverage, quality, supported cross-source findings, and explicit evidence gaps. Only the byte-identical five-source public demonstration bundle can use committed replay output; different evidence cannot inherit that answer, and prepared new bundles are not executed automatically. Display data is adapted from committed public agent output, source selection remains metric-specific, environmental language remains associative rather than causal, and memory changes only after explicit coach approval.
 

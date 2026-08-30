@@ -585,6 +585,16 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Decision:** Correct only comprehension and reproduction blockers at this stage. Do not broaden the MVP before recording unless owner QA finds another material obstacle.
 - **Learning:** A correct artifact can still tell a false story if neighboring status copy is stale. Reproduction scripts also need to validate the runtime before long tests and protect currency strings from shell expansion.
 
+### 55. Frozen combined-club GPT memory request
+
+- **Hypothesis:** One bounded longitudinal synthesis over the deterministic pre/post-regatta screen can preserve useful coach memory more efficiently than narrating each activity independently, while evidence references and abstention rules prevent unsupported athletic or causal conclusions.
+- **Change:** Added RED-first contracts, `scripts/post_regatta_memory.py`, a six-comparison evidence packet, a compact 102-activity combined-club summary, one strict `store: false` WAKE request, hash verification, local report persistence, and a one-start CLI execution boundary. The compact input covers 16 fictional athletes, 10 crews, 68 water activities, 34 individual Concept2 activities, prior verified investigations, and the supported/conflicted/insufficient period routes without transmitting raw telemetry or private source files.
+- **Evaluation:** RED failed because the post-regatta memory module did not exist. GREEN passes three focused tests for coverage, privacy fields, evidence-catalog closure, strict bounded request configuration, finite US$0.20 start authorization, zero-cost reopening, and tamper detection. The committed preflight verifier returns no errors and freezes the input and request hashes.
+- **Result:** `READY_FOR_AUTHORIZATION`. No GPT output or combined-club model conclusion exists yet. The 102 activities remain deterministically preserved; the future model call will produce one verified coach-facing memory artifact rather than become the raw data store.
+- **Cost/runtime:** New model cost remains US$0.00. One future paid start requires a US$0.20 operational authorization; this gate is not a provider billing cap. The prior bounded WAKE longitudinal calls averaged US$0.022923 each, but that observation is not a guarantee for this larger scope. A saved verified result will reopen at US$0.00.
+- **Decision:** Freeze before spending. Keep `store: false` and save the verified structured result in WAKE. Do not execute without a new explicit finite authorization and do not expand this into one call per athlete, crew, or activity without a separate evaluated need.
+- **Learning:** “Guardar no GPT” should not mean making provider retention the product database. Deterministic records remain the source of truth; the model creates a versioned, evidence-bound memory that the application owns and can reopen without another call.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

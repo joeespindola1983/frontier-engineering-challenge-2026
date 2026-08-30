@@ -1,0 +1,83 @@
+{
+  "schema_version": "wake.post_regatta_longitudinal_evidence.v1",
+  "package_id": "wake-demo-club-post-regatta-v1",
+  "comparisons": [
+    {
+      "comparison_id": "lucas-low-rate-1000m",
+      "status": "SUPPORTED",
+      "statement": "Lucas completed the comparable 1,000 m low-rate Concept2 record 4 seconds faster than the pre-regatta synthetic reference at the same 12 SPM.",
+      "limitations": [
+        "This is a within-workout observed difference; the evidence does not establish why the time changed."
+      ],
+      "evidence_refs": [
+        "record:activity-lucas-erg-20260818",
+        "post-athlete-lucas-erg-1000m-20260917"
+      ]
+    },
+    {
+      "comparison_id": "bianca-2000m",
+      "status": "SUPPORTED",
+      "statement": "Bianca completed the comparable 2,000 m Concept2 record 12 seconds slower than the pre-regatta synthetic reference at the same 26 SPM average.",
+      "limitations": [
+        "Fatigue, intent, resistance setting, recovery, and other human context remain unknown."
+      ],
+      "evidence_refs": [
+        "record:activity-bianca-erg-20260824",
+        "post-athlete-bianca-erg-2000m-20260916"
+      ]
+    },
+    {
+      "comparison_id": "marina-1000m-activation",
+      "status": "SUPPORTED",
+      "statement": "Marina's comparable 1,000 m activation was within 1 second of the pre-regatta synthetic reference.",
+      "limitations": [
+        "The observation is narrow to this workout shape and does not establish a broader trend."
+      ],
+      "evidence_refs": [
+        "record:activity-marina-erg-20260820",
+        "post-athlete-marina-erg-1000m-20260915"
+      ]
+    },
+    {
+      "comparison_id": "atlas-high-wind-water",
+      "status": "CONFLICTED",
+      "statement": "Atlas Men 4x recorded a different on-water pace pattern during a 7.8 m/s tail-cross wind session.",
+      "limitations": [
+        "Wind, current, lineup, equipment, course, and session intent prevent attribution to the crew."
+      ],
+      "evidence_refs": [
+        "post-crew-4x-men-2026-09-16"
+      ]
+    },
+    {
+      "comparison_id": "andre-participation-gap",
+      "status": "INSUFFICIENT",
+      "statement": "Andre has one expected post-regatta training day without an individual or linked crew record.",
+      "limitations": [
+        "Rest, absence, unlinked evidence, and another modality remain possible explanations."
+      ],
+      "evidence_refs": [
+        "post-athlete-andre-expected-20260911"
+      ]
+    },
+    {
+      "comparison_id": "sofia-unmatched-interval",
+      "status": "INSUFFICIENT",
+      "statement": "Sofia's post-regatta interval has no equivalent pre-regatta workout shape in the package.",
+      "limitations": [
+        "The record can be preserved, but a direction-of-change comparison is unsupported."
+      ],
+      "evidence_refs": [
+        "post-athlete-sofia-erg-interval-20260918"
+      ]
+    }
+  ],
+  "evidence_descriptions": {
+    "post-athlete-lucas-erg-1000m-20260917": "Synthetic post-regatta 1,000 m Concept2 low-rate record for Lucas.",
+    "post-athlete-bianca-erg-2000m-20260916": "Synthetic post-regatta 2,000 m Concept2 record for Bianca.",
+    "post-athlete-marina-erg-1000m-20260915": "Synthetic post-regatta 1,000 m Concept2 activation record for Marina.",
+    "post-crew-4x-men-2026-09-16": "Synthetic Atlas Men 4x water record with 7.8 m/s tail-cross wind context.",
+    "post-athlete-andre-expected-20260911": "Synthetic expected-training marker with no linked activity for Andre.",
+    "post-athlete-sofia-erg-interval-20260918": "Synthetic post-regatta Concept2 interval record for Sofia without a matched pre-regatta workout."
+  }
+}
