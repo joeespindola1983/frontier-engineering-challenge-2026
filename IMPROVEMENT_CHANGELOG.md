@@ -380,6 +380,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** A fixture can be complete before an evaluation case is complete. Registry status, input-bundle version, grader coverage, and model-output availability must advance together or reproducibility becomes misleading.
 - **Next step:** Add generalized grader v1.2 behavior with RED tests for dynamic source policy, scenario-specific environmental interpretation, abstention, missing intervals, low SPM, and excess recovery; then create a no-cost ten-case baseline/agent preflight before authorizing paid calls.
 
+### 36. Generalized grader v1.2 and twenty-request no-cost preflight
+
+- **Hypothesis:** The ten-case expansion can be scored fairly without changing the rubric if case-specific expectations are derived from each versioned contract rather than inherited from the wind-shift hero case.
+- **Change:** Added grader v1.2 beside unchanged v1.1. It derives plan checks from normalized blocks, source checks from each expected policy, environmental categories from projected wind timelines, abstention concepts from required evaluator boundaries, and deviation accuracy from segment identity. Added an offline v1.2 CLI and explicit `--inputs` support to both runners plus explicit `--prompt` selection for the agent. Preserved 20 hashed preflight requests under `evaluation/runs/expanded-evaluation-v2/preflight/`.
+- **Evaluation:** RED began with the missing versioned module/config. Calibration then required perfect 100/100 profiles for cases 003-010, preserved perfect scores for 001-002, dynamic rejection of zero-only mobile SPM, case-specific crosswind/gust recognition, zero environmental score for causal language, and exact detection of `work-04`, `work-03`, and `recovery-02`. CLI REDs required all ten baseline and agent requests without network plus explicit offline case-set grading. Final verification passes 157 deterministic Python tests and all four public fixture/artifact checks. The committed preflight contains 10 baseline requests totaling 264,576 bytes and 10 WAKE requests totaling 295,886 bytes; both manifests declare `api_called: false` and contain no evaluator ground truth.
+- **Result:** The expanded comparison is now reproducible through request construction and deterministic scoring. Calibration outputs score 100, but no real baseline or agent answer exists for the eight new cases, so there is no expanded model-quality score.
+- **Cost/runtime:** No model call and no API cost. Request generation and offline scoring only.
+- **Decision:** Keep grader v1.2 and the explicit runner selectors. Preserve v1.1 and historical runner defaults. Do not move cases 003-010 to `IMPLEMENTED` or publish a ten-case score until paid outputs and trajectories are complete.
+- **Learning:** A generalized grader should encode invariants from case data, not prose unique to the first demonstration. A passing request preflight proves reproducibility and safety boundaries, not agent quality.
+- **Next step:** Review estimated cost for 20 paid calls, execute baseline and WAKE once on the exact committed preflight inputs with explicit authorization, preserve any failures, then score with grader v1.2.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

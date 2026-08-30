@@ -102,6 +102,19 @@ v2 preflight is request evidence only. A separate official paid execution passed
 all 8, 10, and 12 applicable condition checks and cross-condition consistency;
 that result remains limited to the single frozen synthetic session.
 
+For the ten-case expansion, the generic CLI now accepts explicit input and
+prompt paths while preserving its historical v1 defaults:
+
+```bash
+uv run python scripts/wake_agent.py \
+  --inputs evaluation/baseline-inputs/v2 \
+  --config config/wake-agent-v2.json \
+  --prompt prompts/wake-agent-v2.md \
+  --output /tmp/wake-agent-v2-preview
+```
+
+Without `--execute`, this remains a zero-cost dry-run.
+
 ## Product-service entry point
 
 `scripts/wake_product_service.py` wraps the runner behind task-level product operations. Its safe default is a committed public replay:

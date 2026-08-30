@@ -1,0 +1,39 @@
+{
+  "schema_version": "wake.grader_config.v1",
+  "grader_version": "1.2",
+  "rubric_version": "1.0",
+  "analysis_output_schema": "schemas/analysis-output.schema.json",
+  "case_registry": "evaluation/cases.json",
+  "baseline_input_bundle": "evaluation/baseline-inputs/v2",
+  "dimension_weights": {
+    "plan_interpretation": 15,
+    "session_association_and_alignment": 15,
+    "segment_reconstruction": 15,
+    "metric_level_source_trust": 15,
+    "deviation_detection": 15,
+    "environmental_interpretation": 10,
+    "evidence_and_abstention": 10,
+    "follow_up_questions": 5
+  },
+  "legacy_case_dimensions": {
+    "case-001-misaligned-double-scull": [
+      "session_association_and_alignment",
+      "metric_level_source_trust",
+      "evidence_and_abstention",
+      "follow_up_questions"
+    ]
+  },
+  "critical_zero_rules": [
+    "known_broken_mobile_spm_selected",
+    "causal_wind_conclusion_asserted",
+    "unsupported_technique_equipment_or_medical_claim_asserted"
+  ],
+  "case_score_normalization": "earned_applicable_points_divided_by_applicable_points_times_100",
+  "run_primary_metric": "macro_average_case_score",
+  "calibration_changes": [
+    "derive_plan_checks_from_each_case_plan",
+    "interpret_expected_source_policy_dynamically",
+    "derive_environment_category_from_projected_timeline",
+    "match_required_abstention_concepts_from_ground_truth"
+  ]
+}

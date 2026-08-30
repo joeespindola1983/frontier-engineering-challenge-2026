@@ -1,4 +1,4 @@
-# Deterministic Grader v1.1
+# Deterministic Graders v1.1 and v1.2
 
 WAKE's first grader is an offline, versioned implementation of the frozen
 100-point rubric. It must be fixed before paid baseline or agent answers are
@@ -67,3 +67,32 @@ common metric-name aliases, connected pairwise matches that identify the same
 multi-source session, and “unassessable” as abstention language. Rubric weights,
 ground truth, tolerances, and model outputs were not changed. Version 1.0 remains
 committed for auditability; no official baseline-versus-agent result uses it.
+
+## Expanded calibration in v1.2
+
+Grader v1.2 preserves the rubric weights and critical-zero rules but removes
+case-002-specific scoring assumptions. It reads `baseline-inputs/v2` and derives:
+
+- plan checks from each case's normalized plan;
+- expected metric sources from each case's source policy;
+- calm, headwind, tailwind, crosswind, and gust expectations from the projected
+  environmental timeline;
+- required abstention concepts from evaluator-only ground truth.
+
+Calibration profiles score 100/100 for all ten fixture-ready cases. Injected
+failures prove rejection of zero-only mobile SPM, wrong environmental category,
+causal wind language, and incorrect deviation segment identity. The historical
+v1.1 module and configuration remain unchanged.
+
+Until cases 003-010 move to `IMPLEMENTED`, grade an explicit calibration set by
+repeating `--case`:
+
+```bash
+uv run python scripts/grade_outputs_v1_2.py \
+  --outputs /path/to/run/outputs \
+  --output /path/to/run/grade-report-v1.2.json \
+  --case case-003-calm-expert-compliant
+```
+
+The v1.2 command is offline. Calibration proves deterministic scoring behavior,
+not the quality of a model output that has not yet been executed.

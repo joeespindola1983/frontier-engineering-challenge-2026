@@ -529,14 +529,16 @@ def main() -> None:
     parser.add_argument("--case", action="append", default=[], dest="case_ids")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument("--inputs", type=Path, default=DEFAULT_INPUTS)
+    parser.add_argument("--prompt", type=Path, default=DEFAULT_PROMPT)
     args = parser.parse_args()
 
     config = read_json(args.config)
-    prompt = DEFAULT_PROMPT.read_text(encoding="utf-8")
+    prompt = args.prompt.read_text(encoding="utf-8")
     output_schema = read_json(DEFAULT_SCHEMA)
     summaries = [
         read_json(path)
-        for path in selected_summaries(DEFAULT_INPUTS, args.case_ids)
+        for path in selected_summaries(args.inputs, args.case_ids)
     ]
     mode = "execute" if args.execute else "dry-run"
     output_dir = args.output or default_output_dir(mode)

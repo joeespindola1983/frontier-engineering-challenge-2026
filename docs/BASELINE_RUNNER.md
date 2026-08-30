@@ -41,6 +41,15 @@ uv run python scripts/run_baseline.py \
   --output /tmp/wake-baseline-preview
 ```
 
+The historical default remains the frozen two-case v1 bundle. Preview the
+ten-case v2 expansion explicitly:
+
+```bash
+uv run python scripts/run_baseline.py \
+  --inputs evaluation/baseline-inputs/v2 \
+  --output /tmp/wake-baseline-v2-preview
+```
+
 ## Paid execution
 
 Set `OPENAI_API_KEY` in the process environment without committing it, then explicitly add `--execute`:

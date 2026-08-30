@@ -1,0 +1,60 @@
+{
+  "api_called": false,
+  "config_sha256": "6bcb72994e3d3982396a0cf886df71c279d2b39ebca27911206f48d84657673a",
+  "created_at": "2026-08-30T11:49:14.751+00:00",
+  "requests": {
+    "case-001-misaligned-double-scull": {
+      "bytes": 24715,
+      "path": "requests/case-001-misaligned-double-scull.json",
+      "sha256": "4e2ee0ea8aad900a6b8d0fc315efdd15c17f64abd03cd246537c0c173de91b57"
+    },
+    "case-002-wind-shift-plan-deviation": {
+      "bytes": 51383,
+      "path": "requests/case-002-wind-shift-plan-deviation.json",
+      "sha256": "b38b65f358d6ed087c4030ad890fdc772d75359ae5956427b9403ff05b469a9b"
+    },
+    "case-003-calm-expert-compliant": {
+      "bytes": 30515,
+      "path": "requests/case-003-calm-expert-compliant.json",
+      "sha256": "69ac02669e2f238531afcd95e5c0335407fb1f2b341e0d2ae69d1022efc7d635"
+    },
+    "case-004-steady-headwind-compliant": {
+      "bytes": 31805,
+      "path": "requests/case-004-steady-headwind-compliant.json",
+      "sha256": "32c22b5b36396db426f36968672ef2d195a51151b11d7f7b27e8fe45701fa06c"
+    },
+    "case-005-tailwind-fast-not-improvement": {
+      "bytes": 29960,
+      "path": "requests/case-005-tailwind-fast-not-improvement.json",
+      "sha256": "e1c408fed026fc43a5f84617bae6a98d91aa9620aeb323f34c8794e1da3fe51d"
+    },
+    "case-006-crosswind-gusts": {
+      "bytes": 30479,
+      "path": "requests/case-006-crosswind-gusts.json",
+      "sha256": "c0533239b7f40367ee15bce541378adb6db3df5c1630a6def75ecf3ef25d1616"
+    },
+    "case-007-incomplete-intervals": {
+      "bytes": 22501,
+      "path": "requests/case-007-incomplete-intervals.json",
+      "sha256": "afaf2764f5d3f0d599525096b365323c76e08159892ab695500a0ac4edd2bd6c"
+    },
+    "case-008-correct-distance-wrong-spm": {
+      "bytes": 24157,
+      "path": "requests/case-008-correct-distance-wrong-spm.json",
+      "sha256": "09df08d1866cc36a172208d4de32ee0245d65d00889069e590020c838225dbe3"
+    },
+    "case-009-excess-recovery": {
+      "bytes": 24950,
+      "path": "requests/case-009-excess-recovery.json",
+      "sha256": "fc4a505d771bf5165ba2f3b8e71c399281d6770ca687cf84be13b15519d5e041"
+    },
+    "case-010-mobile-spm-zero": {
+      "bytes": 25421,
+      "path": "requests/case-010-mobile-spm-zero.json",
+      "sha256": "2384f016795bb7eb2258673a5b3724404684b58a90566b9320586e136e497c3e"
+    }
+  },
+  "run_id": "agent",
+  "schema_version": "wake.agent_dry_run.v1",
+  "workflow": "wake-agent-v2-tool-loop"
+}

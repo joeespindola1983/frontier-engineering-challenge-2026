@@ -1,0 +1,407 @@
+{
+  "input": "{\"case_id\":\"case-001-misaligned-double-scull\",\"cross_source_findings\":[{\"evidence_refs\":[\"input/sources/speedcoach.csv\",\"input/sources/mobile-ios-sensor.csv\",\"input/sources/mobile-android-sensor.csv\"],\"finding_id\":\"clock-offsets\",\"summary\":\"Mobile clocks start almost one hour after the SpeedCoach clock; the cause is not supplied.\",\"type\":\"CLOCK_OFFSET\",\"values\":{\"android_from_speedcoach_s\":3564.821,\"ios_from_speedcoach_s\":3589.127}},{\"evidence_refs\":[\"input/sources/speedcoach.csv\",\"input/sources/mobile-ios-sensor.csv\"],\"finding_id\":\"route-overlap-speedcoach-ios\",\"summary\":\"Nearest-route distances are small in both directions.\",\"type\":\"ROUTE_OVERLAP\",\"values\":{\"ios_to_speedcoach\":{\"max_m\":25.103,\"median_m\":3.185,\"p95_m\":4.607},\"speedcoach_to_ios\":{\"max_m\":4.687,\"median_m\":2.747,\"p95_m\":3.968}}},{\"evidence_refs\":[\"input/sources/speedcoach.csv\",\"input/sources/mobile-android-sensor.csv\"],\"finding_id\":\"route-overlap-speedcoach-android\",\"summary\":\"Nearest-route distances are small in both directions.\",\"type\":\"ROUTE_OVERLAP\",\"values\":{\"android_to_speedcoach\":{\"max_m\":30.982,\"median_m\":1.943,\"p95_m\":3.596},\"speedcoach_to_android\":{\"max_m\":3.712,\"median_m\":1.524,\"p95_m\":2.632}}}],\"domain_knowledge\":[{\"limitations\":[],\"meaning\":\"Target stroke rate in strokes per minute (SPM).\",\"status\":\"HUMAN_CONFIRMED\",\"term\":\"voga\"},{\"limitations\":[\"Exact effort, physiological, heart-rate, lactate, and power boundaries are not supplied.\"],\"meaning\":\"Standardized rowing training-zone codes.\",\"status\":\"HUMAN_CONFIRMED\",\"term\":\"B0-B7 and E1-E7\"}],\"environment\":null,\"evidence_gaps\":[\"No planned workout is supplied.\",\"Boat class, crew, and seats are not confirmed in the input.\",\"No usable heart-rate or watch evidence is supplied.\",\"No coach technique observation is supplied.\",\"No environmental evidence is supplied.\"],\"generated_by\":\"scripts/build_baseline_inputs.py@1.0\",\"input_hashes\":{\"context.json\":\"69caaa557f74df0a5afb1748f41cdd50ccf923a54a1c51e896a6e176bf021cf5\",\"sources/mobile-android-metadata.json\":\"6bcdbde394cf4bdde91ae2561b634e6cc46010180983aada3c28795723b9666b\",\"sources/mobile-android-sensor.csv\":\"2abe837962d4b59e653fbe2d50d2ad2a78fa03509458ebb15ff3b70907b220e1\",\"sources/mobile-android-workout.csv\":\"310e857fd36ba46c7fdd38b8677a91ab665f1d9f8fccd7024b085983f61be447\",\"sources/mobile-ios-metadata.json\":\"5fc2f7380b0885902f8a23be3fe3d79e548d444cb4bbe7c8425dbf856520e16c\",\"sources/mobile-ios-sensor.csv\":\"5d089e03a5e102261edb06ec0583af07dd0ed62ecb5a95372bf08ae05c1330ba\",\"sources/mobile-ios-workout.csv\":\"4afd29f8c97b80496d8bcec24417cfe5a44be10ce1c9c5b9785ff41404538972\",\"sources/speedcoach.csv\":\"65584101c11a768fc42e37e631a49d0756f0b003e5d9a6b23c53a021da830a1c\"},\"investigation_request\":\"Determine whether the supplied recordings represent one rowing session, reconcile their claims per metric, and state what cannot yet be evaluated.\",\"known_context\":{\"coach_observation\":null,\"crew_context\":null,\"environment_observation\":null,\"goal_context\":null,\"planned_workout\":null},\"plan\":null,\"schema_version\":\"wake.case_summary.v1\",\"sources\":[{\"evidence_refs\":[\"input/sources/speedcoach.csv\"],\"kind\":\"SPEEDCOACH\",\"metrics\":{\"avg_spm\":22.0,\"distance_m\":3915.3,\"elapsed\":\"00:25:25.8\",\"route_points\":549,\"start_time\":\"2026-01-15T06:59:50-03:00\",\"strokes\":549},\"quality_flags\":[\"GPS_PRESENT\",\"SPM_PRESENT\",\"HEART_RATE_ABSENT\"],\"source_id\":\"speedcoach\",\"time_series_windows\":[{\"average_speed_m_s\":2.499,\"average_spm\":21.05,\"distance_end_m\":144.7,\"distance_start_m\":4.5,\"end_offset_s\":60,\"samples\":20,\"start_offset_s\":0},{\"average_speed_m_s\":2.647,\"average_spm\":21.12,\"distance_end_m\":305.5,\"distance_start_m\":152.3,\"end_offset_s\":120,\"samples\":21,\"start_offset_s\":60},{\"average_speed_m_s\":2.544,\"average_spm\":20.98,\"distance_end_m\":461.2,\"distance_start_m\":313.3,\"end_offset_s\":180,\"samples\":21,\"start_offset_s\":120},{\"average_speed_m_s\":2.582,\"average_spm\":20.76,\"distance_end_m\":620.2,\"distance_start_m\":468.9,\"end_offset_s\":240,\"samples\":21,\"start_offset_s\":180},{\"average_speed_m_s\":2.504,\"average_spm\":20.93,\"distance_end_m\":772.1,\"distance_start_m\":626.9,\"end_offset_s\":300,\"samples\":21,\"start_offset_s\":240},{\"average_speed_m_s\":2.452,\"average_spm\":21.31,\"distance_end_m\":919.5,\"distance_start_m\":779.2,\"end_offset_s\":360,\"samples\":21,\"start_offset_s\":300},{\"average_speed_m_s\":2.445,\"average_spm\":21.68,\"distance_end_m\":1070.0,\"distance_start_m\":926.0,\"end_offset_s\":420,\"samples\":22,\"start_offset_s\":360},{\"average_speed_m_s\":2.558,\"average_spm\":22.0,\"distance_end_m\":1225.0,\"distance_start_m\":1077.2,\"end_offset_s\":480,\"samples\":22,\"start_offset_s\":420},{\"average_speed_m_s\":2.615,\"average_spm\":21.8,\"distance_end_m\":1383.7,\"distance_start_m\":1231.8,\"end_offset_s\":540,\"samples\":22,\"start_offset_s\":480},{\"average_speed_m_s\":2.675,\"average_spm\":22.0,\"distance_end_m\":1544.9,\"distance_start_m\":1390.9,\"end_offset_s\":600,\"samples\":22,\"start_offset_s\":540},{\"average_speed_m_s\":2.694,\"average_spm\":22.52,\"distance_end_m\":1703.6,\"distance_start_m\":1552.2,\"end_offset_s\":660,\"samples\":22,\"start_offset_s\":600},{\"average_speed_m_s\":2.659,\"average_spm\":22.37,\"distance_end_m\":1866.7,\"distance_start_m\":1710.9,\"end_offset_s\":720,\"samples\":23,\"start_offset_s\":660},{\"average_speed_m_s\":2.656,\"average_spm\":21.86,\"distance_end_m\":2028.4,\"distance_start_m\":1874.3,\"end_offset_s\":780,\"samples\":22,\"start_offset_s\":720},{\"average_speed_m_s\":2.656,\"average_spm\":21.36,\"distance_end_m\":2185.1,\"distance_start_m\":2035.4,\"end_offset_s\":840,\"samples\":21,\"start_offset_s\":780},{\"average_speed_m_s\":2.564,\"average_spm\":20.86,\"distance_end_m\":2341.5,\"distance_start_m\":2192.7,\"end_offset_s\":900,\"samples\":21,\"start_offset_s\":840},{\"average_speed_m_s\":2.53,\"average_spm\":20.48,\"distance_end_m\":2488.7,\"distance_start_m\":2348.7,\"end_offset_s\":960,\"samples\":20,\"start_offset_s\":900},{\"average_speed_m_s\":2.499,\"average_spm\":21.57,\"distance_end_m\":2642.2,\"distance_start_m\":2495.8,\"end_offset_s\":1020,\"samples\":22,\"start_offset_s\":960},{\"average_speed_m_s\":2.449,\"average_spm\":21.19,\"distance_end_m\":2789.1,\"distance_start_m\":2649.7,\"end_offset_s\":1080,\"samples\":21,\"start_offset_s\":1020},{\"average_speed_m_s\":2.439,\"average_spm\":21.5,\"distance_end_m\":2933.7,\"distance_start_m\":2795.6,\"end_offset_s\":1140,\"samples\":21,\"start_offset_s\":1080},{\"average_speed_m_s\":2.53,\"average_spm\":22.0,\"distance_end_m\":3093.1,\"distance_start_m\":2941.3,\"end_offset_s\":1200,\"samples\":23,\"start_offset_s\":1140},{\"average_speed_m_s\":2.621,\"average_spm\":23.28,\"distance_end_m\":3250.8,\"distance_start_m\":3100.2,\"end_offset_s\":1260,\"samples\":23,\"start_offset_s\":1200},{\"average_speed_m_s\":3.145,\"average_spm\":27.67,\"distance_end_m\":3425.4,\"distance_start_m\":3257.0,\"end_offset_s\":1320,\"samples\":26,\"start_offset_s\":1260},{\"average_speed_m_s\":2.21,\"average_spm\":21.43,\"distance_end_m\":3556.2,\"distance_start_m\":3431.0,\"end_offset_s\":1380,\"samples\":21,\"start_offset_s\":1320},{\"average_speed_m_s\":2.393,\"average_spm\":21.8,\"distance_end_m\":3702.5,\"distance_start_m\":3562.8,\"end_offset_s\":1440,\"samples\":22,\"start_offset_s\":1380},{\"average_speed_m_s\":2.44,\"average_spm\":21.14,\"distance_end_m\":3849.7,\"distance_start_m\":3709.5,\"end_offset_s\":1500,\"samples\":21,\"start_offset_s\":1440},{\"average_speed_m_s\":2.534,\"average_spm\":21.71,\"distance_end_m\":3899.3,\"distance_start_m\":3857.5,\"end_offset_s\":1560,\"samples\":7,\"start_offset_s\":1500}]},{\"evidence_refs\":[\"input/sources/mobile-ios-sensor.csv\",\"input/sources/mobile-ios-workout.csv\",\"input/sources/mobile-ios-metadata.json\"],\"kind\":\"MOBILE_IOS\",\"metrics\":{\"raw\":{\"duration_s\":1543.24,\"max_raw_distance_m\":3955.583797779428,\"nonzero_gyroscope_rows\":923,\"positive_spm_rows\":0,\"rows\":923,\"start_time\":\"2026-01-15T07:59:39.127-03:00\"},\"reported_boat_type\":\"SINGLE_SCULL\",\"reported_has_watch_data\":true,\"reported_summary\":{\"average_spm\":22.0,\"distance_m\":4625.0,\"elapsed_s\":1564.0,\"total_strokes\":562}},\"quality_flags\":[\"GPS_PRESENT\",\"RAW_SPM_ABSENT\",\"GYROSCOPE_PRESENT\",\"RAW_AND_SUMMARY_DISTANCE_CONFLICT\",\"WATCH_FILE_NOT_SUPPLIED\"],\"source_id\":\"mobile-ios\",\"time_series_windows\":[]},{\"evidence_refs\":[\"input/sources/mobile-android-sensor.csv\",\"input/sources/mobile-android-workout.csv\",\"input/sources/mobile-android-metadata.json\"],\"kind\":\"MOBILE_ANDROID\",\"metrics\":{\"raw\":{\"duration_s\":1567.027,\"max_raw_distance_m\":3973.992555239362,\"nonzero_gyroscope_rows\":0,\"positive_spm_rows\":0,\"rows\":776,\"start_time\":\"2026-01-15T07:59:14.821-03:00\"},\"reported_boat_type\":\"OC1\",\"reported_has_watch_data\":true,\"reported_summary\":{\"average_spm\":24.0,\"distance_m\":4456.0,\"elapsed_s\":1618.0,\"total_strokes\":556}},\"quality_flags\":[\"GPS_PRESENT\",\"RAW_SPM_ABSENT\",\"GYROSCOPE_ALL_ZERO\",\"RAW_AND_SUMMARY_DISTANCE_CONFLICT\",\"WATCH_FILE_NOT_SUPPLIED\"],\"source_id\":\"mobile-android\",\"time_series_windows\":[]}],\"summary_id\":\"baseline-input-v1-case-001\"}",
+  "instructions": "# WAKE Direct Baseline Prompt v1\n\nYou are reviewing one rowing session from a compact deterministic evidence summary. You have no tools, memory, hidden files, or evaluator answers.\n\nAnalyze only the supplied summary. Do not assume that nearby timestamps prove recordings match. Do not average conflicting sensors blindly. Select evidence independently for each metric. Separate observed facts, deterministic derivations, human-confirmed context, inferences, conflicts, and unknowns.\n\nDomain facts in the summary may state that `voga` means stroke rate in SPM and that B0-B7/E1-E7 are standardized rowing-zone codes. Preserve a zone code when its detailed physiological boundaries are unavailable.\n\nEnvironmental evidence may support an association with speed changes but does not automatically prove causation or athlete improvement/regression. GPS and ordinary SPM telemetry cannot establish visible technique, crew synchronization, medical state, or whether prescribed resistance equipment was actually used.\n\nReturn exactly one JSON object conforming to `schemas/analysis-output.schema.json`. Use the case ID from the summary. Every material claim, association, selected source, segment, and deviation must cite one or more evidence references that exist in the summary. Use `null`, `UNKNOWN`, `UNSUPPORTED`, or an explicit abstention when evidence is insufficient.\n\nAsk only follow-up questions whose answers could materially change the session conclusion, ordered by expected value. Keep `coach_briefing` concise and useful to a rowing coach. Do not include Markdown or text outside the JSON object.\n",
+  "max_output_tokens": 12000,
+  "model": "gpt-5.6-terra",
+  "reasoning": {
+    "effort": "medium"
+  },
+  "service_tier": "default",
+  "store": false,
+  "text": {
+    "format": {
+      "name": "wake_analysis_output_v1_1",
+      "schema": {
+        "$defs": {
+          "association": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "decision": {
+                "enum": [
+                  "MATCH",
+                  "NO_MATCH",
+                  "INSUFFICIENT"
+                ]
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "source_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 2,
+                "type": "array"
+              }
+            },
+            "required": [
+              "source_ids",
+              "decision",
+              "confidence",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "claim": {
+            "additionalProperties": false,
+            "properties": {
+              "claim_id": {
+                "type": "string"
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "OBSERVED",
+                  "DERIVED",
+                  "HUMAN_CONFIRMED",
+                  "INFERRED",
+                  "CONFLICTED",
+                  "UNKNOWN",
+                  "UNSUPPORTED"
+                ]
+              }
+            },
+            "required": [
+              "claim_id",
+              "statement",
+              "status",
+              "confidence",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": "object"
+          },
+          "deviation": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "segment_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "segment_ref",
+              "type",
+              "description",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "environment_assessment": {
+            "additionalProperties": false,
+            "properties": {
+              "association": {
+                "enum": [
+                  "SUPPORTED",
+                  "NOT_SUPPORTED",
+                  "CONFLICTED",
+                  "UNKNOWN"
+                ]
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "limitations": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "summary": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "summary",
+              "association",
+              "confidence",
+              "evidence_refs",
+              "limitations"
+            ],
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "plan_summary": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "prescribed_blocks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "status": {
+                "enum": [
+                  "NOT_SUPPLIED",
+                  "PARSED",
+                  "PARTIAL",
+                  "CONFLICTED"
+                ]
+              },
+              "summary": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "summary",
+              "prescribed_blocks",
+              "evidence_refs"
+            ],
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "segment": {
+            "additionalProperties": false,
+            "properties": {
+              "average_spm": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "distance_m": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "end_offset_s": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "kind": {
+                "enum": [
+                  "WORK",
+                  "RECOVERY",
+                  "WARMUP",
+                  "COOLDOWN",
+                  "UNKNOWN"
+                ]
+              },
+              "segment_id": {
+                "type": "string"
+              },
+              "start_offset_s": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "segment_id",
+              "kind",
+              "start_offset_s",
+              "end_offset_s",
+              "distance_m",
+              "average_spm",
+              "confidence",
+              "evidence_refs"
+            ],
+            "type": "object"
+          },
+          "source_policy": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "evidence_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "metric": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "selected_source_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "metric",
+              "selected_source_id",
+              "confidence",
+              "reason",
+              "evidence_refs"
+            ],
+            "type": "object"
+          }
+        },
+        "$id": "https://wake-rowing.dev/schemas/analysis-output.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "abstentions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "case_id": {
+            "type": "string"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/$defs/claim"
+            },
+            "type": "array"
+          },
+          "coach_briefing": {
+            "type": "string"
+          },
+          "deviations": {
+            "items": {
+              "$ref": "#/$defs/deviation"
+            },
+            "type": "array"
+          },
+          "environment_assessment": {
+            "$ref": "#/$defs/environment_assessment"
+          },
+          "follow_up_questions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "plan_summary": {
+            "$ref": "#/$defs/plan_summary"
+          },
+          "schema_version": {
+            "const": "wake.analysis_output.v1.1",
+            "type": "string"
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/$defs/segment"
+            },
+            "type": "array"
+          },
+          "session_associations": {
+            "items": {
+              "$ref": "#/$defs/association"
+            },
+            "type": "array"
+          },
+          "source_policy": {
+            "items": {
+              "$ref": "#/$defs/source_policy"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "case_id",
+          "session_associations",
+          "plan_summary",
+          "segments",
+          "source_policy",
+          "claims",
+          "deviations",
+          "environment_assessment",
+          "abstentions",
+          "follow_up_questions",
+          "coach_briefing"
+        ],
+        "title": "WAKE Session Analysis Output",
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    }
+  }
+}

@@ -86,6 +86,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Preserve `evaluation/baseline-inputs/v1/` byte-for-byte for the published two-case comparison. Put the ten-case expansion in `evaluation/baseline-inputs/v2/`, retaining the exact v1 entries for cases 001-002 and adding cases 003-010. Keep new registry entries `PLANNED` until evaluation execution is complete.
 - **Rationale:** Adding inputs to a directory already used by an official run would make its manifest non-reproducible and could silently change runner defaults or grader denominators.
 
+## 2026-08-30 - Calibrate a separate generalized grader v1.2
+
+- **Status:** accepted for the expanded preflight; paid result pending.
+- **Decision:** Preserve grader v1.1 for the published two-case comparison. Use grader v1.2 for the ten-case expansion, with case-derived plan, source-policy, environment, abstention, and deviation checks. Keep the same 100-point rubric weights and critical-zero rules.
+- **Rationale:** Grader v1.1 intentionally contained case-002-specific expectations. Reusing it would make new environmental conditions and source IDs fail for representation rather than behavior.
+
 ## 2026-08-29 - Use derived-synthetic plans without fabricating real history
 
 - **Status:** accepted.
