@@ -19,7 +19,7 @@ from generate_demo_club_evidence import (
 )
 
 
-GENERATOR_VERSION = "1.1"
+GENERATOR_VERSION = "1.2"
 
 ATHLETES = {
     "crew-2x-men": ["athlete-lucas", "athlete-rafael"],
@@ -85,6 +85,21 @@ VERIFIED_IDS = {
     "crew-2x-mixed-a:2026-08-20": "club-bridge-mixed-20260820-spm",
     "crew-4x-men:2026-08-28": "club-atlas-men-20260828-recovery",
 }
+
+ERG_SPECS = [
+    {"session_id": "activity-marina-erg-20260827", "date": "2026-08-27", "slot": "AM", "athlete_id": "athlete-marina", "title": "10 km indoor alternative after 4x cancellation", "training_role": "ALTERNATIVE", "association_status": "PLAN_CONFIRMED", "workout_type": "FIXED_DISTANCE", "duration_s": 2450, "distance_m": 10000, "average_spm": 22.4, "average_watts": 188, "split_count": 5},
+    {"session_id": "activity-helena-erg-20260827", "date": "2026-08-27", "slot": "AM", "athlete_id": "athlete-helena", "title": "10 km indoor alternative after 4x cancellation", "training_role": "ALTERNATIVE", "association_status": "PLAN_CONFIRMED", "workout_type": "FIXED_DISTANCE", "duration_s": 2480, "distance_m": 10000, "average_spm": 21.8, "average_watts": 178, "split_count": 5},
+    *[
+        {"session_id": f"activity-{athlete_id.removeprefix('athlete-')}-erg-20260826", "date": "2026-08-26", "slot": "EVENING", "athlete_id": athlete_id, "title": "6 × 2 km indoor alternative after 8x cancellation", "training_role": "ALTERNATIVE", "association_status": "PLAN_CONFIRMED", "workout_type": "INTERVAL", "duration_s": 3530 + index * 12, "distance_m": 12000, "average_spm": 21.5 + (index % 3) * 0.5, "average_watts": 190 - index * 3, "split_count": 11, "work_repetitions": 6, "recovery_s": 120}
+        for index, athlete_id in enumerate(ATHLETES["crew-8x-men"][:6])
+    ],
+    {"session_id": "activity-lucas-erg-20260818", "date": "2026-08-18", "slot": "AM", "athlete_id": "athlete-lucas", "title": "1,000 m low-rate technique after water", "training_role": "POST_WATER", "association_status": "PLAN_CONFIRMED", "workout_type": "FIXED_DISTANCE", "duration_s": 250, "distance_m": 1000, "average_spm": 12, "average_watts": 179, "split_count": 5},
+    {"session_id": "activity-marina-erg-20260820", "date": "2026-08-20", "slot": "AM", "athlete_id": "athlete-marina", "title": "1,000 m activation before water", "training_role": "PRE_WATER", "association_status": "PLAN_CONFIRMED", "workout_type": "FIXED_DISTANCE", "duration_s": 248, "distance_m": 1000, "average_spm": 18, "average_watts": 185, "split_count": 5},
+    {"session_id": "activity-camila-erg-20260819", "date": "2026-08-19", "slot": "PM", "athlete_id": "athlete-camila", "title": "1,000 m activation before water", "training_role": "PRE_WATER", "association_status": "PLAN_CONFIRMED", "workout_type": "FIXED_DISTANCE", "duration_s": 244, "distance_m": 1000, "average_spm": 20, "average_watts": 195, "split_count": 5},
+    {"session_id": "activity-sofia-erg-20260824", "date": "2026-08-24", "slot": "AM", "athlete_id": "athlete-sofia", "title": "30-minute steady indoor row", "training_role": "PRIMARY", "association_status": "STANDALONE", "workout_type": "FIXED_TIME", "duration_s": 1800, "distance_m": 6500, "average_spm": 20, "average_watts": 130, "split_count": 6},
+    {"session_id": "activity-felipe-erg-20260825", "date": "2026-08-25", "slot": "PM", "athlete_id": "athlete-felipe", "title": "4–3–2–1 minute indoor ladder", "training_role": "PRIMARY", "association_status": "STANDALONE", "workout_type": "INTERVAL", "duration_s": 780, "distance_m": 2550, "average_spm": 22, "average_watts": 214, "split_count": 7, "work_durations_s": [240, 180, 120, 60], "recovery_s": 60},
+    {"session_id": "activity-bianca-erg-20260824", "date": "2026-08-24", "slot": "PM", "athlete_id": "athlete-bianca", "title": "2 km indoor benchmark", "training_role": "PRIMARY", "association_status": "STANDALONE", "workout_type": "FIXED_DISTANCE", "duration_s": 480, "distance_m": 2000, "average_spm": 26, "average_watts": 203, "split_count": 5},
+]
 
 
 def sha256(path: Path) -> str:
@@ -156,6 +171,9 @@ def session_entry(
     omit_plan: bool = False,
     omit_context: bool = False,
     agent_result_ref: str | None = None,
+    training_role: str = "PRIMARY",
+    association_status: str = "DIRECT_SESSION",
+    erg_spec: dict | None = None,
 ) -> dict:
     directory = output_root / "sessions" / session_id
     sources: list[str] = []
@@ -176,6 +194,10 @@ def session_entry(
         write_csv(directory / "speedcoach.csv", build_telemetry(case))
         sources.append("speedcoach.csv")
     else:
+        assert erg_spec is not None
+        workout_type = erg_spec["workout_type"]
+        duration_s = erg_spec["duration_s"]
+        target_distance_m = erg_spec["distance_m"]
         plan = {
             "schema_version": "wake.training_plan.v1",
             "plan_id": f"plan-{session_id}",
@@ -187,16 +209,16 @@ def session_entry(
                 "source_ref": "scripts/generate_demo_club_batch.py",
             },
             "modality": "INDOOR_ROWER",
-            "athlete_scope": {"kind": "SQUAD", "ids": athlete_ids},
+            "athlete_scope": {"kind": "INDIVIDUAL", "ids": athlete_ids},
             "goal_id": "wake-demo-club-two-week-period",
             "coach_language": title,
             "blocks": [{
                 "block_id": "erg-main",
                 "kind": "WORK",
                 "repetitions": 1,
-                "distance_m": 10_000 if len(athlete_ids) <= 2 else 12_000,
-                "duration_s": None,
-                "stroke_rate": {"min_spm": 20, "max_spm": 24},
+                "distance_m": target_distance_m,
+                "duration_s": duration_s if workout_type == "FIXED_TIME" else None,
+                "stroke_rate": {"min_spm": max(0, int(erg_spec["average_spm"] - 1)), "max_spm": int(erg_spec["average_spm"] + 1)},
                 "zone": "B1/B2",
                 "zone_system": "STANDARD_ROWING_ZONES",
                 "recovery": None,
@@ -204,7 +226,7 @@ def session_entry(
                 "instructions": ["Record the individual Concept2 result."],
             }],
             "unresolved_terms": [],
-            "notes": "Real-informed synthetic indoor alternative.",
+            "notes": f"Real-informed synthetic {training_role.lower().replace('_', ' ')} indoor record.",
         }
         write_json(directory / "plan.json", plan)
         context = {
@@ -218,47 +240,80 @@ def session_entry(
             "input_notice": "All identities and exact outcomes are synthetic.",
         }
         write_json(directory / "context.json", context)
-        target_distance_m = plan["blocks"][0]["distance_m"]
-        if target_distance_m == 10_000:
+        split_count = erg_spec["split_count"]
+        average_spm = erg_spec["average_spm"]
+        average_watts = erg_spec["average_watts"]
+        if workout_type == "FIXED_DISTANCE":
+            split_distance = target_distance_m / split_count
+            split_time = duration_s / split_count
             rows = [
                 {
                     "transcription_provenance": "SYNTHETIC",
                     "workout_type": "FIXED_DISTANCE",
                     "row_kind": "SPLIT",
                     "row_index": str(index + 1),
-                    "display_time_s": str(480 + index * 5),
-                    "display_distance_m": str((index + 1) * 2_000),
-                    "pace_500m_s": str(120 + index),
-                    "stroke_rate_spm": str(22 + index % 2),
+                    "display_time_s": f"{split_time:.3f}",
+                    "display_distance_m": f"{(index + 1) * split_distance:.3f}",
+                    "pace_500m_s": f"{duration_s / target_distance_m * 500:.3f}",
+                    "stroke_rate_spm": f"{average_spm + ((index % 3) - 1) * 0.5:.2f}",
                     "heart_rate_bpm": "",
-                    "watts": str(195 - index * 3),
+                    "watts": f"{average_watts + ((index % 3) - 1) * 2:.1f}",
                 }
-                for index in range(5)
+                for index in range(split_count)
             ]
+        elif workout_type == "FIXED_TIME":
+            split_duration = duration_s / split_count
+            split_distance = target_distance_m / split_count
+            rows = []
+            remaining_distance = float(target_distance_m)
+            for index in range(split_count):
+                displayed_distance = remaining_distance if index == split_count - 1 else round(split_distance, 3)
+                remaining_distance -= displayed_distance
+                rows.append({
+                    "transcription_provenance": "SYNTHETIC",
+                    "workout_type": "FIXED_TIME",
+                    "row_kind": "SPLIT",
+                    "row_index": str(index + 1),
+                    "display_time_s": f"{(index + 1) * split_duration:.3f}",
+                    "display_distance_m": f"{displayed_distance:.3f}",
+                    "pace_500m_s": f"{duration_s / target_distance_m * 500:.3f}",
+                    "stroke_rate_spm": f"{average_spm + (index % 2) * 0.5:.2f}",
+                    "heart_rate_bpm": "",
+                    "watts": f"{average_watts + (index % 2) * 2:.1f}",
+                })
         else:
             rows = []
             row_index = 1
-            for work_index in range(6):
+            work_durations = erg_spec.get("work_durations_s")
+            if work_durations is None:
+                repetitions = erg_spec.get("work_repetitions", 1)
+                recovery_total = erg_spec.get("recovery_s", 0) * max(repetitions - 1, 0)
+                work_durations = [(duration_s - recovery_total) / repetitions] * repetitions
+            total_work_s = sum(work_durations)
+            remaining_distance = float(target_distance_m)
+            for work_index, work_duration in enumerate(work_durations):
+                work_distance = remaining_distance if work_index == len(work_durations) - 1 else target_distance_m * work_duration / total_work_s
+                remaining_distance -= work_distance
                 rows.append({
                     "transcription_provenance": "SYNTHETIC",
                     "workout_type": "INTERVAL",
                     "row_kind": "WORK",
                     "row_index": str(row_index),
-                    "display_time_s": str(485 + work_index * 4),
-                    "display_distance_m": "2000",
-                    "pace_500m_s": str(121 + work_index),
-                    "stroke_rate_spm": str(21 + work_index % 3),
+                    "display_time_s": f"{work_duration:.3f}",
+                    "display_distance_m": f"{work_distance:.3f}",
+                    "pace_500m_s": f"{work_duration / work_distance * 500:.3f}",
+                    "stroke_rate_spm": f"{average_spm + ((work_index % 3) - 1) * 0.5:.2f}",
                     "heart_rate_bpm": "",
-                    "watts": str(192 - work_index * 2),
+                    "watts": f"{average_watts + ((work_index % 3) - 1) * 2:.1f}",
                 })
                 row_index += 1
-                if work_index < 5:
+                if work_index < len(work_durations) - 1:
                     rows.append({
                         "transcription_provenance": "SYNTHETIC",
                         "workout_type": "INTERVAL",
                         "row_kind": "RECOVERY",
                         "row_index": str(row_index),
-                        "display_time_s": "120",
+                        "display_time_s": str(erg_spec.get("recovery_s", 0)),
                         "display_distance_m": "0",
                         "pace_500m_s": "",
                         "stroke_rate_spm": "",
@@ -284,6 +339,9 @@ def session_entry(
         "boat_id": boat_id,
         "provenance": "REAL_INFORMED_SYNTHETIC",
         "expected_route": expected_route,
+        "training_role": training_role,
+        "association_status": association_status,
+        "workout_type": erg_spec["workout_type"] if erg_spec else None,
         "source_sha256": {name: sha256(directory / name) for name in sorted(sources)},
         "agent_result_ref": agent_result_ref,
     }
@@ -344,29 +402,25 @@ def build_demo_club_batch(output_root: Path) -> dict:
                 agent_result_ref=agent_result_ref,
             ))
 
-    alternatives = [
+    water_alternatives = [
         ("activity-lucas-solo-20260824", "2026-08-24", "AM", "WATER_SOLO", "Individual water session after crew cancellation", ["athlete-lucas"], "boat-1x-spare", 8_000),
-        ("activity-gaia-erg-20260827", "2026-08-27", "AM", "ERG", "Ergometer alternative after crew cancellation", ["athlete-marina", "athlete-helena"], None, 10_000),
         ("activity-camila-solo-20260827", "2026-08-27", "AM", "WATER_SOLO", "Individual water session after crew cancellation", ["athlete-camila"], "boat-1x-spare", 7_000),
-        ("activity-north-erg-20260826", "2026-08-26", "EVENING", "ERG", "Squad ergometer alternative after 8x cancellation", ATHLETES["crew-8x-men"][:6], None, 12_000),
         ("activity-felipe-solo-20260826", "2026-08-26", "EVENING", "WATER_SOLO", "Individual water session after 8x cancellation", ["athlete-felipe"], "boat-1x-spare", 9_000),
     ]
-    for session_id, date, slot, modality, title, athlete_ids, boat_id, distance_m in alternatives:
-        case = None
-        if modality == "WATER_SOLO":
-            case = water_case(
-                session_id=session_id,
-                date=date,
-                slot=slot,
-                title=title,
-                crew_id=None,
-                athlete_ids=athlete_ids,
-                boat_id=boat_id,
-                boat_class="SINGLE_SCULL",
-                world_rowing_code="1x",
-                category="MIXED",
-                distance_m=distance_m,
-            )
+    for session_id, date, slot, modality, title, athlete_ids, boat_id, distance_m in water_alternatives:
+        case = water_case(
+            session_id=session_id,
+            date=date,
+            slot=slot,
+            title=title,
+            crew_id=None,
+            athlete_ids=athlete_ids,
+            boat_id=boat_id,
+            boat_class="SINGLE_SCULL",
+            world_rowing_code="1x",
+            category="MIXED",
+            distance_m=distance_m,
+        )
         sessions.append(session_entry(
             output_root,
             session_id=session_id,
@@ -379,6 +433,25 @@ def build_demo_club_batch(output_root: Path) -> dict:
             boat_id=boat_id,
             expected_route="RECONSTRUCTED_ALTERNATIVE",
             case=case,
+            training_role="ALTERNATIVE",
+            association_status="PLAN_CONFIRMED",
+        ))
+
+    for spec in ERG_SPECS:
+        sessions.append(session_entry(
+            output_root,
+            session_id=spec["session_id"],
+            modality="ERG",
+            title=spec["title"],
+            date=spec["date"],
+            slot=spec["slot"],
+            athlete_ids=[spec["athlete_id"]],
+            crew_id=None,
+            boat_id=None,
+            expected_route="RECONSTRUCTED_ALTERNATIVE",
+            training_role=spec["training_role"],
+            association_status=spec["association_status"],
+            erg_spec=spec,
         ))
 
     sessions.sort(key=lambda item: (item["date"], item["slot"], item["session_id"]))
@@ -396,12 +469,13 @@ def build_demo_club_batch(output_root: Path) -> dict:
     write_json(output_root / "manifest.json", manifest)
     (output_root / "README.md").write_text(
         "# Demo-club two-week batch\n\n"
-        "Forty independent real-informed synthetic activity records. Water sessions "
-        "carry plan, SpeedCoach-shaped telemetry, and context when available; two "
-        "indoor alternatives carry synthetic Concept2 PM5 transcription-format records. "
+        "Fifty-two independent real-informed synthetic activity records. Water sessions "
+        "carry plan, SpeedCoach-shaped telemetry, and context when available; fourteen "
+        "individual indoor sessions carry synthetic Concept2 PM5 transcription-format records. "
         "Every source is hashed per session.\n\n"
         "The Concept2 adapter distinguishes fixed-distance, fixed-time, and interval "
-        "screen semantics. Automatic photo OCR and native ErgData ingestion are not "
+        "screen semantics and never assigns one PM5 result to multiple athletes. "
+        "Automatic photo OCR and native ErgData ingestion are not "
         "implemented or implied.\n\n"
         "The batch is designed for mass submission with per-session isolation. It "
         "does not place multiple sessions in one model prompt. Agent execution is "

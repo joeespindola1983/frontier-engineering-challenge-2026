@@ -1,7 +1,7 @@
 {
   "schema_version": "wake.training_plan.v1",
-  "plan_id": "plan-activity-north-erg-20260826",
-  "scheduled_date": "2026-08-26",
+  "plan_id": "plan-activity-bianca-erg-20260824",
+  "scheduled_date": "2026-08-24",
   "timezone": "America/Sao_Paulo",
   "source": {
     "kind": "SYNTHETIC",
@@ -10,28 +10,23 @@
   },
   "modality": "INDOOR_ROWER",
   "athlete_scope": {
-    "kind": "SQUAD",
+    "kind": "INDIVIDUAL",
     "ids": [
-      "athlete-lucas",
-      "athlete-rafael",
-      "athlete-bruno",
-      "athlete-diego",
-      "athlete-caio",
-      "athlete-andre"
+      "athlete-bianca"
     ]
   },
   "goal_id": "wake-demo-club-two-week-period",
-  "coach_language": "Squad ergometer alternative after 8x cancellation",
+  "coach_language": "2 km indoor benchmark",
   "blocks": [
     {
       "block_id": "erg-main",
       "kind": "WORK",
       "repetitions": 1,
-      "distance_m": 12000,
+      "distance_m": 2000,
       "duration_s": null,
       "stroke_rate": {
-        "min_spm": 20,
-        "max_spm": 24
+        "min_spm": 25,
+        "max_spm": 27
       },
       "zone": "B1/B2",
       "zone_system": "STANDARD_ROWING_ZONES",
@@ -43,5 +38,5 @@
     }
   ],
   "unresolved_terms": [],
-  "notes": "Real-informed synthetic indoor alternative."
+  "notes": "Real-informed synthetic primary indoor record."
 }

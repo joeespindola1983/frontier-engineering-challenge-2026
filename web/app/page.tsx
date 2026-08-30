@@ -178,6 +178,32 @@ function clubReviewLabel(value: string) {
   }[value] ?? value.replaceAll('_', ' ').toLowerCase();
 }
 
+function trainingDayLabel(value: string) {
+  return {
+    COMBINED: 'Combined day',
+    INDOOR_ONLY: 'Indoor-only',
+    WATER_ONLY: 'Water-only',
+    EXPECTED_MISSING: 'Expected record missing',
+  }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
+function trainingRoleLabel(value: string) {
+  return {
+    PRIMARY: 'Primary session',
+    PRE_WATER: 'Before water',
+    POST_WATER: 'After water',
+    ALTERNATIVE: 'Planned alternative',
+  }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
+function ergWorkoutLabel(value: string) {
+  return {
+    FIXED_DISTANCE: 'Fixed distance',
+    FIXED_TIME: 'Fixed time',
+    INTERVAL: 'Intervals',
+  }[value] ?? value.replaceAll('_', ' ').toLowerCase();
+}
+
 function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void }) {
   const summary = summarizeClub(demoClub);
   const attention = listCoachAttention(demoClub);
@@ -198,7 +224,7 @@ function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: stri
           <div><span>Agent verified</span><strong>{intelligence.batch_validation.counts.agent_verified}</strong><small>selected exception cases</small></div>
           <div><span>Human approved</span><strong>{intelligence.batch_validation.counts.human_approved}</strong><small>not claimed before review</small></div>
         </div>
-        <div className="club-batch-boundary" role="note"><strong>40 sessions reconstructed, including 2 synthetic Concept2 transcription records.</strong><span>Thirty-one water sessions had no material signal in the available evidence, five sessions were recorded alternatives, one needs its plan, and one needs athlete context. The real PM5 reference transcriptions were human-confirmed; photo OCR is not claimed.</span></div>
+        <div className="club-batch-boundary" role="note"><strong>52 sessions reconstructed, including 14 individual synthetic Concept2 transcription records.</strong><span>Thirty-one water sessions had no material signal in the available evidence, seventeen sessions were reconstructed alternatives, one needs its plan, and one needs athlete context. Each PM5 result belongs to one athlete; the real reference transcriptions were human-confirmed and photo OCR is not claimed.</span></div>
       </section>
       <section className="club-investigation-results" aria-labelledby="club-investigation-results-title"><div className="section-heading compact-heading"><div><div className="kicker">Saved agent evidence</div><h3 id="club-investigation-results-title">Verified investigation results</h3></div><p>Two selected candidates · no synthesis</p></div><div className="club-investigation-result-grid">{intelligence.deep_investigations.results.map((result) => <article key={result.case_id}><div><span>{result.deviation_segment} · {result.deviation_type.replaceAll('_', ' ').toLowerCase()}</span><strong>{result.title}</strong></div><p>{result.briefing}</p><footer><span>{result.next_step}</span><small>US${result.approximate_cost_usd.toFixed(6)} · {result.total_tokens.toLocaleString('en-US')} tokens</small></footer></article>)}</div></section>
       <div className="club-summary-grid" aria-label="Club activity summary">
@@ -207,8 +233,18 @@ function ClubOverview({ onOpenCrew, onOpenAthlete }: { onOpenCrew: (crewId: stri
         <div><span>Crew outings</span><strong>{summary.completedCrewOutings}/{summary.plannedOutings}</strong><small>{summary.disruptedCrewOutings} crews did not launch</small></div>
         <div><span>Coach attention</span><strong>{summary.attentionCount}</strong><small>{summary.participationGaps} expected days lack a record</small></div>
       </div>
+      <section className="training-day-overview" aria-labelledby="training-day-overview-title">
+        <div className="section-heading compact-heading"><div><div className="kicker">Athlete-centered chronology</div><h3 id="training-day-overview-title">Training days connect water and indoor work.</h3></div><p>Volumes remain separated by modality.</p></div>
+        <div className="training-day-overview-grid">
+          <div><span>Active athlete-days</span><strong>{summary.activeAthleteDays}</strong><small>individual days with a recorded activity</small></div>
+          <div><span>Combined days</span><strong>{summary.combinedDays}</strong><small>water plus Concept2 on the same plan-confirmed day</small></div>
+          <div><span>Indoor-only days</span><strong>{summary.indoorOnlyDays}</strong><small>valid training, not a missing water session</small></div>
+          <div><span>Modality volume</span><strong>{summary.waterDistanceKm.toFixed(1)} / {summary.ergDistanceKm.toFixed(1)} km</strong><small>water / indoor — never merged</small></div>
+        </div>
+        <div className="training-day-boundary" role="note"><strong>One PM5 result, one athlete.</strong><span>Shared indoor prescriptions create individual records. Pace, SPM, and watts support comparison within equivalent Concept2 workouts; they are not presented as direct measures of on-water speed, visible technique, or muscular strength.</span></div>
+      </section>
       <div className="club-pulse-layout">
-        <section className="club-attention" aria-labelledby="club-attention-title"><div className="section-heading compact-heading"><div><div className="kicker">Prioritized review</div><h3 id="club-attention-title">What changed the two-week picture</h3></div><p>{summary.recordedActivities} recorded activities · {summary.totalDistanceKm.toFixed(1)} km</p></div><div className="club-attention-list">{attention.map((item) => <button key={item.attention_id} onClick={() => item.kind === 'PARTICIPATION_GAP' ? onOpenAthlete(item.entity_id) : onOpenCrew(item.entity_id)} type="button"><time>{formatDate(item.date)}</time><div><strong>{item.entity_name}</strong><p>{item.statement}</p></div><span>{item.kind === 'PARTICIPATION_GAP' ? 'Athlete' : 'Crew'} →</span></button>)}</div></section>
+        <section className="club-attention" aria-labelledby="club-attention-title"><div className="section-heading compact-heading"><div><div className="kicker">Prioritized review</div><h3 id="club-attention-title">What changed the two-week picture</h3></div><p>{summary.recordedActivities} activities · {summary.waterDistanceKm.toFixed(1)} km water · {summary.ergDistanceKm.toFixed(1)} km indoor</p></div><div className="club-attention-list">{attention.map((item) => <button key={item.attention_id} onClick={() => item.kind === 'PARTICIPATION_GAP' ? onOpenAthlete(item.entity_id) : onOpenCrew(item.entity_id)} type="button"><time>{formatDate(item.date)}</time><div><strong>{item.entity_name}</strong><p>{item.statement}</p></div><span>{item.kind === 'PARTICIPATION_GAP' ? 'Athlete' : 'Crew'} →</span></button>)}</div></section>
         <aside className="club-boundary"><div className="kicker">Interpretation boundary</div><h3>An alert is a question, not a verdict.</h3><p>A missing activity may reflect availability, an unlinked device, a planned rest day, or an unreported session. WAKE asks for context and does not infer fitness, injury, or commitment.</p></aside>
       </div>
       <section className="crew-groups" aria-labelledby="crew-groups-title"><div className="section-heading compact-heading"><div><div className="kicker">Team and crew memory</div><h3 id="crew-groups-title">Every outing stays attached to people and a physical boat.</h3></div><p>Select a crew to inspect its lineup and two-week history.</p></div>{['2x', '4x', '8x'].map((boatClass) => <div className="crew-class-group" key={boatClass}><div className="crew-class-label"><strong>{boatClass}</strong><span>{demoClub.crews.filter((crew) => crew.boat_class === boatClass).length} crews</span></div><div className="crew-card-grid">{demoClub.crews.filter((crew) => crew.boat_class === boatClass).map((crew) => { const crewSummary = summarizeCrew(demoClub, crew.crew_id); return <button className="crew-card" key={crew.crew_id} onClick={() => onOpenCrew(crew.crew_id)} type="button"><div><span>{clubCategoryLabel(crew.category)} · {crew.boat_class}</span><strong>{crew.name}</strong><small>{crewSummary.boat.name} · {crewSummary.lineup.map((seat) => seat.athlete.name).join(' · ')}</small></div><div className="crew-card-result"><strong>{crewSummary.completedOutings}/{crewSummary.plannedOutings}</strong><span>launched</span>{crewSummary.attentionCount ? <small>{crewSummary.attentionCount} to review</small> : <small>no material flags</small>}</div></button>; })}</div></div>)}</section>
@@ -224,7 +260,32 @@ function CrewScreen({ crewId, onBack, onOpenAthlete }: { crewId: string; onBack:
 
 function AthleteScreen({ athleteId, onBack, onOpenCrew }: { athleteId: string; onBack: () => void; onOpenCrew: (crewId: string) => void }) {
   const athlete = summarizeAthlete(demoClub, athleteId);
-  return <main className="page club-detail-page"><div className="prototype-notice" role="note"><span>Real-informed synthetic data</span>Identities and exact outcomes are fictional; workout patterns, source structures, and value ranges are grounded in the supplied real rowing material.</div><header className="page-header club-detail-header"><div className="page-header-copy"><div className="kicker">{clubCategoryLabel(athlete.category)} squad · Athlete memory</div><h1>{athlete.name}</h1><p className="lede">WAKE connects this athlete&apos;s crew, solo, ergometer, and physical-boat history without treating one session as a performance trend.</p></div><button className="button" onClick={onBack} type="button">Back to club</button></header><section className="club-detail-stats"><div><span>Active days</span><strong>{athlete.activeDays}/10</strong><small>weekdays with recorded activity</small></div><div><span>Crew sessions</span><strong>{athlete.waterCrewSessions}</strong><small>completed water outings</small></div><div><span>Solo / erg</span><strong>{athlete.soloSessions} / {athlete.ergSessions}</strong><small>recorded alternatives</small></div><div><span>Distance</span><strong>{athlete.distanceKm.toFixed(1)} km</strong><small>across recorded modalities</small></div></section>{athlete.participationGaps.length ? <div className="athlete-gap-note"><strong>Context requested</strong><span>{athlete.participationGaps.map((gap) => `${formatDate(gap.date)}: ${gap.statement}`).join(' ')}</span></div> : null}<div className="club-detail-layout"><section><div className="section-heading compact-heading"><div><div className="kicker">Crew memberships</div><h2>{athlete.crews.length} recurring lineups</h2></div></div><div className="athlete-memberships">{athlete.crews.map((crew) => <button key={crew.crew_id} onClick={() => onOpenCrew(crew.crew_id)} type="button"><div><strong>{crew.name}</strong><small>{clubCategoryLabel(crew.category)} · {crew.boat_class}</small></div><span>Open crew →</span></button>)}</div></section><aside className="club-boundary"><div className="kicker">Physical boats rowed</div><h3>{athlete.boats.map((boat) => boat.name).join(' · ')}</h3><p>Boat names come from linked session context. A class such as 2x is not treated as the identity of the physical shell.</p></aside></div><section className="outing-history"><div className="section-heading compact-heading"><div><div className="kicker">Activity history</div><h2>Water, solo, and ergometer records</h2></div></div><div className="outing-table">{athlete.activityHistory.map((activity) => { const boat = activity.boat_id ? demoClub.boats.find((item) => item.boat_id === activity.boat_id) : null; return <article key={activity.activity_id}><time>{formatDate(activity.date)} · {activity.slot.toLowerCase()}</time><div><strong>{activity.title}</strong><small>{clubActivityLabel(activity.modality)}{boat ? ` · ${boat.name}` : ''}</small></div><div><span>{(activity.distance_m / 1000).toFixed(1)} km</span><small>{clubReviewLabel(activity.review_status)}</small></div></article>; })}</div></section></main>;
+  return (
+    <main className="page club-detail-page">
+      <div className="prototype-notice" role="note"><span>Real-informed synthetic data</span>Identities and exact outcomes are fictional; workout patterns, source structures, and value ranges are grounded in the supplied real rowing material.</div>
+      <header className="page-header club-detail-header"><div className="page-header-copy"><div className="kicker">{clubCategoryLabel(athlete.category)} squad · Athlete memory</div><h1>{athlete.name}</h1><p className="lede">WAKE connects this athlete&apos;s water, indoor, crew, and physical-boat history while keeping each modality&apos;s evidence and meaning separate.</p></div><button className="button" onClick={onBack} type="button">Back to club</button></header>
+      <section className="club-detail-stats athlete-training-stats">
+        <div><span>Active days</span><strong>{athlete.activeDays}/10</strong><small>{athlete.combinedDays} combined · {athlete.indoorOnlyDays} indoor-only</small></div>
+        <div><span>Water distance</span><strong>{athlete.waterDistanceKm.toFixed(1)} km</strong><small>{athlete.waterSessions} water sessions</small></div>
+        <div><span>Indoor distance</span><strong>{athlete.ergDistanceKm.toFixed(1)} km</strong><small>{athlete.ergSessions} individual Concept2 records</small></div>
+        <div><span>Expected gaps</span><strong>{athlete.expectedMissingDays}</strong><small>context requested, never treated as a fitness verdict</small></div>
+      </section>
+      {athlete.participationGaps.length ? <div className="athlete-gap-note"><strong>Context requested</strong><span>{athlete.participationGaps.map((gap) => `${formatDate(gap.date)}: ${gap.statement}`).join(' ')}</span></div> : null}
+      <div className="club-detail-layout"><section><div className="section-heading compact-heading"><div><div className="kicker">Crew memberships</div><h2>{athlete.crews.length} recurring lineups</h2></div></div><div className="athlete-memberships">{athlete.crews.map((crew) => <button key={crew.crew_id} onClick={() => onOpenCrew(crew.crew_id)} type="button"><div><strong>{crew.name}</strong><small>{clubCategoryLabel(crew.category)} · {crew.boat_class}</small></div><span>Open crew →</span></button>)}</div></section><aside className="club-boundary"><div className="kicker">Physical boats rowed</div><h3>{athlete.boats.map((boat) => boat.name).join(' · ')}</h3><p>Boat names come from linked session context. A class such as 2x is not treated as the identity of the physical shell.</p></aside></div>
+      <section className="training-day-history" aria-labelledby="athlete-training-days-title">
+        <div className="section-heading compact-heading"><div><div className="kicker">Training days</div><h2 id="athlete-training-days-title">Water and indoor work in one chronology</h2></div><p>Associations come from the plan or remain standalone.</p></div>
+        <div className="training-day-list">
+          {athlete.days.map((day) => (
+            <article className={`training-day-card training-day-${day.classification.toLowerCase().replaceAll('_', '-')}`} key={day.date}>
+              <header><div><time>{formatDate(day.date)}</time><strong>{trainingDayLabel(day.classification)}</strong></div><div className="training-day-volume">{day.waterDistanceKm ? <span>{day.waterDistanceKm.toFixed(1)} km water</span> : null}{day.ergDistanceKm ? <span>{day.ergDistanceKm.toFixed(1)} km indoor</span> : null}</div></header>
+              {day.activities.length ? <div className="training-day-activities">{day.activities.map((activity) => { const boat = activity.boat_id ? demoClub.boats.find((item) => item.boat_id === activity.boat_id) : null; const erg = activity.erg_metrics; return <div className={`training-day-activity ${activity.modality === 'ERG' ? 'indoor' : 'water'}`} key={activity.activity_id}><div><span>{trainingRoleLabel(activity.training_role)} · {clubActivityLabel(activity.modality)}</span><strong>{activity.title}</strong><small>{boat ? `${boat.name} · ` : ''}{activity.association_status === 'STANDALONE' ? 'Standalone indoor plan' : 'Plan-confirmed day link'}</small></div>{erg ? <div className="erg-metric-grid"><span><small>Workout</small>{ergWorkoutLabel(erg.workout_type)}</span><span><small>Concept2 pace</small>{formatDuration(erg.average_pace_500m_s)} /500m</span><span><small>Rate</small>{erg.average_spm.toFixed(1)} SPM</span><span><small>Power</small>{erg.average_watts.toFixed(0)} W</span></div> : <div className="water-activity-distance"><small>Water distance</small><strong>{(activity.distance_m / 1000).toFixed(1)} km</strong></div>}</div>; })}</div> : <div className="training-day-missing"><strong>No activity record</strong><span>{day.gap?.statement}</span></div>}
+            </article>
+          ))}
+        </div>
+        <div className="training-day-evidence-note" role="note"><strong>Comparison boundary</strong><span>Water and indoor distances are never added into one performance total. Concept2 pace, rate, and watts are compared only with equivalent workout shapes and supported plan context; they do not prove visible technique, direct muscular force, or medical fitness.</span></div>
+      </section>
+    </main>
+  );
 }
 
 function SessionsScreen({ onNavigate, onReview, onOpenSession, onOpenCrew, onOpenAthlete, sessions, processing, error }: { onNavigate: (screen: Screen) => void; onReview: () => void; onOpenSession: (session: SessionRecord) => void; onOpenCrew: (crewId: string) => void; onOpenAthlete: (athleteId: string) => void; sessions: SessionRecord[]; processing: boolean; error: string }) {

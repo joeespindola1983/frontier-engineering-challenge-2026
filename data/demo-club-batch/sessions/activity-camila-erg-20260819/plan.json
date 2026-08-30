@@ -1,0 +1,42 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-activity-camila-erg-20260819",
+  "scheduled_date": "2026-08-19",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_demo_club_batch.py"
+  },
+  "modality": "INDOOR_ROWER",
+  "athlete_scope": {
+    "kind": "INDIVIDUAL",
+    "ids": [
+      "athlete-camila"
+    ]
+  },
+  "goal_id": "wake-demo-club-two-week-period",
+  "coach_language": "1,000 m activation before water",
+  "blocks": [
+    {
+      "block_id": "erg-main",
+      "kind": "WORK",
+      "repetitions": 1,
+      "distance_m": 1000,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 19,
+        "max_spm": 21
+      },
+      "zone": "B1/B2",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": null,
+      "equipment": [],
+      "instructions": [
+        "Record the individual Concept2 result."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Real-informed synthetic pre water indoor record."
+}

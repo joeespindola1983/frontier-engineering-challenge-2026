@@ -1,4 +1,5 @@
 import { analyzeOutingEvidence, buildClubPeriodAnalysis } from './club-intelligence.mjs';
+import { buildAthleteTrainingDays, buildClubTrainingDaySummary } from './training-days.mjs';
 
 const athletes = [
   { athlete_id: 'athlete-lucas', name: 'Lucas', category: 'MEN' },
@@ -186,16 +187,59 @@ const crewActivities = outings.filter((outing) => outing.outcome === 'COMPLETED'
     crew_id: crew.crew_id,
     boat_id: crew.boat_id,
     distance_m: outing.distance_m,
+    training_role: 'PRIMARY',
+    association_status: 'DIRECT_SESSION',
     review_status: assessment.review_status,
   };
 });
 
+function ergActivity({
+  activityId, date, slot, athleteId, title, trainingRole, associationStatus,
+  workoutType, durationS, distanceM, averagePace500mS, averageSpm, averageWatts,
+  splitCount,
+}) {
+  return {
+    activity_id: activityId,
+    outing_id: null,
+    date,
+    slot,
+    modality: 'ERG',
+    title,
+    athlete_ids: [athleteId],
+    crew_id: null,
+    boat_id: null,
+    distance_m: distanceM,
+    duration_s: durationS,
+    training_role: trainingRole,
+    association_status: associationStatus,
+    review_status: 'RECONSTRUCTED_ALTERNATIVE',
+    erg_metrics: {
+      workout_type: workoutType,
+      duration_s: durationS,
+      distance_m: distanceM,
+      average_pace_500m_s: averagePace500mS,
+      average_spm: averageSpm,
+      average_watts: averageWatts,
+      split_count: splitCount,
+      source_format: 'CONCEPT2_PM5_TRANSCRIPTION_CSV',
+      evidence_level: 'REAL_INFORMED_SYNTHETIC',
+    },
+  };
+}
+
 const alternateActivities = [
-  { activity_id: 'activity-lucas-solo-20260824', outing_id: null, date: '2026-08-24', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-lucas'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 8000, review_status: 'RECORDED_ALTERNATIVE' },
-  { activity_id: 'activity-gaia-erg-20260827', outing_id: null, date: '2026-08-27', slot: 'AM', modality: 'ERG', title: 'Ergometer alternative after crew cancellation', athlete_ids: ['athlete-marina', 'athlete-helena'], crew_id: null, boat_id: null, distance_m: 10000, review_status: 'RECORDED_ALTERNATIVE' },
-  { activity_id: 'activity-camila-solo-20260827', outing_id: null, date: '2026-08-27', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-camila'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 7000, review_status: 'RECORDED_ALTERNATIVE' },
-  { activity_id: 'activity-north-erg-20260826', outing_id: null, date: '2026-08-26', slot: 'EVENING', modality: 'ERG', title: 'Squad ergometer alternative after 8x cancellation', athlete_ids: maleIds.slice(0, 6), crew_id: null, boat_id: null, distance_m: 12000, review_status: 'RECORDED_ALTERNATIVE' },
-  { activity_id: 'activity-felipe-solo-20260826', outing_id: null, date: '2026-08-26', slot: 'EVENING', modality: 'WATER_SOLO', title: 'Individual water session after 8x cancellation', athlete_ids: ['athlete-felipe'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 9000, review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-lucas-solo-20260824', outing_id: null, date: '2026-08-24', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-lucas'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 8000, training_role: 'ALTERNATIVE', association_status: 'PLAN_CONFIRMED', review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-camila-solo-20260827', outing_id: null, date: '2026-08-27', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-camila'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 7000, training_role: 'ALTERNATIVE', association_status: 'PLAN_CONFIRMED', review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-felipe-solo-20260826', outing_id: null, date: '2026-08-26', slot: 'EVENING', modality: 'WATER_SOLO', title: 'Individual water session after 8x cancellation', athlete_ids: ['athlete-felipe'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 9000, training_role: 'ALTERNATIVE', association_status: 'PLAN_CONFIRMED', review_status: 'RECORDED_ALTERNATIVE' },
+  ergActivity({ activityId: 'activity-marina-erg-20260827', date: '2026-08-27', slot: 'AM', athleteId: 'athlete-marina', title: '10 km indoor alternative after 4x cancellation', trainingRole: 'ALTERNATIVE', associationStatus: 'PLAN_CONFIRMED', workoutType: 'FIXED_DISTANCE', durationS: 2450, distanceM: 10000, averagePace500mS: 122.5, averageSpm: 22.4, averageWatts: 188, splitCount: 5 }),
+  ergActivity({ activityId: 'activity-helena-erg-20260827', date: '2026-08-27', slot: 'AM', athleteId: 'athlete-helena', title: '10 km indoor alternative after 4x cancellation', trainingRole: 'ALTERNATIVE', associationStatus: 'PLAN_CONFIRMED', workoutType: 'FIXED_DISTANCE', durationS: 2480, distanceM: 10000, averagePace500mS: 124, averageSpm: 21.8, averageWatts: 178, splitCount: 5 }),
+  ...maleIds.slice(0, 6).map((athleteId, index) => ergActivity({ activityId: `activity-${athleteId.replace('athlete-', '')}-erg-20260826`, date: '2026-08-26', slot: 'EVENING', athleteId, title: '6 × 2 km indoor alternative after 8x cancellation', trainingRole: 'ALTERNATIVE', associationStatus: 'PLAN_CONFIRMED', workoutType: 'INTERVAL', durationS: 3530 + index * 12, distanceM: 12000, averagePace500mS: 121.5 + index * 0.7, averageSpm: 21.5 + (index % 3) * 0.5, averageWatts: 190 - index * 3, splitCount: 11 })),
+  ergActivity({ activityId: 'activity-lucas-erg-20260818', date: '2026-08-18', slot: 'AM', athleteId: 'athlete-lucas', title: '1,000 m low-rate technique after water', trainingRole: 'POST_WATER', associationStatus: 'PLAN_CONFIRMED', workoutType: 'FIXED_DISTANCE', durationS: 250, distanceM: 1000, averagePace500mS: 125, averageSpm: 12, averageWatts: 179, splitCount: 5 }),
+  ergActivity({ activityId: 'activity-marina-erg-20260820', date: '2026-08-20', slot: 'AM', athleteId: 'athlete-marina', title: '1,000 m activation before water', trainingRole: 'PRE_WATER', associationStatus: 'PLAN_CONFIRMED', workoutType: 'FIXED_DISTANCE', durationS: 248, distanceM: 1000, averagePace500mS: 124, averageSpm: 18, averageWatts: 185, splitCount: 5 }),
+  ergActivity({ activityId: 'activity-camila-erg-20260819', date: '2026-08-19', slot: 'PM', athleteId: 'athlete-camila', title: '1,000 m activation before water', trainingRole: 'PRE_WATER', associationStatus: 'PLAN_CONFIRMED', workoutType: 'FIXED_DISTANCE', durationS: 244, distanceM: 1000, averagePace500mS: 122, averageSpm: 20, averageWatts: 195, splitCount: 5 }),
+  ergActivity({ activityId: 'activity-sofia-erg-20260824', date: '2026-08-24', slot: 'AM', athleteId: 'athlete-sofia', title: '30-minute steady indoor row', trainingRole: 'PRIMARY', associationStatus: 'STANDALONE', workoutType: 'FIXED_TIME', durationS: 1800, distanceM: 6500, averagePace500mS: 138.5, averageSpm: 20, averageWatts: 130, splitCount: 6 }),
+  ergActivity({ activityId: 'activity-felipe-erg-20260825', date: '2026-08-25', slot: 'PM', athleteId: 'athlete-felipe', title: '4–3–2–1 minute indoor ladder', trainingRole: 'PRIMARY', associationStatus: 'STANDALONE', workoutType: 'INTERVAL', durationS: 780, distanceM: 2550, averagePace500mS: 117.6, averageSpm: 22, averageWatts: 214, splitCount: 7 }),
+  ergActivity({ activityId: 'activity-bianca-erg-20260824', date: '2026-08-24', slot: 'PM', athleteId: 'athlete-bianca', title: '2 km indoor benchmark', trainingRole: 'PRIMARY', associationStatus: 'STANDALONE', workoutType: 'FIXED_DISTANCE', durationS: 480, distanceM: 2000, averagePace500mS: 120, averageSpm: 26, averageWatts: 203, splitCount: 5 }),
 ];
 
 const participationGaps = [
@@ -240,16 +284,16 @@ const batchValidation = {
   status: 'VERIFIED',
   evidence_ref: 'data/demo-club-batch/manifest.json',
   counts: {
-    records_received: 40,
-    data_validated: 40,
-    sessions_reconstructed: 40,
-    plan_compared: 39,
+    records_received: 52,
+    data_validated: 52,
+    sessions_reconstructed: 52,
+    plan_compared: 51,
     agent_verified: 2,
     human_approved: 0,
   },
   routing: {
     RECONSTRUCTED_NO_MATERIAL_SIGNAL: 31,
-    RECONSTRUCTED_ALTERNATIVE: 5,
+    RECONSTRUCTED_ALTERNATIVE: 17,
     AGENT_VERIFIED: 2,
     SOURCE_REQUIRED: 1,
     HUMAN_CONTEXT_REQUIRED: 1,
@@ -302,6 +346,7 @@ export function listCoachAttention(club) {
 
 export function summarizeClub(club) {
   const completed = club.outings.filter((outing) => outing.outcome === 'COMPLETED');
+  const trainingDays = buildClubTrainingDaySummary(club);
   return {
     crewCount: club.crews.length,
     athleteCount: club.athletes.length,
@@ -312,7 +357,7 @@ export function summarizeClub(club) {
     recordedActivities: club.activities.length,
     participationGaps: club.participation_gaps.length,
     attentionCount: listCoachAttention(club).length,
-    totalDistanceKm: Math.round(club.activities.reduce((sum, activity) => sum + activity.distance_m, 0) / 100) / 10,
+    ...trainingDays,
   };
 }
 
@@ -345,17 +390,17 @@ export function summarizeAthlete(club, athleteId) {
   const memberships = club.crews.filter((crew) => crew.lineup.some((seat) => seat.athlete_id === athleteId));
   const activityHistory = club.activities.filter((activity) => activity.athlete_ids.includes(athleteId)).sort((left, right) => right.date.localeCompare(left.date));
   const boatIds = [...new Set(activityHistory.map((activity) => activity.boat_id).filter(Boolean))];
+  const trainingDays = buildAthleteTrainingDays(club, athleteId);
   return {
     ...athlete,
     crewIds: memberships.map((crew) => crew.crew_id),
     crews: memberships,
     boats: boatIds.map((boatId) => entities.boats.get(boatId)),
     activityHistory,
-    activeDays: new Set(activityHistory.map((activity) => activity.date)).size,
+    ...trainingDays,
     waterCrewSessions: activityHistory.filter((activity) => activity.modality === 'WATER_CREW').length,
     soloSessions: activityHistory.filter((activity) => activity.modality === 'WATER_SOLO').length,
     ergSessions: activityHistory.filter((activity) => activity.modality === 'ERG').length,
-    distanceKm: Math.round(activityHistory.reduce((sum, activity) => sum + activity.distance_m, 0) / 100) / 10,
     participationGaps: club.participation_gaps.filter((gap) => gap.athlete_id === athleteId),
   };
 }

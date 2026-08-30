@@ -125,3 +125,9 @@ uv run python scripts/grade_outputs.py \
 ```
 
 The grader validates every output against the frozen schema, scores only implemented cases and applicable dimensions, and records its version and configuration hash. Passing grader calibration tests establishes scoring behavior; only grading real model outputs produces a measured workflow-quality score.
+
+Training Day coverage additionally requires one athlete per Concept2 result,
+fixed-distance, fixed-time, and interval workout shapes, deterministic day
+classification, plan-declared pre/post-water ordering, explicit missing-record
+states, and separate water versus indoor distance aggregation. Interface tests
+require the same boundaries to remain visible in athlete drill-downs.

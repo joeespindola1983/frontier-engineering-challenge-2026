@@ -24,33 +24,41 @@ class DemoClubBatchTests(unittest.TestCase):
         manifest = json.loads((BATCH_ROOT / "manifest.json").read_text(encoding="utf-8"))
 
         self.assertEqual(manifest["schema_version"], "wake.demo_club_batch_manifest.v1")
-        self.assertEqual(len(manifest["sessions"]), 40)
-        self.assertEqual(len({item["session_id"] for item in manifest["sessions"]}), 40)
+        self.assertEqual(len(manifest["sessions"]), 52)
+        self.assertEqual(len({item["session_id"] for item in manifest["sessions"]}), 52)
         self.assertEqual(
             sum(item["modality"].startswith("WATER") for item in manifest["sessions"]),
             38,
         )
         self.assertEqual(
             sum(item["modality"] == "ERG" for item in manifest["sessions"]),
-            2,
+            14,
         )
         self.assertTrue(all(item["provenance"] == "REAL_INFORMED_SYNTHETIC" for item in manifest["sessions"]))
+        erg_sessions = [item for item in manifest["sessions"] if item["modality"] == "ERG"]
+        self.assertTrue(all(len(item["athlete_ids"]) == 1 for item in erg_sessions))
+        self.assertEqual(
+            {item["workout_type"] for item in erg_sessions},
+            {"FIXED_DISTANCE", "FIXED_TIME", "INTERVAL"},
+        )
+        self.assertTrue(all(item["training_role"] for item in manifest["sessions"]))
+        self.assertTrue(all(item["association_status"] for item in erg_sessions))
 
     def test_batch_summary_is_derived_from_sources_and_preserves_validation_levels(self) -> None:
         report = verify_demo_club_batch.verify_batch(BATCH_ROOT)
 
         self.assertEqual(report["status"], "verified")
         self.assertEqual(report["counts"], {
-            "records_received": 40,
-            "data_validated": 40,
-            "sessions_reconstructed": 40,
-            "plan_compared": 39,
+            "records_received": 52,
+            "data_validated": 52,
+            "sessions_reconstructed": 52,
+            "plan_compared": 51,
             "agent_verified": 2,
             "human_approved": 0,
         })
         self.assertEqual(report["routing"], {
             "RECONSTRUCTED_NO_MATERIAL_SIGNAL": 31,
-            "RECONSTRUCTED_ALTERNATIVE": 5,
+            "RECONSTRUCTED_ALTERNATIVE": 17,
             "AGENT_VERIFIED": 2,
             "SOURCE_REQUIRED": 1,
             "HUMAN_CONTEXT_REQUIRED": 1,

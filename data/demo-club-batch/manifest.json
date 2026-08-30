@@ -1,7 +1,7 @@
 {
   "schema_version": "wake.demo_club_batch_manifest.v1",
   "generator": "scripts/generate_demo_club_batch.py",
-  "generator_version": "1.1",
+  "generator_version": "1.2",
   "period": {
     "start": "2026-08-17",
     "end": "2026-08-28"
@@ -21,6 +21,9 @@
       "boat_id": "boat-2x-aurora",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "b248f7f0155ca9ebffcda2d4c75965cb674f6d69606c15ec45c503cb4ba9bf1c",
         "plan.json": "a31914fd1fa76a1ce3ef30fc3879425f4db9910afe76cbc1e62035c471a5b64f",
@@ -44,6 +47,9 @@
       "boat_id": "boat-4x-gaia",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "5d77817a76d31aed198c905c225497d5ed08e327a9944575faa30f56714b2715",
         "plan.json": "e93ab8c4ca71e6d9caec71354f7a373b17960dc60ce3acd3bbd57412adb67971",
@@ -65,10 +71,36 @@
       "boat_id": "boat-2x-horizon",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "97968576c94f0c402b442ca886fc49751a9c97a1845560603eca4fdc8ab9f913",
         "plan.json": "1b48fc4393cd7842bb9c0a008fb7db9e0bebecfa5e54d31b4fd54165726bbdd7",
         "speedcoach.csv": "30acebbad58d92bfac004260b8eef3d3cd1a15d61c84ee53e5704f831dce5d6f"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-lucas-erg-20260818",
+      "date": "2026-08-18",
+      "slot": "AM",
+      "title": "1,000 m low-rate technique after water",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-lucas"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "POST_WATER",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "FIXED_DISTANCE",
+      "source_sha256": {
+        "concept2.csv": "88468fe2d3206c057eedb43acf6231cda8ec02f9369c5ba982c38220850129f4",
+        "context.json": "d7383553bf04db3e3139e7dda40d4f89aad7161176dd2d56a95295c20d0a2d78",
+        "plan.json": "5e391d75697942a5019025a25414ded272953d0628ed8cfd20d16e80c6bb3694"
       },
       "agent_result_ref": null
     },
@@ -86,6 +118,9 @@
       "boat_id": "boat-2x-iris",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "81988f0345cba7424a583a1fc24d7d0cd924aca750c91268bfa15d1576dc2c8b",
         "plan.json": "6b6c5fa0b8e53ccf19948393e21a7a18254ba7917e927cb1360e51fbb7f526ef",
@@ -109,6 +144,9 @@
       "boat_id": "boat-4x-atlas",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "20e1b3c9e35efc6ddb9bb0185f5c76d3a1543d8f9c7129c8785dffcdb31b252e",
         "plan.json": "1d19e47e45638ebc91f93b6e172704f9d57c7318643b1653bb12f3720f2d6390",
@@ -132,6 +170,9 @@
       "boat_id": "boat-4x-dawn",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "fdbfd3b74ecd5a830bf589a9fafc2ad53bebd4e7eb4dc0f957f249b0feeec515",
         "plan.json": "ebb05b16d04448b5288034ab0745ae8b7982992a167ab0d2681071512501b8f9",
@@ -153,6 +194,9 @@
       "boat_id": "boat-2x-current",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "760fd5af78ab58f1bd96f3861a15b36a1d1c85cbd089bb6ebba635d157f9cb31",
         "plan.json": "996b2d483b5e37d9b8af40029d840c34ce8e914c7b1af721b570d5994d71e0c0",
@@ -174,6 +218,9 @@
       "boat_id": "boat-2x-aurora",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "8ab64a478e441527854d82aedbfd040c462de324000f7948a4b7b1845b7c37f9",
         "plan.json": "8c5c2d95dd7b50ae7c705d96cfffb4483c9d83eafa02120e53818efd29bb21ab",
@@ -197,6 +244,9 @@
       "boat_id": "boat-4x-mistral",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "1ee39a5aef4d1fabf75244b62ed5ccc465c2a8f1b42de1f63e49624547dceb69",
         "plan.json": "6fabffafe8fa90bc2d7ae87579b52170dfa82173e8d6a0802eba1a9829fdb672",
@@ -224,10 +274,36 @@
       "boat_id": "boat-8x-north",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "b879892cc02823f12c27920969a082c7bae8f8623fda954263f17834b763b69e",
         "plan.json": "721618102c503a765235f8762d53dc3f561c7fa55fddffa66a61f6fa768c631e",
         "speedcoach.csv": "da42529f5e47ff1707fbdf83afe9d9a6a260bd7767d7f06a5cb084f330712226"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-camila-erg-20260819",
+      "date": "2026-08-19",
+      "slot": "PM",
+      "title": "1,000 m activation before water",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-camila"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "PRE_WATER",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "FIXED_DISTANCE",
+      "source_sha256": {
+        "concept2.csv": "db5b1855310a921871d903ed9f9e96cf83878cf1c529e430e2815c4d4dd0ea8b",
+        "context.json": "59a7f6896ba2f4e78b675db492d14b6db0059226f422695e9205ab0aac571ff0",
+        "plan.json": "2978d3149d36ea2315570e455b2f956e0fc1a5f33996b6d12212233df2ea4c69"
       },
       "agent_result_ref": null
     },
@@ -247,10 +323,36 @@
       "boat_id": "boat-4x-gaia",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "dace7b53c9962b13449cd29672e9c1185a6c9f565a35ce091946545fe71d06b4",
         "plan.json": "a429478afa1a5ca5bc159b58a45ca5e307351617a056bd223519bb46c5a4439d",
         "speedcoach.csv": "5593eb9d29e21005c082093dd2b3526ef736794e36070461dfb50c5f62c77953"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-marina-erg-20260820",
+      "date": "2026-08-20",
+      "slot": "AM",
+      "title": "1,000 m activation before water",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-marina"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "PRE_WATER",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "FIXED_DISTANCE",
+      "source_sha256": {
+        "concept2.csv": "ec7010aa5ad2bd689187ceea75af6d81a02f5118643e6790fca859a078f02052",
+        "context.json": "26e5d0d554cdc5ca472d355d4fe91428d3a81e35389552b9bc9448ea7ecdd39e",
+        "plan.json": "aacb4b679937ea7c1714ced5b370a39250b9e469a9baed136824150cda1def74"
       },
       "agent_result_ref": null
     },
@@ -268,6 +370,9 @@
       "boat_id": "boat-2x-iris",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "a3621e11d38c298aeeec94dab3de9c0b9a0754b96c813599008cd62fee8f914b",
         "plan.json": "393787228dd2f647ea81a52908dea43ae6871278731f3a98f253a7db3f889d8b",
@@ -291,6 +396,9 @@
       "boat_id": "boat-4x-dawn",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "0872e662c353fbb4016c6e76c28a3f722a4dd860fd16381db031db914bc17bd3",
         "plan.json": "8e0144a3a14207cc59e2f246fdd4b8e5def64715d6b36231fa81066654c06219",
@@ -318,6 +426,9 @@
       "boat_id": "boat-8x-south",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "377804686ec5bc08359d09a85f80effe49dde40e577c0512b01f0e998f02bcc3",
         "plan.json": "1a5f546c3006d1a3a9e865d12f30ded6052a5562287d95a695e1490da275efe6",
@@ -339,6 +450,9 @@
       "boat_id": "boat-2x-horizon",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "AGENT_VERIFIED",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "d32858ff2f0db53b734d51c978e9824804575c61ae2a8dd7621b588fb035785b",
         "plan.json": "34302a5f28f40f7e21dd40155bb7f56c7e3e4c2810038cb24e2e7ddf57e9be48",
@@ -362,6 +476,9 @@
       "boat_id": "boat-4x-atlas",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "3c991f83fe1152cf7916ea81a5c6926e92c6d8b6c6c18623eb7cb17e3cf80ebe",
         "plan.json": "27e7cb41a8863a74b5330c86405efefc0a832b4f225e71940594f6f844706f81",
@@ -385,6 +502,9 @@
       "boat_id": "boat-4x-mistral",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "57ee910dc4ffa6369e7903f052ef4260730cc95a567747c8cfc8e29ce2ef19ce",
         "plan.json": "50e320f57a7ef38c3e7d379cf09fc68c7bce0179a7f20a872691a77b4445d210",
@@ -412,6 +532,9 @@
       "boat_id": "boat-8x-north",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "238b80a6fb78b15c8d698de7381abdd1ce774e09618b2cade54ec4e20692a38f",
         "plan.json": "e3078434b8bc0ebb652401a95c53b5d8d069bb2554f109c59283128580d94c6b",
@@ -433,6 +556,9 @@
       "boat_id": "boat-2x-current",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "8950c5f288fbc3e640aba5f2a1a131527895033efdb4032cbc76154d91b0e8cf",
         "plan.json": "93bf1da52ee1130709035753fe7d3b57ceffa0719503f8b80d023e1edb352b0a",
@@ -453,10 +579,36 @@
       "boat_id": "boat-1x-spare",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "e4e62dcefbb43b7cbbdb5518a988ec64884cf3b393ed5bc5b5f57c10efcff7a1",
         "plan.json": "0af64184eafeb700281cb47ef094c8e9573ba43d0e5c720536723d7fe322ba19",
         "speedcoach.csv": "e9611a52314c3f9428c4aa9fbce62f33a1cfc019652c6c7d89529020338aa7a2"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-sofia-erg-20260824",
+      "date": "2026-08-24",
+      "slot": "AM",
+      "title": "30-minute steady indoor row",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-sofia"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "PRIMARY",
+      "association_status": "STANDALONE",
+      "workout_type": "FIXED_TIME",
+      "source_sha256": {
+        "concept2.csv": "86850996151ed68699ca9894254869e5a1bad1f80d04627ed3107d9f84f5b65d",
+        "context.json": "62dd8e653902cc1afcb36468166d77c557cf53ca3bbfd729fa412df366668cb5",
+        "plan.json": "8c6c63113d7fdf9ad104bceffb69b187de8c65e2b3638d271ac14c41ca8757c2"
       },
       "agent_result_ref": null
     },
@@ -476,10 +628,36 @@
       "boat_id": "boat-4x-gaia",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "4e1d44c3f8e2ad0db1f4a408fb1eac01f07ed75689e1f929dc4533b77afb6e4b",
         "plan.json": "4ddb0d5dbe78d3e140c445fa957894e1ea7f221f68635c29d0448a55a19def69",
         "speedcoach.csv": "68edd2f3a547d353ccd601c7c8e89701ff7f0acebc1bb7da7a9c9222a351cccc"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-bianca-erg-20260824",
+      "date": "2026-08-24",
+      "slot": "PM",
+      "title": "2 km indoor benchmark",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-bianca"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "PRIMARY",
+      "association_status": "STANDALONE",
+      "workout_type": "FIXED_DISTANCE",
+      "source_sha256": {
+        "concept2.csv": "62282ad103b93ca6f9e45195b1fd2556a80f831b52bc28e5527c75d601ad61dc",
+        "context.json": "1cf24919c3a0cd5833e8a673ac5d7f0cf18510caac9670f18c8163b5bf7504f5",
+        "plan.json": "0c6c8b38c5447b343de0d6202701f2511ef49642f175e99c2ce958d0343e09ed"
       },
       "agent_result_ref": null
     },
@@ -497,6 +675,9 @@
       "boat_id": "boat-2x-horizon",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "4332299bb80216f76f0b3d2bc926ae6bbe73fd7fc51f8ff7856a65c7afec7e83",
         "plan.json": "818dc6ad939b42a393183b49047952fb9aeca952b328ca5151054147cded643e",
@@ -518,6 +699,9 @@
       "boat_id": "boat-2x-iris",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "ec58528be2b01392df9d460fff64dcf67807438e99c806b8be7beccce3144b2b",
         "plan.json": "d5e7185b2cb090b356e7e49e4f4098431a03e9f61e208122aaedf0d67f1f44ed",
@@ -541,6 +725,9 @@
       "boat_id": "boat-4x-mistral",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "6430bf9cfc6ba02f56e7e2a554eb81f34eefef6d4b8c42270664167f53932051",
         "plan.json": "a780eaac06f1ec863b6c4996c71b992e5e33095dec2595690b91a4deeee8c00c",
@@ -568,10 +755,36 @@
       "boat_id": "boat-8x-south",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "2d08991188759bf008e06f65bd07a1dfbaf985e84f7221bbb99288810dbfd4d8",
         "plan.json": "35570a6477d29e113ac33c3ad62ad025295aca2217a1efa28b409f2b1f25b90e",
         "speedcoach.csv": "dd0f71a799303c5e0e92fb6c5779c9bbc485254d9fcb6d53260e6be71b3347d2"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-felipe-erg-20260825",
+      "date": "2026-08-25",
+      "slot": "PM",
+      "title": "4–3–2–1 minute indoor ladder",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-felipe"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "PRIMARY",
+      "association_status": "STANDALONE",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "095f8b926c4adfae10a1efa4812d50a06ae91ddb0d39b34cc2ba52e9bb557baf",
+        "context.json": "8a983d733ad987716bd6036973d24ef87256e6f7645b6629037cda1560f27042",
+        "plan.json": "42509bffd1c6768f8bb178f2dbb5e6fd64e7ee77c9ecab37ce7d40fdef63a029"
       },
       "agent_result_ref": null
     },
@@ -589,6 +802,9 @@
       "boat_id": "boat-2x-current",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "71a74be4cc71244585529207135d5e7d1699c1906ea2213f6a624fa49ca54fe4",
         "plan.json": "102d168ddb1d8c55830e3da43f147770f139d550b300cbf2f3b4d27bea9bf3c2",
@@ -612,10 +828,105 @@
       "boat_id": "boat-4x-atlas",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "3c590d7fe18e1005c806794254ca8dd822275a4a26b7401dc525ba587500a7b0",
         "plan.json": "0937976bcd55e95e8731e7372031abe14c9032f530fa0648b4ff25cf4d69431a",
         "speedcoach.csv": "5791ef3447e0acaddce0e49a2913928fb76489c87a908f4d00bae911e2968062"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-andre-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-andre"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "b6713ec957ae03aea61a6be03db4986908f4490058565621b840f9345533b906",
+        "context.json": "86cd59ca04b76a81a843c03301fbce302b853dcf68352e994008f11b4acd331d",
+        "plan.json": "b0e224a72d770d9165d95ec852ebf541ff126f9451b488074e0a9b1dd538fa75"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-bruno-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-bruno"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "bfd7759ec3d8ed6fa0eb6594426b6e0ddc76a3078f93f6fc5b294237a6b364bc",
+        "context.json": "a1415e6f092792c777d3e879bae2667eb5d1bfe2bd05b553c90ceb8939bf910c",
+        "plan.json": "5fc467725d2506fed292119ac6741f8afc8f6bb18615a1b5ac59a945eac4a5d9"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-caio-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-caio"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "67a7608f556868d7819869c14402f3970f55df8691946b156fd9d0a8695160e7",
+        "context.json": "5515dfaed06c67eb1297e833240477333289776aa717361b00df5a673a8a7e38",
+        "plan.json": "ce7f5d5bce28975229d2ce6977b7b3b13d597446ad62efc2760ff59e39cd7920"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-diego-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-diego"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "334429b5c4d729a0c57a54eef7f78daf0a6bfeb6ed94e17cf53abfa753e8df2d",
+        "context.json": "045a7e05481b7300c5dd40abe72f54bfafd55c09f4c390a32ff0437674552d63",
+        "plan.json": "2c91eaa6449f0593bc0cf304342eb1cb61e5e1f012118f16e42a90303254a8d2"
       },
       "agent_result_ref": null
     },
@@ -632,6 +943,9 @@
       "boat_id": "boat-1x-spare",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "3bbcb2563f96460622d817ae7c1007a5cb6c3156b5d4c07276c5910bd985d235",
         "plan.json": "55ef84916f1db6b5188eca70df2082802f46aaf19e72c6ea3422021dc06b61ee",
@@ -640,27 +954,48 @@
       "agent_result_ref": null
     },
     {
-      "session_id": "activity-north-erg-20260826",
+      "session_id": "activity-lucas-erg-20260826",
       "date": "2026-08-26",
       "slot": "EVENING",
-      "title": "Squad ergometer alternative after 8x cancellation",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
       "modality": "ERG",
       "athlete_ids": [
-        "athlete-lucas",
-        "athlete-rafael",
-        "athlete-bruno",
-        "athlete-diego",
-        "athlete-caio",
-        "athlete-andre"
+        "athlete-lucas"
       ],
       "crew_id": null,
       "boat_id": null,
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
       "source_sha256": {
-        "concept2.csv": "46b3cdc37036fbb92ec48c4528b8bde21828dcdec5b386a35a5a0d2194c6fb9d",
-        "context.json": "21fc1da6e99cc048f57677d6ad9010f9ab5f833830bfb5c7e3b0cea068f0054a",
-        "plan.json": "2193d93f598a86b1a100a9cb4922bfee9773b1b2fdd80b739a219158f24312bb"
+        "concept2.csv": "059204111c60b9a0b5e15ed36f6f7c757168913f5e78c76036f9b8f6530d07b2",
+        "context.json": "870af72b039a11f5c9ab4189210a31d3677b6a376f3e32d31148932c11f2bc41",
+        "plan.json": "f2cc6d00690fa29cda514e770fd3e17db7e645cb3382db1b403c0cc1771797fa"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-rafael-erg-20260826",
+      "date": "2026-08-26",
+      "slot": "EVENING",
+      "title": "6 × 2 km indoor alternative after 8x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-rafael"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "INTERVAL",
+      "source_sha256": {
+        "concept2.csv": "e81fa866768c9ae75b5609bfe499e1208b951699033f8034c89e1a80ba67d71c",
+        "context.json": "3535dfe64b9ffadcdf2e0383fcec6a63607e8a743231504d3070a551f0652031",
+        "plan.json": "7ac8a238a039ac9698a0ebf983c3864d8ecd46bfcd7ef7f09ef2e96bfca9c412"
       },
       "agent_result_ref": null
     },
@@ -678,6 +1013,9 @@
       "boat_id": "boat-2x-horizon",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "186d9c102748e2030761004e43b681d27ce58ff0786c1b59ea721ae1cfb2f657",
         "plan.json": "bd998c0e185f0ba84e2b95d511c16e6adc51b424e450419b02d330ab1cff4beb",
@@ -699,6 +1037,9 @@
       "boat_id": "boat-2x-current",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "fd0e70af176082244ad7b132d0c3518c4c2b6006067e86c69883450dd723f8d3",
         "plan.json": "038eaff4d90fe5e5a7b1bd3ce7d46f6089a94b011c09785635a8dacaa560f603",
@@ -719,6 +1060,9 @@
       "boat_id": "boat-1x-spare",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "2560298e7859701a83449d1e2cbba9010d2dc71cd182f05e11be19f0eda805f6",
         "plan.json": "ab319ef0487210f7c355c45c0ddcbe63adb675f4beb1068b779748b2ea063b91",
@@ -727,23 +1071,48 @@
       "agent_result_ref": null
     },
     {
-      "session_id": "activity-gaia-erg-20260827",
+      "session_id": "activity-helena-erg-20260827",
       "date": "2026-08-27",
       "slot": "AM",
-      "title": "Ergometer alternative after crew cancellation",
+      "title": "10 km indoor alternative after 4x cancellation",
       "modality": "ERG",
       "athlete_ids": [
-        "athlete-marina",
         "athlete-helena"
       ],
       "crew_id": null,
       "boat_id": null,
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "FIXED_DISTANCE",
       "source_sha256": {
-        "concept2.csv": "800eec8c37e161ea26feba0d753da9c2b8a80219fccff237f4c3919637f2ab0e",
-        "context.json": "70707913fe13dc7a524711cc8b40f3330081b2af6cc2e22af090ce5acfa5dbc0",
-        "plan.json": "d6c6afbf19eb77d7f04ac88ad04cf578f3c1e10f029f287efcb8727e741a0ed9"
+        "concept2.csv": "3470ae58f3dbecfb3ae64fa0bf546450deedd1ffd5545ac2d9ba5b3519c29ab9",
+        "context.json": "ab15aba6d84cdc88a41b26c0eeda867854e54838c37814b75683d030c3d0adb6",
+        "plan.json": "fe048c9b78d3651b89d6861c906d91e9818d7072361709a2c87229d2e070117d"
+      },
+      "agent_result_ref": null
+    },
+    {
+      "session_id": "activity-marina-erg-20260827",
+      "date": "2026-08-27",
+      "slot": "AM",
+      "title": "10 km indoor alternative after 4x cancellation",
+      "modality": "ERG",
+      "athlete_ids": [
+        "athlete-marina"
+      ],
+      "crew_id": null,
+      "boat_id": null,
+      "provenance": "REAL_INFORMED_SYNTHETIC",
+      "expected_route": "RECONSTRUCTED_ALTERNATIVE",
+      "training_role": "ALTERNATIVE",
+      "association_status": "PLAN_CONFIRMED",
+      "workout_type": "FIXED_DISTANCE",
+      "source_sha256": {
+        "concept2.csv": "aad005d29c55a08452e690bd1b56869309660d9d50cecc80f6f196313240b8b0",
+        "context.json": "bfb2fe69316b991ea2ef3ea5c9e51be5f26dcbabc42c565d2767de1142fe4b3c",
+        "plan.json": "8a9714f3e63cbddd318139c00d7f171ed69e5bad4c8df85a9a57a4ec68e9c494"
       },
       "agent_result_ref": null
     },
@@ -761,6 +1130,9 @@
       "boat_id": "boat-2x-aurora",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "8278a00e808c84ec925466551b2c4516034f9b82e49c6f5eca7fd6a6c5e99dc5",
         "plan.json": "5d433bd77d30ff988c87f9a352bbb160ad6b265ed3d1a4c53846bc09093c4a99",
@@ -784,6 +1156,9 @@
       "boat_id": "boat-4x-dawn",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "SOURCE_REQUIRED",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "1c4f21d8cef71bccc5bb1470bca42e4c339c75c4b7b3e6dca30c53a0ad463438",
         "speedcoach.csv": "ec3cb187d4c65044bfb157b40b836d8c210b9684a835a4214b89ab8582e2e2e8"
@@ -806,6 +1181,9 @@
       "boat_id": "boat-4x-mistral",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "a552fc2dc85453875a2db502ee4b320e37745afa19aaf358fe1bc36cd887c7d8",
         "plan.json": "8b2686037615de17f01715ceb48621fc7d28c8e266a181646bb546adcd7d4c16",
@@ -829,6 +1207,9 @@
       "boat_id": "boat-4x-atlas",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "AGENT_VERIFIED",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "658d08db8f6dd42913e61d93da01ec79ae444259a45bda0532e78e6921668266",
         "plan.json": "3364a79fdb5406da6acee15c149545813c643bdfb938c62e829ee5d6e6ecbf29",
@@ -856,6 +1237,9 @@
       "boat_id": "boat-8x-south",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "HUMAN_CONTEXT_REQUIRED",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "plan.json": "51d6202cab28bb53689578e2c43beafde6ec4b8be43ea3a4e0a2e303becd90a3",
         "speedcoach.csv": "b1843ae739ca7789e3075f9c9efd06f773b6810c60330976e859e1f69ff23806"
@@ -876,6 +1260,9 @@
       "boat_id": "boat-2x-iris",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "29b2acfef603e07791d9072900b4c13acea0011384858a21de2d7c208ad75b5d",
         "plan.json": "fb7f4abc5b3a993b5b68360808dc8942c5a943169fcbdaef2ee6186d38652350",
@@ -899,6 +1286,9 @@
       "boat_id": "boat-4x-dawn",
       "provenance": "REAL_INFORMED_SYNTHETIC",
       "expected_route": "RECONSTRUCTED_NO_MATERIAL_SIGNAL",
+      "training_role": "PRIMARY",
+      "association_status": "DIRECT_SESSION",
+      "workout_type": null,
       "source_sha256": {
         "context.json": "4a04591e25c589c6dbc3957067f2ac6531e7f20e89005a1b4941b331dcb40045",
         "plan.json": "91136b7845fffef24f47f9f7511643fb91fceaeb78c1da424bca676fa602a80f",

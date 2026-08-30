@@ -9,6 +9,7 @@ import {
   summarizeClub,
   summarizeCrew,
 } from '../app/lib/demo-club.mjs';
+import { buildAthleteTrainingDays, buildClubTrainingDaySummary } from '../app/lib/training-days.mjs';
 
 
 test('models two work weeks across the requested ten rowing crews', () => {
@@ -53,6 +54,44 @@ test('preserves cancelled crews, alternate training, and explicit unrecorded ath
 });
 
 
+test('stores every Concept2 result as an individual athlete record', () => {
+  const ergActivities = demoClub.activities.filter((activity) => activity.modality === 'ERG');
+
+  assert.equal(ergActivities.length, 14);
+  assert.ok(ergActivities.every((activity) => activity.athlete_ids.length === 1));
+  assert.ok(ergActivities.every((activity) => activity.erg_metrics));
+  assert.deepEqual(
+    [...new Set(ergActivities.map((activity) => activity.erg_metrics.workout_type))].sort(),
+    ['FIXED_DISTANCE', 'FIXED_TIME', 'INTERVAL'],
+  );
+  assert.ok(ergActivities.every((activity) => ['PLAN_CONFIRMED', 'STANDALONE'].includes(activity.association_status)));
+});
+
+
+test('builds athlete training days without merging water and ergometer distance', () => {
+  const lucas = buildAthleteTrainingDays(demoClub, 'athlete-lucas');
+  const combined = lucas.days.find((day) => day.date === '2026-08-18');
+  const secondCombined = lucas.days.find((day) => day.date === '2026-08-26');
+
+  assert.equal(combined.classification, 'COMBINED');
+  assert.deepEqual(combined.activities.map((activity) => activity.modality).sort(), ['ERG', 'WATER_CREW']);
+  assert.ok(combined.activities.some((activity) => activity.training_role === 'POST_WATER'));
+  assert.equal(secondCombined.classification, 'COMBINED');
+  assert.ok(lucas.waterDistanceKm > 0);
+  assert.ok(lucas.ergDistanceKm > 0);
+  assert.equal(Object.hasOwn(lucas, 'distanceKm'), false);
+
+  const sofia = buildAthleteTrainingDays(demoClub, 'athlete-sofia');
+  assert.equal(sofia.days.find((day) => day.date === '2026-08-24').classification, 'INDOOR_ONLY');
+
+  const club = buildClubTrainingDaySummary(demoClub);
+  assert.equal(club.ergSessions, 14);
+  assert.ok(club.combinedDays >= 3);
+  assert.ok(club.indoorOnlyDays >= 3);
+  assert.equal(club.expectedMissingDays, 3);
+});
+
+
 test('club, crew, and athlete summaries are relational rather than decorative labels', () => {
   const club = summarizeClub(demoClub);
   assert.equal(club.crewCount, 10);
@@ -75,6 +114,10 @@ test('club, crew, and athlete summaries are relational rather than decorative la
   assert.ok(lucas.crewIds.includes('crew-8x-men'));
   assert.ok(lucas.soloSessions >= 1);
   assert.ok(lucas.boats.length >= 3);
+  assert.ok(lucas.combinedDays >= 2);
+  assert.equal(lucas.indoorOnlyDays, 0);
+  assert.ok(lucas.waterDistanceKm > lucas.ergDistanceKm);
+  assert.equal(Object.hasOwn(lucas, 'distanceKm'), false);
 });
 
 
@@ -100,4 +143,10 @@ test('sessions surface exposes club, crew, and athlete drill-downs', async () =>
   assert.match(page, /Identities, club history, and session outcomes are fictional/);
   assert.match(page, /onOpenCrew/);
   assert.match(page, /onOpenAthlete/);
+  assert.match(page, /Training days/);
+  assert.match(page, /Water distance/);
+  assert.match(page, /Indoor distance/);
+  assert.match(page, /Combined day/);
+  assert.match(page, /Indoor-only/);
+  assert.match(page, /Concept2 pace/);
 });

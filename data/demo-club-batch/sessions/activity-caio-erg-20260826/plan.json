@@ -1,7 +1,7 @@
 {
   "schema_version": "wake.training_plan.v1",
-  "plan_id": "plan-activity-gaia-erg-20260827",
-  "scheduled_date": "2026-08-27",
+  "plan_id": "plan-activity-caio-erg-20260826",
+  "scheduled_date": "2026-08-26",
   "timezone": "America/Sao_Paulo",
   "source": {
     "kind": "SYNTHETIC",
@@ -10,24 +10,23 @@
   },
   "modality": "INDOOR_ROWER",
   "athlete_scope": {
-    "kind": "SQUAD",
+    "kind": "INDIVIDUAL",
     "ids": [
-      "athlete-marina",
-      "athlete-helena"
+      "athlete-caio"
     ]
   },
   "goal_id": "wake-demo-club-two-week-period",
-  "coach_language": "Ergometer alternative after crew cancellation",
+  "coach_language": "6 × 2 km indoor alternative after 8x cancellation",
   "blocks": [
     {
       "block_id": "erg-main",
       "kind": "WORK",
       "repetitions": 1,
-      "distance_m": 10000,
+      "distance_m": 12000,
       "duration_s": null,
       "stroke_rate": {
-        "min_spm": 20,
-        "max_spm": 24
+        "min_spm": 21,
+        "max_spm": 23
       },
       "zone": "B1/B2",
       "zone_system": "STANDARD_ROWING_ZONES",
@@ -39,5 +38,5 @@
     }
   ],
   "unresolved_terms": [],
-  "notes": "Real-informed synthetic indoor alternative."
+  "notes": "Real-informed synthetic alternative indoor record."
 }

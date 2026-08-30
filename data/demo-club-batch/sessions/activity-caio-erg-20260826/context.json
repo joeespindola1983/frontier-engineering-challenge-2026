@@ -1,0 +1,25 @@
+{
+  "schema_version": "wake.synthetic_case_context.v1",
+  "case_id": "activity-caio-erg-20260826",
+  "investigation_request": "Preserve this alternate indoor training record.",
+  "provided_sources": [
+    {
+      "source_id": "concept2-activity-caio-erg-20260826",
+      "kind": "CONCEPT2",
+      "path": "concept2.csv"
+    }
+  ],
+  "session_candidate": {
+    "boat_id": null,
+    "boat_class": null,
+    "crew_id": null,
+    "athlete_ids": [
+      "athlete-caio"
+    ]
+  },
+  "human_confirmations": {
+    "perceived_effort": null
+  },
+  "scenario_label": "6 × 2 km indoor alternative after 8x cancellation",
+  "input_notice": "All identities and exact outcomes are synthetic."
+}

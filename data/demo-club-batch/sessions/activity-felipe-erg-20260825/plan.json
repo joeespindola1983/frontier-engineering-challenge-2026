@@ -1,0 +1,42 @@
+{
+  "schema_version": "wake.training_plan.v1",
+  "plan_id": "plan-activity-felipe-erg-20260825",
+  "scheduled_date": "2026-08-25",
+  "timezone": "America/Sao_Paulo",
+  "source": {
+    "kind": "SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "source_ref": "scripts/generate_demo_club_batch.py"
+  },
+  "modality": "INDOOR_ROWER",
+  "athlete_scope": {
+    "kind": "INDIVIDUAL",
+    "ids": [
+      "athlete-felipe"
+    ]
+  },
+  "goal_id": "wake-demo-club-two-week-period",
+  "coach_language": "4–3–2–1 minute indoor ladder",
+  "blocks": [
+    {
+      "block_id": "erg-main",
+      "kind": "WORK",
+      "repetitions": 1,
+      "distance_m": 2550,
+      "duration_s": null,
+      "stroke_rate": {
+        "min_spm": 21,
+        "max_spm": 23
+      },
+      "zone": "B1/B2",
+      "zone_system": "STANDARD_ROWING_ZONES",
+      "recovery": null,
+      "equipment": [],
+      "instructions": [
+        "Record the individual Concept2 result."
+      ]
+    }
+  ],
+  "unresolved_terms": [],
+  "notes": "Real-informed synthetic primary indoor record."
+}

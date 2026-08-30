@@ -12,9 +12,9 @@ test('screens every recorded activity without calling a model', () => {
   assert.equal(analysis.schema_version, 'wake.club_period_analysis.v1');
   assert.equal(analysis.analysis_mode, 'DETERMINISTIC_SCREEN');
   assert.equal(analysis.model_called, false);
-  assert.equal(analysis.coverage.activities_scanned, 40);
+  assert.equal(analysis.coverage.activities_scanned, 52);
   assert.equal(analysis.coverage.water_crew_sessions_scanned, 35);
-  assert.equal(analysis.coverage.alternate_activities_scanned, 5);
+  assert.equal(analysis.coverage.alternate_activities_scanned, 17);
   assert.equal(analysis.coverage.planned_outings_scanned, 38);
   assert.equal(analysis.coverage.compact_evidence_summaries, 35);
   assert.equal(analysis.coverage.linked_plans, 34);
@@ -22,14 +22,14 @@ test('screens every recorded activity without calling a model', () => {
   assert.equal(analysis.activity_assessments.length, demoClub.activities.length);
   assert.equal(analysis.deterministic_analysis_cost_usd, 0);
   assert.deepEqual(analysis.batch_validation.counts, {
-    records_received: 40,
-    data_validated: 40,
-    sessions_reconstructed: 40,
-    plan_compared: 39,
+    records_received: 52,
+    data_validated: 52,
+    sessions_reconstructed: 52,
+    plan_compared: 51,
     agent_verified: 2,
     human_approved: 0,
   });
-  assert.equal(analysis.batch_validation.routing.RECONSTRUCTED_ALTERNATIVE, 5);
+  assert.equal(analysis.batch_validation.routing.RECONSTRUCTED_ALTERNATIVE, 17);
   assert.equal(analysis.batch_validation.routing.SOURCE_ADAPTER_REQUIRED, undefined);
   assert.equal(analysis.batch_validation.longitudinal_synthesis_executed, false);
 });
@@ -127,8 +127,8 @@ test('interface exposes screening coverage, queued intelligence, cost, and the n
   assert.match(page, /Data validated/);
   assert.match(page, /Plan compared/);
   assert.match(page, /Human approved/);
-  assert.match(page, /40 sessions reconstructed/);
-  assert.match(page, /2 synthetic Concept2 transcription records/);
+  assert.match(page, /52 sessions reconstructed/);
+  assert.match(page, /14 individual synthetic Concept2 transcription records/);
   assert.match(page, /result\.briefing/);
   assert.doesNotMatch(page, /Executed as planned/);
 });

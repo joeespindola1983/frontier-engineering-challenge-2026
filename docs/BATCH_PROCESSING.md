@@ -55,21 +55,22 @@ in available telemetry is not proof that a session was executed as planned.
 
 ## Two-week public batch
 
-`data/demo-club-batch/` contains forty independent real-informed synthetic
+`data/demo-club-batch/` contains fifty-two independent real-informed synthetic
 activity records generated with fixed definitions:
 
 - 38 water records with SpeedCoach-shaped telemetry;
-- two indoor records using synthetic Concept2 PM5 transcription-format inputs;
-- 39 records with a comparable plan;
+- fourteen individual indoor records using synthetic Concept2 PM5 transcription-format inputs;
+- fixed-distance, fixed-time, and interval indoor workout shapes;
+- 51 records with a comparable plan;
 - 31 reconstructed records with no material signal in available evidence;
-- five reconstructed alternate sessions, including three solo-water and two indoor records;
+- seventeen reconstructed alternate sessions, including three solo-water and fourteen indoor records;
 - two separately authorized and preserved agent-verified exceptions;
 - one missing-plan route and one missing-athlete-context route;
 
 The public verifier recomputes the batch from source files, checks every hash,
 validates plans, normalizes and reconstructs water telemetry and declared-provenance
-PM5 transcriptions, verifies the two preserved paid artifacts, and reports 40
-data-validated records, 40 reconstructed sessions, 39 plan comparisons, two
+PM5 transcriptions, verifies one athlete per PM5 result and the two preserved paid artifacts, and reports 52
+data-validated records, 52 reconstructed sessions, 51 plan comparisons, two
 agent-verified sessions, and zero human
 approvals. Longitudinal synthesis remains unexecuted.
 
@@ -86,6 +87,8 @@ uv run python scripts/verify_demo_club_batch.py
   provide folder or ZIP mapping.
 - Concept2 PM5 screen transcription is normalized only after human confirmation.
   Automatic photo OCR and native ErgData export ingestion remain unimplemented.
+- A shared indoor prescription does not create a shared measurement. Every PM5
+  result remains an individual athlete record before Training Day aggregation.
 - Batch execution is sequential and resumable, not a distributed queue.
 - Longitudinal synthesis requires a separate experiment, acceptance contract,
   and explicit authorization.

@@ -48,7 +48,7 @@ rounds.
 
 ### Two-week demo-club projection
 
-The deterministic period screen processes all 40 recorded activities at zero
+The deterministic period screen processes all 52 recorded activities at zero
 model cost. Of ten attention signals, two complete candidates were explicitly
 authorized for bounded investigation; the other eight remain routed to a human
 or missing source. The two calls cost US$0.089806 and US$0.104312, for an
@@ -60,10 +60,10 @@ At the accepted planning reference it projects to US$0.15 and requires a new
 US$0.20 operational start authorization. Neither value is an observed synthesis
 charge, and the synthesis has not been authorized or executed.
 
-The complete public batch validates 40 activity records and reconstructs 38
-water sessions without a model call. It does not multiply the two observed
+The complete public batch validates and reconstructs 52 activity records,
+including 38 water and fourteen individual indoor sessions, without a model call. It does not multiply the two observed
 agent calls across every record. At the observed two-candidate average of
-US$0.097059, calling the agent on all 40 records would project to US$3.882360;
+US$0.097059, calling the agent on all 52 records would project to US$5.047068;
 that is a counterfactual linear estimate, not a performed run. Selective routing
 is both the product behavior and the cost-control mechanism.
 

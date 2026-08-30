@@ -32,8 +32,8 @@ def sha256(path: Path) -> str:
 def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
     manifest = read_json(batch_root / "manifest.json")
     assert manifest["schema_version"] == "wake.demo_club_batch_manifest.v1"
-    assert len(manifest["sessions"]) == 40
-    assert len({item["session_id"] for item in manifest["sessions"]}) == 40
+    assert len(manifest["sessions"]) == 52
+    assert len({item["session_id"] for item in manifest["sessions"]}) == 52
     plan_schema = read_json(ROOT / "schemas" / "training-plan.schema.json")
     routes = Counter()
     data_validated = reconstructed = plan_compared = 0
@@ -57,6 +57,9 @@ def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
             assert context["case_id"] == item["session_id"]
 
         if item["modality"] == "ERG":
+            assert len(item["athlete_ids"]) == 1, "Concept2 results must be individual"
+            assert item["training_role"] in {"PRIMARY", "PRE_WATER", "POST_WATER", "ALTERNATIVE"}
+            assert item["association_status"] in {"PLAN_CONFIRMED", "STANDALONE"}
             normalized = source_adapters.normalize_source(
                 kind="CONCEPT2",
                 content=(session_dir / "concept2.csv").read_bytes(),
@@ -138,19 +141,19 @@ def verify_batch(batch_root: Path = DEFAULT_BATCH_ROOT) -> dict:
         deviations.update(result["deviation_types"])
     assert routes == Counter({
         "RECONSTRUCTED_NO_MATERIAL_SIGNAL": 31,
-        "RECONSTRUCTED_ALTERNATIVE": 5,
+        "RECONSTRUCTED_ALTERNATIVE": 17,
         "AGENT_VERIFIED": 2,
         "SOURCE_REQUIRED": 1,
         "HUMAN_CONTEXT_REQUIRED": 1,
     })
-    assert data_validated == 40
-    assert reconstructed == 40
-    assert plan_compared == 39
+    assert data_validated == 52
+    assert reconstructed == 52
+    assert plan_compared == 51
     return {
         "status": "verified",
         "schema_version": "wake.demo_club_batch_report.v1",
         "counts": {
-            "records_received": 40,
+            "records_received": 52,
             "data_validated": data_validated,
             "sessions_reconstructed": reconstructed,
             "plan_compared": plan_compared,

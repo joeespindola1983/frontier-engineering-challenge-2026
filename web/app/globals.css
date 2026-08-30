@@ -110,6 +110,14 @@ button { cursor: pointer; }
 .club-summary-grid span, .club-detail-stats span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; }
 .club-summary-grid strong { margin-top: 8px; font-size: 29px; font-weight: 570; line-height: 1; }
 .club-summary-grid small, .club-detail-stats small { margin-top: 8px; color: var(--muted); font-size: 10px; }
+.training-day-overview { padding: 32px 0; border-bottom: 1px solid var(--line-strong); }
+.training-day-overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--line); gap: 1px; }
+.training-day-overview-grid > div { min-height: 116px; padding: 18px; display: grid; align-content: start; background: var(--surface); }
+.training-day-overview-grid span { color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; }
+.training-day-overview-grid strong { margin-top: 8px; color: var(--accent); font-size: 24px; font-weight: 570; line-height: 1.05; }
+.training-day-overview-grid small { margin-top: 9px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+.training-day-boundary, .training-day-evidence-note { margin-top: 12px; padding: 13px 15px; display: grid; grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1.65fr); gap: 22px; background: #edf4f1; color: var(--ink-soft); font-size: 10px; }
+.training-day-boundary strong, .training-day-evidence-note strong { color: var(--accent); }
 .club-pulse-layout { padding-top: 42px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr); gap: 42px; align-items: start; }
 .compact-heading { margin-bottom: 18px; }
 .compact-heading h2, .compact-heading h3 { margin: 0; font-size: 21px; letter-spacing: -0.025em; }
@@ -177,6 +185,35 @@ button { cursor: pointer; }
 .outing-table article > div:last-child { justify-items: end; text-align: right; }
 .outing-table article > div:last-child span { font-family: var(--mono); font-size: 10px; }
 .outing-table article > div:last-child small { color: var(--accent); }
+
+.training-day-history { padding-top: 58px; }
+.training-day-list { border-top: 1px solid var(--line-strong); }
+.training-day-card { border-bottom: 1px solid var(--line-strong); }
+.training-day-card > header { min-height: 72px; padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.training-day-card > header > div:first-child { display: grid; gap: 4px; }
+.training-day-card time { color: var(--muted); font-family: var(--mono); font-size: 9px; }
+.training-day-card > header strong { font-size: 17px; font-weight: 620; }
+.training-day-combined > header strong { color: var(--accent); }
+.training-day-indoor-only > header strong { color: #365f69; }
+.training-day-expected-missing > header strong { color: var(--warning); }
+.training-day-volume { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.training-day-volume span { padding: 5px 8px; border: 1px solid var(--line); color: var(--ink-soft); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.training-day-activities { padding: 0 0 16px 28px; border-left: 1px solid var(--line); }
+.training-day-activity { min-height: 96px; padding: 14px 0 14px 18px; display: grid; grid-template-columns: minmax(220px, 0.8fr) minmax(340px, 1.2fr); gap: 28px; align-items: center; border-top: 1px solid var(--line); }
+.training-day-activity > div:first-child { display: grid; }
+.training-day-activity > div:first-child > span { color: var(--accent); font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+.training-day-activity > div:first-child > strong { margin-top: 5px; font-size: 13px; }
+.training-day-activity > div:first-child > small { margin-top: 4px; color: var(--muted); font-size: 9px; }
+.training-day-activity.indoor { background: linear-gradient(90deg, rgba(226, 238, 239, 0.65), transparent 76%); }
+.training-day-activity.water { background: linear-gradient(90deg, rgba(231, 241, 237, 0.55), transparent 76%); }
+.erg-metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-left: 1px solid var(--line); }
+.erg-metric-grid > span { min-height: 48px; padding: 4px 12px; display: grid; align-content: center; border-right: 1px solid var(--line); color: var(--ink); font-size: 11px; }
+.erg-metric-grid small, .water-activity-distance small { color: var(--muted); font-family: var(--mono); font-size: 7px; letter-spacing: 0.06em; text-transform: uppercase; }
+.water-activity-distance { display: grid; justify-items: end; }
+.water-activity-distance strong { margin-top: 5px; color: var(--accent); font-size: 18px; }
+.training-day-missing { margin-bottom: 16px; padding: 14px 18px; display: grid; gap: 4px; border-left: 2px solid var(--warning); background: var(--warning-soft); }
+.training-day-missing strong { color: var(--warning); font-size: 11px; }
+.training-day-missing span { color: var(--ink-soft); font-size: 10px; }
 
 .storage-note { margin-top: 22px; padding: 12px 14px; display: flex; align-items: baseline; gap: 12px; border-left: 2px solid var(--accent); background: var(--accent-soft); color: var(--ink-soft); font-size: 11px; }
 .storage-note strong { flex: 0 0 auto; color: var(--accent); font-family: var(--mono); font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase; }
@@ -481,6 +518,8 @@ button { cursor: pointer; }
   .summary-strip > div:nth-child(2) { border-right: 0; }
   .summary-strip > div:nth-child(3), .summary-strip > div:nth-child(4) { border-top: 1px solid var(--line); }
   .club-pulse-layout, .club-detail-layout { grid-template-columns: 1fr; }
+  .training-day-overview-grid { grid-template-columns: 1fr 1fr; }
+  .training-day-activity { grid-template-columns: 1fr; gap: 14px; }
   .club-boundary { max-width: 680px; }
   .athlete-chip-grid { grid-template-columns: repeat(3, 1fr); }
   .session-row { grid-template-columns: minmax(260px, 1.5fr) 1fr auto; }
@@ -542,6 +581,9 @@ button { cursor: pointer; }
   .club-investigation-result-grid { grid-template-columns: 1fr; }
   .club-investigation-result-grid article { min-height: 176px; }
   .club-summary-grid, .club-detail-stats { grid-template-columns: 1fr 1fr; }
+  .training-day-overview-grid { grid-template-columns: 1fr 1fr; }
+  .training-day-overview-grid > div { min-height: 102px; padding: 14px 12px; }
+  .training-day-boundary, .training-day-evidence-note { grid-template-columns: 1fr; gap: 5px; }
   .club-summary-grid > div, .club-detail-stats > div { min-height: 102px; padding: 17px 12px 16px 0; }
   .club-summary-grid > div:not(:first-child), .club-detail-stats > div:not(:first-child) { padding-left: 12px; }
   .club-summary-grid > div:nth-child(2), .club-detail-stats > div:nth-child(2) { border-right: 0; }
@@ -560,6 +602,13 @@ button { cursor: pointer; }
   .outing-table time { grid-column: 1 / -1; }
   .outing-table article > div:last-child { grid-column: 2; grid-row: 2; }
   .athlete-gap-note { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .training-day-card > header { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .training-day-volume { justify-content: flex-start; }
+  .training-day-activities { padding-left: 12px; }
+  .training-day-activity { padding-left: 12px; }
+  .erg-metric-grid { grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .erg-metric-grid > span { border-bottom: 1px solid var(--line); }
+  .water-activity-distance { justify-items: start; }
   .session-row { grid-template-columns: 1fr auto; gap: 12px; }
   .session-row > div:nth-child(2), .session-row > div:nth-child(3) { display: none; }
   .session-action { justify-items: end; }
