@@ -303,6 +303,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Contribution, authorship, measurement, subject, and authority are different relationships. Collapsing them into one "coach upload" or "coach confirmation" label loses exactly the context WAKE is intended to reconstruct.
 - **Next step:** Decide whether evaluation evidence justifies promoting expected respondent and authority scope into the versioned agent output schema rather than routing the existing string question at the product boundary.
 
+### 29. Captioned browser walkthrough and live-runtime fallback
+
+- **Hypothesis:** A short horizontal walkthrough assembled from the real browser flow will make the implemented product value legible enough to reuse inside the required five-minute submission video, while an explicitly authorized live attempt will test whether the recording can rely on the paid path.
+- **Change:** Rehearsed the five committed public synthetic inputs from athlete-role selection through upload, investigation, review, attributed human checkpoint, verified briefing, and approval-gated memory. Produced a 64-second 1920 x 1080 H.264 walkthrough with English captions under `submission/video/`. The cut distinguishes the failed live attempt from the byte-identical replay fallback instead of editing them into one implied successful call.
+- **Evaluation:** The live interface showed the US$0.20 operational start authorization, accepted all five inputs, remained in `Investigating...` for about 90 seconds, and returned `Agent runtime unavailable.` No trajectory, usage result, approximate cost, or ledger entry was created. After restarting the service and interface in replay mode, the same exact public files reached review, the athlete question, the attributed athlete-report-recorded-by-coach answer, briefing, and approved memory. `ffprobe` verifies H.264, 1920 x 1080, 30 fps, 64.000 seconds, and a fast-start MP4; a frame extracted at 31 seconds was visually inspected for readable product content and captions.
+- **Result:** A judge-ready product walkthrough segment now exists and honestly demonstrates real input handling plus the complete reproducible interface loop. It is not yet the complete submission video because it omits the initial baseline demonstration, final measured comparison, changelog summary, most impactful correction, and removed experiment required by the official brief.
+- **Cost/runtime:** The live attempt was authorized but returned no provider usage evidence, so its actual cost is unknown and is not presented as measured spend. Replay completion had no API cost. The captioned video is 64 seconds and approximately 2.1 MB.
+- **Decision:** Keep the walkthrough as a reliable product segment and retain the live-runtime failure as submission evidence. Do not depend on a new paid browser call for the final recording until the failure is diagnosed or a successful run is captured with trajectory and cost observability.
+- **Learning:** Video rehearsal is an end-to-end reliability test. A configured live path is not demonstrated merely because its deterministic boundaries pass tests; the recording needs an explicit fallback and must never imply that a failed paid call produced a replayed answer.
+- **Next step:** Diagnose the live runtime separately, then assemble the final five-minute narrative around this product segment, the frozen baseline comparison, the v1-to-v2 distance-boundary correction, and one removed experiment.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name
