@@ -46,6 +46,18 @@ These figures are linear estimates, not a quote or a guarantee. Real cost
 depends on input size, retries, output length, caching, model choice, and tool
 rounds.
 
+### Two-week demo-club projection
+
+The deterministic period screen processes all 40 recorded activities at zero
+model cost. Of ten attention signals, two are candidates for bounded agent
+investigation; the other eight require a human answer or missing source first.
+Adding one future longitudinal synthesis produces three projected paid
+executions. At the observed ten-case average this projects to approximately
+US$0.213455; at the accepted US$0.15 planning reference it projects to US$0.45;
+and three US$0.20 start authorizations total US$0.60. None of these values is an
+observed club-period charge: complete source bundles and the synthesis runner
+have not yet been executed.
+
 ## Runtime contract
 
 `POST /api/source-bundles/:id/execute` requires both `mode: live` and

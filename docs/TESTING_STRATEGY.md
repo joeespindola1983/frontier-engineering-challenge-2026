@@ -69,6 +69,14 @@ byte-stable generation, and the absence of evaluator ground truth, material
 output prose, or evidence references. The browser surface is read-only and has
 no client method that can execute or regrade a run.
 
+The demo-club period screen is tested independently from model behavior. Tests
+require all recorded activities to be classified, session findings to be
+derived from observations rather than prefilled labels, every attention signal
+to carry evidence references, human/source gaps to remain outside the paid
+queue, clean screens not to imply full plan compliance, zero complete source
+bundles to remain visible, and cost projections to retain their observed,
+planning, and authorization meanings.
+
 ## Commands
 
 Run the fast behavioral suite:

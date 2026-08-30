@@ -1,3 +1,5 @@
+import { analyzeOutingEvidence, buildClubPeriodAnalysis } from './club-intelligence.mjs';
+
 const athletes = [
   { athlete_id: 'athlete-lucas', name: 'Lucas', category: 'MEN' },
   { athlete_id: 'athlete-rafael', name: 'Rafael', category: 'MEN' },
@@ -74,26 +76,33 @@ const unavailableKeys = new Set([
   'crew-8x-men:2026-08-26',
 ]);
 
-const findingByKey = {
+const evidenceOverridesByKey = {
   'crew-2x-mixed-a:2026-08-20': {
-    code: 'SPM_BELOW_PLAN',
-    statement: 'One work interval was below the prescribed SPM range.',
-    review_status: 'NEEDS_COACH_REVIEW',
+    plan: {
+      stroke_rate_target: { min_spm: 20, max_spm: 20 },
+    },
+    speedcoach: {
+      work_interval_spm: [
+        { segment_id: 'work-01', average_spm: 20 },
+        { segment_id: 'work-02', average_spm: 20 },
+        { segment_id: 'work-03', average_spm: 18 },
+        { segment_id: 'work-04', average_spm: 20 },
+      ],
+    },
   },
   'crew-4x-men:2026-08-28': {
-    code: 'EXCESS_RECOVERY',
-    statement: 'One recovery interval exceeded the planned duration.',
-    review_status: 'NEEDS_COACH_REVIEW',
+    plan: {
+      planned_recovery_s: { value: 180, tolerance_s: 30 },
+    },
+    speedcoach: {
+      recovery_durations_s: [178, 247, 183],
+    },
   },
   'crew-4x-mixed-b:2026-08-27': {
-    code: 'PLAN_NOT_LINKED',
-    statement: 'Telemetry was received, but no planned workout was linked.',
-    review_status: 'READY_FOR_INVESTIGATION',
+    plan: { linked: false },
   },
   'crew-8x-women:2026-08-28': {
-    code: 'ATHLETE_CONTEXT_PENDING',
-    statement: 'Execution was reconstructed; perceived effort is still awaiting athlete context.',
-    review_status: 'AWAITING_ATHLETE_CONTEXT',
+    athlete_context: { required: true, available: false },
   },
 };
 
@@ -105,12 +114,52 @@ const planTitles = {
 
 const baseDistance = { '2x': 12000, '4x': 14000, '8x': 16000 };
 
+function buildEvidence(outingId, key) {
+  const override = evidenceOverridesByKey[key] ?? {};
+  const planLinked = override.plan?.linked ?? true;
+  const strokeRateTarget = override.plan?.stroke_rate_target;
+  const plannedRecovery = override.plan?.planned_recovery_s;
+  const workIntervalSpm = override.speedcoach?.work_interval_spm;
+  const recoveryDurations = override.speedcoach?.recovery_durations_s;
+  return {
+    plan: {
+      linked: planLinked,
+      source_ref: planLinked ? `${outingId}:plan` : null,
+      stroke_rate_target: strokeRateTarget ? {
+        ...strokeRateTarget,
+        evidence_ref: `${outingId}:plan-spm-target`,
+      } : null,
+      planned_recovery_s: plannedRecovery ? {
+        ...plannedRecovery,
+        evidence_ref: `${outingId}:plan-recovery`,
+      } : null,
+    },
+    speedcoach: {
+      available: true,
+      source_ref: `${outingId}:speedcoach-session`,
+      work_interval_spm: workIntervalSpm ? {
+        values: workIntervalSpm,
+        evidence_ref: `${outingId}:speedcoach-work-spm`,
+      } : null,
+      recovery_durations_s: recoveryDurations ? {
+        values: recoveryDurations,
+        evidence_ref: `${outingId}:speedcoach-recovery`,
+      } : null,
+    },
+    athlete_context: {
+      required: override.athlete_context?.required ?? false,
+      available: override.athlete_context?.available ?? true,
+      evidence_ref: `${outingId}:athlete-context-status`,
+    },
+  };
+}
+
 const outings = crews.flatMap((crew) => schedules[crew.crew_id].map(([date, slot], index) => {
   const key = `${crew.crew_id}:${date}`;
   const unavailable = unavailableKeys.has(key);
-  const finding = findingByKey[key] ?? null;
+  const outingId = `outing-${crew.crew_id}-${date}-${slot.toLowerCase()}`;
   return {
-    outing_id: `outing-${crew.crew_id}-${date}-${slot.toLowerCase()}`,
+    outing_id: outingId,
     crew_id: crew.crew_id,
     boat_id: crew.boat_id,
     date,
@@ -118,15 +167,16 @@ const outings = crews.flatMap((crew) => schedules[crew.crew_id].map(([date, slot
     plan_title: planTitles[crew.boat_class][index],
     outcome: unavailable ? 'CREW_UNAVAILABLE' : 'COMPLETED',
     distance_m: unavailable ? 0 : baseDistance[crew.boat_class] + ((index % 3) - 1) * 500,
-    review_status: unavailable ? 'ALTERNATIVE_TRAINING_REVIEW' : finding?.review_status ?? 'EXECUTED_AS_PLANNED',
-    finding,
+    evidence: unavailable ? null : buildEvidence(outingId, key),
   };
 }));
 
 const crewActivities = outings.filter((outing) => outing.outcome === 'COMPLETED').map((outing) => {
   const crew = crews.find((item) => item.crew_id === outing.crew_id);
+  const assessment = analyzeOutingEvidence(outing);
   return {
     activity_id: `activity-${outing.outing_id}`,
+    outing_id: outing.outing_id,
     date: outing.date,
     slot: outing.slot,
     modality: 'WATER_CREW',
@@ -135,17 +185,16 @@ const crewActivities = outings.filter((outing) => outing.outcome === 'COMPLETED'
     crew_id: crew.crew_id,
     boat_id: crew.boat_id,
     distance_m: outing.distance_m,
-    review_status: outing.review_status,
-    finding: outing.finding,
+    review_status: assessment.review_status,
   };
 });
 
 const alternateActivities = [
-  { activity_id: 'activity-lucas-solo-20260824', date: '2026-08-24', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-lucas'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 8000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
-  { activity_id: 'activity-gaia-erg-20260827', date: '2026-08-27', slot: 'AM', modality: 'ERG', title: 'Ergometer alternative after crew cancellation', athlete_ids: ['athlete-marina', 'athlete-helena'], crew_id: null, boat_id: null, distance_m: 10000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
-  { activity_id: 'activity-camila-solo-20260827', date: '2026-08-27', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-camila'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 7000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
-  { activity_id: 'activity-north-erg-20260826', date: '2026-08-26', slot: 'EVENING', modality: 'ERG', title: 'Squad ergometer alternative after 8x cancellation', athlete_ids: maleIds.slice(0, 6), crew_id: null, boat_id: null, distance_m: 12000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
-  { activity_id: 'activity-felipe-solo-20260826', date: '2026-08-26', slot: 'EVENING', modality: 'WATER_SOLO', title: 'Individual water session after 8x cancellation', athlete_ids: ['athlete-felipe'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 9000, review_status: 'RECORDED_ALTERNATIVE', finding: null },
+  { activity_id: 'activity-lucas-solo-20260824', outing_id: null, date: '2026-08-24', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-lucas'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 8000, review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-gaia-erg-20260827', outing_id: null, date: '2026-08-27', slot: 'AM', modality: 'ERG', title: 'Ergometer alternative after crew cancellation', athlete_ids: ['athlete-marina', 'athlete-helena'], crew_id: null, boat_id: null, distance_m: 10000, review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-camila-solo-20260827', outing_id: null, date: '2026-08-27', slot: 'AM', modality: 'WATER_SOLO', title: 'Individual water session after crew cancellation', athlete_ids: ['athlete-camila'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 7000, review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-north-erg-20260826', outing_id: null, date: '2026-08-26', slot: 'EVENING', modality: 'ERG', title: 'Squad ergometer alternative after 8x cancellation', athlete_ids: maleIds.slice(0, 6), crew_id: null, boat_id: null, distance_m: 12000, review_status: 'RECORDED_ALTERNATIVE' },
+  { activity_id: 'activity-felipe-solo-20260826', outing_id: null, date: '2026-08-26', slot: 'EVENING', modality: 'WATER_SOLO', title: 'Individual water session after 8x cancellation', athlete_ids: ['athlete-felipe'], crew_id: null, boat_id: 'boat-1x-spare', distance_m: 9000, review_status: 'RECORDED_ALTERNATIVE' },
 ];
 
 const participationGaps = [
@@ -191,32 +240,7 @@ function maps(club) {
 }
 
 export function listCoachAttention(club) {
-  const entities = maps(club);
-  const unavailable = club.outings.filter((outing) => outing.outcome === 'CREW_UNAVAILABLE').map((outing) => ({
-    attention_id: `unavailable:${outing.outing_id}`,
-    kind: 'CREW_UNAVAILABLE',
-    date: outing.date,
-    entity_id: outing.crew_id,
-    entity_name: entities.crews.get(outing.crew_id).name,
-    statement: 'The planned crew did not launch; recorded alternatives and missing participation need review.',
-  }));
-  const gaps = club.participation_gaps.map((gap) => ({
-    attention_id: `gap:${gap.date}:${gap.athlete_id}`,
-    kind: 'PARTICIPATION_GAP',
-    date: gap.date,
-    entity_id: gap.athlete_id,
-    entity_name: entities.athletes.get(gap.athlete_id).name,
-    statement: gap.statement,
-  }));
-  const findings = club.outings.filter((outing) => outing.finding).map((outing) => ({
-    attention_id: `finding:${outing.outing_id}`,
-    kind: 'SESSION_FINDING',
-    date: outing.date,
-    entity_id: outing.crew_id,
-    entity_name: entities.crews.get(outing.crew_id).name,
-    statement: outing.finding.statement,
-  }));
-  return [...unavailable, ...gaps, ...findings].sort((left, right) => right.date.localeCompare(left.date));
+  return buildClubPeriodAnalysis(club).attention_signals;
 }
 
 export function summarizeClub(club) {
@@ -239,7 +263,10 @@ export function summarizeCrew(club, crewId) {
   const entities = maps(club);
   const crew = entities.crews.get(crewId);
   if (!crew) throw new RangeError(`Unknown crew: ${crewId}`);
-  const outingsForCrew = club.outings.filter((outing) => outing.crew_id === crewId);
+  const outingsForCrew = club.outings.filter((outing) => outing.crew_id === crewId).map((outing) => ({
+    ...outing,
+    assessment: analyzeOutingEvidence(outing),
+  }));
   const completed = outingsForCrew.filter((outing) => outing.outcome === 'COMPLETED');
   return {
     ...crew,
@@ -249,7 +276,7 @@ export function summarizeCrew(club, crewId) {
     plannedOutings: outingsForCrew.length,
     completedOutings: completed.length,
     disruptedOutings: outingsForCrew.length - completed.length,
-    attentionCount: outingsForCrew.filter((outing) => outing.finding || outing.outcome !== 'COMPLETED').length,
+    attentionCount: outingsForCrew.filter((outing) => outing.assessment.classification !== 'NO_MATERIAL_FLAG_IN_AVAILABLE_EVIDENCE').length,
     distanceKm: Math.round(completed.reduce((sum, outing) => sum + outing.distance_m, 0) / 100) / 10,
   };
 }

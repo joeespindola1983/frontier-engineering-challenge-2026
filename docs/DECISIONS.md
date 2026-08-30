@@ -326,6 +326,12 @@ This log records product and engineering decisions as they are made. Accepted de
 - **Decision:** Label the two-week club dataset `real-informed synthetic`, and show both halves of that classification in the interface. State that workout patterns, source formats, plausible value ranges, and operational failure modes were modeled from supplied real coach prescriptions, SpeedCoach CSVs, pre-existing WAKE mobile exports, and first-hand rowing-club context. Separately state that identities, the displayed club history, lineups, exact sessions, outcomes, aggregates, and physical-boat names are fictional. Preserve the boundary that this is not a statistically representative sample or evidence of real athletic performance.
 - **Rationale:** `Synthetic` alone protects privacy but hides the domain grounding that makes the demo credible. Calling the records `real` would fabricate athlete history and overstate validation. The combined label communicates both provenance and limitation without exposing private inputs.
 
+## 2026-08-30 - Screen the full club period before paid investigation
+
+- **Status:** accepted for the deterministic demo-club layer; source-bundle generation and longitudinal model execution remain pending.
+- **Decision:** Replace prewritten demo-club findings with compact plan, SpeedCoach, and context observations and derive attention through `wake.club_period_analysis.v1`. Screen every recorded activity at zero model cost. Route supported numeric anomalies to a future bounded investigation, but route crew availability, participation gaps, missing plans, and missing athlete context to their human or source dependency first. Show complete-source-bundle coverage, deep-investigation progress, synthesis status, and the three distinct cost projections in the interface.
+- **Rationale:** Paying a model to repeat a stored answer is circular, while calling it on every record wastes budget and hides orchestration value. Deterministic screening can cover the club consistently; the agent should spend reasoning only where evidence is complete and ambiguity remains. Zero complete source bundles means the current two candidates must not be labelled ready for authorization or analysed.
+
 ## Pending decisions
 
 - Live agent API deployment target and application-service boundary.

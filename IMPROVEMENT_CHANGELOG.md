@@ -457,6 +457,17 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 - **Learning:** Data credibility has two independent dimensions: whether a record describes a real person and whether its structure and scenario are grounded in real domain material. A trustworthy demo must expose both.
 - **Next step:** Use the provenance explanation in the demo narration before opening crew and athlete drill-downs.
 
+### 43. Cost-aware club-period screening
+
+- **Hypothesis:** The two-week club layer gains credible intelligence only if alerts are derived from evidence rather than stored as outcomes, every activity is screened, and the system routes human/source dependencies away from paid model calls.
+- **Change:** Replaced four prewritten findings with compact plan, SpeedCoach, and athlete-context observations. Added `wake.club_period_analysis.v1`, which screens 40 recorded activities and 38 planned outings, produces evidence-referenced outing and activity assessments, derives low-SPM and excessive-recovery findings, identifies a missing plan and missing athlete context, combines them with disruptions and participation gaps, and routes ten attention signals. Two numeric candidates require complete source bundles before bounded investigation; eight route to a human or missing source. Added observed, planning, and authorization cost projections plus explicit zero-call and no-synthesis boundaries. The interface now shows 40/40 screened, 0/2 deep investigations, eight human/source routes, and a US$0.45 planning projection.
+- **Evaluation:** RED first failed on the absent analyzer. Later RED cycles required derivation from observations, evidence references, exact routing, full activity coverage, no positive plan-compliance claim, removal of prefilled findings, visible interface status, and an explicit zero-source-bundle boundary. GREEN passes 163 Python tests, four public fixture/artifact verifiers, 57 web tests, ESLint, and the Vinext production build. Browser QA confirmed 40/40 coverage, the 0/2 queue, eight dependency routes, the US$0.45 projection, and the source-bundle boundary in the default layout and at 390 × 844; crew drill-down showed the derived 18-SPM finding and no `Executed as planned` label.
+- **Result:** The club pulse is no longer only relational or a list of hand-authored alerts: it performs a reproducible zero-cost screen over the complete displayed period. It still does not claim a longitudinal agent result. The two deep candidates cannot execute until complete synthetic source bundles exist.
+- **Cost/runtime:** No model call and no API cost. Three future paid executions—two investigations plus one synthesis—project to US$0.213455 at the observed ten-case average, US$0.45 at the planning reference, and US$0.60 in start authorizations. These are forecasts, not observed charges.
+- **Decision:** Keep deterministic full-period screening and dependency-aware routing. Do not execute the candidate queue from compact observations alone, and do not spend model budget on a missing plan or human answer.
+- **Learning:** Agentic value includes deciding when not to call the model. Full coverage can be deterministic while ambiguity, source selection, and longitudinal synthesis remain bounded agent work.
+- **Next step:** Generate complete public synthetic plan and SpeedCoach bundles for the two numeric candidates, run a no-cost preflight, and request explicit authorization before paid execution.
+
 ## Entry template
 
 ### YYYY-MM-DD - Experiment name

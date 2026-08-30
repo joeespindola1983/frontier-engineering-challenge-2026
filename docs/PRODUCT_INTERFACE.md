@@ -36,6 +36,8 @@ The club pulse is a committed deterministic frontend dataset, not a second persi
 
 The dataset models four 2x crews, four 4x crews, and two 8x crews across ten weekdays. Crew identity is a named lineup snapshot linked to athlete identities, ordered seats, category, and a physical boat; boat class and physical shell identity remain separate. Three full lineups do not launch. Alternative 1x and ergometer records remain attached to the participating athletes, while an expected day without any recorded activity becomes a context request rather than a performance, injury, or commitment verdict. The drill-downs count supported relationships only: crew outings, activity days, modalities, distance, physical boats, and explicit gaps.
 
+`buildClubPeriodAnalysis` screens all 40 recorded activities and all 38 planned outings without a model call. It derives SPM, recovery, plan-link, and athlete-context findings from compact observations with evidence references; combines them with crew-unavailable and participation-gap signals; and routes each item to agent investigation, an athlete question, human context, or a source request. The current result contains ten attention signals, but only two are agent candidates. The other eight should not consume model budget before their human or source dependency changes. The screen also exposes that 35 compact evidence summaries but zero complete source bundles are present. Consequently, deep investigation remains `REQUIRES_SOURCE_BUNDLES`, the longitudinal synthesis remains `NOT_EXECUTED`, and the UI must not label clean records as executed according to plan.
+
 ## Evidence boundaries
 
 The frontend must not:
