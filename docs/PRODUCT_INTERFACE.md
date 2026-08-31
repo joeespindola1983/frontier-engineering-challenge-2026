@@ -28,13 +28,19 @@ The `web/` application currently implements:
 7. an explicit approval action before an in-memory goal update.
 8. an optional historical-weather intake with explicit approximate-location consent, session-timezone confirmation, coordinate-free condition preview, and a no-model preparation path in replay mode.
 9. a read-only Evaluation view generated from the committed official comparison, with one consolidated result, ten expandable individual case reports, case and dimension diagnostics, cost and trajectory observability, preserved limitations, and no agent invocation path. A visible Sessions-page action keeps this evidence reachable when the compact header navigation is hidden.
-10. a separate two-week real-informed synthetic club pulse connecting 16 named fictional athletes, 10 recurring lineups, 11 physical boats, 38 planned crew outings, recorded alternatives, explicit participation gaps, and a source-derived validation funnel over 52 independent activity records; plus read-only crew and athlete drill-downs with water-only, indoor-only, combined, and expected-missing Training Days;
+10. a period-aware real-informed synthetic club pulse connecting 16 named fictional athletes, 10 recurring lineups, 11 physical boats, 38 planned crew outings, recorded alternatives, explicit participation gaps, and a source-derived validation funnel over 52 independent activity records; plus read-only crew and athlete drill-downs with water-only, indoor-only, combined, and expected-missing Training Days. The current fixture spans two work weeks, while the displayed duration and date range are derived from its period metadata;
 11. a loadable second two-week post-regatta package with 50 compact activities for the same athletes and crews, six deterministic comparison outcomes, explicit evidence/causal boundaries, no model call, and US$0.00 replay cost.
-11. a deterministic Competition Review linking all 10 fictional club entries and 16 athletes to eight fictional events, three fictional opponent clubs, exact crew snapshots, pre-race shared work, category-distance provenance, official order, pace, gap, non-completion questions, and boat-level field reports.
+12. a deterministic Competition Review linking all 10 fictional club entries and 16 athletes to eight fictional events, three fictional opponent clubs, exact crew snapshots, pre-race shared work, category-distance provenance, official order, pace, gap, non-completion questions, and boat-level field reports.
 
 The hosted UI replays committed public case 002 and never accesses evaluator ground truth. During local development it can connect to the task-level product service, upload the core plan and SpeedCoach sources plus any optional mobile, environment, or context evidence, receive validation/normalization metadata, and prepare a compact agent input. When live mode is explicitly enabled, the page executes the prepared bundle, adapts the verified result, completes its server-owned human checkpoint, produces a bundle-specific briefing, and proposes an approval-gated memory update. Uploaded files with different bytes are never allowed to inherit the committed answer. Titles, intervals, targets, deviations, source labels, clocks, environmental absence, checkpoint copy, and memory copy come from the selected bundle rather than case-002 constants.
 
 The club pulse is a committed deterministic frontend dataset, not a second persistence system and not an agent-generated multi-session conclusion. It is labelled **real-informed synthetic** because its workout patterns, source formats, plausible value ranges, and operational failure modes were modeled from real coach prescriptions, WhatsApp/PDF/spreadsheet-style material, SpeedCoach CSVs, pre-existing WAKE mobile export structures, and first-hand rowing-club context. Identities, the displayed club history, lineups, exact sessions, outcomes, aggregates, and physical-boat names are fictional. This provenance does not make the dataset statistically representative or evidence of real athletic performance.
+
+Primary destinations and detail views publish readable hash routes so the
+current product state can be bookmarked, reloaded, and restored with browser
+Back/Forward. The shared location trail appears only below a primary
+destination; Competition, Goal memory, Evaluation, and the Sessions root do not
+present a false in-product parent.
 
 The dataset models four 2x crews, four 4x crews, and two 8x crews across ten weekdays. Crew identity is a named lineup snapshot linked to athlete identities, ordered seats, category, and a physical boat; boat class and physical shell identity remain separate. Three full lineups do not launch. Alternative 1x and ergometer records remain attached to the participating athletes, while an expected day without any recorded activity becomes a context request rather than a performance, injury, or commitment verdict. Fourteen individual Concept2 records cover fixed-distance, fixed-time, and interval shapes. `Training Day` groups an athlete's records by date and declared plan role, but never merges source ownership or adds indoor and water distance into one performance total. The drill-downs expose Concept2 pace, SPM, and watts as modality-specific evidence rather than direct muscular-force, visible-technique, or on-water-speed conclusions.
 
@@ -67,13 +73,15 @@ The current implementation therefore keeps work interval five as the material SP
 
 Sessions and Goal memory remain the operational coach workflow. The hackathon build exposes one additional Evaluation destination, explicitly labelled `Saved result · No model call`. It renders a consolidated public summary and expandable per-case score reports generated from committed manifests and grade reports; it cannot execute an investigation, access evaluator ground truth, expose raw evidence, or change saved workflow state. Evaluation fixtures do not appear in the coach inbox because they are benchmark scenarios, not club sessions. Full fixtures, structured outputs, grader controls, and trajectories remain repository artifacts rather than browser controls. A production club build may omit this submission-only destination.
 
-The Sessions page also exposes a separate **Longitudinal intelligence pilot**
-preflight. It shows the athlete and club scopes, why GPT is being considered,
-the baseline-versus-WAKE protocol, zero current paid calls, projections, the
-US$0.80 authorization gate, evidence boundaries, and saved-report behavior. It
-does not contain an execution control and cannot spend from the browser. Until
-the four planned calls are separately authorized and completed, it must say
-`Ready for authorization`, show zero saved reports, and make no quality claim.
+The Sessions page also exposes the completed **Longitudinal intelligence
+pilot** as saved evaluation evidence. Four separately authorized reports cover
+the same athlete and club scopes under a direct baseline and bounded WAKE
+workflow. All four passed the frozen non-scored capability checks for a total
+US$0.110426, so the accepted result is `NO_DEMONSTRATED_QUALITY_GAIN`; WAKE's
+29.01% lower observed cost is not presented as proof of better reasoning. The
+browser has no execution control, reopens the reports at US$0.00, and preserves
+the distinction between this experiment and the separate 102-activity saved
+club memory.
 
 ## Task-level API
 

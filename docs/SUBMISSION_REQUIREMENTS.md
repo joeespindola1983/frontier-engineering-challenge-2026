@@ -2,6 +2,9 @@
 
 This checklist summarizes the official micro1 Agentic Workflows Hackathon brief supplied to participants. Consult the source PDF before final submission if the organizer publishes an updated version.
 
+Current WAKE coverage and manual closeout items are tracked in
+[`SUBMISSION_AUDIT.md`](SUBMISSION_AUDIT.md).
+
 ## Core challenge
 
 Choose a specific, meaningful problem understood by the team. Explain:

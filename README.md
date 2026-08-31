@@ -12,9 +12,9 @@ In many non-elite rowing clubs, athletes train frequently while coaches cannot f
 
 A dashboard can store and display this information, but it still asks a human to inspect every chart and connect every variable. WAKE investigates each session, identifies missing context, reconciles conflicting sources, and presents only claims it can support with evidence and explicit uncertainty.
 
-## Initial demo hypothesis
+## Implemented demo workflow
 
-The first end-to-end workflow will:
+The end-to-end workflow:
 
 1. ingest a planned workout and SpeedCoach telemetry, with mobile, environment, and context when available;
 2. align and corroborate recordings when multiple devices exist, or expose the single-source limitation;
@@ -37,14 +37,17 @@ The regatta is an important goal and evaluation milestone, not the boundary of t
 
 ## Hackathon evidence
 
-The repository will preserve:
+The repository preserves:
 
 - a simple baseline and the final workflow;
 - a fixed evaluation set, including at least one difficult case;
 - an [Improvement Changelog](IMPROVEMENT_CHANGELOG.md) tied to results;
 - representative agent trajectories with tool responses, retries, and human checkpoints;
 - exact clean-environment commands, runtime, versions, and approximate cost;
-- a five-minute end-to-end demonstration.
+- an owner-approved 4:59 end-to-end video with metric-level SPM source wording,
+  narration-aligned subject changes, contextual cursor navigation, one removed
+  behavior, and one negative experiment. The final H.264/AAC artifact is stored
+  at `submission/video/wake-final-submission.mp4`.
 
 ## Documentation
 
@@ -54,6 +57,8 @@ The repository will preserve:
 - [Architecture hypothesis](docs/ARCHITECTURE.md)
 - [Decision log](docs/DECISIONS.md)
 - [Submission requirements](docs/SUBMISSION_REQUIREMENTS.md)
+- [Submission compliance audit](docs/SUBMISSION_AUDIT.md)
+- [Third-party, service, and data-rights record](docs/THIRD_PARTY_AND_DATA_RIGHTS.md)
 - [Private dataset audit](docs/DATASET_AUDIT.md)
 - [Evaluation specification](docs/EVALUATION_SPEC.md)
 - [Progressive evidence contract](docs/EVIDENCE_LADDER.md)
@@ -65,11 +70,16 @@ The repository will preserve:
 - [Deterministic grader](docs/GRADER.md)
 - [Testing strategy](docs/TESTING_STRATEGY.md)
 - [Clean-environment reproduction guide](docs/REPRODUCTION_GUIDE.md)
+- [Environment setup and reproduction PDF](output/pdf/wake-environment-setup-and-reproduction.pdf)
+- [Detailed WAKE solution report PDF](output/pdf/wake-detailed-solution-report.pdf)
 - [Sequential owner interface QA guide](docs/OWNER_QA_GUIDE.md)
 - [Interface review and visual evidence plan](docs/INTERFACE_REVIEW.md)
+- [Five-minute product video script](docs/VIDEO_DEMO_SCRIPT.md)
 - [Rowing domain glossary](docs/DOMAIN_GLOSSARY.md)
 - [Normalized data contracts](schemas/README.md)
 - [Public evaluation fixtures](data/fixtures/README.md)
+- [Representative human-gated product replay](evaluation/trajectories/representative-product-replay-v1.json)
+- [Owner live QA evidence](evaluation/runs/product-live-bundles/OWNER_LIVE_QA_20260830.md)
 
 ## Current repository state
 
@@ -104,8 +114,9 @@ uv run python scripts/verify_longitudinal_pilot.py
 The safe default freezes four requests: direct baseline and bounded WAKE for
 `athlete-lucas` and `club-coach`. A paid run additionally requires `--execute`,
 `OPENAI_API_KEY`, and an explicit `--authorized-cost-usd` covering every start.
-The full four-start comparison requires US$0.80; this operational gate is not a
-provider billing cap. Saved verified reports can be reopened without a new call.
+A new full four-start re-execution requires US$0.80; this operational gate is
+not a provider billing cap. The completed verified reports can be reopened
+without a new call.
 
 Freeze the combined pre/post-regatta club memory without calling the API:
 

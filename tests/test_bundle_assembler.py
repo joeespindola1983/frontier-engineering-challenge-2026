@@ -191,6 +191,22 @@ class BundleAssemblerTests(unittest.TestCase):
         )
         self.assertIn("does not establish causation", environment["method"])
 
+    def test_environment_derives_heading_from_speedcoach_gps_without_context(self) -> None:
+        summary = build_public_summary(
+            include_mobile=False,
+            include_context=False,
+        )
+        environment = summary["environment"]
+
+        self.assertAlmostEqual(environment["route_heading_deg"], 0.0, places=1)
+        self.assertEqual(
+            environment["route_heading_source"],
+            "SPEEDCOACH_GPS_DERIVED",
+        )
+        self.assertIn("derived", environment["method"].lower())
+        result = wake_tools.analyze_environment(summary)
+        self.assertEqual(result["status"], "COMPLETED")
+
     def test_provider_environment_keeps_humidity_resolution_and_crosswind(self) -> None:
         speedcoach = (CASE_INPUT / "speedcoach.csv").read_bytes()
         lookup = weather_enrichment.build_weather_lookup(speedcoach)
@@ -249,9 +265,12 @@ class BundleAssemblerTests(unittest.TestCase):
         self.assertEqual(build_public_summary(), build_public_summary())
 
     def test_environment_analysis_abstains_when_route_heading_is_unknown(self) -> None:
-        summary = build_public_summary(route_heading=None)
+        environment = bundle_assembler._environment_summary(
+            read_json(CASE_INPUT / "environment.json"),
+            {},
+        )
 
-        result = wake_tools.analyze_environment(summary)
+        result = wake_tools.analyze_environment({"environment": environment})
 
         self.assertEqual(result["status"], "INSUFFICIENT")
         self.assertEqual(result["causal_conclusion"], "NOT_ESTABLISHED")

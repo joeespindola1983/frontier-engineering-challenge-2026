@@ -31,11 +31,19 @@ test('committed evaluation summary exposes official scores without private evide
 
 test('evaluation is a separate read-only submission evidence view', async () => {
   const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const css = await readFile(new URL('../app/globals.css', import.meta.url), 'utf8');
 
   assert.match(page, /type Screen = .*'evaluation'/);
   assert.match(page, />Evaluation</);
   assert.match(page, /function EvaluationScreen/);
   assert.match(page, /Saved result · No model call/);
+  assert.match(page, /function EvaluationArtifactIndicator/);
+  assert.match(page, /aria-label="Show saved evaluation details"/);
+  assert.match(page, /<EvaluationArtifactIndicator \/>/);
+  assert.doesNotMatch(page, /className="evaluation-notice"/);
+  assert.match(page, /window\.setTimeout\(\(\) => setOpen\(false\), 6000\)/);
+  assert.match(css, /\.evaluation-artifact-status \{[^}]*margin-left: auto;/s);
+  assert.match(css, /\.evaluation-artifact-popover\.open \{[^}]*display: block;/s);
   assert.match(page, /Same model, same ten case summaries, same output schema/);
   assert.match(page, /Environmental interpretation/);
   assert.match(page, /comparison\.wake_score/);

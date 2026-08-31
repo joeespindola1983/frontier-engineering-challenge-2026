@@ -7,6 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/reproduce_submission.sh"
+READINESS_SCRIPT = ROOT / "scripts/verify_submission_readiness.py"
+PACKAGE_SCRIPT = ROOT / "scripts/build_submission_zip.py"
 GUIDE = ROOT / "docs/REPRODUCTION_GUIDE.md"
 VIDEO_GUIDE = ROOT / "docs/VIDEO_DEMO_SCRIPT.md"
 VOICEOVER_GUIDE = ROOT / "submission" / "video" / "VOICEOVER_ELEVENLABS_V3.md"
@@ -33,6 +35,13 @@ class SubmissionReproductionTests(unittest.TestCase):
         self.assertIn("scripts/test_all.py", script)
         self.assertIn("scripts/score_longitudinal_pilot.py", script)
         self.assertIn("scripts/score_post_regatta_comparison.py", script)
+        self.assertIn("scripts/verify_submission_readiness.py", script)
+        self.assertIn("mktemp -d", script)
+        self.assertIn("wake_reproduction_tmp_dir", script)
+        self.assertNotIn(
+            "--output evaluation/runs/post-regatta-baseline-v1-20260830/capability-audit.json",
+            script,
+        )
         self.assertIn("post-regatta-baseline-v1-20260830", script)
         self.assertIn("Node.js 22.13.0 or newer is required", script)
         self.assertIn("node_major", script)
@@ -60,10 +69,20 @@ class SubmissionReproductionTests(unittest.TestCase):
             self.assertIn(required, guide)
         self.assertIn("scripts/reproduce_submission.sh", guide)
         self.assertIn("scripts/start_dashboard.sh", guide)
+        self.assertIn("scripts/verify_submission_readiness.py", guide)
+        self.assertIn("scripts/build_submission_zip.py", guide)
+        self.assertIn("source-only ZIP", guide)
         self.assertIn("83.76", guide)
         self.assertIn("49.00", guide)
         self.assertIn("scripts/post_regatta_baseline.py", guide)
         self.assertIn("US$0.20", guide)
+
+    def test_source_package_builder_is_documented_as_a_separate_upload_artifact(self) -> None:
+        self.assertTrue(PACKAGE_SCRIPT.is_file())
+        guide = GUIDE.read_text(encoding="utf-8")
+        self.assertIn("dist/wake-source-submission.zip", guide)
+        self.assertIn("50 MiB", guide)
+        self.assertIn("final portal", guide)
 
     def test_video_script_covers_the_required_five_minute_submission_story(self) -> None:
         self.assertTrue(VIDEO_GUIDE.is_file())
@@ -110,6 +129,7 @@ class SubmissionReproductionTests(unittest.TestCase):
         self.assertNotIn("<break", sheet)
         self.assertNotIn("**Screen:**", sheet)
         self.assertNotIn("**Show:**", sheet)
+        self.assertNotIn("- OK", sheet)
 
         prompts = sheet.split("```text\n")[1:]
         self.assertEqual(len(prompts), 7)

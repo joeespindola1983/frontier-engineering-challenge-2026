@@ -101,11 +101,25 @@ test('publishes the verified saved club memory without another model call', asyn
   assert.equal(postRegattaMemory.total_tokens, 6322);
   assert.equal(postRegattaMemory.headline, artifact.output.headline);
   assert.equal(postRegattaMemory.coach_briefing, artifact.output.coach_briefing);
+  assert.match(postRegattaMemory.display_coach_briefing, /Gavião 4x/i);
+  assert.doesNotMatch(postRegattaMemory.display_coach_briefing, /Atlas/i);
   assert.deepEqual(postRegattaMemory.priorities, artifact.output.priorities);
   assert.deepEqual(postRegattaMemory.unresolved_questions, artifact.output.unresolved_questions);
   assert.match(page, /Saved WAKE club memory/);
+  assert.match(page, /postRegattaMemory\.display_coach_briefing/);
   assert.match(page, /postRegattaMemory\.approximate_cost_usd/);
   assert.match(page, /Reopen cost/);
   assert.match(page, /US\$0\.00/);
   assert.match(page, /Narrow comparable observations only/);
+});
+
+test('saved club memory remains reachable after leaving the post-regatta page', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+
+  assert.match(page, /postRegattaLoaded/);
+  assert.match(page, /setPostRegattaLoaded/);
+  assert.match(page, /Open saved club memory/);
+  assert.match(page, /onOpenSavedClubMemory/);
+  assert.match(page, /loaded=\{postRegattaLoaded\}/);
+  assert.doesNotMatch(page, /function PostRegattaScreen[\s\S]*?const \[loaded, setLoaded\] = useState\(false\)/);
 });

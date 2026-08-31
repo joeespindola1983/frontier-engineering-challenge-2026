@@ -111,3 +111,17 @@ test('competition review is reachable from navigation and exposes consolidated a
   assert.ok((page.match(/onNavigate\('competition'\)/g) ?? []).length >= 2, 'competition must remain reachable when primary navigation is hidden');
   assert.ok((page.match(/window\.scrollTo\(\{ top: 0, behavior: 'auto' \}\)/g) ?? []).length >= 2, 'screen and boat transitions must both reset scroll');
 });
+
+test('competition provenance uses a compact timed disclosure in the page header', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const css = await readFile(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(page, /function CompetitionProvenanceIndicator/);
+  assert.match(page, /aria-label="Show competition data provenance"/);
+  assert.equal((page.match(/<CompetitionProvenanceIndicator /g) ?? []).length, 2);
+  assert.match(page, /window\.setTimeout\(\(\) => setOpen\(false\), 6000\)/);
+  assert.doesNotMatch(page, /className="competition-notice"/);
+  assert.match(css, /\.competition-provenance-status \{[^}]*margin-left: auto;/s);
+  assert.match(css, /\.competition-provenance-popover\.open \{[^}]*display: block;/s);
+  assert.doesNotMatch(css, /\.competition-notice \{/);
+});

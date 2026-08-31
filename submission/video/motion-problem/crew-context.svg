@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="250" viewBox="0 0 1560 250">
+  <g font-family="Arial, sans-serif" font-size="23" font-weight="700" text-anchor="middle">
+    <rect x="0" y="0" width="270" height="78" rx="39" fill="#174C43"/><text x="135" y="50" fill="#F5F2EA">CREW</text>
+    <rect x="300" y="0" width="300" height="78" rx="39" fill="#174C43"/><text x="450" y="50" fill="#F5F2EA">PHYSICAL BOAT</text>
+    <rect x="630" y="0" width="270" height="78" rx="39" fill="#174C43"/><text x="765" y="50" fill="#F5F2EA">LINEUP</text>
+    <rect x="930" y="0" width="270" height="78" rx="39" fill="#174C43"/><text x="1065" y="50" fill="#F5F2EA">OUTINGS</text>
+    <rect x="1230" y="0" width="320" height="78" rx="39" fill="#174C43"/><text x="1390" y="50" fill="#F5F2EA">HUMAN CONTEXT</text>
+  </g>
+  <rect x="0" y="113" width="1560" height="126" rx="20" fill="#F5F2EA" stroke="#D8E4DE" stroke-width="2"/>
+  <text x="780" y="166" text-anchor="middle" fill="#142B27" font-family="Arial, sans-serif" font-size="31" font-weight="700">Missing training becomes a question — not a judgment.</text>
+  <text x="780" y="205" text-anchor="middle" fill="#5B6E69" font-family="Arial, sans-serif" font-size="21">No automatic claim about commitment, fitness, or injury.</text>
+</svg>

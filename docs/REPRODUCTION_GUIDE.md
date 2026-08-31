@@ -47,14 +47,52 @@ cd frontier-engineering-challenge-2026
 ```
 
 The script runs `uv sync --frozen`, `npm ci`,  Python tests and public artifact
-verifiers, the web tests and linter, and a production build. It unsets
-`OPENAI_API_KEY` and contains no paid execution path.
+verifiers, the web tests and linter, a production build, and the submission
+readiness audit. It unsets `OPENAI_API_KEY` and contains no paid execution path.
+Timestamped audit rebuilds are written to a temporary directory, so the
+verification does not modify the frozen submission evidence in the checkout.
 
 If dependencies are already installed:
 
 ```bash
 ./scripts/reproduce_submission.sh --verify-only
 ```
+
+Inspect only the submission package and official evidence:
+
+```bash
+uv run python scripts/verify_submission_readiness.py
+```
+
+In the complete Git checkout, the accepted final cut is stored at
+`submission/video/wake-final-submission.mp4`; the expected strict status is
+`READY`, with both `repository_ready` and `final_video_ready` set to `true`:
+
+```bash
+uv run python scripts/verify_submission_readiness.py --require-final-video
+```
+
+The source-only ZIP deliberately excludes all MP4 files because the video is a
+separate portal deliverable. Inside a clean ZIP extraction, the default audit
+therefore reports `PENDING_FINAL_VIDEO` with `repository_ready: true` and exits
+successfully. That status does not block source reproduction. Copy the separate
+accepted MP4 to the path above only if testing the strict combined-delivery gate.
+
+## Build the source-only ZIP
+
+Create the separate source-code upload without credentials, private inputs,
+installed dependencies, local runtime state, build output, or MP4 drafts:
+
+```bash
+python3 scripts/build_submission_zip.py
+```
+
+The deterministic archive is written to
+`dist/wake-source-submission.zip`. The builder applies a conservative 50 MiB
+limit and prints the file count, exact size, and SHA-256 digest. The current
+organizer brief supplied to the project does not state a ZIP-size limit, so
+the final portal must still be checked before upload. The solution video is a
+separate deliverable and is intentionally excluded from this source-only ZIP.
 
 ## Run the solution
 
@@ -123,6 +161,16 @@ The official WAKE outputs and observable trajectories are preserved under
 contain public tool events, verifier decisions, retries, runtime, tokens, and
 cost; they do not contain private chain-of-thought.
 
+Verify the separate deterministic product replay trace, which connects the
+official agent tool trace to the human answer and coach-approval checkpoints:
+
+```bash
+uv run python scripts/build_representative_product_trajectory.py
+```
+
+This trace uses the public synthetic case and costs US$0.00. It labels the
+representative answer as synthetic and does not rewrite telemetry.
+
 ## Reproduce the evaluation
 
 Run every deterministic test and public verifier:
@@ -168,11 +216,18 @@ cost 29.01% less, but both workflows passed the same capability checks.
 A successful zero-cost reproduction provides:
 
 1. passing Python and web test suites;
-2. eight or more public fixture/artifact verifier confirmations;
+2. eight or more public fixture/artifact verifier confirmations and a passing
+   repository-readiness audit;
 3. a successful production web build;
 4. regenerated evaluation and longitudinal audit artifacts identical in
    meaning to the committed results;
 5. a replay interface at `http://localhost:3000/` with no API call.
+
+The final strict readiness gate additionally expects the accepted submission
+video. The promoted artifact is 299.232 seconds (04:59.232), H.264/AAC,
+1920 x 1080 at 30 fps, and 13,535,323 bytes. Duration, decode, and editorial
+acceptance were checked separately because file presence alone is not evidence
+that the content satisfies the script.
 
 In the Sessions page, use **Load 2-week package** to add the post-regatta demo
 period. The loaded comparison must show 50 activities, 16 athletes, 10 crews,

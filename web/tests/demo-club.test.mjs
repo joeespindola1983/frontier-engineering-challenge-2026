@@ -37,6 +37,41 @@ test('models two work weeks across the requested ten rowing crews', () => {
 });
 
 
+test('uses stable Brazilian bird display names without changing crew identifiers', () => {
+  assert.deepEqual(
+    Object.fromEntries(demoClub.crews.map((crew) => [crew.crew_id, crew.name])),
+    {
+      'crew-2x-men': 'Crew: Tucano - 2x - Men',
+      'crew-2x-women': 'Crew: Arara - 2x - Women',
+      'crew-2x-mixed-a': 'Crew: Bem-te-vi - 2x - Mixed',
+      'crew-2x-mixed-b': 'Crew: Sabiá - 2x - Mixed',
+      'crew-4x-men': 'Crew: Gavião - 4x - Men',
+      'crew-4x-women': 'Crew: Garça - 4x - Women',
+      'crew-4x-mixed-a': 'Crew: Canário - 4x - Mixed',
+      'crew-4x-mixed-b': 'Crew: Seriema - 4x - Mixed',
+      'crew-8x-men': 'Crew: Carcará - 8x - Men',
+      'crew-8x-women': 'Crew: Tuiuiú - 8x - Women',
+    },
+  );
+  assert.deepEqual(
+    Object.fromEntries(demoClub.boats.map((boat) => [boat.boat_id, boat.name])),
+    {
+      'boat-2x-aurora': 'Tucano',
+      'boat-2x-iris': 'Arara',
+      'boat-2x-horizon': 'Bem-te-vi',
+      'boat-2x-current': 'Sabiá',
+      'boat-4x-atlas': 'Gavião',
+      'boat-4x-gaia': 'Garça',
+      'boat-4x-mistral': 'Canário',
+      'boat-4x-dawn': 'Seriema',
+      'boat-8x-north': 'Carcará',
+      'boat-8x-south': 'Tuiuiú',
+      'boat-1x-spare': 'Biguá',
+    },
+  );
+});
+
+
 test('preserves cancelled crews, alternate training, and explicit unrecorded athletes', () => {
   const cancelled = demoClub.outings.filter((outing) => outing.outcome === 'CREW_UNAVAILABLE');
   assert.equal(cancelled.length, 3);
@@ -136,11 +171,17 @@ test('sessions surface exposes club, crew, and athlete drill-downs', async () =>
 
   assert.match(page, /function ClubOverview/);
   assert.match(page, /function CrewScreen/);
+  assert.match(page, /<div className="kicker">Crew memory<\/div><h1>{crew\.name}<\/h1>/);
+  assert.doesNotMatch(page, /clubCategoryLabel\(crew\.category\)} · {crew\.boat_class} · {crew\.boat\.name}/);
+  assert.match(page, /<span>Recurring lineup<\/span><strong>{crew\.name}<\/strong>/);
+  assert.match(page, /<small>{crewSummary\.lineup\.map\(\(seat\) => seat\.athlete\.name\)\.join\(' · '\)}<\/small>/);
   assert.match(page, /function AthleteScreen/);
-  assert.match(page, /Two-week club pulse/);
-  assert.match(page, /Real-informed synthetic data/);
-  assert.match(page, /modeled from real coach plans/);
-  assert.match(page, /Identities, club history, and session outcomes are fictional/);
+  assert.match(page, /Club training pulse/);
+  assert.match(page, /formatAnalysisPeriod\(demoClub\.period\)/);
+  assert.doesNotMatch(page, /Two-week club pulse/);
+  assert.match(page, /Real-informed synthetic club/);
+  assert.match(page, /Workout structures and source formats reflect real plans/);
+  assert.match(page, /Names, lineups, boats, sessions, results, and club history do not describe real athletes/);
   assert.match(page, /onOpenCrew/);
   assert.match(page, /onOpenAthlete/);
   assert.match(page, /Training days/);
@@ -149,4 +190,44 @@ test('sessions surface exposes club, crew, and athlete drill-downs', async () =>
   assert.match(page, /Combined day/);
   assert.match(page, /Indoor-only/);
   assert.match(page, /Concept2 pace/);
+});
+
+test('club pulse exposes synthetic data context through a compact timed disclosure', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const css = await readFile(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(page, /function ClubDataContextIndicator/);
+  assert.match(page, /aria-label="Show demo data context"/);
+  assert.match(page, /window\.setTimeout\(\(\) => setOpen\(false\), 6000\)/);
+  assert.match(page, /<ClubDataContextIndicator \/>/);
+  assert.doesNotMatch(page, /className="saved-evidence-label"/);
+  assert.doesNotMatch(page, /className="club-provenance-note"/);
+  assert.doesNotMatch(page, /className="club-intelligence-boundary"/);
+  assert.match(css, /\.club-data-context-status \{[^}]*margin-left: auto;/s);
+  assert.match(css, /\.club-data-context-popover\.open \{[^}]*display: block;/s);
+  assert.doesNotMatch(css, /\.club-provenance-note \{/);
+});
+
+test('crew and athlete details reuse the compact club data disclosure', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const css = await readFile(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.equal((page.match(/<ClubDataContextIndicator \/>/g) ?? []).length, 3);
+  assert.match(page, /club-detail-header[\s\S]{0,900}<ClubDataContextIndicator \/>/);
+  assert.doesNotMatch(page, /className="prototype-notice"/);
+  assert.doesNotMatch(css, /\.prototype-notice \{/);
+});
+
+test('Concept2 interpretation boundary is available through a compact timed disclosure', async () => {
+  const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const css = await readFile(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(page, /function Pm5ContextIndicator/);
+  assert.match(page, /aria-label="Show Concept2 comparison context"/);
+  assert.match(page, /window\.setTimeout\(\(\) => setOpen\(false\), 6000\)/);
+  assert.match(page, /<Pm5ContextIndicator \/>/);
+  assert.doesNotMatch(page, /className="training-day-boundary"/);
+  assert.match(css, /\.pm5-context-status \{[^}]*position: relative;/s);
+  assert.match(css, /\.pm5-context-popover\.open \{[^}]*display: block;/s);
+  assert.doesNotMatch(css, /\.training-day-boundary/);
 });

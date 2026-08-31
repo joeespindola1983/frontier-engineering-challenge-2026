@@ -127,7 +127,11 @@ Run both layers before committing an implementation change:
 uv run python scripts/test_all.py
 ```
 
-Safe baseline and agent dry-runs are available as `scripts/run_baseline.py` and `scripts/wake_agent.py`. Paid execution remains opt-in through `--execute`. Until real outputs are scored by the frozen grader, request generation, fake-client loop tests, and fixture verification must not be described as an agent-quality score.
+Safe baseline and agent dry-runs are available as `scripts/run_baseline.py` and
+`scripts/wake_agent.py`. Paid execution remains opt-in through `--execute`.
+Request generation, fake-client loop tests, and fixture verification are never
+described as an agent-quality score; the submitted 49.00 and 83.76 results come
+only from the preserved real model outputs graded by the frozen grader.
 
 Grade a complete baseline or agent output directory offline:
 
@@ -163,3 +167,14 @@ model, cost US$0.00, and retain `causal_conclusion: NOT_ESTABLISHED`. Static and
 browser interface tests require an explicit load action, pre-load state,
 post-load coverage, comparison boundaries, reset behavior, responsive layout,
 and no fitness/performance-causation copy.
+
+Submission-readiness TDD treats repository evidence and the final video as
+separate gates. Tests require the official ten baseline outputs, ten WAKE
+outputs, ten agent trajectories, exact scores, owner live-QA manifest and
+hashes, complete narration prompts, and absence of tracked private-state paths.
+The default audit may report `PENDING_FINAL_VIDEO` while returning success when
+repository evidence is complete. The explicit `--require-final-video` gate is
+reserved for final closeout. A separate deterministic representative replay
+trajectory must rebuild byte-for-byte and preserve the synthetic human answer,
+answer provenance, telemetry boundary, briefing verification, and coach memory
+approval without a model call.

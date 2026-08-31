@@ -1,0 +1,360 @@
+{
+  "abstentions": [
+    "Do not infer resistance-band use from GPS, SPM, or speed telemetry.",
+    "Do not infer technique quality, crew synchronization, medical state, or perceived effort from the supplied telemetry.",
+    "Do not claim the planned 6 km work-distance target was completed or missed from SPM-boundary-derived segment distances.",
+    "Do not average the conflicting cumulative distance sources."
+  ],
+  "case_id": "case-002-wind-shift-plan-deviation",
+  "claims": [
+    {
+      "claim_id": "session-match",
+      "confidence": 0.76,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "limitations": [
+        "The reason for the clock disagreement is unknown."
+      ],
+      "statement": "The SpeedCoach and mobile recordings describe the same outing, supported by route overlap; their 37-second clock offset remains unresolved.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "execution-count",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "SPM-based boundaries exclude transition samples."
+      ],
+      "statement": "Six work intervals were reconstructed, matching the six planned work repetitions.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "rate-and-recovery-compliance",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [],
+      "statement": "Works 1\u20134 and 6 meet their respective prescribed SPM ranges, and all five reconstructed recoveries last 240 seconds, within the planned 180\u2013300 second range.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "supported-speed-change",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Speed changes do not establish a physiological or technical explanation."
+      ],
+      "statement": "Selected SpeedCoach data show mean work speed changing from about 3.32 m/s in works 1\u20133 to 3.46 m/s in work 4, then 2.97 m/s in work 5 and 3.17 m/s in work 6.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "wind-association",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "input/environment.json",
+        "input/speedcoach.csv"
+      ],
+      "limitations": [
+        "The alignment supports association only and cannot establish that wind caused the speed changes or athlete regression."
+      ],
+      "statement": "The environmental timeline changes from a 1.0 m/s tailwind at the session start to a 5.5 m/s headwind by 1890 seconds, with the sign change at 1800 seconds; this is temporally associated with later speed changes.",
+      "status": "DERIVED"
+    },
+    {
+      "claim_id": "equipment-use",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Telemetry cannot observe resistance equipment."
+      ],
+      "statement": "Resistance-band use during the first three planned work intervals is unknown.",
+      "status": "UNKNOWN"
+    },
+    {
+      "claim_id": "prescribed-distance-completion",
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "limitations": [
+        "Reconstructed segment distances are boundary-derived from SPM classification, exclude transition samples, and cannot be summed or compared with the prescription to establish distance completion."
+      ],
+      "statement": "Completion or shortfall of the prescribed 6 \u00d7 1 km work-distance target cannot be determined from the reconstructed segment distances.",
+      "status": "UNKNOWN"
+    }
+  ],
+  "coach_briefing": "The route data support one shared outing despite a 37 s device-clock offset; use SpeedCoach for rate, speed, and distance. All six works and all five 240 s recoveries were reconstructed. Rate prescription was met except work 5 (19.99 SPM versus 22\u201324). Speed fell in the later works while conditions shifted from tailwind to strong headwind, an association rather than a causal finding. Confirm band use before judging first-block equipment compliance; prescribed-distance completion remains indeterminate.",
+  "deviations": [
+    {
+      "confidence": 0.94,
+      "description": "Work 5 averaged 19.99 SPM, below its prescribed 22\u201324 SPM range.",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "segment_ref": "work-05",
+      "type": "SPM_OUTSIDE_TARGET"
+    }
+  ],
+  "environment_assessment": {
+    "association": "SUPPORTED",
+    "confidence": 0.88,
+    "evidence_refs": [
+      "input/environment.json",
+      "input/speedcoach.csv"
+    ],
+    "limitations": [
+      "Environmental timing supports association with observed speed changes but cannot establish causation, athlete improvement, or athlete regression."
+    ],
+    "summary": "Conditions shifted from tailwind to headwind: effective headwind changed from \u22121.0 m/s at the start to +5.5 m/s at the end, crossing sign at 1800 s. Wind speed increased from 1.0 to 5.5 m/s, gusts from 1.3 to 7.0 m/s, and crosswind reached 3.499 m/s during the shift."
+  },
+  "follow_up_questions": [
+    "Was the resistance band used for work intervals 1\u20133 and removed before work interval 4?"
+  ],
+  "plan_summary": {
+    "evidence_refs": [
+      "input/plan.json"
+    ],
+    "prescribed_blocks": [
+      "3 \u00d7 1 km work at 19\u201321 SPM, resistance band, with 180\u2013300 s active/light recovery.",
+      "3 \u00d7 1 km work at 22\u201324 SPM, no resistance band, with 180\u2013300 s active/light recovery."
+    ],
+    "status": "PARSED",
+    "summary": "Planned water session: six continuous 1 km work intervals with 3\u20135 minutes active/light-rowing recovery. Repetitions 1\u20133 prescribe 19\u201321 SPM with a resistance band; repetitions 4\u20136 prescribe 22\u201324 SPM without it."
+  },
+  "schema_version": "wake.analysis_output.v1.1",
+  "segments": [
+    {
+      "average_spm": 20.02,
+      "confidence": 0.93,
+      "distance_m": 983.374,
+      "end_offset_s": 301.092,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-01",
+      "start_offset_s": 5.0
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.93,
+      "distance_m": 401.414,
+      "end_offset_s": 541.092,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-01",
+      "start_offset_s": 306.092
+    },
+    {
+      "average_spm": 20.02,
+      "confidence": 0.93,
+      "distance_m": 983.24,
+      "end_offset_s": 842.123,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-02",
+      "start_offset_s": 546.092
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.93,
+      "distance_m": 401.844,
+      "end_offset_s": 1082.123,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-02",
+      "start_offset_s": 847.123
+    },
+    {
+      "average_spm": 19.97,
+      "confidence": 0.93,
+      "distance_m": 983.177,
+      "end_offset_s": 1383.262,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-03",
+      "start_offset_s": 1087.123
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.93,
+      "distance_m": 398.844,
+      "end_offset_s": 1623.262,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-03",
+      "start_offset_s": 1388.262
+    },
+    {
+      "average_spm": 22.99,
+      "confidence": 0.93,
+      "distance_m": 981.714,
+      "end_offset_s": 1912.301,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-04",
+      "start_offset_s": 1628.262
+    },
+    {
+      "average_spm": 16.0,
+      "confidence": 0.93,
+      "distance_m": 398.649,
+      "end_offset_s": 2152.301,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-04",
+      "start_offset_s": 1917.301
+    },
+    {
+      "average_spm": 19.99,
+      "confidence": 0.94,
+      "distance_m": 985.032,
+      "end_offset_s": 2489.056,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-05",
+      "start_offset_s": 2157.301
+    },
+    {
+      "average_spm": 16.01,
+      "confidence": 0.93,
+      "distance_m": 397.708,
+      "end_offset_s": 2729.056,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "RECOVERY",
+      "segment_id": "recovery-05",
+      "start_offset_s": 2494.056
+    },
+    {
+      "average_spm": 22.97,
+      "confidence": 0.93,
+      "distance_m": 984.309,
+      "end_offset_s": 3044.648,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/plan.json"
+      ],
+      "kind": "WORK",
+      "segment_id": "work-06",
+      "start_offset_s": 2734.056
+    }
+  ],
+  "session_associations": [
+    {
+      "confidence": 0.76,
+      "decision": "MATCH",
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "reason": "The GPS recordings spatially match despite a preserved 37-second clock offset; route evidence rather than clock equality supports the match.",
+      "source_ids": [
+        "source-speedcoach-15a81e3894e4",
+        "source-mobile-607e56932c57"
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "confidence": 0.96,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "stroke_rate_spm",
+      "reason": "SpeedCoach supplies SPM; mobile SPM is entirely zero and was rejected.",
+      "selected_source_id": "source-speedcoach-15a81e3894e4"
+    },
+    {
+      "confidence": 0.91,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "distance_m",
+      "reason": "SpeedCoach distance has no supplied bias flag; mobile cumulative distance is flagged biased and ends 1.2% higher.",
+      "selected_source_id": "source-speedcoach-15a81e3894e4"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "speed_m_s",
+      "reason": "SpeedCoach provides time-window speed data; no corresponding mobile speed series is supplied.",
+      "selected_source_id": "source-speedcoach-15a81e3894e4"
+    },
+    {
+      "confidence": 0.9,
+      "evidence_refs": [
+        "input/speedcoach.csv",
+        "input/mobile.csv"
+      ],
+      "metric": "route",
+      "reason": "SpeedCoach GPS route is selected and corroborated by the mobile route; the recordings have documented spatial overlap.",
+      "selected_source_id": "source-speedcoach-15a81e3894e4"
+    },
+    {
+      "confidence": 0.88,
+      "evidence_refs": [
+        "input/environment.json",
+        "input/speedcoach.csv"
+      ],
+      "metric": "environment",
+      "reason": "A time-aligned environment timeline is available, but it is not one of the telemetry sources and supports association only.",
+      "selected_source_id": null
+    },
+    {
+      "confidence": 0.0,
+      "evidence_refs": [
+        "input/plan.json"
+      ],
+      "metric": "human_context",
+      "reason": "No human confirmation of resistance-band use, perceived effort, technique, or crew synchronization is supplied.",
+      "selected_source_id": null
+    }
+  ]
+}

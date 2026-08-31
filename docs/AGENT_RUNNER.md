@@ -128,13 +128,13 @@ uv run python scripts/longitudinal_pilot.py
 uv run python scripts/verify_longitudinal_pilot.py
 ```
 
-This freezes two compact summaries and four comparable Responses API requests
-without calling the API. The baseline performs one structured call. The WAKE
-path may inspect four deterministic tools within four bounded rounds and then
-passes the same strict output verifier. Both save successful results under a
-report path that can be reopened without another call.
+The safe default rebuilds two compact summaries and four comparable Responses
+API requests without calling the API. The preserved live baseline performed one
+structured call per scope. The WAKE path inspected four deterministic tools
+within four bounded rounds and passed the same strict output verifier. Both
+saved successful results under report paths that reopen without another call.
 
-A future complete paid comparison requires `--execute`, `OPENAI_API_KEY`, and
+A new complete paid re-execution requires `--execute`, `OPENAI_API_KEY`, and
 `--authorized-cost-usd 0.80`. Case and workflow filters may reduce the number of
 starts and the corresponding required gate. The gate is checked before client
 creation and is not a provider billing cap.

@@ -31,6 +31,12 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$repo_root/.cache/uv}"
 
+wake_reproduction_tmp_dir="$(mktemp -d)"
+cleanup_reproduction_tmp() {
+  rm -rf -- "$wake_reproduction_tmp_dir"
+}
+trap cleanup_reproduction_tmp EXIT
+
 unset OPENAI_API_KEY
 unset NEXT_PUBLIC_WAKE_RUNTIME_MODE
 unset NEXT_PUBLIC_WAKE_API_URL
@@ -64,7 +70,7 @@ uv run python scripts/test_all.py
 uv run python scripts/score_longitudinal_pilot.py
 uv run python scripts/score_post_regatta_comparison.py \
   --baseline-artifact evaluation/runs/post-regatta-baseline-v1-20260830/reports/club-post-regatta-memory.direct_baseline.json \
-  --output evaluation/runs/post-regatta-baseline-v1-20260830/capability-audit.json
+  --output "$wake_reproduction_tmp_dir/post-regatta-capability-audit.json"
 
 (
   cd web
@@ -72,6 +78,8 @@ uv run python scripts/score_post_regatta_comparison.py \
   npm run lint
   npm run build
 )
+
+uv run python scripts/verify_submission_readiness.py
 
 echo "WAKE reproduction complete."
 echo "Expected fixed-case result: WAKE 83.76 / baseline 49.00."

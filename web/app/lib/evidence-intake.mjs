@@ -32,7 +32,7 @@ export const evidenceSourceDefinitions = [
   {
     kind: 'ENVIRONMENT',
     required: false,
-    title: 'Environmental timeline',
+    title: 'Environment timeline',
     defaultName: 'environment.json',
     description: 'Normalized time-aligned observations',
     originRole: 'SERVICE',

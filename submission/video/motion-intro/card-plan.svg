@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="470" height="176" viewBox="0 0 470 176">
+  <rect x="7" y="7" width="456" height="162" rx="20" fill="#F5F2EA" stroke="#D8E4DE" stroke-width="2"/>
+  <rect x="7" y="7" width="9" height="162" rx="4" fill="#C8924F"/>
+  <text x="42" y="48" fill="#507169" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SOURCE 01</text>
+  <text x="42" y="94" fill="#142B27" font-family="Arial, sans-serif" font-size="31" font-weight="700">TRAINING PLAN</text>
+  <text x="42" y="132" fill="#5B6E69" font-family="Arial, sans-serif" font-size="21">Intent + prescription</text>
+</svg>

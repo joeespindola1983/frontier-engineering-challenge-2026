@@ -55,10 +55,11 @@ or missing source. The two calls cost US$0.089806 and US$0.104312, for an
 observed total of **US$0.194118**, 60,094 tokens, and 56.001 seconds of summed
 case runtime. Both stayed within their individual US$0.20 start authorizations.
 
-Only the optional longitudinal synthesis remains a projected paid execution.
-At the accepted planning reference it projects to US$0.15 and requires a new
-US$0.20 operational start authorization. Neither value is an observed synthesis
-charge, and the synthesis has not been authorized or executed.
+The later longitudinal work remained selective rather than multiplying calls
+across the batch. The completed four-report pilot cost **US$0.110426** and did
+not demonstrate a quality gain. One bounded memory over the combined
+102-activity pre/post screen cost **US$0.037384**; its same-input direct baseline
+cost **US$0.043700**. These are observed charges and reopen at US$0.00.
 
 The complete public batch validates and reconstructs 52 activity records,
 including 38 water and fourteen individual indoor sessions, without a model call. It does not multiply the two observed
@@ -105,17 +106,16 @@ not transactional across processes, externally reconciled, or provider-enforced.
 
 ## Longitudinal pilot budget
 
-The frozen pilot plans four paid starts: two direct baselines and two bounded
-WAKE executions. Using the observed US$0.097059 reference per start gives a
-US$0.388236 projection; the conservative planning reference is US$0.60. The
-operational start authorization is US$0.20 per call, or US$0.80 for the complete
-comparison. None of these forecasts is an observed pilot charge, and the
-authorization is not a provider billing cap.
+The pilot used four paid starts: two direct baselines and two bounded WAKE
+executions. Each start passed a US$0.20 operational authorization, so the
+complete start authorization was US$0.80; this was never a provider cap. The
+four verified reports cost **US$0.110426 total**. Both workflows passed the same
+frozen non-scored capability checks; WAKE used fewer tokens and cost 29.01%
+less, but no reasoning-quality gain is claimed.
 
-The committed preflight has `api_called: false`, zero saved model reports, and
-zero new API cost. After a future authorized run, each verified report is saved
-with usage, runtime, response IDs, and approximate cost. Opening that saved JSON
-again costs US$0.00; asking the model to reanalyse it is a new paid execution.
+The preflight remains reproducible at US$0.00, and the saved reports retain
+usage, runtime, response IDs, and approximate cost. Opening saved JSON costs
+US$0.00; asking a model to reanalyse it is a new paid execution.
 
 ## Optimization policy
 

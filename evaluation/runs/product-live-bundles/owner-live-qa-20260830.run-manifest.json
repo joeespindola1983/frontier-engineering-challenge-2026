@@ -1,0 +1,56 @@
+{
+  "schema_version": "wake.owner_live_qa_run_manifest.v1",
+  "created_at": "2026-08-30T23:57:11.337+00:00",
+  "purpose": "Owner live interface QA; not part of the frozen ten-case score",
+  "model": "gpt-5.6-terra",
+  "workflow": "wake-agent-v2-tool-loop",
+  "execution_count": 3,
+  "all_verified": true,
+  "private_chain_of_thought_stored": false,
+  "total_usage": {
+    "total_tokens": 90562
+  },
+  "total_runtime_ms": 86090,
+  "total_approximate_cost_usd": 0.283834,
+  "runs": [
+    {
+      "qa_id": "QA-14",
+      "scope": "plan_and_speedcoach",
+      "run_id": "20260830T235229104483Z",
+      "case_id": "uploaded-synthetic-plan-002",
+      "total_tokens": 34675,
+      "runtime_ms": 38793,
+      "approximate_cost_usd": 0.11739,
+      "output": "20260830T235229104483Z/outputs/uploaded-synthetic-plan-002.json",
+      "output_sha256": "b2949c4135757af7672625d0433da9d9dde928633e4d5095fe5d04c0d3932b59",
+      "trajectory": "20260830T235229104483Z/trajectories/uploaded-synthetic-plan-002.trajectory.json",
+      "trajectory_sha256": "961ae66efaa2625ebfb30d4afb70af9a487671e8c034c7cfaf1d1e096e50aea3"
+    },
+    {
+      "qa_id": "QA-15",
+      "scope": "five_supplied_sources",
+      "run_id": "20260830T235442306950Z",
+      "case_id": "case-002-wind-shift-plan-deviation",
+      "total_tokens": 34927,
+      "runtime_ms": 26056,
+      "approximate_cost_usd": 0.099324,
+      "output": "20260830T235442306950Z/outputs/case-002-wind-shift-plan-deviation.json",
+      "output_sha256": "b839e40829f8be249141a6521d73aaa8788b00e1064e06f9f0225ebcfa4e1e9a",
+      "trajectory": "20260830T235442306950Z/trajectories/case-002-wind-shift-plan-deviation.trajectory.json",
+      "trajectory_sha256": "89b9fd585c5b1b255e39ebec2205c05a7a69ed3c2eff376fc14ce2a59a37aaba"
+    },
+    {
+      "qa_id": "QA-16",
+      "scope": "plan_speedcoach_and_historical_weather",
+      "run_id": "20260830T235650070449Z",
+      "case_id": "uploaded-synthetic-plan-002",
+      "total_tokens": 20960,
+      "runtime_ms": 21241,
+      "approximate_cost_usd": 0.06712,
+      "output": "20260830T235650070449Z/outputs/uploaded-synthetic-plan-002.json",
+      "output_sha256": "bebead68a56b707ffdd7b71ad9a5b167f4b6180a9b96abf16b48e35307bd9903",
+      "trajectory": "20260830T235650070449Z/trajectories/uploaded-synthetic-plan-002.trajectory.json",
+      "trajectory_sha256": "3ebb5342591eae1d9bc1e6803d5e1d647d83427edd6e30e2db34695a936871bf"
+    }
+  ]
+}

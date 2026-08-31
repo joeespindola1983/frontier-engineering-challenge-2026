@@ -16,3 +16,20 @@ export function formatEvidenceKind(kind) {
     CONTEXT: 'Context',
   }[kind] ?? kind;
 }
+
+export function formatAnalysisPeriod(period) {
+  const start = new Date(`${period.start}T00:00:00Z`);
+  const end = new Date(`${period.end}T00:00:00Z`);
+  const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  const dateRange = (start.getTime() === end.getTime()
+    ? dateFormatter.format(start)
+    : dateFormatter.formatRange(start, end)).replace(/\s*–\s*/u, '–');
+  const trainingDays = Array.isArray(period.weekdays) ? period.weekdays.length : 0;
+  const dayLabel = trainingDays === 1 ? 'training day' : 'training days';
+  return trainingDays ? `${trainingDays} ${dayLabel} · ${dateRange}` : dateRange;
+}

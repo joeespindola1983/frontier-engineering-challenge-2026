@@ -1,9 +1,13 @@
 # Five-minute WAKE product story
 
-**Status:** product-first draft; owner QA and final rehearsal remain
+**Status:** recording-ready product-first script; targeted owner recheck and final rehearsal remain
 
-Generation-ready ElevenLabs copy is separated into seven clips in
+The five unchanged ElevenLabs clips remain in
 [`submission/video/VOICEOVER_ELEVENLABS_V3.md`](../submission/video/VOICEOVER_ELEVENLABS_V3.md).
+The two final replacement scripts are preserved in
+[`submission/video/VOICEOVER_ELEVENLABS_V4_REGENERATE.md`](../submission/video/VOICEOVER_ELEVENLABS_V4_REGENERATE.md).
+The source-neutral chapter-2 correction is isolated in
+[`submission/video/VOICEOVER_ELEVENLABS_V5_REGENERATE.md`](../submission/video/VOICEOVER_ELEVENLABS_V5_REGENERATE.md).
 
 **Primary audience: coaches and athletes.** The judges should first understand
 why WAKE matters inside a rowing club. The technical material exists to prove
@@ -23,14 +27,16 @@ training days without pretending that incomplete evidence is certainty.
 
 ## Before recording
 
-1. Complete the sequential owner QA in `docs/OWNER_QA_GUIDE.md` and fix only
-   comprehension or functional blockers that affect this route.
+1. Recheck QA-07, QA-08, QA-12, and QA-17 through QA-20 in
+   `docs/OWNER_QA_GUIDE.md`; fix only comprehension or functional blockers that
+   affect this route.
 2. Run `./scripts/reproduce_submission.sh --verify-only` once.
 3. Start the no-cost replay with `./scripts/start_dashboard.sh`.
 4. Open `http://localhost:3000/` at 1280 × 800 or larger and reset the second
    training period if it is already loaded.
-5. Close unrelated tabs and notifications. Keep the cursor still while speaking
-   and use it only to direct attention.
+5. Close unrelated tabs and notifications. Keep the cursor still while reading
+   evidence. Use a short eased move and visible click only when the story changes
+   product path, and let the click finish before the destination appears.
 6. Do not show `.env`, private inputs, raw GPS, evaluator ground truth, or real
    athlete identity.
 
@@ -56,11 +62,11 @@ short title card: `One coach. Many athletes. Fragmented evidence.`
 
 **Say:**
 
-> In a rowing club, the plan may arrive through WhatsApp. The SpeedCoach file
+> In a rowing club, the plan may arrive through a messaging app. The SpeedCoach file
 > usually stays with the athlete. Another phone may record the route. The coach
 > knows the crew and the conditions, but cannot follow every boat every day.
-> A spreadsheet organizes the files, and a simple baseline can ask GPT to
-> summarize one session. Neither one preserves the questions, relationships,
+> A spreadsheet organizes the files, and a simple baseline can summarize one
+> session. Neither one preserves the questions, relationships,
 > and decisions that accumulate across the club. That is the problem WAKE was
 > built to solve.
 
@@ -69,20 +75,20 @@ and the coach-attention area.
 
 ### 00:35–01:05 — Start with what needs attention
 
-**Screen:** Sessions / club pulse, then Harbor Men 2x.
+**Screen:** Sessions / club pulse, then Crew: Tucano - 2x - Men.
 
 **Say:**
 
 > WAKE begins at club scale. The coach sees which sessions were reconstructed,
 > which crews went out, which records need a source, and which questions need a
-> person. Here, Harbor Men 2x is connected to its physical boat, lineup, and
+> person. Here, one men's double is connected to its physical boat, lineup, and
 > outings. Missing training is shown as something to investigate, not as a
 > judgment about commitment, fitness, or injury.
 
 Open the crew and point briefly to its athletes and boat. Do not read all the
 statistics.
 
-### 01:05–02:00 — One realistic session, from evidence to useful review
+### 01:05–02:02 — One realistic session, from evidence to useful review
 
 **Screen:** Open the investigated six-by-one-kilometre session. Briefly show the
 upload/source coverage, then move to the decision-first review.
@@ -94,17 +100,23 @@ upload/source coverage, then move to the decision-first review.
 > SpeedCoach are enough to begin. Mobile telemetry, weather, and human context
 > can improve the review when they exist, but they are not mandatory.
 >
+> WAKE uses one bounded investigation agent. It decides when to call four
+> deterministic tools for source trust, recording alignment, plan
+> reconstruction, and environmental context. A verifier checks every claim and
+> evidence reference before the coach sees it.
+>
 > WAKE reconstructs the six work pieces and finds that most followed the plan,
-> while one interval needs attention. It trusts the SpeedCoach for stroke rate,
-> rejects the phone's zero-only stroke-rate signal, and can still use the phone
-> for route or timing support. The wind changed during the row, but WAKE does
-> not call that the cause of the result.
+> while one interval needs attention. WAKE compares signal coverage and
+> consistency, then selects the most reliable stroke-rate source for that
+> session. Here, that is SpeedCoach; in another session, it could be mobile. The
+> wind changed during the row, but WAKE does not call that the cause of the
+> result.
 
 **Show:** what matched, what needs attention, what remains unknown, selected
 metric sources, and the material SPM deviation. Let the screen carry the
 details; do not describe parsers, schemas, or tool names.
 
-### 02:00–02:35 — Athlete and coach complete different parts of the truth
+### 02:02–02:31 — Athlete and coach complete different parts of the truth
 
 **Screen:** Human checkpoint, answer provenance, briefing, and memory approval.
 
@@ -120,7 +132,7 @@ details; do not describe parsers, schemas, or tool names.
 This is the emotional center of the demo: WAKE connects human expertise with
 device evidence without confusing the two.
 
-### 02:35–03:25 — The value appears when training keeps arriving
+### 02:31–03:23 — The value appears when training keeps arriving
 
 **Screen:** Return to Sessions, select **Load 2-week package**, then open Lucas
 and Saved WAKE club memory.
@@ -143,7 +155,7 @@ and Saved WAKE club memory.
 history, then the three priorities and human/source questions. Avoid reading
 all six comparison categories aloud.
 
-### 03:25–03:55 — Training history reaches the regatta without inventing cause
+### 03:23–03:51 — Training history reaches the regatta without inventing cause
 
 **Screen:** Competition Review, then one boat report and the unclassified
 entry.
@@ -157,7 +169,7 @@ entry.
 > does not select crews automatically. When a result is missing, it asks for
 > context instead of inventing one.
 
-### 03:55–04:25 — Prove that this is more than a polished dashboard
+### 03:51–04:23 — Prove that this is more than a polished dashboard
 
 **Screen:** Evaluation.
 
@@ -173,10 +185,10 @@ entry.
 Show the two large scores and the environmental regression. Do not open schema,
 token, or trajectory detail during this segment.
 
-### 04:25–04:50 — Show how failure improved the product
+### 04:23–04:50 — Show how failure improved the product
 
-**Screen:** Improvement Changelog summary or the corresponding evaluation
-block.
+**Screen:** Show `PRODUCT LESSON · REMOVED BEHAVIOR`, followed by
+`NEGATIVE EXPERIMENT · KEPT / NO DEMONSTRATED QUALITY GAIN`.
 
 **Say:**
 
@@ -186,10 +198,11 @@ block.
 > fixed evaluation. We also preserved a longitudinal experiment that showed no
 > quality gain. Our history includes what did not work, not only the wins.
 
-The phrase **removed experiment** should appear on screen or in a caption so the
-submission requirement is unmistakable.
+Both labels must remain readable long enough to make the submission requirement
+unmistakable. The lower-cost result stays subordinate to the conclusion that it
+did not demonstrate better reasoning.
 
-### 04:50–05:00 — Close on the user value
+### 04:50–04:58 — Close on the user value
 
 **Screen:** Return to the strongest club-memory or coach-priority screen, with a
 small reproduction caption.
@@ -199,7 +212,17 @@ small reproduction caption.
 > Every row leaves a wake. WAKE turns fragmented training into memory a coach
 > and athlete can use together.
 
-## Optional on-screen captions
+## On-screen editorial labels
+
+Owner QA removed the open subtitles from the recommended submission cut because
+their timing and visual weight competed with the product story. The versioned
+caption experiment and `.srt` remain preserved as iteration evidence, but they
+are not part of the current delivery file. Accessibility in the submitted cut
+therefore depends on clear narration, readable interface copy, and the short
+editorial labels that name evidence and negative results directly on screen.
+
+The following short editorial labels may appear only when their corresponding
+evidence is visible:
 
 Use these only when the corresponding value is visible:
 
@@ -216,6 +239,12 @@ Use these only when the corresponding value is visible:
 ## Recording acceptance checklist
 
 - The final edit is no longer than five minutes.
+- Product captures use a deliberate viewport: 1440 × 900 for the 16:9 desktop
+  walkthrough or 390 × 844 when mobile behavior is itself the subject. Do not
+  enlarge an intermediate-width capture to fill the video frame.
+- The session-intake capture keeps `Review a session` legible and aligns every
+  `Choose` or `Selected` control with the corresponding evidence description,
+  including a 600 px breakpoint check before export.
 - The simple baseline appears before the WAKE solution.
 - The first minute is understandable without AI or software vocabulary.
 - One realistic path runs from supplied evidence to human checkpoint and saved

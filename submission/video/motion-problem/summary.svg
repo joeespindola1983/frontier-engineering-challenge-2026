@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="650" height="280" viewBox="0 0 650 280">
+  <rect x="7" y="7" width="636" height="266" rx="24" fill="#F5F2EA" stroke="#D8E4DE" stroke-width="2"/>
+  <text x="38" y="52" fill="#507169" font-family="Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="3">ONE REQUEST</text>
+  <text x="38" y="100" fill="#142B27" font-family="Arial, sans-serif" font-size="33" font-weight="700">A DIRECT SUMMARY</text>
+  <text x="38" y="136" fill="#5B6E69" font-family="Arial, sans-serif" font-size="21">describes one session</text>
+  <rect x="38" y="169" width="574" height="73" rx="10" fill="#E8EFEA"/>
+  <circle cx="70" cy="205" r="14" fill="#78AAA0"/>
+  <path d="M98 191h450M98 207h375M98 223h420" stroke="#9BB3AD" stroke-width="7" stroke-linecap="round"/>
+</svg>

@@ -76,7 +76,12 @@ Synthetic history may be used for repeatable evaluation. Approved anonymized rea
 
 ## Success definition
 
-A coach should receive a more complete, evidence-backed, and actionable reconstruction than a reasonable simple baseline while spending less manual effort. The primary metric and scoring rubric must be fixed before final implementation and applied to the same cases for baseline and agent.
+A coach should receive a more complete, evidence-backed, and actionable
+reconstruction than a reasonable simple baseline. For the hackathon, the
+predefined primary metric is the frozen evidence-workflow score, not unmeasured
+human time. The same grader and ten cases were applied to baseline and WAKE:
+49.00 versus 83.76. A future coach-process study is still required before
+claiming reduced manual effort.
 
 The current controlled score compares WAKE with a direct model call, not with a human coach. A separate coach-process pilot is required before claiming reduced human review time. The product claim is that WAKE prepares a consistent, exception-focused briefing for coach review; it does not replace rowing judgment.
 

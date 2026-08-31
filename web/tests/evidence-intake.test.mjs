@@ -39,6 +39,13 @@ test('defines the complete evidence bundle in a stable investigation order', () 
   );
 });
 
+test('uses the upload filename language for the environment source', () => {
+  const environment = evidenceSourceDefinitions.find(({ kind }) => kind === 'ENVIRONMENT');
+
+  assert.equal(environment.title, 'Environment timeline');
+  assert.equal(environment.defaultName, 'environment.json');
+});
+
 test('uploads every selected source and returns source ids in contract order', async () => {
   const calls = [];
   const client = {

@@ -39,3 +39,7 @@ __pycache__/
 # Local temporary output
 tmp/
 .cache/
+
+# Local video iterations; only the accepted final cut is versioned.
+submission/video/wake-final-submission-draft*.mp4
+submission/video/wake-final-submission-draft*.srt

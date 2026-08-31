@@ -21,17 +21,17 @@ const athletes = [
 ];
 
 const boats = [
-  { boat_id: 'boat-2x-aurora', name: 'Aurora', boat_class: '2x' },
-  { boat_id: 'boat-2x-iris', name: 'Íris', boat_class: '2x' },
-  { boat_id: 'boat-2x-horizon', name: 'Horizon', boat_class: '2x' },
-  { boat_id: 'boat-2x-current', name: 'Current', boat_class: '2x' },
-  { boat_id: 'boat-4x-atlas', name: 'Atlas', boat_class: '4x' },
-  { boat_id: 'boat-4x-gaia', name: 'Gaia', boat_class: '4x' },
-  { boat_id: 'boat-4x-mistral', name: 'Mistral', boat_class: '4x' },
-  { boat_id: 'boat-4x-dawn', name: 'Dawn', boat_class: '4x' },
-  { boat_id: 'boat-8x-north', name: 'North Star', boat_class: '8x' },
-  { boat_id: 'boat-8x-south', name: 'South Star', boat_class: '8x' },
-  { boat_id: 'boat-1x-spare', name: 'Solitude', boat_class: '1x' },
+  { boat_id: 'boat-2x-aurora', name: 'Tucano', boat_class: '2x' },
+  { boat_id: 'boat-2x-iris', name: 'Arara', boat_class: '2x' },
+  { boat_id: 'boat-2x-horizon', name: 'Bem-te-vi', boat_class: '2x' },
+  { boat_id: 'boat-2x-current', name: 'Sabiá', boat_class: '2x' },
+  { boat_id: 'boat-4x-atlas', name: 'Gavião', boat_class: '4x' },
+  { boat_id: 'boat-4x-gaia', name: 'Garça', boat_class: '4x' },
+  { boat_id: 'boat-4x-mistral', name: 'Canário', boat_class: '4x' },
+  { boat_id: 'boat-4x-dawn', name: 'Seriema', boat_class: '4x' },
+  { boat_id: 'boat-8x-north', name: 'Carcará', boat_class: '8x' },
+  { boat_id: 'boat-8x-south', name: 'Tuiuiú', boat_class: '8x' },
+  { boat_id: 'boat-1x-spare', name: 'Biguá', boat_class: '1x' },
 ];
 
 const maleIds = athletes.filter((athlete) => athlete.category === 'MEN').map((athlete) => athlete.athlete_id);
@@ -46,16 +46,16 @@ function lineup(ids) {
 }
 
 const crews = [
-  { crew_id: 'crew-2x-men', name: 'Harbor Men 2x', boat_class: '2x', category: 'MEN', boat_id: 'boat-2x-aurora', lineup: lineup(['athlete-lucas', 'athlete-rafael']) },
-  { crew_id: 'crew-2x-women', name: 'Aurora Women 2x', boat_class: '2x', category: 'WOMEN', boat_id: 'boat-2x-iris', lineup: lineup(['athlete-marina', 'athlete-helena']) },
-  { crew_id: 'crew-2x-mixed-a', name: 'Bridge Mixed 2x', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-horizon', lineup: lineup(['athlete-bruno', 'athlete-camila']) },
-  { crew_id: 'crew-2x-mixed-b', name: 'Current Mixed 2x', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-current', lineup: lineup(['athlete-diego', 'athlete-julia']) },
-  { crew_id: 'crew-4x-men', name: 'Atlas Men 4x', boat_class: '4x', category: 'MEN', boat_id: 'boat-4x-atlas', lineup: lineup(['athlete-lucas', 'athlete-rafael', 'athlete-bruno', 'athlete-diego']) },
-  { crew_id: 'crew-4x-women', name: 'Gaia Women 4x', boat_class: '4x', category: 'WOMEN', boat_id: 'boat-4x-gaia', lineup: lineup(['athlete-marina', 'athlete-helena', 'athlete-camila', 'athlete-julia']) },
-  { crew_id: 'crew-4x-mixed-a', name: 'Mistral Mixed 4x', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-mistral', lineup: lineup(['athlete-caio', 'athlete-bianca', 'athlete-andre', 'athlete-larissa']) },
-  { crew_id: 'crew-4x-mixed-b', name: 'Dawn Mixed 4x', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-dawn', lineup: lineup(['athlete-felipe', 'athlete-renata', 'athlete-mateus', 'athlete-sofia']) },
-  { crew_id: 'crew-8x-men', name: 'North Men 8x', boat_class: '8x', category: 'MEN', boat_id: 'boat-8x-north', lineup: lineup(maleIds) },
-  { crew_id: 'crew-8x-women', name: 'South Women 8x', boat_class: '8x', category: 'WOMEN', boat_id: 'boat-8x-south', lineup: lineup(femaleIds) },
+  { crew_id: 'crew-2x-men', name: 'Crew: Tucano - 2x - Men', boat_class: '2x', category: 'MEN', boat_id: 'boat-2x-aurora', lineup: lineup(['athlete-lucas', 'athlete-rafael']) },
+  { crew_id: 'crew-2x-women', name: 'Crew: Arara - 2x - Women', boat_class: '2x', category: 'WOMEN', boat_id: 'boat-2x-iris', lineup: lineup(['athlete-marina', 'athlete-helena']) },
+  { crew_id: 'crew-2x-mixed-a', name: 'Crew: Bem-te-vi - 2x - Mixed', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-horizon', lineup: lineup(['athlete-bruno', 'athlete-camila']) },
+  { crew_id: 'crew-2x-mixed-b', name: 'Crew: Sabiá - 2x - Mixed', boat_class: '2x', category: 'MIXED', boat_id: 'boat-2x-current', lineup: lineup(['athlete-diego', 'athlete-julia']) },
+  { crew_id: 'crew-4x-men', name: 'Crew: Gavião - 4x - Men', boat_class: '4x', category: 'MEN', boat_id: 'boat-4x-atlas', lineup: lineup(['athlete-lucas', 'athlete-rafael', 'athlete-bruno', 'athlete-diego']) },
+  { crew_id: 'crew-4x-women', name: 'Crew: Garça - 4x - Women', boat_class: '4x', category: 'WOMEN', boat_id: 'boat-4x-gaia', lineup: lineup(['athlete-marina', 'athlete-helena', 'athlete-camila', 'athlete-julia']) },
+  { crew_id: 'crew-4x-mixed-a', name: 'Crew: Canário - 4x - Mixed', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-mistral', lineup: lineup(['athlete-caio', 'athlete-bianca', 'athlete-andre', 'athlete-larissa']) },
+  { crew_id: 'crew-4x-mixed-b', name: 'Crew: Seriema - 4x - Mixed', boat_class: '4x', category: 'MIXED', boat_id: 'boat-4x-dawn', lineup: lineup(['athlete-felipe', 'athlete-renata', 'athlete-mateus', 'athlete-sofia']) },
+  { crew_id: 'crew-8x-men', name: 'Crew: Carcará - 8x - Men', boat_class: '8x', category: 'MEN', boat_id: 'boat-8x-north', lineup: lineup(maleIds) },
+  { crew_id: 'crew-8x-women', name: 'Crew: Tuiuiú - 8x - Women', boat_class: '8x', category: 'WOMEN', boat_id: 'boat-8x-south', lineup: lineup(femaleIds) },
 ];
 
 const schedules = {
@@ -251,7 +251,7 @@ const participationGaps = [
 const investigationResults = [
   {
     case_id: 'club-bridge-mixed-20260820-spm',
-    title: 'Bridge Mixed 2x',
+    title: 'Crew: Bem-te-vi - 2x - Mixed',
     source_bundle_id: 'club-bridge-mixed-20260820-spm',
     status: 'AGENT_COMPLETED',
     verification_passed: true,
@@ -265,7 +265,7 @@ const investigationResults = [
   },
   {
     case_id: 'club-atlas-men-20260828-recovery',
-    title: 'Atlas Men 4x',
+    title: 'Crew: Gavião - 4x - Men',
     source_bundle_id: 'club-atlas-men-20260828-recovery',
     status: 'AGENT_COMPLETED',
     verification_passed: true,

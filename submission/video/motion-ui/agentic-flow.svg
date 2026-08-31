@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 L12 6 L0 12 Z" fill="#8ea59e"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#173c35" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="#f3f5f1"/>
+  <path d="M72 72 C94 58 116 86 138 72 C160 58 182 86 204 72" fill="none" stroke="#2c7063" stroke-width="5" stroke-linecap="round"/>
+  <text x="230" y="82" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="6" fill="#173c35">WAKE</text>
+  <text x="120" y="180" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="5" fill="#2c7063">AGENTIC WORKFLOW</text>
+  <rect x="120" y="210" width="118" height="5" rx="2.5" fill="#c58b4c"/>
+  <text x="120" y="292" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" fill="#111a18">One investigator. Bounded evidence work.</text>
+  <text x="120" y="344" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#66736f">The agent chooses the next useful action. Deterministic tools keep the measurements controlled.</text>
+  <g id="agent" filter="url(#shadow)">
+    <rect x="120" y="430" width="330" height="330" rx="28" fill="#173c35"/>
+    <circle cx="174" cy="486" r="19" fill="#72b6a6"/>
+    <circle cx="174" cy="486" r="8" fill="#f3f5f1"/>
+    <text x="208" y="495" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="1.8" fill="#a9d1c7">INVESTIGATION AGENT</text>
+    <text x="158" y="566" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" fill="#ffffff">Chooses what</text>
+    <text x="158" y="608" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" fill="#ffffff">to inspect next.</text>
+    <text x="158" y="668" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#dbe7e3">Finds contradictions</text>
+    <text x="158" y="704" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#dbe7e3">and stops when evidence ends.</text>
+  </g>
+  <path id="agent-to-tools" d="M450 595 C500 595 500 595 548 595" fill="none" stroke="#8ea59e" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="tools">
+    <text x="565" y="414" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="3" fill="#6f7c78">FOUR DETERMINISTIC TOOLS</text>
+    <g filter="url(#shadow)">
+      <rect x="560" y="446" width="250" height="132" rx="20" fill="#ffffff" stroke="#cedbd6" stroke-width="2"/>
+      <text x="590" y="493" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.8" fill="#2c7063">SOURCE TRUST</text>
+      <text x="590" y="535" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">Select or reject</text>
+      <text x="590" y="562" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">each metric source.</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="838" y="446" width="250" height="132" rx="20" fill="#ffffff" stroke="#cedbd6" stroke-width="2"/>
+      <text x="868" y="493" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5" fill="#2c7063">ALIGNMENT</text>
+      <text x="868" y="535" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">Match recordings</text>
+      <text x="868" y="562" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">despite clock shifts.</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="560" y="606" width="250" height="132" rx="20" fill="#ffffff" stroke="#cedbd6" stroke-width="2"/>
+      <text x="590" y="653" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.2" fill="#2c7063">RECONSTRUCTION</text>
+      <text x="590" y="695" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">Compare planned</text>
+      <text x="590" y="722" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">and performed work.</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="838" y="606" width="250" height="132" rx="20" fill="#ffffff" stroke="#cedbd6" stroke-width="2"/>
+      <text x="868" y="653" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.3" fill="#2c7063">ENVIRONMENT</text>
+      <text x="868" y="695" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">Find association,</text>
+      <text x="868" y="722" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#33413d">never invent cause.</text>
+    </g>
+  </g>
+  <path id="tools-to-verifier" d="M1088 595 C1130 595 1130 595 1172 595" fill="none" stroke="#8ea59e" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="verifier" filter="url(#shadow)">
+    <rect x="1184" y="470" width="270" height="250" rx="26" fill="#e6f0ed" stroke="#9fc4bb" stroke-width="2"/>
+    <text x="1218" y="520" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2.5" fill="#2c7063">VERIFIER</text>
+    <text x="1218" y="582" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" fill="#173c35">Checks claims,</text>
+    <text x="1218" y="620" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" fill="#173c35">sources, limits.</text>
+    <text x="1218" y="674" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#4b5c57">One bounded correction</text>
+    <text x="1218" y="701" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#4b5c57">when verification fails.</text>
+  </g>
+  <path id="verifier-to-human" d="M1454 595 C1492 595 1492 595 1528 595" fill="none" stroke="#8ea59e" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="human" filter="url(#shadow)">
+    <rect x="1540" y="470" width="260" height="250" rx="26" fill="#ffffff" stroke="#d6c3aa" stroke-width="2"/>
+    <text x="1574" y="520" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2.2" fill="#a66f3b">HUMAN DECISION</text>
+    <text x="1574" y="582" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" fill="#27211b">Athlete adds</text>
+    <text x="1574" y="620" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" fill="#27211b">context.</text>
+    <text x="1574" y="674" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#63584d">Coach decides what</text>
+    <text x="1574" y="701" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#63584d">enters club memory.</text>
+  </g>
+  <line x1="120" y1="864" x2="1800" y2="864" stroke="#cbd4d0" stroke-width="2"/>
+  <text x="120" y="920" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#2c7063">FACTS STAY SOURCED</text>
+  <circle cx="465" cy="912" r="5" fill="#c58b4c"/>
+  <text x="500" y="920" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#2c7063">UNCERTAINTY STAYS VISIBLE</text>
+  <circle cx="1008" cy="912" r="5" fill="#c58b4c"/>
+  <text x="1042" y="920" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#2c7063">MEMORY REQUIRES APPROVAL</text>
+</svg>

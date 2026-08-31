@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="250" viewBox="0 0 430 250">
+  <circle cx="215" cy="125" r="108" fill="#174C43" stroke="#B8D7CF" stroke-width="3"/>
+  <circle cx="215" cy="125" r="88" fill="#1D5B50" stroke="#C8924F" stroke-width="2" opacity="0.96"/>
+  <circle cx="215" cy="70" r="7" fill="#C8924F"/>
+  <text x="215" y="119" text-anchor="middle" fill="#F5F2EA" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="4">WAKE</text>
+  <text x="215" y="153" text-anchor="middle" fill="#B8D7CF" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">MEMORY</text>
+</svg>

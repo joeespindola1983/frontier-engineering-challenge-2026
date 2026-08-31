@@ -192,7 +192,7 @@ This log records product and engineering decisions as they are made. Accepted de
 
 - **Status:** accepted for the hackathon build; the coach workflow remains separate.
 - **Decision:** Add one read-only Evaluation destination beside the operational navigation. Generate its public aggregate deterministically from the official manifests and grade reports. Show the common protocol, macro scores, every case delta, dimension diagnostics, cost, tool/retry observability, and validity boundaries. Do not expose ground truth, raw evidence, full model prose, grader controls, replay controls, or any execution action.
-- **Rationale:** The completed ten-case comparison is central submission evidence and benefits from a visual explanation, but turning the product into a benchmark console would weaken its user story. A visibly labelled `Saved result · No model call` surface makes the evidence legible to judges while keeping coaching actions, evaluation machinery, and paid execution distinct.
+- **Rationale:** The completed ten-case comparison is central submission evidence and benefits from a visual explanation, but turning the product into a benchmark console would weaken its user story. A small information indicator at the right of the Evaluation heading exposes the `Saved result · No model call` boundary on demand, keeping coaching actions, evaluation machinery, and paid execution distinct without repeating a permanent banner.
 
 ## 2026-08-29 - Demonstrate the interface through a faithful synthetic replay
 
@@ -412,21 +412,285 @@ This log records product and engineering decisions as they are made. Accepted de
 
 ## 2026-08-30 - Separate owner QA data and isolate its local state
 
-- **Status:** accepted; replay package and checklist implemented, live executions pending explicit finite authorization.
+- **Status:** accepted; replay and all three owner-authorized live QA executions completed and preserved.
 - **Decision:** Publish one upload-ready five-source derived-synthetic QA bundle and use the same folder for the two-source minimum-evidence path. Add an explicit dashboard `--state-store` option so owner QA can use isolated replay and live state without deleting or changing the normal local club state. Validate the interface in replay first, then run three separately authorized live starts: core Plan + SpeedCoach, complete five-source evidence, and core evidence with historical weather.
 - **Rationale:** A visual walkthrough cannot prove ingestion, evidence gaps, persistence, live verification, or weather enrichment. A fixed public pack makes the file chooser reproducible, while isolated state prevents old answers from masking first-run behavior. Separate start gates keep the paid scope auditable.
 
 ## 2026-08-30 - Make the submission video product-first
 
-- **Status:** accepted; rewritten script pending owner QA and rehearsal.
+- **Status:** accepted; recording-ready script complete, targeted owner recheck and final rehearsal pending.
 - **Decision:** Aim the five-minute video primarily at coaches and athletes: 85% product story and 15% technical proof. Lead with the operational problem, follow one session through athlete and coach collaboration, demonstrate value across the club and competition, and use the final minute for measured evaluation, one failure, and reproduction. Leave architecture, schemas, trajectories, tests, and exact commands in the repository rather than narrating them in the main product path.
 - **Rationale:** The solution video must make the practical value understandable before asking judges to interpret implementation detail. Technical judges can inspect the source and documentation; the recording should establish why the workflow matters, then present only enough evidence to make its claims credible and satisfy the hackathon requirements.
 
 ## 2026-08-30 - Generate the final voiceover as seven tagged Eleven v3 clips
 
-- **Status:** accepted; generation sheet implemented, audio generation pending.
+- **Status:** accepted; all seven generation inputs complete, final audio generation and video edit pending.
 - **Decision:** Use the `eleven_v3` model and generate seven independent English narration clips aligned to the product-first timeline. Keep every input above 250 characters, use sparse inline emotion/delivery/pause tags, spell ambiguous numbers and product names for speech, and avoid SSML breaks because Eleven v3 uses audio tags instead.
 - **Rationale:** Separate clips make timing and selective regeneration manageable without losing enough textual context for stable delivery. A generation-only document prevents screen directions from being accidentally synthesized and preserves the editable five-minute master script separately.
+
+## 2026-08-30 - Gate paid live QA on owner verification of replay fixes
+
+- **Status:** accepted; code remediation and live QA completed, targeted replay visual recheck still pending before recording.
+- **Decision:** Preserve the initial QA-07 and QA-12 failures, correct the deterministic interface behaviors with RED-first regression tests, and require a short owner recheck before starting QA-13 through QA-16. Saved post-regatta intelligence must always be reachable through Goal memory at zero cost; Review a session must start a fresh intake; a successful preparation must prevent duplicate submission; and mobile navigation must remain reachable.
+- **Rationale:** Paid executions should validate live evidence handling and model behavior, not rediscover replay navigation and state-management defects. Keeping the original failure record separate from fix verification makes the submission history more credible than rewriting a failure as if it never happened.
+
+## 2026-08-30 - Derive route-relative weather only from trustworthy direction
+
+- **Status:** accepted after owner live QA.
+- **Decision:** A session-context heading remains authoritative when explicitly
+  supplied. Otherwise WAKE may derive one representative heading from
+  consecutive SpeedCoach GPS coordinates only when the track is directionally
+  consistent. Curved, turning, and out-and-back routes remain unresolved until
+  the product supports segment-level projection. Historical-weather timezone
+  entry uses a constrained selector, and coach-facing reconstruction displays
+  human-readable evidence names rather than internal input paths.
+- **Rationale:** GPS coordinates can add useful boat-relative context, but one
+  whole-session bearing can be misleading when the boat changes direction.
+  Metric-level trust requires a conservative derivation and an explicit
+  abstention path. The product surface should preserve evidence provenance
+  without making coaches parse repository filenames.
+
+## 2026-08-30 - Use one visible location trail and internal browser history
+
+- **Status:** accepted after owner interface review.
+- **Decision:** Every screen below a primary navigation destination uses the
+  same prominent back arrow and breadcrumb. WAKE writes one browser-history
+  entry per internal transition and restores the selected crew, athlete, or
+  competition entry on `popstate`. Screen-specific buttons such as `Back to
+  club` and `Back to sessions` are removed.
+- **Rationale:** The user must understand both the current object and the path
+  back without learning different controls on every screen. Browser Back is an
+  expected navigation action and should not exit the product while an internal
+  WAKE path remains available.
+
+## 2026-08-30 - Divide Sessions by coaching task instead of page length
+
+- **Status:** accepted after owner interface review.
+- **Decision:** Keep Sessions as the primary club workspace, but expose five
+  mutually exclusive areas as secondary tabs directly below the primary
+  navigation: Overview, Attention, Team, Intelligence, and Session reviews.
+  Preserve the selected area in internal browser history so a crew or athlete
+  drill-down returns to the originating Team area. On narrow screens, show all
+  five tabs in a two-column grid, with Session reviews spanning the final row.
+  Do not hide primary workspace choices behind horizontal scrolling or mix the
+  secondary navigation into the page content.
+- **Rationale:** The former Sessions page contained the complete club pulse,
+  provenance, validation, priorities, rosters, saved agent results, and
+  operational inbox in one long document. Every element was relevant, but the
+  sequence made a coach scroll past unrelated tasks to reach a known feature.
+  Task-based progressive disclosure preserves evidence depth while making the
+  next operational destination immediate.
+
+## 2026-08-30 - Keep runtime state persistent but its explanation on demand
+
+- **Status:** accepted after owner interface review.
+- **Decision:** Replace repeated full-width live/replay notices with one compact
+  runtime-status icon immediately before the global Review a session action.
+  The icon must always remain visible, distinguish live from replay visually,
+  and reveal the complete execution and data boundary only after an explicit
+  click or keyboard activation. A second activation closes it immediately; if
+  left open, it closes automatically after six seconds. On mobile, the pop-up
+  must remain inside the viewport. Keep
+  screen-specific synthetic-data disclosures where they explain the provenance
+  of a particular crew or athlete dataset rather than runtime state.
+- **Rationale:** Runtime mode is important persistent context, but repeating its
+  full explanation above every workflow creates reading noise. A consistent
+  status location preserves safety and disclosure without competing with the
+  coach's current task.
+
+## 2026-08-30 - Use a bounded accessible typography and surface scale
+
+- **Status:** accepted after RED-first contracts and desktop/mobile browser
+  inspection.
+- **Decision:** Use semantic type tokens across product surfaces: 11 px for
+  terse metadata, 12 px for captions, 14 px for normal copy, 15 px when denser
+  reading benefits from additional emphasis, 17 px for ledes, and a responsive
+  primary display range capped at 58 px. Prominent evidence groups share an
+  8 px radius and subtle elevation; interactive rows may elevate on hover or
+  focus, but dense tables remain structurally flat. Respect reduced-motion
+  preferences. Treat this as a legibility baseline rather than formal WCAG
+  certification.
+- **Rationale:** The interface had accumulated feature-local sizes from 6 to
+  72 px. Critical explanations were visually subordinate to decorative display
+  hierarchy, especially in Evaluation and competition tables. A bounded system
+  improves readability, keeps the product dense, and gives future screens a
+  repeatable contract instead of another set of arbitrary pixel values.
+
+## 2026-08-30 - Use one global entry point for session review
+
+- **Status:** accepted after owner interface review and RED-first regression
+  coverage.
+- **Decision:** Keep `Review a session` once in the global header beside the
+  runtime indicator. Do not repeat the same action inside Sessions area
+  headings.
+- **Rationale:** The global action is already persistent across the product.
+  Repeating it directly below Sessions navigation creates visual ambiguity
+  without adding reachability, especially on small screens.
+
+## 2026-08-30 - Keep the club pulse title period-neutral
+
+- **Status:** accepted after owner interface review and RED-first coverage.
+- **Decision:** Use `Club training pulse` as the stable heading. Derive the
+  training-day count and displayed date range from the active dataset period,
+  and keep deterministic processing status below the introductory copy.
+- **Rationale:** The current public fixture covers two work weeks, but that is a
+  property of this evidence package rather than the product. A fixed duration
+  in the heading would become inaccurate when a club loads a different period.
+
+## 2026-08-30 - Publish bookmarkable hash routes and reserve Back for details
+
+- **Status:** accepted after owner interface review, RED-first contracts, and
+  desktop/mobile browser rehearsal.
+- **Decision:** Sessions, Competition, Goal memory, and Evaluation are primary
+  destinations and do not show the shared Back trail. Crew, athlete,
+  competition-entry, intelligence, and session-review detail views do. Every
+  destination publishes a readable hash route that restores after reload and
+  participates in browser Back/Forward history.
+- **Rationale:** A primary page has no meaningful in-product parent. The former
+  history state restored navigation only within one mounted session and left
+  the visible URL unchanged, preventing bookmarks and making QA paths hard to
+  share. Hash routing adds those capabilities without a new router dependency.
+
+## 2026-08-30 - Keep competition provenance available on demand
+
+- **Status:** accepted after owner interface review, RED-first coverage, and
+  desktop/mobile browser rehearsal.
+- **Decision:** Replace the permanent synthetic-regatta card on Competition
+  overview and boat detail with a compact information control in the page
+  header. Preserve the full fixture boundary in a context-specific disclosure
+  that closes after six seconds. Keep coach-facing evidence, uncertainty, and
+  interpretation in the normal page flow; move stable model mechanics and data
+  provenance to disclosures or documentation unless they affect the immediate
+  decision.
+- **Rationale:** The synthetic boundary is essential, but its permanent banner
+  consumed the most valuable part of the page while repeating information that
+  does not change. Progressive disclosure keeps the project honest without
+  making the interface read like implementation documentation.
+
+## 2026-08-30 - Separate club operations from fixture provenance
+
+- **Status:** accepted after owner interface review, RED-first coverage, and
+  desktop/mobile browser rehearsal.
+- **Decision:** Show coverage, selected investigations, routed questions, and
+  observed cost as operational club metrics. Present the stable real-informed
+  synthetic-data boundary once through a `Synthetic demo` disclosure beside
+  the analysis period. Do not repeat deterministic implementation status or
+  provenance as permanent blocks above those metrics.
+- **Rationale:** Coaches need to know what has been screened and what requires
+  action. They do not need repeated implementation narration before reaching
+  those facts. The fixture boundary remains material and accessible, but it is
+  supporting context rather than the primary content of the club pulse.
+
+## 2026-08-30 - Apply a three-layer interface copy hierarchy
+
+- **Status:** accepted after owner interface review, RED-first coverage, and
+  multi-screen desktop/mobile browser rehearsal.
+- **Decision:** Keep current rowing evidence, required human action, and limits
+  that change interpretation in the visible workflow. Put stable provenance,
+  local-storage state, replay/runtime mechanics, and fixture construction in
+  compact disclosures. Keep model comparisons, scores, token/cost evidence,
+  and experimental methodology in Evaluation or repository documentation.
+  Product destinations promoted from a hero must look actionable through icon,
+  surface, title, and direction—not like loose text labels.
+- **Rationale:** A clean interface is not one with the fewest words; it is one
+  where every visible sentence changes what the user understands or does next.
+  Stable implementation context remains available for trust and judging, while
+  the operational product reads first as rowing software.
+
+## 2026-08-30 - Keep stable Concept2 limits in a labeled disclosure
+
+- **Status:** accepted after owner interface review, RED-first coverage, and
+  desktop/mobile browser rehearsal.
+- **Decision:** Place the stable Concept2 comparison boundary behind a visible
+  `PM5 context` control when Training days already identifies water and indoor
+  work and states that volume remains separated by modality. The disclosure
+  must retain individual athlete ownership, equivalent-workout comparability,
+  and the explicit limits on on-water speed, visible technique, and muscular
+  strength. It closes automatically after six seconds.
+- **Rationale:** The boundary remains important, but it does not change from one
+  athlete or training day to another. A labeled disclosure preserves informed
+  interpretation while keeping the primary chronology compact.
+
+## 2026-08-30 - Separate repository readiness from the final video gate
+
+- **Status:** accepted; repository evidence ready, final video pending.
+- **Decision:** Maintain one deterministic submission audit over required code,
+  prompts, official outputs, scores, trajectories, owner live-QA artifacts,
+  secrets boundaries, and narration completeness. Report
+  `PENDING_FINAL_VIDEO` without failing while the repository is otherwise
+  ready; require `submission/video/wake-final-submission.mp4` only under the
+  explicit strict final gate. Add one deterministic representative product
+  replay trajectory linking the official agent tool trace to the synthetic
+  human answer and coach memory approval.
+- **Rationale:** A binary “done/not done” label would either hide documentation
+  defects or make the intentionally scheduled video look like a code failure.
+  Separate gates make the remaining work exact, while the replay trajectory
+  satisfies the complete agent-to-human workflow requirement without another
+  model call or invented production identity.
+
+## 2026-08-31 - Promote the owner-approved video and keep it separate from source
+
+- **Status:** accepted after owner review and technical media verification.
+- **Decision:** Promote draft 23 byte-for-byte to
+  `submission/video/wake-final-submission.mp4`. Preserve the final master in
+  Git, exclude all MP4 files from the source-only ZIP, and ignore local draft
+  iterations. The source package remains independently reproducible without
+  the video or any ElevenLabs source recording.
+- **Rationale:** The portal treats code and video as separate deliverables. A
+  stable final filename and digest remove editorial ambiguity, while excluding
+  media from the source ZIP keeps the clean-environment package small and
+  focused on executable evidence.
+
+## 2026-08-30 - Keep zero-cost reproduction side-effect free
+
+- **Status:** accepted after a RED-first regression test and full submission
+  reproduction.
+- **Decision:** Rebuild timestamped post-regatta audit output in an isolated
+  temporary directory during public verification. Never overwrite the frozen,
+  tracked audit simply because a judge runs the reproduction command.
+- **Rationale:** Reproduction should verify submitted evidence, not silently
+  mutate it. A generated timestamp made an otherwise successful verification
+  leave a clean checkout dirty even though no substantive result had changed.
+
+## 2026-08-31 - Treat crew names as replaceable presentation data
+
+- **Status:** accepted after a RED-first display-name contract and focused
+  club, competition, and post-regatta verification.
+- **Decision:** Use familiar Brazilian bird names for the ten fictional crew
+  boats and render each crew as `Crew: boat name - class - category` while
+  preserving every crew and boat ID, lineup, activity, metric, and result. Do
+  not rewrite frozen paid inputs or outputs; historical labels remain part of
+  their reproducibility record. Current interface data, QA instructions, and
+  video narration use the new or name-neutral language.
+- **Rationale:** A display-name migration should improve product character
+  without changing evidence identity or invalidating content-addressed model
+  runs. Stable IDs, not labels, carry longitudinal relationships.
+
+## 2026-08-31 - Ship source and video as separate artifacts
+
+- **Status:** accepted with the final organizer portal limit still requiring
+  manual confirmation.
+- **Decision:** Build a deterministic source-only ZIP that excludes secrets,
+  private data, installed dependencies, local runtime state, build output, and
+  MP4 files. Enforce a conservative 50 MiB ceiling locally and deliver the
+  video separately. Do not place a personal repository URL on the final card.
+- **Rationale:** The supplied brief requires complete reproducible source but
+  does not state a ZIP-size limit. A small, hashed source package is easier to
+  inspect and avoids coupling the submission to one hosting URL.
+
+## 2026-08-31 - Distinguish current location from transient focus
+
+- **Status:** accepted after RED-first design-system and video-timeline tests.
+- **Decision:** Mark the active global destination with `aria-current="page"`,
+  green text, a soft green surface, and a green underline. Preserve a separate
+  explicit green `:focus-visible` outline for keyboard navigation. Submission
+  captures must not retain accidental hover states or browser-default blue
+  focus outlines.
+- **Rationale:** Current location and keyboard focus answer different user
+  questions. A persistent product-owned active state improves orientation;
+  transient capture artifacts make a finished interface look selected or
+  broken. Keeping both states explicit improves clarity without sacrificing
+  accessibility.
 
 ## Pending decisions
 

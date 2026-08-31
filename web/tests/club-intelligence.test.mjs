@@ -115,22 +115,27 @@ test('club evidence stores observations rather than prefilled findings', async (
 });
 
 
-test('interface exposes screening coverage, queued intelligence, cost, and the no-model boundary', async () => {
+test('interface exposes screening coverage, queued intelligence, and cost without repeated technical notices', async () => {
   const page = await readFile(new URL('../app/page.tsx', import.meta.url), 'utf8');
 
   assert.match(page, /buildClubPeriodAnalysis/);
-  assert.match(page, /Deterministic scan complete/);
-  assert.match(page, /Two bounded investigations completed/);
-  assert.match(page, /The separate longitudinal pilot is complete/);
+  assert.match(page, /ClubDataContextIndicator/);
+  assert.doesNotMatch(page, /Deterministic scan complete/);
+  assert.doesNotMatch(page, /Two bounded investigations completed/);
+  assert.doesNotMatch(page, /The separate longitudinal pilot is complete and preserved below/);
   assert.doesNotMatch(page, /Longitudinal synthesis has not run/);
   assert.match(page, /cost_observed\.approximate_total_cost_usd/);
   assert.match(page, /Verified investigation results/);
-  assert.match(page, /Two-week validation funnel/);
+  assert.match(page, /Activity validation funnel/);
+  assert.doesNotMatch(page, /Two-week validation funnel/);
   assert.match(page, /Data validated/);
   assert.match(page, /Plan compared/);
   assert.match(page, /Human approved/);
   assert.match(page, /52 sessions reconstructed/);
   assert.match(page, /14 individual synthetic Concept2 transcription records/);
+  assert.match(page, /function BatchContextIndicator/);
+  assert.match(page, /aria-label="Show validation data context"/);
+  assert.doesNotMatch(page, /className="club-batch-boundary"/);
   assert.match(page, /result\.briefing/);
   assert.doesNotMatch(page, /Executed as planned/);
 });

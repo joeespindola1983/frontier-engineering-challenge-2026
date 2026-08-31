@@ -18,7 +18,7 @@ from datetime import datetime
 
 
 SUMMARY_VERSION = "wake.case_summary.v1"
-ASSEMBLER_VERSION = "scripts/bundle_assembler.py@1.1"
+ASSEMBLER_VERSION = "scripts/bundle_assembler.py@1.2"
 DOMAIN_KNOWLEDGE = [
     {
         "term": "voga",
@@ -92,6 +92,43 @@ def _haversine_m(
         + math.cos(lat_1) * math.cos(lat_2) * math.sin(delta_lon / 2) ** 2
     )
     return radius_m * 2 * math.atan2(math.sqrt(value), math.sqrt(1 - value))
+
+
+def _bearing_deg(
+    first: tuple[float, float], second: tuple[float, float]
+) -> float:
+    lat_1, lon_1 = map(math.radians, first)
+    lat_2, lon_2 = map(math.radians, second)
+    delta_lon = lon_2 - lon_1
+    east = math.sin(delta_lon) * math.cos(lat_2)
+    north = (
+        math.cos(lat_1) * math.sin(lat_2)
+        - math.sin(lat_1) * math.cos(lat_2) * math.cos(delta_lon)
+    )
+    return math.degrees(math.atan2(east, north)) % 360
+
+
+def _derive_route_heading(rows: list[dict[str, str]]) -> dict | None:
+    """Return a representative GPS heading only for a directionally consistent track."""
+    route = _gps_route(rows)
+    bearings = [
+        _bearing_deg(first, second)
+        for first, second in zip(route, route[1:])
+        if _haversine_m(first, second) >= 5
+    ]
+    if not bearings:
+        return None
+    east = statistics.mean(math.sin(math.radians(value)) for value in bearings)
+    north = statistics.mean(math.cos(math.radians(value)) for value in bearings)
+    consistency = math.hypot(east, north)
+    if consistency < 0.75:
+        return None
+    return {
+        "heading_deg": round(math.degrees(math.atan2(east, north)) % 360, 1) % 360,
+        "source": "SPEEDCOACH_GPS_DERIVED",
+        "directional_consistency": round(consistency, 3),
+        "segment_count": len(bearings),
+    }
 
 
 def _percentile(values: list[float], percentile: float) -> float:
@@ -188,6 +225,7 @@ def _source_summary(source: dict, context: dict) -> tuple[dict, list[dict[str, s
     evidence_ref = source["evidence_ref"]
     spm = _positive_numbers(rows, "stroke_rate_spm")
     route = _gps_route(rows)
+    route_heading = _derive_route_heading(rows) if kind == "SPEEDCOACH" else None
     start_time = next((row["timestamp"] for row in rows if row["timestamp"]), None)
     metrics = {
         "start_time": start_time,
@@ -200,6 +238,15 @@ def _source_summary(source: dict, context: dict) -> tuple[dict, list[dict[str, s
         "average_positive_spm": round(statistics.mean(spm), 2) if spm else None,
         "positive_spm_rows": len(spm),
         "route_points": len(route),
+        "route_heading_deg": (
+            route_heading["heading_deg"] if route_heading else None
+        ),
+        "route_heading_source": (
+            route_heading["source"] if route_heading else None
+        ),
+        "route_heading_directional_consistency": (
+            route_heading["directional_consistency"] if route_heading else None
+        ),
         "rejected_rows": report.get("rejected_row_count", 0),
         "input_format": report["input_format"],
         "normalized_sha256": report["normalized_sha256"],
@@ -219,10 +266,18 @@ def _source_summary(source: dict, context: dict) -> tuple[dict, list[dict[str, s
     )
 
 
-def _environment_summary(environment: dict | None, context: dict) -> dict | None:
+def _environment_summary(
+    environment: dict | None,
+    context: dict,
+    observed_route_heading: dict | None = None,
+) -> dict | None:
     if not environment:
         return None
     heading = context.get("session_candidate", {}).get("route_heading_deg")
+    heading_source = "SESSION_CONTEXT" if heading is not None else None
+    if heading is None and observed_route_heading is not None:
+        heading = observed_route_heading["heading_deg"]
+        heading_source = observed_route_heading["source"]
     samples = environment.get("samples", [])
     if not samples:
         return None
@@ -262,13 +317,26 @@ def _environment_summary(environment: dict | None, context: dict) -> dict | None
                 3,
             )
         windows.append(window)
-    method = (
-        "Effective headwind and signed crosswind project meteorological wind-from "
-        "direction onto the known boat heading; time alignment supports association "
-        "but does not establish causation."
-        if heading is not None
-        else "Wind is retained without boat-relative projection because route heading is unknown."
-    )
+    if heading_source == "SPEEDCOACH_GPS_DERIVED":
+        method = (
+            "Effective headwind and signed crosswind project meteorological wind-from "
+            "direction onto a representative heading derived from the directionally "
+            "consistent SpeedCoach GPS track; time alignment supports association but "
+            "does not establish causation."
+        )
+    elif heading is not None:
+        method = (
+            "Effective headwind and signed crosswind project meteorological wind-from "
+            "direction onto the known boat heading; time alignment supports association "
+            "but does not establish causation."
+        )
+    else:
+        method = "Wind is retained without boat-relative projection because route heading is unknown."
+    limitations = list(environment.get("limitations", []))
+    if heading_source == "SPEEDCOACH_GPS_DERIVED":
+        limitations.append(
+            "Representative boat heading is derived from a directionally consistent GPS track and is not independently confirmed; turning or out-and-back routes require segment-level projection."
+        )
     return {
         "schema_version": environment.get("schema_version"),
         "timeline_id": environment["timeline_id"],
@@ -277,9 +345,10 @@ def _environment_summary(environment: dict | None, context: dict) -> dict | None
         "units": environment.get("units"),
         "session_window": environment.get("session_window"),
         "route_heading_deg": heading,
+        "route_heading_source": heading_source,
         "method": method,
         "time_series_windows": windows,
-        "limitations": list(environment.get("limitations", [])),
+        "limitations": limitations,
     }
 
 
@@ -458,6 +527,15 @@ def assemble_case_summary(
             if kind in summaries
         ],
         "cross_source_findings": findings,
-        "environment": _environment_summary(environment, context),
+        "environment": _environment_summary(
+            environment,
+            context,
+            {
+                "heading_deg": speedcoach["metrics"]["route_heading_deg"],
+                "source": speedcoach["metrics"]["route_heading_source"],
+            }
+            if speedcoach["metrics"]["route_heading_deg"] is not None
+            else None,
+        ),
         "evidence_gaps": evidence_gaps,
     }

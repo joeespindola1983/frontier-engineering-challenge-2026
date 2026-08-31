@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#173c35" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto">
+      <path d="M0 0 L14 7 L0 14 Z" fill="#6f8f87"/>
+    </marker>
+  </defs>
+  <rect width="1920" height="1080" fill="#f3f5f1"/>
+  <path d="M74 73 C96 59 118 87 140 73 C162 59 184 87 206 73" fill="none" stroke="#2c7063" stroke-width="5" stroke-linecap="round"/>
+  <text x="232" y="82" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="6" fill="#173c35">WAKE</text>
+  <rect x="120" y="174" width="440" height="48" rx="24" fill="#f0dfca"/>
+  <text x="146" y="205" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="3" fill="#8a5729">PRODUCT LESSON · REMOVED BEHAVIOR</text>
+  <text x="120" y="330" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700" fill="#111a18">A reconstruction is not proof</text>
+  <text x="120" y="402" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700" fill="#111a18">that the prescribed distance was completed.</text>
+  <g filter="url(#shadow)">
+    <rect x="120" y="510" width="650" height="300" rx="28" fill="#fffaf5" stroke="#dfc8ae" stroke-width="2"/>
+    <text x="168" y="576" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing="3" fill="#9a6330">BEFORE</text>
+    <text x="168" y="650" font-family="Arial, Helvetica, sans-serif" font-size="37" font-weight="700" fill="#30271f">Derived distance</text>
+    <text x="168" y="698" font-family="Arial, Helvetica, sans-serif" font-size="37" font-weight="700" fill="#30271f">overstated certainty.</text>
+    <text x="168" y="758" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#685b50">The claim crossed its evidence boundary.</text>
+  </g>
+  <path d="M805 660 C855 660 875 660 925 660" fill="none" stroke="#6f8f87" stroke-width="5" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="970" y="510" width="830" height="300" rx="28" fill="#173c35"/>
+    <text x="1018" y="576" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing="3" fill="#9ed8cf">AFTER · TDD REGRESSION</text>
+    <text x="1018" y="650" font-family="Arial, Helvetica, sans-serif" font-size="37" font-weight="700" fill="#ffffff">Observed completion and</text>
+    <text x="1018" y="698" font-family="Arial, Helvetica, sans-serif" font-size="37" font-weight="700" fill="#ffffff">reconstructed segments stay separate.</text>
+    <text x="1018" y="758" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#d4e7e3">Failing test → boundary correction → fixed evaluation.</text>
+  </g>
+  <line x1="120" y1="904" x2="1800" y2="904" stroke="#cbd4d0" stroke-width="2"/>
+  <text x="120" y="958" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#2c7063">WHAT FAILED IS PART OF THE PRODUCT EVIDENCE.</text>
+</svg>

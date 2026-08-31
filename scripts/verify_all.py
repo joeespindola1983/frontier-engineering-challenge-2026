@@ -18,6 +18,7 @@ VERIFIERS = [
     ROOT / "scripts/verify_demo_club_investigation_run.py",
     ROOT / "scripts/verify_demo_club_batch.py",
     ROOT / "scripts/verify_longitudinal_pilot.py",
+    ROOT / "scripts/build_representative_product_trajectory.py",
 ]
 
 

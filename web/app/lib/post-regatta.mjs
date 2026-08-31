@@ -142,7 +142,7 @@ export function buildPostRegattaComparison(club, packageData) {
     {
       signal_id: 'post-signal-atlas-wind', scenario: 'ENVIRONMENT_CONFOUNDED', severity: 'CONTEXT_REQUIRED',
       entity_name: crewName.get('crew-4x-men'), label: 'Water comparison is weather-confounded',
-      statement: 'Atlas Men 4x recorded a different on-water pace pattern during a 7.8 m/s tail-cross wind session.',
+      statement: `${crewName.get('crew-4x-men')} recorded a different on-water pace pattern during a 7.8 m/s tail-cross wind session.`,
       interpretation: 'Environmental context prevents a clean period comparison; the change is not attributed to the crew.',
       evidence_refs: [waterActivities.find((activity) => activity.crew_id === 'crew-4x-men' && activity.environment.wind_speed_m_s === 7.8).activity_id],
     },

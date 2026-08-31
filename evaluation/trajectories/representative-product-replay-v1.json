@@ -1,0 +1,130 @@
+{
+  "agent_instructions": {
+    "path": "prompts/wake-agent-v2.md",
+    "sha256": "b360d6313a40c2da8dde0a011379d58e2f26cde7fce555b6003b2d3af0250482"
+  },
+  "agent_tool_trace": {
+    "path": "evaluation/runs/expanded-evaluation-v2/official-20260830/agent/trajectories/case-002-wind-shift-plan-deviation.trajectory.json",
+    "sha256": "b7192e917fa37e6b52f2b61924a7038a62d86b02bfa21fb80113c79d8d285165"
+  },
+  "approximate_cost_usd": 0.0,
+  "case_id": "case-002-wind-shift-plan-deviation",
+  "events": [
+    {
+      "actor": "ATHLETE",
+      "note": "Uploader identity remains separate from source authority.",
+      "sequence": 1,
+      "sources": [
+        {
+          "path": "data/fixtures/case-002-wind-shift-plan-deviation/input/plan.json",
+          "sha256": "ae7276eafdd99a8f36592f599a9c53801e13cba91adc28cc71e6145ea1d4572a"
+        },
+        {
+          "path": "data/fixtures/case-002-wind-shift-plan-deviation/input/speedcoach.csv",
+          "sha256": "c48af984c4bac0a8dbdcc5d66b6932d998514ce90cc297ebf63ed195b48813e3"
+        },
+        {
+          "path": "data/fixtures/case-002-wind-shift-plan-deviation/input/mobile.csv",
+          "sha256": "783897638823daf5a8e916e4731b2e131307495a6a9b02a142e48a215ea27255"
+        },
+        {
+          "path": "data/fixtures/case-002-wind-shift-plan-deviation/input/environment.json",
+          "sha256": "b494d72843465766f2959822db2d3112cfb560ee70b038bfdc4168780fadd9ad"
+        },
+        {
+          "path": "data/fixtures/case-002-wind-shift-plan-deviation/input/context.json",
+          "sha256": "e6d9320261ced80b14bffbf6812c9d48c74ef4930d686df56a406ede30da3b48"
+        }
+      ],
+      "type": "SOURCES_SELECTED"
+    },
+    {
+      "actor": "DETERMINISTIC_RUNTIME",
+      "agent_called": false,
+      "core_sources": [
+        "PLAN",
+        "SPEEDCOACH"
+      ],
+      "optional_sources": [
+        "MOBILE",
+        "ENVIRONMENT",
+        "CONTEXT"
+      ],
+      "sequence": 2,
+      "type": "BUNDLE_PREPARED"
+    },
+    {
+      "actor": "WAKE_RUNTIME",
+      "new_model_call": false,
+      "output": {
+        "path": "evaluation/runs/expanded-evaluation-v2/official-20260830/agent/outputs/case-002-wind-shift-plan-deviation.json",
+        "sha256": "4bc7b55aca4753920b9f141c2e0afd37f56cde48b81dce6c58041666d8a1ff42"
+      },
+      "sequence": 3,
+      "tool_actions_and_responses": {
+        "path": "evaluation/runs/expanded-evaluation-v2/official-20260830/agent/trajectories/case-002-wind-shift-plan-deviation.trajectory.json",
+        "sha256": "b7192e917fa37e6b52f2b61924a7038a62d86b02bfa21fb80113c79d8d285165"
+      },
+      "type": "AGENT_RESULT_REPLAYED",
+      "verification_passed": true
+    },
+    {
+      "actor": "COACH",
+      "changes_evidence": false,
+      "sequence": 4,
+      "type": "COACH_VIEWED"
+    },
+    {
+      "actor": "WAKE_RUNTIME",
+      "expected_respondent_role": "ATHLETE",
+      "question": "Was the resistance band used for repetitions 1\u20133 and removed before repetition 4?",
+      "reason": "Equipment use is not observable in supplied telemetry.",
+      "sequence": 5,
+      "type": "HUMAN_CHECKPOINT_REQUESTED"
+    },
+    {
+      "actor": "COACH",
+      "answer": "YES",
+      "answered_by_role": "ATHLETE",
+      "authority_basis": "RELAYED_REPORT",
+      "effect_on_telemetry": "NONE",
+      "matches_expected_respondent": true,
+      "note": "Synthetic representative answer adds human context only.",
+      "recorded_by_role": "COACH",
+      "sequence": 6,
+      "type": "HUMAN_CHECKPOINT_ANSWERED"
+    },
+    {
+      "actor": "DETERMINISTIC_RUNTIME",
+      "evidence_boundary_preserved": true,
+      "sequence": 7,
+      "type": "BRIEFING_VERIFIED",
+      "verification_passed": true
+    },
+    {
+      "actor": "WAKE_RUNTIME",
+      "memory_changed": false,
+      "required_role": "COACH",
+      "sequence": 8,
+      "type": "MEMORY_APPROVAL_REQUESTED"
+    },
+    {
+      "actor": "COACH",
+      "memory_changed": true,
+      "new_model_call": false,
+      "sequence": 9,
+      "type": "COACH_APPROVED_MEMORY"
+    }
+  ],
+  "limitations": [
+    "This is a deterministic replay of a public synthetic workflow, not a new model execution.",
+    "The representative human answer is synthetic and does not convert telemetry into observed equipment evidence.",
+    "Production authentication, verified identity, encryption, tenancy, and durable cloud storage are not implemented."
+  ],
+  "model_called": false,
+  "private_chain_of_thought_stored": false,
+  "provenance": "PUBLIC_SYNTHETIC",
+  "schema_version": "wake.representative_product_trajectory.v1",
+  "trajectory_id": "representative-product-replay-v1",
+  "trajectory_type": "REPRESENTATIVE_REPLAY"
+}

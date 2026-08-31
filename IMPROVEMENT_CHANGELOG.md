@@ -647,6 +647,1123 @@ Two reproducible evaluation cases, evaluation specification version 1.0, compara
 
 ## Entry template
 
+### 61. Owner replay QA remediation before paid validation
+
+- **Hypothesis:** Fixing the owner-observed replay blockers before live execution will prevent stale intake state, inaccessible saved intelligence, and missing mobile navigation from contaminating the paid QA results.
+- **Change:** Preserved the owner notes and consolidated QA-01 through QA-12 in `docs/OWNER_QA_GUIDE.md`. Added RED-first regression tests for reopening saved club memory, starting a genuinely fresh review, preventing duplicate preparation, consistent `Environment timeline` naming, and keeping primary navigation reachable at mobile width. Hoisted the post-regatta demonstration state, added a permanent Goal memory entry for the saved 102-activity report, added explicit preparation success and start-over actions, reset intake-local state through a versioned remount, and converted the narrow header into a horizontally scrollable navigation row.
+- **Evaluation:** The four new behavioral tests initially failed against the owner-reported behavior and passed after the smallest implementation changes. The focused suite passes 27/27, the complete web suite passes 79/79, ESLint passes, the Vinext production build passes, and the owner QA-pack suite passes 4/4. The complete Python suite runs 217 tests with one known failure caused by the separately edited two-character first voice-over prompt; that user-owned draft was preserved rather than silently rewritten. Browser DOM inspection confirms all four primary navigation actions are present in the running interface. The owner still needs to repeat the four visual fix checks and the deferred non-empty QA-08 persistence check before live QA.
+- **Result:** `READY_FOR_OWNER_FIX_VERIFICATION`. QA-07 and QA-12 remain historically recorded as failures from the first run; the guide now separates those observations from the required recheck. No live model or weather request occurred.
+- **Cost/runtime:** Local tests, lint, build, and browser inspection only; US$0.00.
+- **Decision:** Do not proceed to the three paid live starts until the owner verifies saved-memory navigation, fresh intake state, preparation completion feedback, mobile navigation, and saved-session persistence. A passed code regression test does not overwrite a failed human QA observation.
+- **Learning:** Interface state is part of product evidence. A correct saved artifact is not useful if users cannot find it again, and a technically responsive layout still fails when navigation disappears. Human QA results should remain immutable evidence with remediation recorded separately.
+
+### 62. Owner live QA, route-bearing recovery, and coach-readable reconstruction
+
+- **Hypothesis:** The final owner run should validate not only that paid paths
+  execute, but also whether their evidence and presentation are usable by a
+  coach. GPS-derived direction, constrained timezone entry, stable mobile
+  actions, and scannable reconstruction should address the observed problems
+  without changing historical model outputs or weakening abstention.
+- **Change:** Preserved three synthetic live trajectories from QA-14 through
+  QA-16 and consolidated their exact cost, token, runtime, and verification
+  results. Added RED-first regressions for the mobile review action, timezone
+  selector, readable reconstruction, human-readable evidence labels, and
+  SpeedCoach GPS heading derivation. The assembler now calculates a circular
+  representative bearing only for directionally consistent GPS tracks;
+  session-context heading still wins, and turning or out-and-back tracks remain
+  unresolved. `Current reconstruction` now renders as separate bullets and
+  translates internal references into `Training plan`, `SpeedCoach recording`,
+  `Mobile recording`, `Environment timeline`, and `Session context`; verified
+  finding tags use the same product vocabulary.
+- **Evaluation:** RED reproduced the action wrapping below the mobile header,
+  free-form timezone input, absent reconstruction formatter, exposed
+  `input/*.json` references, and missing heading in a Plan + SpeedCoach weather
+  bundle. Browser review then found that the six-interval chart widened the
+  complete 390 px page; a second RED requires the grid child to shrink and the
+  chart to own its horizontal scroll. GREEN passes 17 focused web tests and 11
+  bundle-assembler tests. A 390 × 844 browser check confirms no document-level
+  overflow while the header action remains on its first row. The complete web
+  suite passes 84/84 with lint and production build. All three saved
+  trajectories independently report `verification.passed: true`.
+  The original QA-16 output remains unchanged and still records the limitation
+  that triggered the correction.
+- **Result:** QA-13 passed before spend. QA-14 used 34,675 tokens, 38.793 seconds,
+  and US$0.117390. QA-15 used 34,927 tokens, 26.056 seconds, and US$0.099324.
+  QA-16 used 20,960 tokens, 21.241 seconds, and US$0.067120. The observed live
+  total was 90,562 tokens and US$0.283834 under the US$0.60 total operational
+  authorization. Keep the deterministic corrections; visual owner recheck of
+  the revised header and reconstruction remains useful.
+- **Cost/runtime:** No additional model or weather call was made while fixing
+  the findings. The three owner-authorized executions above are the complete
+  new cost. Reopening their saved output costs US$0.00.
+- **Decision:** Treat the owner findings as product evidence, not cosmetic
+  feedback. Keep provenance internally exact while presenting source names in
+  rowing language. Never infer boat-relative wind from an inconsistent route,
+  and do not regenerate a paid historical report merely to erase a discovered
+  limitation.
+- **Learning:** Passing schema verification is necessary but not sufficient.
+  Human QA exposed both a real evidence-flow omission and a reading burden that
+  isolated tests had missed. The strongest audit trail preserves the original
+  failure, adds a deterministic regression, and records the correction
+  separately.
+
+### 63. Visible product location and restorable internal navigation
+
+- **Hypothesis:** One consistent back action plus a breadcrumb should let a
+  coach understand whether they are reviewing a session, athlete, crew, boat,
+  or product result, while browser Back should restore the preceding WAKE
+  context instead of leaving the single-page application.
+- **Change:** Added RED-first history-state and interface contracts, one shared
+  `LocationTrail`, and internal `pushState`/`popstate` navigation. History
+  entries retain selected crew, athlete, and competition-entry identifiers.
+  Removed inconsistent `Back to club`, `Back to sessions`, `Back to
+  competition`, and `Review evidence` header actions. Competition boat reports
+  now participate in the same history as primary screens.
+- **Evaluation:** RED failed on the absent history module, location trail,
+  native Back integration, and inconsistent screen-specific labels. GREEN
+  passes two pure history tests and the expanded interface contract. The full
+  web suite passes 87/87 with lint and production build. Browser rehearsal
+  verified `Harbor Men 2x → Lucas → Back` and `Competition Review → Harbor Men
+  2x → Back`, restoring both heading and breadcrumb. A 390 × 844 check found no
+  document-level overflow and kept the arrow and current item visible.
+- **Result:** Keep the unified navigation. Detail screens now state the product
+  area and selected object in one predictable place, and both the visible arrow
+  and browser Back follow the same internal path.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Treat location and return behavior as part of the workflow
+  contract, not cosmetic navigation. Preserve selected relational context in
+  history and avoid adding screen-specific back controls.
+- **Learning:** A technically reachable page can still feel like a dead end.
+  Navigation state must preserve the human object being investigated, not only
+  a generic screen name.
+
+### 64. Task-based Sessions workspace
+
+- **Hypothesis:** Separating the Sessions root by coaching task will make every
+  existing feature directly reachable without removing evidence or forcing a
+  coach to scan one long mixed-purpose page.
+- **Change:** Added RED-first contracts for five Sessions areas, mobile-contained
+  horizontal selection, and restoration of the selected area through browser
+  history. Reorganized the existing club content into Overview, Attention,
+  Team, Intelligence, and Session reviews. No data, analysis, or feature was
+  removed.
+- **Evaluation:** RED failed because Sessions rendered one complete sequence and
+  history stored only the primary screen and relational selection. GREEN passes
+  the complete 91-test web suite and ESLint. The Vinext production build passes
+  with the repository-required Node runtime. Browser rehearsal confirmed Team
+  → Harbor Men 2x → Back restores Team, Session reviews exposes its inbox in a
+  1,337 px page at the tested desktop viewport, and a 390 × 844 viewport has no
+  document overflow while all five choices remain reachable in the selector.
+- **Result:** Keep the task workspace. The long product inventory is now five
+  explicit destinations, and each drill-down returns to the coach's preceding
+  task context.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Use progressive disclosure for club-scale information. Preserve
+  one Sessions destination in primary navigation, but do not require page
+  length to communicate product breadth.
+- **Learning:** Content completeness and navigability are separate qualities.
+  A coach can understand every section and still fail to use the product if
+  unrelated tasks stand between the current question and the relevant view.
+
+### 65. Visible mobile Sessions choices
+
+- **Hypothesis:** Showing every Sessions area simultaneously on a narrow screen
+  will make the workspace structure discoverable without increasing the
+  desktop navigation burden.
+- **Change:** After owner review rejected the horizontally scrolling mobile
+  selector, added a RED-first contract for a two-column mobile button grid.
+  Overview, Attention, Team, and Intelligence occupy two rows; Session reviews
+  spans the final row. Desktop distribution and navigation history are
+  unchanged.
+- **Evaluation:** RED proved the former CSS still required horizontal scrolling
+  and hid later choices outside the viewport. GREEN passes the focused
+  Sessions workspace tests. Browser checks at 390-class and 320 px widths found
+  all five button rectangles inside the selector, equal selector client and
+  scroll widths, and equal document client and scroll widths.
+- **Result:** Keep the fully visible mobile grid and remove horizontal discovery
+  from the QA instructions.
+- **Cost/runtime:** Deterministic CSS and test work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Primary workspace destinations must remain visible on small
+  screens. Horizontal scrolling is acceptable for dense data, not for a short
+  set of five primary task choices.
+- **Learning:** Reachable is not the same as discoverable. A hidden navigation
+  item without an explicit overflow cue behaves like a missing feature for a
+  user who does not already know it exists.
+
+### 66. Sessions secondary-tab hierarchy
+
+- **Hypothesis:** Placing the five Sessions areas directly below the primary
+  menu will communicate their parent-child relationship more clearly than a
+  selector embedded after the page notice and heading.
+- **Change:** Added a dedicated `SessionsSubnavigation` between the global
+  header and Sessions content. Restyled the five destinations as compact tabs
+  with an active underline, removed the duplicated selector from the page body,
+  and retained the fully visible two-column mobile grid.
+- **Evaluation:** A RED-first contract failed because no secondary-navigation
+  component existed and the selector still lived inside `SessionsScreen`.
+  GREEN passes all four focused workspace tests. Browser checks at 1,280 px and
+  390 px found the secondary bar beginning exactly at the primary-header edge,
+  all five tabs visible, no document or selector overflow, and Team updating
+  both the active tab and page heading. The responsive override was reset after
+  inspection.
+- **Result:** Keep the two-level navigation. Global product destinations and
+  Sessions-specific coaching tasks are now visually distinct before any page
+  content begins.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Treat Sessions areas as navigation, not content. Preserve the
+  mobile grid because a tab hierarchy does not justify hiding choices.
+- **Learning:** Progressive disclosure also needs visible information
+  architecture. Moving the same controls a few hundred pixels can change
+  whether users understand them as destinations or as another dashboard card.
+
+### 67. Compact live/replay status disclosure
+
+- **Hypothesis:** A persistent status icon with details on demand will preserve
+  the live/replay safety boundary while reducing repeated text before the
+  coach's task content.
+- **Change:** Replaced the generic `PrototypeNotice` component with a global
+  `RuntimeStatusIndicator` immediately before Review a session. The indicator
+  distinguishes local live from replay/not-live, opens on hover, keyboard
+  focus, or click, and retains the full former explanation in an accessible
+  pop-up. Dataset-specific provenance notices were not removed.
+- **Evaluation:** A RED-first interface contract failed on the absent status
+  component, repeated prototype notices, and missing mobile pop-up boundary.
+  GREEN passes all 18 focused product-interface tests. Browser inspection
+  confirmed the icon appears before the review action, the closed pop-up is
+  absent from layout, click exposes the complete live description, and the
+  pop-up remains inside a 320 px viewport with equal document client and scroll
+  widths.
+- **Result:** Keep the compact global status. Runtime awareness remains visible
+  on every primary screen without forcing users to reread the same paragraph.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Runtime mode belongs beside the action that may execute work.
+  Preserve the full wording in the disclosure rather than abbreviating the
+  safety boundary.
+- **Learning:** Important context does not need permanent visual dominance.
+  Consistent placement plus explicit interaction can improve both safety and
+  reading flow.
+
+### 68. Explicit-only runtime disclosure
+
+- **Hypothesis:** Removing automatic hover/focus opening and instructional copy
+  will make the compact runtime control feel calmer and more intentional.
+- **Change:** Revised the status pop-up to open only from click, tap, or keyboard
+  button activation and close on the next activation. Removed the `Hover,
+  focus, or click` footer and the CSS hover/focus triggers. The runtime label and
+  complete material boundary remain unchanged.
+- **Evaluation:** RED-first assertions failed against the retained footer and
+  automatic CSS triggers. GREEN passes all 18 focused product-interface tests.
+  Browser inspection confirmed the pop-up is hidden initially, opens with
+  `aria-expanded=true` after activation, and contains no interaction
+  instruction.
+- **Result:** Keep the explicit-only behavior. Entry 67 remains the historical
+  first compact implementation but its hover/focus behavior is superseded.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Do not explain obvious control mechanics inside the content
+  being disclosed. Preserve keyboard operation through native button
+  activation rather than automatic focus behavior.
+- **Learning:** Progressive disclosure should reduce noise, including the noise
+  created by explaining the disclosure itself.
+
+### 69. Timed runtime pop-up dismissal
+
+- **Hypothesis:** Automatically closing the runtime explanation after six
+  seconds will prevent a transient safety disclosure from obscuring navigation
+  or content when the user does not manually close it.
+- **Change:** Added a six-second dismissal timer whenever the runtime pop-up is
+  opened. The effect clears its pending timeout on early close or component
+  cleanup, while the existing second-click behavior remains available.
+- **Evaluation:** A RED-first contract failed on the absent timeout and cleanup.
+  GREEN passes all 18 focused product-interface tests. Browser validation
+  observed `aria-expanded=true` immediately after click and
+  `aria-expanded=false` with `display:none` after 6.25 seconds.
+- **Result:** Keep the timed dismissal at six seconds.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** The pop-up may disappear automatically, but its status icon
+  remains persistent and can reopen the explanation at any time.
+- **Learning:** Compact overlays need an exit path even when their content is
+  important; persistence belongs to the status indicator, not the overlay.
+
+### 70. Evaluation saved-artifact information indicator
+
+- **Hypothesis:** Moving the permanent Evaluation no-model banner into a small
+  on-demand control will preserve submission credibility while giving the
+  measured result more visual priority.
+- **Change:** Removed the full-width Evaluation notice and added a small
+  information indicator at the right of the page heading. It preserves the
+  complete `Saved result · No model call` explanation, supports click/tap and
+  keyboard activation, closes on a second activation, and dismisses after six
+  seconds.
+- **Evaluation:** A RED-first Evaluation contract failed on the absent
+  indicator, retained banner, and missing right-aligned pop-up styles. GREEN
+  passes both focused Evaluation tests. Browser inspection confirmed the old
+  notice count is zero, the icon is visible on the right half of the header,
+  the closed pop-up does not occupy layout, click exposes the complete boundary,
+  the document has no horizontal overflow, and the pop-up closes after 6.25
+  seconds.
+- **Result:** Keep the compact Evaluation disclosure and the full text inside
+  it. The underlying read-only/no-cost behavior is unchanged.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Stable, non-actionable page boundaries should be available on
+  demand rather than repeated as permanent banners.
+- **Learning:** Safety copy remains credible when visually quiet, provided the
+  indicator is consistently placed, accessible, and explicit when opened.
+
+### 71. Accessible typography and shared card system
+
+- **Hypothesis:** Replacing scattered 6–72 px declarations with a bounded
+  semantic scale will make dense rowing evidence easier to scan without
+  flattening the hierarchy or creating mobile overflow. Subtle shared card
+  surfaces should clarify actionable groups without turning every table row
+  into a decorative container.
+- **Change:** Added reusable typography, line-height, radius, and elevation
+  tokens. Descriptive copy now resolves to at least 14 px, captions to 12 px,
+  compact metadata to 11 px, and primary display headings are capped at 58 px.
+  Added late compatibility rules for older feature-specific selectors, shared
+  surface treatment for prominent evidence cards, consistent interactive-row
+  hover/focus states, and reduced-motion handling.
+- **Evaluation:** Three RED-first design-system contracts failed before the
+  tokens and shared rules existed. GREEN passes the complete 96-test web suite,
+  lint, and production build. Before the change, the Evaluation page exposed
+  344 visible leaf labels between 7 and 10 px and a 60.78 px title at the
+  inspected desktop width. After the change, Evaluation and Sessions have no
+  visible text below 11 px; the title computes to 50.65 px. Browser checks of
+  Sessions areas, intake, goal memory, crew and athlete details, competition
+  overview and boat detail, longitudinal reports, and post-regatta memory found
+  no text below 11 px or document overflow. The 390 × 844 mobile checks also
+  found zero overflow and zero sub-11 px text.
+- **Result:** Keep the bounded scale and shared surface language. This is an
+  accessibility-oriented legibility baseline, not a claim of formal WCAG
+  conformance; keyboard, contrast, zoom, and assistive-technology audits remain
+  separate verification work.
+- **Cost/runtime:** Deterministic CSS, tests, and browser inspection only; no
+  model, weather, or external API call and US$0.00 incremental cost.
+- **Decision:** Product descriptions and evidence explanations must never rely
+  on microtype. Reserve 11 px for terse metadata, keep normal copy at 14 px or
+  above, and use elevation only for meaningful groups or interactive rows.
+- **Learning:** Dense operational software becomes harder to understand when
+  hierarchy is created mainly by making secondary text tiny. A constrained
+  scale preserves density more effectively than isolated font-size fixes.
+
+### 72. Single global session-review action
+
+- **Hypothesis:** Removing the second `Review a session` button from the
+  Sessions page heading will eliminate a redundant choice without making the
+  evidence-intake workflow harder to reach.
+- **Change:** Removed the content-level review button from `SessionsScreen` and
+  kept the persistent global action beside the runtime indicator. Removed its
+  now-unused narrow-screen width override.
+- **Evaluation:** A RED-first regression test found two rendered source actions
+  before the change. GREEN leaves exactly one action in the application source
+  and none inside `sessions-workspace-heading`. Browser checks found one visible
+  global action and zero heading actions across all five Sessions areas on
+  desktop; at 390 x 844 the global action remained visible, the heading action
+  remained absent, and document overflow was zero.
+- **Result:** Keep one global session-review entry point.
+- **Cost/runtime:** Deterministic interface, test, and browser inspection only;
+  no model, weather, or external API call and US$0.00 incremental cost.
+- **Decision:** Session review begins from the global header action. Sessions
+  area headings provide location and purpose, not a duplicate workflow action.
+- **Learning:** A persistent action does not become more discoverable when it is
+  repeated immediately below the navigation; repetition instead makes the
+  interface hierarchy look accidental.
+
+### 73. Period-aware club pulse heading
+
+- **Hypothesis:** Replacing the fixed two-week title and date with a neutral
+  heading plus dataset-derived coverage will keep the club pulse truthful as
+  new training periods are loaded. Moving the scan label below the introduction
+  should restore a clear vertical reading order.
+- **Change:** Renamed the heading to `Club training pulse`, renamed the lower
+  funnel to `Activity validation funnel`, and added `formatAnalysisPeriod` to
+  derive training-day count and date range from the active dataset period. The
+  deterministic status is now inside the heading copy, below its description,
+  and its verified-investigation count is data-derived.
+- **Evaluation:** RED-first tests failed on the missing period formatter, fixed
+  two-week labels, and old heading structure. GREEN passes all 19 focused
+  display, club, and intelligence tests. Browser inspection rendered
+  `10 training days · 17–28 Aug 2026`, found the status below and left-aligned
+  with the introduction, and found no overflow at desktop or 390 x 844.
+- **Result:** Keep a period-neutral title and make coverage metadata dynamic.
+- **Cost/runtime:** Deterministic interface, formatting, tests, and browser
+  inspection only; no model, weather, or external API call and US$0.00 cost.
+- **Decision:** Dataset duration belongs in derived metadata, not in a fixed
+  product heading. Status labels follow the explanatory copy they qualify.
+- **Learning:** A demo-specific duration presented as a product title silently
+  becomes false as soon as the product accepts a longer or shorter history.
+
+### 74. Bookmarkable product routes and nested-only Back
+
+- **Hypothesis:** Giving every primary destination and detail a readable hash
+  route will make browser Back/Forward and bookmarks reliable. Hiding the WAKE
+  Back trail on primary destinations will remove a false parent relationship.
+- **Change:** Added deterministic hash serialization and restoration for
+  Sessions areas, crew and athlete detail, club intelligence, Competition and
+  boat reports, session-review steps, Goal memory, and Evaluation. The shared
+  location trail now renders only for nested views. Directly bookmarked details
+  receive a meaningful parent fallback when no in-app history exists.
+- **Evaluation:** RED-first navigation tests failed on missing hash functions,
+  missing bookmark restoration, and unconditional non-Sessions trail rendering.
+  GREEN passes 30 focused navigation and interface tests. Browser rehearsal
+  confirmed `#competition`, `#goal-memory`, and `#evaluation` render without a
+  trail; a boat report receives its encoded entry route and Back returns to
+  Competition; browser Back restored Goal memory from Evaluation; and a direct
+  `#sessions/team/athlete/athlete-sofia` bookmark survived reload. At 390 x 844,
+  top-level and nested views had zero document overflow.
+- **Result:** Keep readable hash routes and nested-only location trails.
+- **Cost/runtime:** Deterministic navigation, tests, and browser inspection
+  only; no model, weather, or external API call and US$0.00 cost.
+- **Decision:** Primary destinations do not display an in-product Back control.
+  Their nested objects do. The URL must identify the current product state.
+- **Learning:** History state without a URL can make Back work during one visit,
+  but it cannot support bookmarks, reloads, shared QA paths, or visible location.
+
+### 75. On-demand competition provenance
+
+- **Hypothesis:** Replacing the permanent synthetic-regatta banner with a
+  compact disclosure will keep the evidence boundary available without making
+  implementation context compete with the coach's competition review.
+- **Change:** Removed the two full-width competition provenance notices and
+  added one accessible information control at the right of the Competition
+  heading. Overview and boat detail receive context-specific wording. The
+  disclosure supports click, tap, and keyboard activation, closes on a second
+  activation, and dismisses automatically after six seconds.
+- **Evaluation:** A RED-first competition contract failed on the missing
+  component, retained banners, and absent compact styles. GREEN passes all
+  eight focused competition tests. Browser rehearsal found zero legacy notices,
+  one indicator inside each relevant header, the expected overview and boat
+  disclosure text, automatic dismissal after 6.25 seconds, and no mobile
+  horizontal overflow.
+- **Result:** Keep competition provenance on demand while leaving race evidence,
+  context, uncertainty, and coaching value visible in the main page.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Main product surfaces explain what a coach can learn and which
+  conclusions remain unsupported. Stable implementation and fixture provenance
+  belongs in accessible disclosures and documentation unless it directly
+  changes the user's current decision.
+- **Learning:** Transparency does not require every technical boundary to be a
+  permanent card. Progressive disclosure can preserve trust while returning
+  the visual hierarchy to the rowing task.
+
+### 76. Compact club-fixture context
+
+- **Hypothesis:** Removing repeated processing and fixture explanations from
+  the top of the club pulse will make the first screen read as a coaching tool
+  while preserving the synthetic-data boundary on demand.
+- **Change:** Replaced the permanent deterministic-status label, two-column
+  provenance block, and repeated investigation boundary with one `Synthetic
+  demo` control beside the period-aware club heading. Its six-second disclosure
+  states which rowing structures and source formats are real-informed and which
+  identities and outcomes are fictional. Existing coverage, investigation,
+  routing, and observed-cost metrics remain visible in their operational cards.
+- **Evaluation:** RED-first club contracts failed on the absent disclosure and
+  retained legacy blocks. GREEN passes all 16 focused club and intelligence
+  tests. Browser rehearsal found zero legacy blocks, one accessible control,
+  the complete provenance text, automatic dismissal after 6.25 seconds, and no
+  horizontal overflow with both control and pop-up inside a 390 px viewport.
+- **Result:** Keep fixture provenance available through the compact club label;
+  do not repeat deterministic implementation narration above the club metrics.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Put club-scale progress in operational metrics and put stable
+  demonstration provenance in an on-demand disclosure. Main-page copy should
+  describe the coach's task and the rowing evidence, not the implementation.
+- **Learning:** A business rule can be transparent without becoming a content
+  section. Repeating the same assurance as a label, a card, and a boundary
+  weakens rather than strengthens the hierarchy.
+
+### 77. Interface copy audit and visible product shortcuts
+
+- **Hypothesis:** Separating coach-facing guidance from stable implementation
+  context will make the product faster to scan. Replacing two visually weak
+  header buttons with icon-based shortcut cards should make Evaluation and
+  Competition recognizable as intentional destinations.
+- **Change:** Audited permanent notes and descriptions across the product.
+  Removed the repeated Sessions navigation instruction, the duplicate Session
+  reviews introduction, full-width local-storage note, validation-fixture block,
+  and repeated crew/athlete synthetic-data banners. Storage, validation source
+  context, and club-fixture provenance now use six-second disclosures. Replaced
+  the two generic Overview buttons with accessible Evaluation and Competition
+  shortcut cards containing distinct icons, purpose labels, strong titles, and
+  directional affordances. Interpretation boundaries that change a coaching
+  conclusion remain visible.
+- **Evaluation:** RED-first contracts covered shortcut semantics and styling,
+  storage and validation disclosures, removal of legacy blocks, and reuse of
+  the club disclosure on crew and athlete pages. GREEN passes all 42 focused
+  workspace, club, intelligence, and product-boundary tests. Browser rehearsal
+  confirmed both shortcuts navigate to their bookmarkable destinations, the
+  legacy blocks are absent, disclosures expose their complete text, crew and
+  athlete headers retain provenance, and desktop/mobile layouts have no
+  horizontal overflow. At 390 px both shortcuts are full-width single-column
+  controls.
+- **Result:** Keep the cleaner product hierarchy. Evaluation remains the home
+  of model comparison, scores, cost, and technical claim boundaries; those
+  details are not repeated on the operational club screens.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Use three copy layers: visible operational content for the
+  coach's task and interpretation; on-demand disclosures for stable provenance,
+  storage, and runtime context; Evaluation or documentation for model and
+  experimental methodology.
+- **Learning:** Removing text indiscriminately would hide necessary uncertainty.
+  The useful dividing line is whether the information changes the current
+  coaching interpretation or merely explains how the prototype was built.
+
+### 78. Aligned review-state cards and compact PM5 context
+
+- **Hypothesis:** Equal card insets and shared metric rows will make the four
+  session-review states easier to compare. Moving the stable Concept2
+  interpretation boundary into a labeled disclosure will reduce visual weight
+  without hiding a material cross-modality limitation.
+- **Change:** Rebuilt the four review-state cells as an explicit surfaced grid
+  with uniform padding, aligned label/value/description rows, and equal mobile
+  card heights. Replaced the permanent PM5 boundary block with a `PM5 context`
+  control beside the Training days heading. Its six-second disclosure preserves
+  athlete ownership, equivalent-workout comparison, and the limits on inferring
+  on-water speed, visible technique, or muscular strength.
+- **Evaluation:** RED-first contracts failed for the missing aligned grid and
+  PM5 disclosure, then passed after the smallest implementation. Browser
+  rehearsal measured four equal 134 px cards at 390 px, zero horizontal
+  overflow, zero legacy PM5 blocks, and one accessible disclosure containing
+  all three interpretation bullets.
+- **Result:** Keep the aligned state grid and compact PM5 context control.
+- **Cost/runtime:** Deterministic interface work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** Stable modality rules may use a labeled disclosure when the
+  surrounding UI already states the active modalities and the complete limit
+  remains available in one action.
+- **Learning:** CSS subgrid aligns metric rows well on wide layouts, but its
+  spanning tracks can ignore a child's minimum height at narrow widths. The
+  mobile override must leave the subgrid and define local rows to guarantee
+  equal card geometry.
+
+### 79. Submission readiness audit and representative human-gated trajectory
+
+- **Hypothesis:** A deterministic readiness gate and one literal end-to-end
+  checkpoint trace will expose submission drift that feature tests cannot,
+  while keeping the intentionally deferred final video separate from code and
+  evidence readiness.
+- **Change:** Consolidated owner comments and historical findings into one QA
+  result table; added a requirement-to-evidence compliance matrix, direct
+  dependency/service/data-rights inventory, owner live-QA manifest with hashes,
+  and a no-key readiness verifier. Restored the incomplete first ElevenLabs
+  prompt and removed QA annotations from the generation sheet. Added a
+  deterministic public replay trajectory that links the official agent tool
+  trace to a synthetic human answer, briefing verification, and coach-approved
+  memory transition. Updated stale architecture, interface, batch, cost, and
+  reproduction statuses to the completed results.
+- **Evaluation:** RED-first submission tests failed on the missing readiness
+  module, absent reproduction command, `- OK` annotations, and the two-character
+  voice prompt. A second RED-first contract failed on the absent product
+  trajectory builder. The first full reproduction then caught one broken
+  literal QA contract introduced by the documentation cleanup; restoring the
+  exact button, cost, and result language made it GREEN. The final reproduction
+  passes 223 Python tests, nine public verifiers, 110 web tests, lint, and the
+  production build. The readiness CLI reports 10 WAKE outputs, 10 baseline
+  outputs, 10 official trajectories, 3/3 verified owner live-QA runs, and
+  `PENDING_FINAL_VIDEO` with repository evidence ready.
+- **Result:** Keep a two-gate closeout: deterministic repository readiness now,
+  then a strict final-video gate after recording. The final manual QA rechecks
+  remain visible rather than being relabelled as owner passes.
+- **Cost/runtime:** Deterministic repository work only; no model, weather, or
+  external API call and US$0.00 incremental cost.
+- **Decision:** The final submission is not called fully ready until the video
+  exists, the targeted owner rechecks pass, the clean reproduction succeeds,
+  and the strict readiness command passes from the final checkout.
+- **Learning:** Submission compliance is a product contract of its own. Tests
+  can prove saved evidence and artifact completeness, but they must not
+  substitute for the owner's visual acceptance or the final editorial review.
+
+### 80. Made clean-environment reproduction side-effect free
+
+- **Hypothesis:** A judge should be able to reproduce the submission without a
+  paid call and without changing any frozen evidence in the checkout.
+- **Change:** Redirected the timestamped post-regatta capability-audit rebuild
+  to an isolated temporary directory that is removed when the reproduction
+  exits. Documented the no-mutation contract in the reproduction guide and
+  decisions log.
+- **Evaluation:** A RED-first regression test proved the script still wrote to
+  the tracked official audit. The test requires an isolated temporary path and
+  rejects the tracked output destination; shell syntax, focused tests, and the
+  full zero-cost reproduction verify the corrected behavior.
+- **Result:** Keep. Public verification now inspects the frozen result while
+  treating its rebuilt timestamped audit as disposable evidence.
+- **Cost/runtime:** Deterministic repository verification only; no model,
+  weather, or external API call and US$0.00 incremental cost.
+- **Decision:** Reproduction commands must be idempotent with respect to frozen
+  tracked evaluation artifacts.
+- **Learning:** Content-equivalent generated JSON can still dirty a submission
+  through timestamps. Reproducibility includes filesystem side effects, not
+  only numerical equality.
+
+### 81. Migrated crew labels and added a bounded source package
+
+- **Hypothesis:** Familiar Brazilian bird names will make the fictional club
+  easier to remember, while a source-only upload will reduce submission risk
+  without changing any rowing evidence or paid evaluation result.
+- **Change:** Renamed the physical boats Tucano, Arara, Bem-te-vi, Sabiá,
+  Gavião, Garça, Canário, Seriema, Carcará, Tuiuiú, plus spare 1x Biguá, and
+  renders every crew as `Crew: boat name - class - category`. Preserved all
+  stable IDs, lineups, sessions, metrics, and frozen paid artifacts. Updated
+  current QA and narration guidance. Added a deterministic
+  ZIP builder that excludes credentials, private data, dependencies, runtime
+  state, build output, and MP4 files, applies a conservative 50 MiB ceiling,
+  and reports a SHA-256 digest. Removed the personal repository URL from video
+  draft 12's closing card.
+- **Evaluation:** The crew-name contract failed first against the former
+  labels, then 25 focused club, competition, and post-regatta tests passed.
+  Two source-package tests failed before the builder existed and now verify
+  exclusions and byte reproducibility. Two documentation-contract tests also
+  passed. The first full run also caught a stray Finder `.DS_Store` in the
+  public QA pack; moving that recoverable metadata out restored byte
+  reproducibility. The final verification passes 226 Python tests, nine public
+  verifiers, 111 web tests, lint, and the production build. The generated
+  working-tree package contains 680 files and measures 7.23 MiB.
+- **Result:** Keep. The interface gains a coherent fictional identity without
+  invalidating evidence hashes, and the source upload remains far below the
+  local conservative ceiling.
+- **Cost/runtime:** Deterministic code, tests, packaging, and video editing
+  only; no model, weather, or external API call and US$0.00 incremental cost.
+- **Decision:** Treat crew names as presentation data over stable IDs; keep
+  frozen model artifacts immutable. Deliver source and video separately and
+  verify the organizer portal's actual size rule before upload.
+- **Learning:** Cosmetic labels can still cross model evidence, QA, narration,
+  and packaging. The safe migration boundary is the stable entity ID, not a
+  global search-and-replace over historical artifacts.
+
+### 82. Corrected the intermediate-width intake capture layout
+
+- **Hypothesis:** The session-intake shot will remain understandable when the
+  global action retains a readable label and each file-state control stays
+  attached to the evidence description at intermediate responsive widths.
+- **Change:** Removed the mobile-only replacement of `Review a session` with an
+  ambiguous plus sign, tightened the mobile header spacing, and explicitly
+  placed `Choose` or `Selected` in the evidence-content column below its file
+  description. Added a capture rule for 1440 × 900 desktop footage plus a 600
+  px breakpoint check before export. Recorded draft 12's `01:16` frame as a
+  known defect that must be replaced rather than hidden by cropping.
+- **Evaluation:** A RED-first interface contract reproduced the plus-only CTA
+  and absent mobile grid placement. GREEN passes all 20 focused interface
+  boundary tests. Browser QA at 600 × 900 confirmed a 108 px-wide
+  `Review a session` action, zero document overflow, and five file controls
+  sharing the same left edge as their evidence descriptions rather than their
+  numeric indexes. A second 320 × 844 check retained the full action label and
+  equal document client and scroll widths. The complete 112-test web suite,
+  lint, and production build pass.
+- **Result:** Keep the responsive correction and recapture the affected video
+  shot before final export. Draft 12 remains review-only evidence.
+- **Cost/runtime:** Deterministic CSS, tests, browser inspection, and recording
+  guidance only; no model, weather, or external API call and US$0.00.
+- **Decision:** Do not treat an intermediate responsive layout as acceptable
+  desktop footage merely because it fits the canvas. Capture viewport and
+  component alignment are part of video acceptance.
+- **Learning:** A breakpoint can pass narrow mobile and wide desktop QA while
+  still producing a poor editorial frame between them. Video QA needs one
+  explicit intermediate-width check for screens with multi-column controls.
+
+### 83. Reframed the final video around the current product interface
+
+- **Hypothesis:** Enlarging the interface and reducing explanatory copy will
+  make the five-minute story easier to follow than a near-even split between a
+  small product capture and a long text column.
+- **Change:** Captured the current interface at a 1440 × 900 composition in an
+  isolated replay runtime, including corrected evidence intake, session
+  reconstruction, attributed human checkpoint, approval-gated memory,
+  Brazilian-bird crews, athlete history, Competition Review, and evaluation.
+  Rebuilt draft 13 with the product occupying 82% of each reframed product
+  chapter and a short 18% title rail. Preserved the accepted narration, brand
+  motion, bounded-agent interlude, learning sequence, and closing from draft
+  12. Added a deterministic video builder and layout contracts.
+- **Evaluation:** RED-first tests required a product share of at least 80%, a
+  narrative rail no larger than 20%, a continuous 298.468875-second timeline,
+  current capture filenames, and short rail copy. A render regression exposed
+  that the installed FFmpeg lacks `drawtext`; a failing test now prohibits that
+  dependency, and the rail is rendered from a local SVG instead. Four focused
+  tests pass. The exported H.264/AAC draft is 1920 × 1080 at 30 fps,
+  298.467 seconds, and 11.85 MB. Visual frame inspection confirms the corrected
+  `01:16` intake state and the 82/18 composition across the main chapters.
+- **Result:** Keep draft 13 as the recommended owner-review artifact. Preserve
+  drafts 1–12 for editorial comparison; do not rename draft 13 to the final
+  submission until owner video QA accepts it.
+- **Cost/runtime:** Deterministic browser replay, local capture, and FFmpeg
+  rendering only; no model, weather, or external API call and US$0.00.
+- **Decision:** Product UI, rather than explanatory prose, must dominate each
+  walkthrough frame. Use short chapter labels instead of transcript panels.
+- **Learning:** A video can show a correct interface and still undersell it by
+  shrinking the product to make room for explanation. Editorial hierarchy is
+  part of product QA, and the media toolchain itself needs regression coverage.
+
+### 84. Rebalanced product depth, narrative context, and runtime truthfulness
+
+- **Hypothesis:** A 4:3 product capture with a modest explanatory rail will
+  show more useful page depth than the 16:10 capture, while remaining easier to
+  understand than draft 13's title-only rail.
+- **Change:** Recaptured all product chapters at 1200 × 900 through an isolated
+  live-enabled runtime. Used capture-only CSS to hide horizontal and vertical
+  scrollbars without changing the product source. Rebalanced the frame from
+  82/18 to 76/24 and added two-to-four concise contextual lines per product
+  chapter. Kept the green runtime indicator only because the API and dashboard
+  were actually live-enabled; no paid call was made to manufacture that state.
+  Added the official experiment scale to the evaluation rail: ten controlled
+  cases, 40 deterministic tool calls, ten verified trajectories, and about
+  US$1.14 total comparison cost.
+- **Evaluation:** RED-first contracts required a 74–78% product region, 22–26%
+  contextual rail, exact 4:3 capture assumption, bounded description length,
+  and an even 1920-pixel H.264 layout. The first render exposed a one-pixel
+  mismatch between product and rail widths; the regression test failed before
+  a shared width calculation restored the 1920 × 1080 output. Five focused
+  tests pass. Every current capture is 1200 × 900, visual inspection finds no
+  scrollbars, and the `01:16` frame shows the live-enabled status, aligned
+  selected evidence, explicit US$0.20 start authorization, and the complete
+  `Validate and investigate` action. Draft 14 is H.264/AAC, 30 fps,
+  298.448 seconds, and 13.03 MB.
+- **Result:** Keep draft 14 as the recommended owner-review artifact. It
+  provides more product depth and enough explanation without reverting to the
+  original text-heavy split.
+- **Cost/runtime:** Live capability was enabled locally, but no model, weather,
+  or external API execution was triggered for capture; US$0.00 incremental
+  cost. Previously verified costs remain unchanged.
+- **Decision:** Demonstrate runtime availability truthfully; never spend merely
+  to color an icon or imply that a saved result is a new execution. Prove the
+  agentic workflow through fixed evaluations, tool traces, and verified costs.
+- **Learning:** Credibility comes from visible capability plus reproducible
+  evidence, not from maximizing token spend. Capture aspect ratio and browser
+  chrome can materially change how much product value fits in one frame.
+
+### 85. Corrected mobile SPM positioning in the product story
+
+- **Hypothesis:** Describing one rejected zero-only channel as a phone problem
+  can make a case-specific data-quality decision sound like an inherent mobile
+  limitation.
+- **Change:** Rewrote the chapter-2 narration so WAKE compares stroke-rate
+  signal coverage and consistency and selects a source per metric and session.
+  The example still identifies SpeedCoach as the selected source, while making
+  clear that another session may select mobile. Isolated the full replacement
+  narration in `VOICEOVER_ELEVENLABS_V5_REGENERATE.md`.
+- **Evaluation:** A RED-first documentation regression test failed against all
+  three existing scripts containing the phone-rejection phrase. After the copy
+  change, the new positioning test and five video-builder tests pass. Frozen
+  evaluation inputs and the valid rejection of zero-only data remain unchanged.
+- **Result:** Keep the source-neutral wording. Draft 14 remains a visual review
+  artifact until its chapter-2 audio is regenerated and replaced.
+- **Cost/runtime:** Documentation and deterministic tests only; no model,
+  weather, audio-generation, or external API call and US$0.00.
+- **Decision:** Present source trust as metric-specific and session-specific,
+  never as a permanent ranking of device categories.
+- **Learning:** A technically correct sentence can still teach the wrong
+  product rule. The product story must distinguish an invalid observation from
+  the capability of the device that produced it.
+
+### 86. Replaced chapter-two narration without shifting the accepted edit
+
+- **Hypothesis:** The corrected SPM wording can replace the old narration
+  without recapturing screens or moving any later chapter.
+- **Change:** Added a deterministic audio-replacement script that preserves the
+  video stream, replaces only seconds 63–129, resamples the supplied mono audio
+  to 48 kHz, and fits it to the existing chapter window. Generated draft 15
+  from the owner-supplied 66.351-second ElevenLabs recording.
+- **Evaluation:** RED-first tests fixed the chapter boundaries, constrained the
+  permitted tempo adjustment to ±5%, and verified the audio graph. Nine focused
+  tests pass. The applied factor is 1.005318, or 0.53%. Drafts 14 and 15 have
+  the same encoded-video SHA-256, confirming no visual change. Draft 15 is
+  H.264/AAC, 1920 × 1080, 30 fps, 48 kHz mono, 298.444 seconds, and 12.92 MB;
+  chapter-2 peak audio is -1.7 dB.
+- **Result:** Keep draft 15 as the recommended owner-review artifact. The
+  source-neutral SPM narration is now present in the video.
+- **Cost/runtime:** Local FFmpeg remux and deterministic tests only; no model,
+  weather, or external API call by WAKE and US$0.00 incremental project cost.
+  The supplied ElevenLabs recording was generated externally by the owner.
+- **Decision:** Preserve accepted visuals when correcting isolated narration;
+  keep the edit operation reproducible and boundary-limited.
+- **Learning:** Chapter-level audio replacement avoids reintroducing visual QA
+  defects and provides stronger evidence than an undocumented manual edit.
+
+### 87. Re-audited the complete submission against the original brief
+
+- **Hypothesis:** A final evidence and packaging audit will expose remaining
+  delivery blockers more reliably than treating a successful product build as
+  submission readiness.
+- **Change:** Re-read the original 10-page organizer PDF, visually checked its
+  final-deliverables page, ran the machine-readable readiness audit, executed
+  the complete no-key reproduction, and built the source-only ZIP.
+- **Evaluation:** Readiness reports 10 WAKE outputs, 10 baseline outputs, and 10
+  trajectories with the accepted 83.76 versus 49.00 result. With Node.js
+  24.19.0 and npm 10.8.2, 235 Python tests, nine public verifiers, 112 web
+  tests, lint, and the production build pass. The first attempt on Node.js
+  20.19.4 stopped at the declared version gate. The ZIP contains 686 files,
+  is 7.24 MiB, and excludes MP4 drafts, private state, credentials, installed
+  dependencies, and build output.
+- **Result:** Repository evidence is ready, while final submission remains
+  gated on owner video acceptance, the chapter-1 crew-name correction, the
+  final video filename, final Git review/push, and confirmation of two PDF
+  fields reported in the current portal. The supplied brief lists four
+  deliverables but does not define two required PDFs.
+- **Cost/runtime:** Local verification, PDF inspection, and ZIP construction
+  only; no model, weather, or external API call and US$0.00.
+- **Decision:** Do not invent the two PDF formats. Confirm their portal labels,
+  page limits, and size limits before authoring, then rebuild the final ZIP.
+- **Learning:** Delivery readiness is a separate engineering surface. Version
+  gates, portal-only fields, filenames, and archive boundaries can block an
+  otherwise working project.
+
+### 88. Automated the remaining interface QA and created the PDF companion package
+
+- **Hypothesis:** Browser-level closeout plus rendered PDF inspection can turn
+  the remaining review checklist and portal PDF uncertainty into reproducible
+  submission evidence without spending model budget.
+- **Change:** Re-ran QA-07, QA-08, QA-12, and QA-17 through QA-20 at desktop
+  and 390-pixel mobile widths. Verified saved-memory reopening, workflow-state
+  persistence, fixed Evaluation values, hash history, responsive tabs,
+  six-second disclosures, aligned workflow cards, and athlete-owned PM5
+  boundaries. Added a TDD-covered ReportLab builder and generated a five-page
+  environment/reproduction guide plus a seven-page detailed solution report.
+- **Evaluation:** Three RED-first PDF content contracts pass. Both PDFs were
+  rendered to PNG page by page and visually inspected; the first report render
+  exposed joined bullets and an almost empty page, so list layout and manual
+  page breaks were corrected before a second complete inspection. Extracted
+  text, metadata, page counts, scores, replay cost, and live-key instructions
+  were checked with `pypdf`. Browser QA found no horizontal overflow on tested
+  primary routes and preserved the 83.76 versus 49.00 Evaluation evidence. The
+  full no-key reproduction passed 238 Python tests, nine public verifiers, 112
+  web tests, lint, and a production build. Rebuilding the ZIP exposed temporary
+  PDF render images in the archive; a new failing package test reproduced the
+  leak before `tmp/` was excluded.
+- **Result:** Keep both PDFs under `output/pdf/`. Treat the remaining owner QA
+  as visual/semantic confirmation rather than an untested functional blocker.
+  The browser automation layer did not reliably synthesize Enter/Space for a
+  native disclosure button, so keyboard feel remains explicitly human-reviewed.
+  The cleaned source archive contains 667 files, is 4.17 MiB, includes both
+  final PDFs, excludes temporary renders, and has SHA-256
+  `84a83d40990bbbf0a578923ae3356a5f94b257b9d4956f0433fb56e92b4620e4`.
+- **Cost/runtime:** Local browser automation, deterministic tests, ReportLab,
+  Poppler rendering, and visual inspection only; no model, weather, or external
+  API call and US$0.00.
+- **Decision:** Include both owner-requested PDF companions while retaining the
+  disclosure that the supplied brief does not define the portal's PDF fields.
+- **Learning:** Artifact generation needs the same RED-GREEN-REFACTOR loop as
+  application code. A valid PDF file can still fail visually, and automated QA
+  should narrow rather than erase the boundary between functional evidence and
+  human comprehension.
+
+### 89. Rebuilt the solution PDF as a visual product and architecture dossier
+
+- **Hypothesis:** A report that follows the video's human product story while
+  adding architecture, tables, evidence boundaries, and measured results will
+  communicate WAKE more effectively than a text-only technical companion.
+- **Change:** Added six current interface captures as stable submission assets,
+  declared their roles and captions in the tested PDF content model, and
+  replaced the seven-page text report with an eleven-page visual dossier. The
+  new sequence covers the club problem, coach/athlete authority, layered
+  architecture, metric-level source trust, club and athlete memory, session
+  investigation, competition context, controlled evaluation, TDD failures,
+  costs, reproduction, privacy, and honest product limits.
+- **Evaluation:** RED first failed because the visual-asset contract and the
+  `System architecture` and `Product walkthrough` sections did not exist.
+  GREEN passes five focused PDF tests. The generated A4 report is 11 pages,
+  approximately 623 KiB, and contains about 2,003 extracted words. Every page
+  was rendered at 120 DPI and visually inspected for clipping, overlap,
+  alignment, screenshot legibility, table wrapping, headers, footers, and page
+  numbering; one narrow table heading was shortened after the first render.
+- **Result:** Keep the visual report as the judge-facing solution PDF and keep
+  the separate setup/reproduction PDF as the exact clean-environment guide.
+- **Cost/runtime:** Local ReportLab generation, Poppler rendering, and focused
+  deterministic tests only; no model, weather, audio, or external API call and
+  US$0.00.
+- **Decision:** Use the video for paced narrative and the PDF for deeper,
+  self-contained inspection of the same value story and its architecture.
+- **Learning:** A solution report should not repeat a README in paginated form.
+  Screens establish product reality; tables establish comparability; and a
+  layered diagram makes the agentic control boundaries auditable at a glance.
+
+### 90. Reframed repeated session screens and rebuilt fragile video transitions
+
+- **Hypothesis:** Subject-focused crops and fully completed transition actions
+  will communicate evidence authority, uncertainty, and human provenance more
+  clearly than near-duplicate page captures with small scroll differences.
+- **Change:** Replaced three full-page session frames with distinct close-ups
+  of source selection, the environmental boundary, and the athlete answer with
+  provenance. Rebuilt the current Overview → Team → Tucano sequence with eased
+  cursor travel and visible click holds. Re-rendered the agentic interlude from
+  staged SVG states so every connector precedes its destination block.
+- **Evaluation:** Three RED-first video-builder regressions fixed the cursor
+  timing, prohibited the old source-video interlude at seconds 81–97, required
+  complete connector IDs, and fixed the three unique crop names. Twelve focused
+  video and narration tests pass. The complete H.264/AAC file decodes without
+  error; contact sheets were inspected across seconds 47–54, 81–97, and
+  109–135.
+- **Result:** Keep draft 16 as the recommended owner-review artifact. It removes
+  the residual frame around 01:21, prevents clipped arrows around 01:22, and
+  gives the three session principles visibly different subjects.
+- **Cost/runtime:** Local browser capture, SVG rendering, FFmpeg assembly, and
+  deterministic tests only; no model, weather, audio-generation, or external
+  API call and US$0.00 incremental project cost.
+- **Decision:** Use whole-page captures for orientation and focused crops for
+  a specific claim. A simulated interaction must finish its travel and click
+  before the destination view appears.
+- **Learning:** Editorial continuity is part of product credibility. Reusing a
+  nearly identical page can hide the very evidence the narration is explaining,
+  while a connector that materializes under a card reads as a rendering defect.
+
+### 91. Made the removed behavior and negative experiment explicit with accessible captions
+
+- **Hypothesis:** Naming the negative evidence in narration is insufficient if
+  the screen remains a generic evaluation page; dedicated learning cards and
+  open captions will make the hackathon requirement unmistakable and improve
+  accessibility without turning the video into a technical presentation.
+- **Change:** Added two original vector cards: `PRODUCT LESSON · REMOVED
+  BEHAVIOR` explains the reconstructed-distance overclaim and TDD correction;
+  `NEGATIVE EXPERIMENT · KEPT` names the longitudinal `NO DEMONSTRATED QUALITY
+  GAIN` result and preserves its honest cost boundary. Added 54 sentence-level
+  English cues, a reusable SRT, and a deterministic open-caption compositor.
+- **Evaluation:** RED-first tests required both learning segments and exact
+  labels, at least 40 ordered caption cues covering the spoken story, no more
+  than two 48-character lines, and legible lower-safe-area typography. The
+  first burn attempt exposed that the installed FFmpeg lacked the libass
+  `subtitles` filter. A second RED reproduced that portability failure before
+  the implementation moved to locally rendered SVG alpha overlays. Sixteen
+  focused video, caption, audio, and positioning tests pass. The complete
+  captioned H.264/AAC file decodes without error and was visually inspected at
+  the opening, investigation, removed behavior, negative experiment, and close.
+- **Result:** Keep the captioned draft 17 as the recommended owner-review cut
+  and retain both the uncaptioned equivalent and SRT sidecar. The requirement
+  is now visible, not inferred from a sentence over an unrelated screen.
+- **Cost/runtime:** Local SVG rendering, FFmpeg composition, and deterministic
+  tests only; no model, weather, audio-generation, or external API call and
+  US$0.00 incremental project cost.
+- **Decision:** Use open captions for the submitted video unless owner QA finds
+  a product interaction they materially obscure. Preserve negative experiments
+  with direct labels and conclusions, not marketing euphemisms such as a win or
+  unexplained hot take.
+- **Learning:** Accessibility and evidence clarity reinforce each other. A
+  negative result becomes credible when the audience can hear it, read it, and
+  see the exact product decision it changed.
+
+### 92. Isolated source trust and restored the complete human confirmation action
+
+- **Hypothesis:** The source-trust concept will read faster without chart
+  fragments above it, while the human checkpoint requires its complete action
+  and provenance choices to explain how confirmation enters the workflow.
+- **Change:** Re-cropped `Evidence selection` to the four metric-authority rows
+  only. Reconstructed one complete current-interface human form from adjacent
+  scroll states, preserving the question, Yes/No choice, three provenance
+  routes, save action, unknown action, telemetry boundary, and coach-approval
+  boundary. Rebuilt captioned and uncaptioned draft 18.
+- **Evaluation:** A RED-first timeline regression rejected both former crop
+  filenames. GREEN passes nine focused video-builder tests and 16 complete
+  video/caption/audio positioning tests. The two framed scenes were inspected
+  before assembly and again with open captions in the complete cut. The final
+  H.264/AAC file decodes without error and remains below five minutes and 50 MB.
+- **Result:** Keep the evidence-only matrix and complete human form. The source-
+  trust scene no longer competes with preceding chart labels, and the human
+  checkpoint visibly explains what is saved and what may remain unknown.
+- **Cost/runtime:** Local cropping, FFmpeg composition, and deterministic tests
+  only; no model, weather, audio-generation, or external API call and US$0.00.
+- **Decision:** Crop tightly when one visual concept is being explained, but
+  preserve the complete decision surface when an action and its consequences
+  define the workflow.
+- **Learning:** A close-up can remove too much as easily as it can reveal too
+  little. Evidence matrices benefit from isolation; human decisions need their
+  choices, action, and boundary together.
+
+### 93. Made product-path changes visible with restrained cursor actions
+
+- **Hypothesis:** A static cut between valid pages can still make the product
+  feel like disconnected screenshots. Short cursor actions at route changes
+  should explain how the coach reached the next view without distracting from
+  the evidence being read.
+- **Change:** Rebuilt the 02:34–03:51 product sequence around the real route:
+  Overview → Team → Crew: Tucano → Lucas → Goal memory → Competition → Tucano
+  boat report → Evaluation. Added eased cursor travel, visible click pulses,
+  and post-click holds only before those route changes. Kept result-reading
+  intervals cursor-free and rebuilt captioned and uncaptioned draft 19.
+- **Evaluation:** A RED-first regression required all nine cursor segments,
+  their exact source views, minimum eased travel, click-after-travel ordering,
+  a post-click hold, and the correct destination at every segment boundary.
+  GREEN passes nine video-builder tests and 16 complete video/caption/audio
+  positioning tests. A 14-frame contact sheet across 02:34–03:51 confirmed the
+  Overview, Team, crew, athlete, memory, competition, boat-report, and
+  evaluation targets. The captioned H.264/AAC file is 298.256 seconds, 1920 ×
+  1080 at 30 fps, and approximately 15.9 MiB.
+- **Result:** Keep draft 19 as the recommended owner-review cut. Navigation is
+  now demonstrated as a coherent coach journey rather than implied by edits.
+- **Cost/runtime:** Local FFmpeg assembly and deterministic tests only; no
+  model, weather, audio-generation, or external API call and US$0.00.
+- **Decision:** Show the cursor only when it explains a product path. Do not
+  simulate continuous mouse movement while the audience is reading evidence.
+- **Learning:** Motion earns its place when it explains causality in the UI:
+  this click produced that view. Decorative cursor motion adds noise; bounded
+  navigation motion adds orientation.
+
+### 94. Replaced captured focus artifacts with an explicit current-location state
+
+- **Hypothesis:** Browser-blue focus outlines and an accidental hovered card
+  make otherwise valid screens look unfinished. A product-owned active state
+  should improve orientation while keyboard focus remains independently
+  accessible.
+- **Change:** Added `aria-current="page"` to all four global destinations and
+  styled the active destination with green text, a soft green surface, and a
+  green underline. Kept a separate green `:focus-visible` outline. Neutralized
+  the hovered Competition-review card in the Overview capture and replaced the
+  captured blue Competition and Evaluation outlines with the active treatment.
+  Rebuilt captioned and uncaptioned draft 20.
+- **Evaluation:** RED-first design-system tests required all four current-page
+  attributes, active-state tokens, and the accessible focus rule. A second RED
+  required focus-clean Overview, Competition, and Evaluation captures in the
+  video timeline. GREEN passes ten video-builder tests and 24 focused design-
+  system/interface tests. Frames at 02:36, 03:26, and 03:56 were visually
+  inspected in the captioned render; no blue outline or accidental card hover
+  remains.
+- **Result:** Keep draft 20 as the recommended owner-review cut. The current
+  product location is more visible and the two capture artifacts are removed.
+- **Cost/runtime:** Deterministic CSS, local vector overlays, FFmpeg assembly,
+  and tests only; no model, weather, audio-generation, or external API call and
+  US$0.00.
+- **Decision:** Use persistent product styling to explain location and reserve
+  focus outlines for keyboard interaction. Never encode a transient hover or
+  browser-default focus artifact into a submission screenshot.
+- **Learning:** A visible state needs a name and a purpose. Current location is
+  durable; hover and focus are transient. Mixing them makes navigation look
+  accidental.
+
+### 95. Realigned open captions to the final assembled narration
+
+- **Hypothesis:** Caption timings copied from raw chapter audio will lead the
+  spoken narration after editorial intro or chapter placement changes. Aligning
+  them to the final audio track should restore accessibility without shifting
+  cues that already match.
+- **Change:** Measured the final chapter-one placement against its supplied
+  ElevenLabs recording at 3.85 seconds. Applied that offset to its twelve cues,
+  prohibited captions during the 3.8-second brand-only signature, and bounded
+  the first chapter-two cue to the 01:03 cut. Preserved the other 41 cues because
+  their starts and ends already coincide with final-audio pauses. Rebuilt the
+  SRT and open-captioned draft 21.
+- **Evaluation:** RED-first tests failed while the first cue still began at
+  00:00.640. GREEN requires the first cue at 00:04.490, no caption during the
+  brand-only hold, chapter one ending before 01:02.5, and chapter two beginning
+  no earlier than 01:03. Seventeen focused caption/video/audio tests pass. Frame
+  checks at 00:03.7, 00:04.3, 00:04.6, 01:02.8, and 01:03.1 verify the expected
+  visual states, and the complete H.264/AAC file decodes without error.
+- **Result:** Keep draft 21 as the recommended owner-review cut. The opening
+  captions no longer precede the narration.
+- **Cost/runtime:** Local audio correlation, silence analysis, SVG caption
+  composition, FFmpeg rendering, and deterministic tests only; no model,
+  transcription service, or external API call and US$0.00.
+- **Decision:** Version caption timing against the final assembled audio, not
+  only the raw narration files. Recheck chapter boundaries whenever an intro,
+  replacement clip, tempo fit, or edit changes placement.
+- **Learning:** Correct text is not accessible when its timing describes an
+  earlier edit. Caption QA must test silence, onset, chapter cuts, and the close
+  in the actual delivery file.
+
+### 96. Removed subtitles and aligned every subject change to the final narration
+
+- **Hypothesis:** A caption can be textually correct and still weaken the edit
+  when its timing or visual weight competes with the interface. The remaining
+  perception of mismatch came from product screens changing before the audio
+  finished the preceding idea, not only from subtitle timing.
+- **Change:** Removed open subtitles from the recommended cut. Rebuilt the
+  product timeline against the final narration cues so optional evidence, the
+  bounded agent, reconstruction, source trust, environment, human checkpoint,
+  briefing, approval, club scale, athlete history, Competition, boat report,
+  Evaluation, removed behavior, and negative experiment each begin with their
+  corresponding spoken idea. Cursor movement may bridge two ideas, but the
+  destination cannot replace the source before the next idea begins.
+- **Evaluation:** Added a RED-first semantic-timeline regression covering 16
+  subject boundaries and updated all nine route-destination assertions. Eighteen
+  focused video, caption-history, audio, and positioning tests pass. The final
+  H.264/AAC file decodes without error, is 298.128 seconds at 1920 x 1080 and
+  30 fps, and is 13,150,782 bytes. Boundary frames were inspected at optional
+  evidence, agentic workflow, approval, Competition, Evaluation, removed
+  behavior, and negative-experiment transitions.
+- **Result:** Keep uncaptioned draft 22 as the recommended owner-review cut.
+  Preserve draft 21 and its SRT as an experiment, not as the delivery master.
+- **Cost/runtime:** Local deterministic timeline editing, FFmpeg rendering, and
+  tests only; no model, transcription, weather, or external API call and
+  US$0.00 incremental project cost.
+- **Decision:** Remove open subtitles from this submission cut. Treat the final
+  assembled narration as the timing authority and bind subject changes to
+  complete spoken ideas.
+- **Learning:** A subtitle problem can expose a deeper edit problem. Correcting
+  only the words leaves the audience disoriented when the picture has already
+  moved to the next claim.
+
+### 97. Rebuilt the chapter audio, removed click pulses, and aligned visuals to the real recording
+
+- **Hypothesis:** The remaining drift was not a small caption offset. A later
+  chapter-two replacement had overwritten the beginning of chapter three, so
+  any timeline based on the earlier cue sheet would advance before the final
+  recording finished its idea.
+- **Change:** Reassembled the narration from the seven original owner-supplied
+  chapter files. Shortened only chapter-two pauses longer than 250 ms, applied
+  a bounded 1.98% tempo adjustment, ended it at 122.817 seconds, preserved a
+  150 ms transition, and restored the complete human-checkpoint recording at
+  122.967. Retimed the agentic workflow, reconstruction, source trust,
+  environment, human checkpoint, later chapters, removed behavior, negative
+  experiment, and close from the actual recordings. Removed every click pulse
+  while preserving cursor movement. Extended the last visual beyond the audio.
+- **Evaluation:** RED-first tests cover the chapter boundary, pause-only cleanup,
+  bounded tempo, full seven-chapter concat, quiet ending tail, absent click
+  pulse, non-trimming mux, and revised visual subjects. Twenty-one focused
+  video, audio, caption-history, and positioning tests pass. The H.264/AAC file
+  decodes without error; frames at 01:36, 01:46, 01:47, 01:59, 02:00, 02:02,
+  02:03, 04:40, 04:51, and 04:58 were inspected. Video duration is 299.232
+  seconds versus 299.032 seconds of audio, so the final image remains after the
+  last word. Size is 13,535,323 bytes.
+- **Result:** Keep uncaptioned draft 23 as the recommended owner-review cut.
+- **Cost/runtime:** Local silence analysis, deterministic audio composition,
+  FFmpeg rendering, and tests only; no model, transcription, weather, or
+  external API call and US$0.00 incremental project cost.
+- **Decision:** Never replace a narration window without first checking where
+  the next chapter actually begins. Cursor travel may explain navigation, but
+  the submission uses no simulated click pulse.
+- **Learning:** A plausible-looking timeline can conceal destructive audio
+  overlap. The assembled recordings, not the script or obsolete captions, are
+  the timing authority.
+
+### 98. Promoted the accepted video and hardened the source-only delivery boundary
+
+- **Hypothesis:** Treating the final video, public PDFs, and executable source
+  as explicit deliverables will make the judge package smaller, safer, and
+  easier to reproduce than archiving the development workspace as-is.
+- **Change:** Promoted owner-approved draft 23 byte-for-byte to the final video
+  filename, recorded its media profile and SHA-256, excluded all draft media
+  and captions from the deterministic source ZIP, retained the final video as
+  a separate deliverable, and changed the PDF/reproduction language from
+  pending media QA to final readiness. The first extracted-package check also
+  removed the hidden `.git` dependency from the privacy audit and preserved
+  executable script permissions through ZIP extraction.
+- **Evaluation:** RED-first package tests rejected a draft SRT that previously
+  entered the source archive, and PDF tests rejected the obsolete
+  `PENDING_FINAL_VIDEO` instruction. The first clean extraction then exposed a
+  `NOT_READY` result without `.git` and a `0644` launcher. Two additional RED
+  regressions now require archive-safe privacy scanning and `0755` executable
+  scripts. GREEN excludes every named draft artifact, includes public PDFs,
+  and expects `READY`. The final MP4 is 299.232 seconds, 1920 x 1080 at 30 fps,
+  13,535,323 bytes, and decodes as H.264/AAC.
+- **Result:** Keep the accepted MP4, source ZIP, two public PDFs, and Git
+  snapshot as separate but cross-referenced submission artifacts. A fresh ZIP
+  extraction installed both locked dependency sets and passed 253 Python tests,
+  nine public verifiers, 113 web tests, lint, and the production build without
+  an API key or model call.
+- **Cost/runtime:** Local file promotion, deterministic packaging, media
+  probing, tests, and documentation only; no model or external API call and
+  US$0.00 incremental project cost.
+- **Decision:** Never submit the complete working directory. Build from an
+  allowlisted/excluded package contract, test it in a new directory, and retain
+  exact hashes for the uploaded files.
+- **Learning:** Reproducibility includes what is deliberately absent. A small
+  source package with no key, private state, dependencies, or editing drafts is
+  stronger evidence than a large archive that happens to contain the code.
+
 ### YYYY-MM-DD - Experiment name
 
 - **Hypothesis:** What should improve and why?

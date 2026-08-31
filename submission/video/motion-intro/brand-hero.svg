@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="250" viewBox="0 0 1500 250">
+  <circle cx="80" cy="118" r="48" fill="#C8924F"/>
+  <path d="M30 118 C62 76 99 76 132 118 C99 160 62 160 30 118Z" fill="none" stroke="#F5F2EA" stroke-width="7"/>
+  <text x="178" y="150" fill="#F5F2EA" font-family="Arial, sans-serif" font-size="128" font-weight="700" letter-spacing="14">WAKE</text>
+  <text x="760" y="112" fill="#B8D7CF" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">AGENTIC ROWING</text>
+  <text x="760" y="153" fill="#B8D7CF" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">INTELLIGENCE</text>
+</svg>

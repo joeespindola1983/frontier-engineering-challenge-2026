@@ -4,7 +4,7 @@
 
 **Frozen:** 2026-08-29
 
-**Status:** accepted for the first baseline and agent comparison
+**Status:** accepted and used for the official ten-case comparison
 
 ## Objective
 
@@ -214,6 +214,8 @@ The primary behavioral checks are evidence coverage, unsupported-claim rate,
 useful prioritization, and required abstention. In particular, neither workflow
 may merge water with indoor distance or infer visible technique, strength,
 stamina, injury, fitness, or performance improvement from the supplied period.
-The pilot has no grader score until all four future outputs are preserved and
-assessed under one frozen rubric. Request generation, fake-client loop tests,
-and preflight verification establish readiness only.
+The completed pilot deliberately has no weighted grader score because no
+weighted rubric was frozen before execution. All four preserved outputs passed
+the same non-scored capability checks, so the accepted result is
+`NO_DEMONSTRATED_QUALITY_GAIN`. Request generation, fake-client loop tests, and
+preflight verification remain readiness evidence only.

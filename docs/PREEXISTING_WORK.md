@@ -100,9 +100,16 @@ Before reusing any earlier code or component:
 
 Raw sessions may contain GPS routes, timestamps, device identifiers, and athlete context. They must remain outside the public repository unless explicitly approved and anonymized. Public evaluation should prefer synthetic or carefully minimized fixtures that preserve relevant failure modes without identifying people or private locations.
 
-## Items to resolve before submission
+## Submission status and residual provenance items
 
-- Record the exact pre-competition application repository and commit/snapshot.
-- Inventory each real candidate session and its consent/provenance status.
-- If earlier parser code is later reused, record its exact repository commit and license before copying it. The first fixture uses only exported data formats.
-- Document licenses and service terms for every final dependency and external data provider.
+- The public repository does not include the exact pre-competition application
+  repository or snapshot. No application source was copied, so the submission
+  claim remains limited to approved export formats and minimized recordings.
+- Every real-derived public packet used by the submission has an explicit
+  anonymized/minimized or human-confirmed boundary. Other private candidate
+  sessions remain outside the repository and outside submitted claims.
+- If earlier parser or application code is ever reused, its exact repository,
+  snapshot, and license must be recorded before copying. The current first
+  fixture uses only exported data formats.
+- Direct dependencies, external services, and public data rights are recorded
+  in [`THIRD_PARTY_AND_DATA_RIGHTS.md`](THIRD_PARTY_AND_DATA_RIGHTS.md).

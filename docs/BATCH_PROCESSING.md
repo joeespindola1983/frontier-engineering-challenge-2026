@@ -71,8 +71,10 @@ The public verifier recomputes the batch from source files, checks every hash,
 validates plans, normalizes and reconstructs water telemetry and declared-provenance
 PM5 transcriptions, verifies one athlete per PM5 result and the two preserved paid artifacts, and reports 52
 data-validated records, 52 reconstructed sessions, 51 plan comparisons, two
-agent-verified sessions, and zero human
-approvals. Longitudinal synthesis remains unexecuted.
+agent-verified sessions, and zero human approvals. The batch remains the
+deterministic activity source of truth. A separate four-report longitudinal
+pilot and one combined 102-activity memory execution are preserved without
+turning every batch record into a model call.
 
 ```bash
 uv run python scripts/generate_demo_club_batch.py
@@ -90,5 +92,6 @@ uv run python scripts/verify_demo_club_batch.py
 - A shared indoor prescription does not create a shared measurement. Every PM5
   result remains an individual athlete record before Training Day aggregation.
 - Batch execution is sequential and resumable, not a distributed queue.
-- Longitudinal synthesis requires a separate experiment, acceptance contract,
-  and explicit authorization.
+- Any new longitudinal synthesis requires a new experiment version, acceptance
+  contract, and explicit authorization; the completed pilot and combined-club
+  memory do not create an automatic recurring model job.

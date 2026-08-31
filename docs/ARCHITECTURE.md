@@ -70,13 +70,13 @@ The current verifier rejects unsupported or uncited claims, nonexistent evidence
 
 ### Trajectory recorder — core events implemented for evaluation v1
 
-The current runner captures structured events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, output, usage, approximate run cost, and monotonic case/run runtime for future runs. Product checkpoint interaction is implemented in the web replay but is not yet persisted in agent trajectories.
+The current runner captures structured events without private chain-of-thought: run identifier, input hash, model and prompt versions, tool calls and responses, evidence references, retries, output, usage, approximate run cost, and monotonic case/run runtime. Agent traces remain immutable model-execution evidence. A separate byte-reproducible representative product replay links the official tool trace to the synthetic human answer, briefing verification, and coach approval without pretending those later UI actions occurred inside the model call.
 
 ### Product interface — replay slice implemented
 
 The React/Vinext interface consumes a compact view model derived from committed public output for case 002. It demonstrates session intake, plan-versus-performed review, metric-level source explanations, one human equipment checkpoint, a verified briefing, and approval-gated goal memory. Its review adapter now also handles different work counts, planned distances, boat and crew categories, authenticated upload source IDs, missing clocks, and absent environment without inserting case-002 narration. It never loads evaluator ground truth and clearly labels all demo people, dates, routes, telemetry, and conditions as synthetic.
 
-A separate `wake.club_period_analysis.v1` screen now sits between the relational demo club and any future paid longitudinal execution. It deterministically screens every recorded activity, derives attention from compact observations with evidence references, and routes human/source dependencies away from the model queue. The public two-week batch gives all 52 activities independent hashed source records: all 52 reconstruct, 51 have a comparable plan, and fourteen individual indoor records pass the declared-provenance Concept2 transcription adapter. `training-days.mjs` groups athlete-owned activity records by date without changing their source identity. It classifies water-only, indoor-only, combined, and expected-missing athlete-days; plan-confirmed roles order pre-water and post-water work, while standalone indoor sessions remain valid independent plans. Water and indoor distance are aggregated separately. After preflight and explicit owner authorization, two selected water bundles ran through the v2 tool loop and verifier; their immutable outputs and trajectories are preserved with hashes and observed cost. The period layer reports `2/2` completed candidate investigations and zero human approvals. This is still not a longitudinal model result: synthesis remains `NOT_EXECUTED` and requires separate authorization.
+A separate `wake.club_period_analysis.v1` screen sits above the relational demo club. It deterministically screens every recorded activity, derives attention from compact observations with evidence references, and routes human/source dependencies away from the model queue. The public first-period batch gives all 52 activities independent hashed source records: all 52 reconstruct, 51 have a comparable plan, and fourteen individual indoor records pass the declared-provenance Concept2 transcription adapter. `training-days.mjs` groups athlete-owned activity records by date without changing their source identity. It classifies water-only, indoor-only, combined, and expected-missing athlete-days; plan-confirmed roles order pre-water and post-water work, while standalone indoor sessions remain valid independent plans. Water and indoor distance are aggregated separately. Two selected water bundles ran through the v2 tool loop and verifier for US$0.194118 combined. A separate four-report longitudinal pilot completed with no demonstrated quality gain, and one bounded memory over the combined 102-activity screen was verified and saved for US$0.037384. These layers remain distinct from the deterministic activity source of truth and require human approval before operational memory changes.
 
 `wake.competition_review.v1` extends that fictional relational layer through a deterministic goal outcome. A synthetic regatta stores composite event identities, category-level distance references, full fields, exact club crew snapshots, athlete starts, official rank/time, and explicit non-completion. Report assembly derives pace, winner gap, field median, multi-start load, and pre-race shared-outing context without calling a model. It never imports real athlete names from the supplied private programmes/results, never treats an earlier-stage distance reference as direct confirmation for another stage, never recomputes official order from a displayed tie, and never converts correlation between training and result into causation or automated crew selection.
 
@@ -100,7 +100,7 @@ Committed public output      bounded WAKE runner
 
 The service binds to localhost by default and persists uploaded bytes, normalized telemetry, prepared summaries, bundle and batch results, investigation, briefing, goal, and cost state in a Git-ignored user-restricted JSON file. Its source endpoint validates type, schema/columns, filename, size, and content hash before evidence becomes READY. Raw telemetry is normalized immediately, while the browser receives only source and quality metadata—not source or normalized rows. A plan and SpeedCoach source plus optional enhancers may prepare a hashed compact summary without an agent call. Source-batch preparation groups up to 100 such sessions while retaining independent bundle identities and item-level failures. Paid batch execution remains sequential, resumable, idempotent, and start-gate authorized. Committed replay is released only for an exact byte match to public case 002. It is a demonstration application boundary, not a production multi-tenant backend.
 
-### Longitudinal pilot — preflight implemented, paid execution pending
+### Longitudinal pilot — controlled execution complete
 
 `scripts/longitudinal_pilot.py` builds two compact, ground-truth-free summaries
 from the isolated 52-activity public batch: an athlete scope and a club scope.
@@ -116,14 +116,22 @@ schema, and compact evidence. The verifier rejects nonexistent evidence,
 conflicting scope identifiers, merged water/indoor volume, and unsupported
 performance or physiology trends. Successful outputs are stored with request
 hashes, response identifiers, structured tool events, runtime, usage, and
-approximate cost. The preflight contains no model output and makes no quality
-claim.
+approximate cost. The preserved execution contains two direct-baseline and two
+bounded-WAKE reports, all of which passed the same frozen non-scored capability
+checks. The accepted result is `NO_DEMONSTRATED_QUALITY_GAIN`; WAKE used fewer
+tokens and cost 29.01% less, but that efficiency observation is not proof of
+better reasoning. All four reports reopen at US$0.00.
 
 ## Baseline hypothesis
 
 The baseline should represent a reasonable simple approach to the same task, such as a direct model prompt receiving a compact session summary without investigation tools, persistent memory, or evidence verification. The exact baseline must be fixed before implementing optimizations and must use the same evaluation cases as the final workflow.
 
-The evaluation protocol, deterministic input summarizer, compact summary schema, direct-call prompt, model configuration, baseline runner, agent prompt, tool loop, verifier, and deterministic grader are now versioned at v1. The next architecture checkpoint is the first real baseline/agent comparison without changing frozen inputs or scoring rules after seeing results.
+The evaluation protocol, deterministic input summarizer, compact summary
+schema, direct-call prompt, model configuration, baseline runner, agent prompt,
+tool loop, verifier, and deterministic grader are versioned. The official
+ten-case comparison and the separate longitudinal and club-memory comparisons
+are preserved without post-result rule changes; future architecture changes
+must begin with a new versioned evaluation contract.
 
 ## Open decisions
 
